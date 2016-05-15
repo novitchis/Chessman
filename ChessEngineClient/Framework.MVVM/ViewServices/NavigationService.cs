@@ -22,9 +22,6 @@ using Windows.UI.Xaml.Controls;
 
 namespace Framework.MVVM
 {
-    /// <summary>
-    /// Windows 8 and Windows Phone Application 8.1 implementation of <see cref="INavigationService"/>.
-    /// </summary>
     public class NavigationService : INavigationService
     {
         private readonly Dictionary<string, Type> _pagesByKey = new Dictionary<string, Type>();
