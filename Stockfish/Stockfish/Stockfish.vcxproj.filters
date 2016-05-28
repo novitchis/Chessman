@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>c13ddcdd-d86e-4a42-b911-0573187f3da7</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="syzygy\tbcore.cpp" />
+    <ClCompile Include="syzygy\tbprobe.cpp" />
+    <ClCompile Include="benchmark.cpp" />
+    <ClCompile Include="bitbase.cpp" />
+    <ClCompile Include="bitboard.cpp" />
+    <ClCompile Include="position.cpp" />
+    <ClCompile Include="psqt.cpp" />
+    <ClCompile Include="search.cpp" />
+    <ClCompile Include="thread.cpp" />
+    <ClCompile Include="timeman.cpp" />
+    <ClCompile Include="tt.cpp" />
+    <ClCompile Include="uci.cpp" />
+    <ClCompile Include="ucioption.cpp" />
+    <ClCompile Include="endgame.cpp" />
+    <ClCompile Include="evaluate.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="material.cpp" />
+    <ClCompile Include="misc.cpp" />
+    <ClCompile Include="movegen.cpp" />
+    <ClCompile Include="movepick.cpp" />
+    <ClCompile Include="pawns.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="syzygy\tbcore.h" />
+    <ClInclude Include="syzygy\tbprobe.h" />
+    <ClInclude Include="bitboard.h" />
+    <ClInclude Include="bitcount.h" />
+    <ClInclude Include="position.h" />
+    <ClInclude Include="search.h" />
+    <ClInclude Include="thread.h" />
+    <ClInclude Include="thread_win32.h" />
+    <ClInclude Include="timeman.h" />
+    <ClInclude Include="tt.h" />
+    <ClInclude Include="types.h" />
+    <ClInclude Include="uci.h" />
+    <ClInclude Include="pawns.h" />
+    <ClInclude Include="endgame.h" />
+    <ClInclude Include="evaluate.h" />
+    <ClInclude Include="material.h" />
+    <ClInclude Include="misc.h" />
+    <ClInclude Include="movegen.h" />
+    <ClInclude Include="movepick.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+  </ItemGroup>
+</Project>
