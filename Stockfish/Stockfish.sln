@@ -5,6 +5,11 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Stockfish", "Stockfish\Stockfish.vcxproj", "{CBEDB71D-BB7E-4972-863B-D5CFD5574FEA}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StockfishComponent", "StockfishComponent\StockfishComponent.vcxproj", "{625B9024-3804-485D-B416-A7C349F5C434}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CBEDB71D-BB7E-4972-863B-D5CFD5574FEA} = {CBEDB71D-BB7E-4972-863B-D5CFD5574FEA}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -27,6 +32,18 @@ Global
 		{CBEDB71D-BB7E-4972-863B-D5CFD5574FEA}.Release|x64.Build.0 = Release|x64
 		{CBEDB71D-BB7E-4972-863B-D5CFD5574FEA}.Release|x86.ActiveCfg = Release|Win32
 		{CBEDB71D-BB7E-4972-863B-D5CFD5574FEA}.Release|x86.Build.0 = Release|Win32
+		{625B9024-3804-485D-B416-A7C349F5C434}.Debug|ARM.ActiveCfg = Debug|ARM
+		{625B9024-3804-485D-B416-A7C349F5C434}.Debug|ARM.Build.0 = Debug|ARM
+		{625B9024-3804-485D-B416-A7C349F5C434}.Debug|x64.ActiveCfg = Debug|x64
+		{625B9024-3804-485D-B416-A7C349F5C434}.Debug|x64.Build.0 = Debug|x64
+		{625B9024-3804-485D-B416-A7C349F5C434}.Debug|x86.ActiveCfg = Debug|Win32
+		{625B9024-3804-485D-B416-A7C349F5C434}.Debug|x86.Build.0 = Debug|Win32
+		{625B9024-3804-485D-B416-A7C349F5C434}.Release|ARM.ActiveCfg = Release|ARM
+		{625B9024-3804-485D-B416-A7C349F5C434}.Release|ARM.Build.0 = Release|ARM
+		{625B9024-3804-485D-B416-A7C349F5C434}.Release|x64.ActiveCfg = Release|x64
+		{625B9024-3804-485D-B416-A7C349F5C434}.Release|x64.Build.0 = Release|x64
+		{625B9024-3804-485D-B416-A7C349F5C434}.Release|x86.ActiveCfg = Release|Win32
+		{625B9024-3804-485D-B416-A7C349F5C434}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
