@@ -7,7 +7,8 @@
   this code to other chess engines.
 */
 
-#define NOMINMAX
+#include "pch.h"
+
 
 #include <algorithm>
 

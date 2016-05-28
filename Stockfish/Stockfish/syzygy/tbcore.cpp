@@ -7,6 +7,8 @@
   a particular engine, provided the engine is written in C or C++.
 */
 
+#include "pch.h"
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -18,6 +20,7 @@
 #include <sys/mman.h>
 #endif
 #include "tbcore.h"
+#include "tbprobe.h"
 
 #define TBMAX_PIECE 254
 #define TBMAX_PAWN 256
@@ -56,6 +59,17 @@ static void init_indices(void);
 static uint64 calc_key_from_pcs(int *pcs, int mirror);
 static void free_wdl_entry(struct TBEntry *entry);
 static void free_dtz_entry(struct TBEntry *entry);
+
+FD CreateFile(char * bla, int bla2, int bla3, void* bla4,
+	int bla6, int bla5, void* bl)
+{
+	return NULL;
+}
+
+DWORD GetFileSize(FD fd, DWORD* size_high)
+{
+	return NULL;
+}
 
 static FD open_tb(const char *str, const char *suffix)
 {
@@ -163,7 +177,7 @@ static void init_tb(char *str)
   FD fd;
   struct TBEntry *entry;
   int i, j, pcs[16];
-  uint64 key, key2;
+  uint64 key = 0, key2 = 0;
   int color;
   char *s;
 
@@ -201,8 +215,8 @@ static void init_tb(char *str)
   for (i = 0; i < 8; i++)
     if (pcs[i] != pcs[i+8])
       break;
-  key = calc_key_from_pcs(pcs, 0);
-  key2 = calc_key_from_pcs(pcs, 1);
+  //key = calc_key_from_pcs(pcs, 0);
+  //key2 = calc_key_from_pcs(pcs, 1);
   if (pcs[TB_WPAWN] + pcs[TB_BPAWN] == 0) {
     if (TBnum_piece == TBMAX_PIECE) {
       printf("TBMAX_PIECE limit too low!\n");

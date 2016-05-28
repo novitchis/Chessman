@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef TBPROBE_H
 #define TBPROBE_H
 

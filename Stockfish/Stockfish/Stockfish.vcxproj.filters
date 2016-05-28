@@ -8,7 +8,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="syzygy\tbcore.cpp" />
     <ClCompile Include="syzygy\tbprobe.cpp" />
     <ClCompile Include="benchmark.cpp" />
     <ClCompile Include="bitbase.cpp" />
@@ -51,8 +50,5 @@
     <ClInclude Include="misc.h" />
     <ClInclude Include="movegen.h" />
     <ClInclude Include="movepick.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Makefile" />
   </ItemGroup>
 </Project>
