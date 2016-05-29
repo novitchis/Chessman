@@ -22,12 +22,12 @@
     <ClCompile Include="ucioption.cpp" />
     <ClCompile Include="endgame.cpp" />
     <ClCompile Include="evaluate.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="material.cpp" />
     <ClCompile Include="misc.cpp" />
     <ClCompile Include="movegen.cpp" />
     <ClCompile Include="movepick.cpp" />
     <ClCompile Include="pawns.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
