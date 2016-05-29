@@ -136,6 +136,10 @@
       <Project>{89ef9c55-fa72-49d1-88a1-3b794b3c1b86}</Project>
       <Name>Framework.MVVM</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Stockfish\Stockfish.vcxproj">
+      <Project>{cbedb71d-bb7e-4972-863b-d5cfd5574fea}</Project>
+      <Name>Stockfish</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
