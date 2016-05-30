@@ -4,10 +4,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessEngineClient", "ChessEngineClient\ChessEngineClient.csproj", "{35832787-06EC-41CE-8E2C-3C273CF14DF8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F} = {C6645B92-54E6-4AE0-BBD1-3F566C35935F}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.MVVM", "Framework.MVVM\Framework.MVVM.csproj", "{89EF9C55-FA72-49D1-88A1-3B794B3C1B86}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Stockfish", "Stockfish\Stockfish.vcxproj", "{CBEDB71D-BB7E-4972-863B-D5CFD5574FEA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UciEngineComponent", "UciEngineComponent\UciEngineComponent.vcxproj", "{C6645B92-54E6-4AE0-BBD1-3F566C35935F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +76,21 @@ Global
 		{CBEDB71D-BB7E-4972-863B-D5CFD5574FEA}.Release|x64.Build.0 = Release|x64
 		{CBEDB71D-BB7E-4972-863B-D5CFD5574FEA}.Release|x86.ActiveCfg = Release|Win32
 		{CBEDB71D-BB7E-4972-863B-D5CFD5574FEA}.Release|x86.Build.0 = Release|Win32
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F}.Debug|ARM.ActiveCfg = Debug|ARM
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F}.Debug|ARM.Build.0 = Debug|ARM
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F}.Debug|ARM.Deploy.0 = Debug|ARM
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F}.Debug|x64.ActiveCfg = Debug|x64
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F}.Debug|x64.Build.0 = Debug|x64
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F}.Debug|x86.ActiveCfg = Debug|Win32
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F}.Debug|x86.Build.0 = Debug|Win32
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F}.Release|Any CPU.ActiveCfg = Release|Win32
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F}.Release|ARM.ActiveCfg = Release|ARM
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F}.Release|ARM.Build.0 = Release|ARM
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F}.Release|x64.ActiveCfg = Release|x64
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F}.Release|x64.Build.0 = Release|x64
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F}.Release|x86.ActiveCfg = Release|Win32
+		{C6645B92-54E6-4AE0-BBD1-3F566C35935F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

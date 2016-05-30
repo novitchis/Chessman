@@ -28,7 +28,6 @@
     <ClCompile Include="movepick.cpp" />
     <ClCompile Include="pawns.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="StockfishComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -51,6 +50,5 @@
     <ClInclude Include="misc.h" />
     <ClInclude Include="movegen.h" />
     <ClInclude Include="movepick.h" />
-    <ClInclude Include="StockfishComponent.h" />
   </ItemGroup>
 </Project>
