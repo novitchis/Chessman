@@ -8,7 +8,7 @@
 */
 
 #include "pch.h"
-
+#include <algorithm>
 
 #include <algorithm>
 

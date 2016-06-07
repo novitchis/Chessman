@@ -9,7 +9,11 @@
 #include <collection.h>
 #include <ppltasks.h>
 
+// Fix for some compiler errors. Long live macros! //
+#undef min
+#undef max
 #include <algorithm>
+
 #include <cassert>
 #include <ostream>
 
