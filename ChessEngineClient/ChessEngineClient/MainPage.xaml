@@ -5,10 +5,21 @@
     xmlns:local="using:ChessEngineClient"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="using:ChessEngineClient.View"
     mc:Ignorable="d"
-    DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}">
+    DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}"
+    d:DesignHeight="1080"
+    d:DesignWidth="612">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock Text="Board" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+
+        <view:ChessBoardView />
+        <view:AnalysisView Grid.Row="1" />
+        <view:NotationView Grid.Row="2"/>
     </Grid>
 </Page>
