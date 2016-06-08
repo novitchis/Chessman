@@ -1,0 +1,40 @@
+#include "pch.h"
+#include "Coordinate.h"
+#include "ManagedConverter.h"
+
+using namespace ChessEngine;
+
+Coordinate::Coordinate()
+{
+
+}
+
+Coordinate::Coordinate(int x, int y)
+	: m_Coordinate(x,y)
+{
+
+}
+
+int Coordinate::GetX()
+{
+	return m_Coordinate.nColumn;
+}
+
+
+int	Coordinate::GetY()
+{
+	return m_Coordinate.nRank;
+}
+
+
+Platform::String^ Coordinate::ToString()
+{
+	auto strCoord = m_Coordinate.ToString();
+	return ManagedConverter::String2ManagedString(strCoord);
+}
+
+
+void Coordinate::FromString(Platform::String^ strCoord)
+{
+	m_Coordinate = CoordinateImpl::FromString(ManagedConverter::ManagedString2String(strCoord));
+}

@@ -1,6 +1,7 @@
 #pragma once
 #include "ChessBoardImpl.h"
 #include "ManagedDefines.h"
+#include "Move.h"
 
 namespace ChessEngine
 {

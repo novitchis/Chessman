@@ -31,7 +31,7 @@ namespace ChessEngine
 		{
 
 		}
-		MoveData( const MoveImpl& _move, const ChessPiece& _capturedPiece )
+		MoveData( const MoveImpl& _move, const ChessPieceImpl& _capturedPiece )
 			: move( _move )
 			, capturedPiece( _capturedPiece )
 			, nCastlingMask( FullCastlingMask )
@@ -39,7 +39,7 @@ namespace ChessEngine
 
 		}
 		MoveImpl			move;
-		ChessPiece		capturedPiece;
+		ChessPieceImpl		capturedPiece;
 		int				nCastlingMask;
 		int				nLastPawnMoveOrCapture;
 		std::string		strPGNMove;
@@ -70,8 +70,8 @@ namespace ChessEngine
 		bool						LoadFrom( const std::string& strData, SerializationType type );
 		void						StorePGN();
 
-		ChessPiece					GetPiece( const CoordinateImpl& coord ) const;
-		void						SetPiece( const ChessPiece& piece, const CoordinateImpl& coord );
+		ChessPieceImpl					GetPiece( const CoordinateImpl& coord ) const;
+		void						SetPiece( const ChessPieceImpl& piece, const CoordinateImpl& coord );
 
 		std::list<CoordinateImpl>	GetAvailableMoves( const CoordinateImpl& coord ) const;
 		bool						SubmitMove( const MoveImpl& move, AdditionalMoveInfo& additionalInfo);
@@ -80,7 +80,7 @@ namespace ChessEngine
 
 		bool						UndoMove( bool bWhiteMove ); // TODO
 		bool						ValidateMove( const MoveImpl& move, AdditionalMoveInfo& coordEnPassant ) const;
-		bool						PromotePawn( CoordinateImpl coord, ChessPiece piece );
+		bool						PromotePawn( CoordinateImpl coord, ChessPieceImpl piece );
 
 		std::list<CoordinateImpl>	getPiecesMovableAs(MoveImpl move, char pieceType, bool pWhite) const;
 		bool						GetAttackingFields( const CoordinateImpl& coord, bool bWhiteAttacks, std::list<CoordinateImpl>& listAttacker ) const;
@@ -90,7 +90,7 @@ namespace ChessEngine
 		bool						IsMate();
 		bool						IsStaleMate();
 		MoveImpl						GetLastMove() const;
-		std::map<ChessPiece, int>	GetCapturedPieces() const;	
+		std::map<ChessPieceImpl, int>	GetCapturedPieces() const;	
 		void						GetPreservedState( StatePreserveType type, Core::StatePreserver& state );
 		void						UpdateState( StatePreserveType type, const Core::Variant& vtState );
 
@@ -101,11 +101,11 @@ namespace ChessEngine
 		bool						LoadFromPGN( const std::string& strData );
 
 	private:
-		ChessPiece							m_memBoard[8][8];
+		ChessPieceImpl							m_memBoard[8][8];
 		CoordinateImpl							m_coordWhiteKing;
 		CoordinateImpl							m_coordBlackKing;
 		std::list<MoveData>					m_listMoves;
-		ChessPiece							m_lastPiece;
+		ChessPieceImpl							m_lastPiece;
 		int									m_nCastlingMask;
 		int									m_nLastPawnMoveOrCapture;
 		bool								m_bStorePGN;

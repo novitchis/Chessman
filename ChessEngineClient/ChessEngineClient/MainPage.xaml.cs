@@ -53,3 +53,4 @@ namespace ChessEngineClient.View
         }
     }
 }
+    

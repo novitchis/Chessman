@@ -11,7 +11,7 @@ MoveScope::MoveScope(ChessBoardImpl* pBoard, const MoveImpl& move )
 	_ASSERTE (move);
 	m_destPiece = m_pBoard->GetPiece( move.to );
 	m_pBoard->SetPiece( m_pBoard->GetPiece( move.from ), move.to );
-	m_pBoard->SetPiece ( ChessPiece(), move.from );
+	m_pBoard->SetPiece ( ChessPieceImpl(), move.from );
 }
 
 

@@ -62,6 +62,13 @@
     <ClCompile Include="..\Common\json.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="Coordinate.cpp">
+      <Filter>Managed</Filter>
+    </ClCompile>
+    <ClCompile Include="Move.cpp">
+      <Filter>Managed</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessPiece.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -134,5 +141,12 @@
     <ClInclude Include="ManagedDefines.h">
       <Filter>Managed</Filter>
     </ClInclude>
+    <ClInclude Include="Coordinate.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="Move.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="ChessPiece.h" />
   </ItemGroup>
 </Project>

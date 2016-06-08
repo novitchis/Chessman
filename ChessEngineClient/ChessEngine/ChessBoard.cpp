@@ -44,4 +44,6 @@ SerializationType ChessBoard::GetSerializationType(int type)
 {
 	if (type == BoardSerialization::BS_FEN) return ST_FEN;
 	if (type == BoardSerialization::BS_PGN) return ST_PGN;
+	
+	return ST_FEN;
 }

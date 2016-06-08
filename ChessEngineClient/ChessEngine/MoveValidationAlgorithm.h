@@ -30,15 +30,15 @@ namespace ChessEngine
 		std::list<CoordinateImpl>	GetAttackingFields( const CoordinateImpl& coord, bool bWhiteAttacks );
 
 	private:
-		bool ValidatePawnMove	( const MoveImpl& move, const ChessPiece& piece, AdditionalMoveInfo& additionalInfo );
-		bool ValidateKnightMove	( const MoveImpl& move, const ChessPiece& piece );
-		bool ValidateBishopMove	( const MoveImpl& move, const ChessPiece& piece );
-		bool ValidateRockMove	( const MoveImpl& move, const ChessPiece& piece );
-		bool ValidateQueenMove	( const MoveImpl& move, const ChessPiece& piece );
-		bool ValidateKingMove	( const MoveImpl& move, const ChessPiece& piece, AdditionalMoveInfo& additionalInfo  );
+		bool ValidatePawnMove	( const MoveImpl& move, const ChessPieceImpl& piece, AdditionalMoveInfo& additionalInfo );
+		bool ValidateKnightMove	( const MoveImpl& move, const ChessPieceImpl& piece );
+		bool ValidateBishopMove	( const MoveImpl& move, const ChessPieceImpl& piece );
+		bool ValidateRockMove	( const MoveImpl& move, const ChessPieceImpl& piece );
+		bool ValidateQueenMove	( const MoveImpl& move, const ChessPieceImpl& piece );
+		bool ValidateKingMove	( const MoveImpl& move, const ChessPieceImpl& piece, AdditionalMoveInfo& additionalInfo  );
 	
 		bool IsFieldAvailable( const CoordinateImpl& coord );
-		bool IsCaptureMove( const MoveImpl& move, const ChessPiece& piece );
+		bool IsCaptureMove( const MoveImpl& move, const ChessPieceImpl& piece );
 		AttackResult IsPieceAttacking( const CoordinateImpl& coord, bool bWhite, AttackType attackType );
 		bool IsFieldAttacked( const CoordinateImpl& coord, bool bWhite, std::list<CoordinateImpl>& listAttackers );
 

@@ -15,6 +15,6 @@ namespace ChessEngine
 	private:
 		ChessBoardImpl* m_pBoard;
 		MoveImpl		m_move;
-		ChessPiece	m_destPiece;
+		ChessPieceImpl	m_destPiece;
 	};
 }

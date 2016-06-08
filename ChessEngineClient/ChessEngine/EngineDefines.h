@@ -124,10 +124,10 @@ namespace ChessEngine
 	};
 
 
-	class ChessPiece
+	class ChessPieceImpl
 	{
 	public:
-		ChessPiece()
+		ChessPieceImpl()
 			: cPiece( None )
 			, bWhite ( true )
 			, bTransformed( false )
@@ -135,7 +135,7 @@ namespace ChessEngine
 
 		}
 
-		ChessPiece( char _cPiece, bool _bWhite )
+		ChessPieceImpl( char _cPiece, bool _bWhite )
 			: cPiece( _cPiece )
 			, bWhite( _bWhite )
 			, bTransformed( false )
@@ -143,17 +143,17 @@ namespace ChessEngine
 
 		}
 
-		bool operator ==( const ChessPiece& rhs ) const
+		bool operator ==( const ChessPieceImpl& rhs ) const
 		{
 			return ( cPiece == rhs.cPiece ) && ( bWhite == rhs.bWhite );
 		}
-		bool operator <( const ChessPiece& rhs ) const
+		bool operator <( const ChessPieceImpl& rhs ) const
 		{
 			if ( bWhite != rhs.bWhite ) return bWhite;
 			return ( cPiece < rhs.cPiece );
 		}
 		
-		bool operator !=( const ChessPiece& rhs ) const
+		bool operator !=( const ChessPieceImpl& rhs ) const
 		{
 			return !operator==( rhs );
 		}
@@ -162,22 +162,22 @@ namespace ChessEngine
 		{
 			switch ( cPiece ) 
 			{
-			case ChessPiece::Pawn:
+			case ChessPieceImpl::Pawn:
 				return "pawn";
 				break;
-			case ChessPiece::Knight:
+			case ChessPieceImpl::Knight:
 				return "Knight";
 				break;
-			case ChessPiece::Bishop:
+			case ChessPieceImpl::Bishop:
 				return "Bishop";
 				break;
-			case ChessPiece::Rock:
+			case ChessPieceImpl::Rock:
 				return "Rock";
 				break;
-			case ChessPiece::Queen:
+			case ChessPieceImpl::Queen:
 				return "Queen";
 				break;
-			case ChessPiece::King:
+			case ChessPieceImpl::King:
 				return "King";
 				break;
 			}
@@ -250,7 +250,7 @@ namespace ChessEngine
 
 		CoordinateImpl from;
 		CoordinateImpl to;
-		ChessPiece promotionPiece;
+		ChessPieceImpl promotionPiece;
 	};
 
 
@@ -267,7 +267,7 @@ namespace ChessEngine
 		MoveInfo	type;
 		CoordinateImpl	coordEnPassant; // en passant
 		MoveImpl		RockMove; // castle
-		ChessPiece  PromotionPiece;
+		ChessPieceImpl  PromotionPiece;
 	};
 
 	enum EngineLevel

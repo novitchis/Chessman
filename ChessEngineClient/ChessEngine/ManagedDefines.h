@@ -18,25 +18,4 @@ namespace ChessEngine
 		}
 	};
 
-
-	//wrapper over Move class//
-	public ref class Coordinate sealed
-	{
-	public:
-
-	private:
-		CoordinateImpl	m_Coordinate;
-	};
-
-
-	//wrapper over Move class//
-	public ref class Move sealed
-	{
-	public:
-
-	private:
-		MoveImpl	m_Move;
-	};
-
-
 }

@@ -221,6 +221,8 @@
     <ClInclude Include="ChessEngineImpl.h" />
     <ClInclude Include="ChessGames.h" />
     <ClInclude Include="ChessBoard.h" />
+    <ClInclude Include="ChessPiece.h" />
+    <ClInclude Include="Coordinate.h" />
     <ClInclude Include="DataConverter.h" />
     <ClInclude Include="EngineCommunicationThread.h" />
     <ClInclude Include="EngineDefines.h" />
@@ -229,6 +231,7 @@
     <ClInclude Include="IEngineNotification.h" />
     <ClInclude Include="ManagedConverter.h" />
     <ClInclude Include="ManagedDefines.h" />
+    <ClInclude Include="Move.h" />
     <ClInclude Include="MoveDatabase.h" />
     <ClInclude Include="MoveScope.h" />
     <ClInclude Include="MoveValidationAlgorithm.h" />
@@ -245,10 +248,13 @@
     <ClCompile Include="ChessEngineImpl.cpp" />
     <ClCompile Include="ChessGames.cpp" />
     <ClCompile Include="ChessBoard.cpp" />
+    <ClCompile Include="ChessPiece.cpp" />
+    <ClCompile Include="Coordinate.cpp" />
     <ClCompile Include="DataConverter.cpp" />
     <ClCompile Include="EngineCommunicationThread.cpp" />
     <ClCompile Include="EngineDefines.cpp" />
     <ClCompile Include="ManagedConverter.cpp" />
+    <ClCompile Include="Move.cpp" />
     <ClCompile Include="MoveScope.cpp" />
     <ClCompile Include="MoveValidationAlgorithm.cpp" />
     <ClCompile Include="pch.cpp">

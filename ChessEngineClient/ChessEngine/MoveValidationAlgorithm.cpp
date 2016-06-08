@@ -25,7 +25,7 @@ bool MoveValidationAlgorithm::Run ( const MoveImpl& move, AdditionalMoveInfo& ad
 {
 	if ( !move ) return false;
 	if ( move.from == move.to ) return false;
-	ChessPiece piece = m_pChessBoard->GetPiece( move.from );
+	ChessPieceImpl piece = m_pChessBoard->GetPiece( move.from );
 	if ( !IsFieldAvailable( move.to ) && !IsCaptureMove( move, piece ) ) return false;
 	// kings cannot be captured! //
 	if ( m_pChessBoard->GetKingPos( !piece.bWhite ) == move.to ) return false;
@@ -33,22 +33,22 @@ bool MoveValidationAlgorithm::Run ( const MoveImpl& move, AdditionalMoveInfo& ad
 	bool bValidMove = false;
 	switch ( piece.cPiece ) 
 	{
-	case ChessPiece::Pawn:
+	case ChessPieceImpl::Pawn:
 		bValidMove = ValidatePawnMove( move, piece, additionalInfo );
 		break;
-	case ChessPiece::Knight:
+	case ChessPieceImpl::Knight:
 		bValidMove = ValidateKnightMove( move, piece );
 		break;
-	case ChessPiece::Bishop:
+	case ChessPieceImpl::Bishop:
 		bValidMove = ValidateBishopMove( move, piece );
 	break;
-	case ChessPiece::Rock:
+	case ChessPieceImpl::Rock:
 		bValidMove = ValidateRockMove( move, piece );
 	break;
-	case ChessPiece::Queen:
+	case ChessPieceImpl::Queen:
 		bValidMove = ValidateQueenMove( move, piece );
 	break;
-	case ChessPiece::King:
+	case ChessPieceImpl::King:
 		bValidMove = ValidateKingMove( move, piece, additionalInfo );
 		break;
 	}
@@ -59,7 +59,7 @@ bool MoveValidationAlgorithm::Run ( const MoveImpl& move, AdditionalMoveInfo& ad
 	{
 		MoveScope moveScope( const_cast<ChessBoardImpl*>( m_pChessBoard ), move );
 		CoordinateImpl coordKing;
-		if ( piece.cPiece == ChessPiece::King ) 
+		if ( piece.cPiece == ChessPieceImpl::King ) 
 			coordKing = move.to;
 		else
 			coordKing = m_pChessBoard->GetKingPos( piece.bWhite );
@@ -98,13 +98,13 @@ std::list<CoordinateImpl> MoveValidationAlgorithm::GetAttackingFields( const Coo
 	std::list<CoordinateImpl>		listAttackers;
 	auto piece = m_pChessBoard->GetPiece( coord );
 	bool bWhite = !bWhiteAttacks;
-	if( piece != ChessPiece() ) bWhite = piece.bWhite;
+	if( piece != ChessPieceImpl() ) bWhite = piece.bWhite;
 	IsFieldAttacked( coord, bWhite, listAttackers );
 	return listAttackers;
 }
 
 
-bool MoveValidationAlgorithm::ValidatePawnMove( const MoveImpl& move, const ChessPiece& piece, AdditionalMoveInfo& additionalInfo )
+bool MoveValidationAlgorithm::ValidatePawnMove( const MoveImpl& move, const ChessPieceImpl& piece, AdditionalMoveInfo& additionalInfo )
 {
 	if ( piece.bWhite && ( move.from.nRank >= move.to.nRank ) ) return false;
 	if ( !piece.bWhite && ( move.from.nRank <= move.to.nRank ) ) return false;
@@ -126,7 +126,7 @@ bool MoveValidationAlgorithm::ValidatePawnMove( const MoveImpl& move, const Ches
 		if ( abs( move.to.nRank - move.from.nRank ) != 1 ) return false;
 		if ( abs( move.to.nColumn - move.from.nColumn ) != 1 ) return false;
 		
-		ChessPiece pieceTo = m_pChessBoard->GetPiece( move.to );
+		ChessPieceImpl pieceTo = m_pChessBoard->GetPiece( move.to );
 		bool bFieldAvailable = pieceTo.IsEmpty();
 		if (  !bFieldAvailable && ( pieceTo.bWhite != piece.bWhite ) ) 
 			return true;  
@@ -135,8 +135,8 @@ bool MoveValidationAlgorithm::ValidatePawnMove( const MoveImpl& move, const Ches
 			if ( m_pChessBoard->m_listMoves.empty() ) return false;
 			// check en passant //
 			MoveImpl prevMove = m_pChessBoard->m_listMoves.back().move;
-			ChessPiece prevPiece = m_pChessBoard->GetPiece( prevMove.to );
-			if ( prevPiece.cPiece != ChessPiece::Pawn ) return false;
+			ChessPieceImpl prevPiece = m_pChessBoard->GetPiece( prevMove.to );
+			if ( prevPiece.cPiece != ChessPieceImpl::Pawn ) return false;
 			if ( abs ( prevMove.from.nRank - prevMove.to.nRank ) != 2 ) return false;
 			if ( move.from.nRank != ( piece.bWhite ? 4 : 3 ) ) return false;
 			if ( move.to.nColumn != prevMove.to.nColumn ) return false;
@@ -148,7 +148,7 @@ bool MoveValidationAlgorithm::ValidatePawnMove( const MoveImpl& move, const Ches
 }
 
 
-bool MoveValidationAlgorithm::ValidateKnightMove( const MoveImpl& move, const ChessPiece& piece )
+bool MoveValidationAlgorithm::ValidateKnightMove( const MoveImpl& move, const ChessPieceImpl& piece )
 {
 	if ( !IsFieldAvailable( move.to ) && !IsCaptureMove( move, piece ) ) return false;
 	int nRankDif = abs( move.from.nRank - move.to.nRank );
@@ -160,7 +160,7 @@ bool MoveValidationAlgorithm::ValidateKnightMove( const MoveImpl& move, const Ch
 }
 
 
-bool MoveValidationAlgorithm::ValidateBishopMove( const MoveImpl& move, const ChessPiece& piece )
+bool MoveValidationAlgorithm::ValidateBishopMove( const MoveImpl& move, const ChessPieceImpl& piece )
 {
 	if ( abs( move.from.nRank - move.to.nRank ) != abs( move.from.nColumn - move.to.nColumn ) ) return false;
 	int nRankInc = sgn( move.to.nRank - move.from.nRank );
@@ -181,7 +181,7 @@ bool MoveValidationAlgorithm::ValidateBishopMove( const MoveImpl& move, const Ch
 }
 
 
-bool MoveValidationAlgorithm::ValidateRockMove( const MoveImpl& move, const ChessPiece& piece )
+bool MoveValidationAlgorithm::ValidateRockMove( const MoveImpl& move, const ChessPieceImpl& piece )
 {
 	if ( ( move.from.nRank != move.to.nRank ) && ( move.from.nColumn != move.to.nColumn ) ) return false;
 	
@@ -214,14 +214,14 @@ bool MoveValidationAlgorithm::ValidateRockMove( const MoveImpl& move, const Ches
 }
 
 
-bool MoveValidationAlgorithm::ValidateQueenMove( const MoveImpl& move, const ChessPiece& piece )
+bool MoveValidationAlgorithm::ValidateQueenMove( const MoveImpl& move, const ChessPieceImpl& piece )
 {
 	return ValidateRockMove( move, piece ) || ValidateBishopMove( move, piece );
 }
 
 
 // TODO: handle check validation & castle possibilities //
-bool MoveValidationAlgorithm::ValidateKingMove( const MoveImpl& move, const ChessPiece& piece, AdditionalMoveInfo& additionalInfo )
+bool MoveValidationAlgorithm::ValidateKingMove( const MoveImpl& move, const ChessPieceImpl& piece, AdditionalMoveInfo& additionalInfo )
 {
 	auto nColDif = abs( move.from.nColumn - move.to.nColumn );
 	auto nRankDif = abs( move.from.nRank - move.to.nRank );
@@ -263,10 +263,10 @@ bool MoveValidationAlgorithm::IsFieldAvailable( const CoordinateImpl& coord )
 }
 
 
-bool MoveValidationAlgorithm::IsCaptureMove( const MoveImpl& move, const ChessPiece& piece )
+bool MoveValidationAlgorithm::IsCaptureMove( const MoveImpl& move, const ChessPieceImpl& piece )
 {
-	ChessPiece pieceFrom = m_pChessBoard->GetPiece( move.from );
-	ChessPiece pieceTo = m_pChessBoard->GetPiece ( move.to );
+	ChessPieceImpl pieceFrom = m_pChessBoard->GetPiece( move.from );
+	ChessPieceImpl pieceTo = m_pChessBoard->GetPiece ( move.to );
 	return !IsFieldAvailable( move.to ) && ( pieceTo.bWhite != pieceFrom.bWhite );
 }
 
@@ -343,7 +343,7 @@ bool MoveValidationAlgorithm::IsFieldAttacked( const CoordinateImpl& coord, bool
 			CoordinateImpl	crtCoord( coord.nRank + i, coord.nColumn + j);
 			auto piece = m_pChessBoard->GetPiece( crtCoord );
 			if ( piece.bWhite == bWhite ) continue;
-			if ( crtCoord && piece.cPiece == ChessPiece::Knight ) 
+			if ( crtCoord && piece.cPiece == ChessPieceImpl::Knight ) 
 				listAttackers.push_back( crtCoord );
 		}
 	}
@@ -354,14 +354,14 @@ bool MoveValidationAlgorithm::IsFieldAttacked( const CoordinateImpl& coord, bool
 	
 	if ( leftPos )
 	{
-		ChessPiece piece = m_pChessBoard->GetPiece( leftPos );
-		if ( ( piece.cPiece == ChessPiece::Pawn ) && ( piece.bWhite != bWhite ) ) listAttackers.push_back( leftPos );
+		ChessPieceImpl piece = m_pChessBoard->GetPiece( leftPos );
+		if ( ( piece.cPiece == ChessPieceImpl::Pawn ) && ( piece.bWhite != bWhite ) ) listAttackers.push_back( leftPos );
 	}
 	
 	if ( rightPos )
 	{
-		ChessPiece piece = m_pChessBoard->GetPiece( rightPos );
-		if ( ( piece.cPiece == ChessPiece::Pawn ) && ( piece.bWhite != bWhite ) ) listAttackers.push_back( rightPos );
+		ChessPieceImpl piece = m_pChessBoard->GetPiece( rightPos );
+		if ( ( piece.cPiece == ChessPieceImpl::Pawn ) && ( piece.bWhite != bWhite ) ) listAttackers.push_back( rightPos );
 	}
 
 	// Kings //
@@ -372,7 +372,7 @@ bool MoveValidationAlgorithm::IsFieldAttacked( const CoordinateImpl& coord, bool
 			auto piece = m_pChessBoard->GetPiece( crtCoord );
 			if ( piece.IsEmpty() ) continue;
 			if ( crtCoord == coord ) continue;
-			if (( piece.cPiece == ChessPiece::King ) && piece.bWhite != bWhite )
+			if (( piece.cPiece == ChessPieceImpl::King ) && piece.bWhite != bWhite )
 				listAttackers.push_back( crtCoord );
 		}
 
