@@ -10,22 +10,10 @@ Coordinate::Coordinate()
 }
 
 Coordinate::Coordinate(int x, int y)
-	: m_Coordinate(x,y)
+	: m_Coordinate(y, x)
 {
 
 }
-
-int Coordinate::GetX()
-{
-	return m_Coordinate.nColumn;
-}
-
-
-int	Coordinate::GetY()
-{
-	return m_Coordinate.nRank;
-}
-
 
 Platform::String^ Coordinate::ToString()
 {

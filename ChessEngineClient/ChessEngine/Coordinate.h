@@ -10,8 +10,21 @@ namespace ChessEngine
 		Coordinate();
 		Coordinate(int x, int y);
 
-		int							GetX();
-		int							GetY();
+		property bool IsWhiteSquare
+		{
+			bool get() { return m_Coordinate.IsWhiteSquare(); }
+		}
+
+		property int X
+		{
+			int get() { return m_Coordinate.nColumn; }
+		}
+
+		property int Y
+		{
+			int get() { return m_Coordinate.nRank; }
+		}
+
 		virtual Platform::String^	ToString() override;
 		void						FromString(Platform::String^ strCoord);
 	private:

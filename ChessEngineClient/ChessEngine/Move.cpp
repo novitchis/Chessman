@@ -12,8 +12,8 @@ Move::Move()
 
 Move::Move(Coordinate^ from, Coordinate^ to)
 {
-	m_Move.from = CoordinateImpl(from->GetX(), to->GetY());
-	m_Move.to = CoordinateImpl(to->GetX(), to->GetY());
+	m_Move.from = CoordinateImpl(from->X, to->Y);
+	m_Move.to = CoordinateImpl(to->X, to->Y);
 }
 
 

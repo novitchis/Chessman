@@ -13,13 +13,13 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="6*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <view:ChessBoardView />
-        <view:AnalysisView Grid.Row="1" />
+        <view:AnalysisView />
+        <view:ChessBoardView Grid.Row="1" DataContext="{Binding BoardViewModel}" />
         <view:NotationView Grid.Row="2"/>
     </Grid>
 </Page>
