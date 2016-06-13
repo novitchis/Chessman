@@ -6,18 +6,25 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="using:ChessEngineClient.View"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
     <Grid Background="{StaticResource WhiteSquareBrush}">
+        <view:ChessPieceView x:Name="pieceView" DataContext="{Binding Piece}"/>
+
         <i:Interaction.Behaviors>
             <ic:DataTriggerBehavior Binding="{Binding Coordinate.IsWhiteSquare}" Value="True">
                 <ic:DataTriggerBehavior.Actions>
                     <ic:ChangePropertyAction  PropertyName="Background" Value="{StaticResource BlackSquareBrush}"/>
                 </ic:DataTriggerBehavior.Actions>
             </ic:DataTriggerBehavior>
+            <!--<ic:DataTriggerBehavior Binding="{Binding Piece}" Value="{x:Null}" >
+                <ic:DataTriggerBehavior.Actions>
+                    <ic:ChangePropertyAction TargetObject="{Binding ElementName=pieceView}" PropertyName="Visibility" Value="Collapsed"/>
+                </ic:DataTriggerBehavior.Actions>
+            </ic:DataTriggerBehavior>-->
         </i:Interaction.Behaviors>
-
     </Grid>
 </UserControl>

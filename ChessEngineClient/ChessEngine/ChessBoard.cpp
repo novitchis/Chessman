@@ -33,6 +33,14 @@ bool ChessBoard::LoadFrom(Platform::String^ strData, int type)
 	return m_ChessBoardImpl.LoadFrom(strNativeData, GetSerializationType(type));
 }
 
+ChessPiece^ ChessBoard::GetPiece(Coordinate^ coord)
+{
+	ChessPieceImpl piece = m_ChessBoardImpl.GetPiece(coord->getCoordinateImpl());
+	if (piece.IsEmpty())
+		return nullptr;
+
+	return ref new ChessPiece(piece);
+}
 
 void ChessBoard::StorePGN()
 {

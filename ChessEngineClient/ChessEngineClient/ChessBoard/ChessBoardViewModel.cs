@@ -16,12 +16,16 @@ namespace ChessEngineClient.ViewModel
         {
             Squares = new List<SquareViewModel>();
 
+            ChessBoard chessBoard = new ChessBoard();
+            chessBoard.Initialize();
             //TODO: just for test
             for (int y = 0; y < 8; y++)
             {
                 for (int x = 0; x < 8; x++)
                 {
-                    Squares.Add(new SquareViewModel(new Coordinate(x,y)));
+                    SquareViewModel squareViewModel = new SquareViewModel(new Coordinate(x, y));
+                    squareViewModel.Piece = chessBoard.GetPiece(squareViewModel.Coordinate);
+                    Squares.Add(squareViewModel);
                 }
             }
         }

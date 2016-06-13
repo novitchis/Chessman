@@ -68,7 +68,9 @@
     <ClCompile Include="Move.cpp">
       <Filter>Managed</Filter>
     </ClCompile>
-    <ClCompile Include="ChessPiece.cpp" />
+    <ClCompile Include="ChessPiece.cpp">
+      <Filter>Managed</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -147,6 +149,8 @@
     <ClInclude Include="Move.h">
       <Filter>Managed</Filter>
     </ClInclude>
-    <ClInclude Include="ChessPiece.h" />
+    <ClInclude Include="ChessPiece.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

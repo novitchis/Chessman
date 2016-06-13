@@ -2,6 +2,7 @@
 #include "ChessBoardImpl.h"
 #include "ManagedDefines.h"
 #include "Move.h"
+#include "ChessPiece.h"
 
 namespace ChessEngine
 {
@@ -15,6 +16,8 @@ namespace ChessEngine
 		Platform::String^	Serialize(int type);
 		bool				LoadFrom(Platform::String^ strData, int type);
 		void				StorePGN();
+		ChessPiece^         GetPiece(Coordinate^ coord);
+
 
 	private:
 		SerializationType GetSerializationType(int type);

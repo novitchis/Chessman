@@ -26,3 +26,9 @@ void Coordinate::FromString(Platform::String^ strCoord)
 {
 	m_Coordinate = CoordinateImpl::FromString(ManagedConverter::ManagedString2String(strCoord));
 }
+
+CoordinateImpl Coordinate::getCoordinateImpl()
+{
+	return m_Coordinate;
+}
+

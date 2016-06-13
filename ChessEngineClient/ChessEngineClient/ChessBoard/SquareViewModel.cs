@@ -12,6 +12,8 @@ namespace ChessEngineClient.ViewModel
     {
         public Coordinate Coordinate { get; private set; }
 
+        public ChessPiece Piece { get; set; }
+
         public SquareViewModel(Coordinate coordinate)
         {
             Coordinate = coordinate;

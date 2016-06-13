@@ -27,6 +27,10 @@ namespace ChessEngine
 
 		virtual Platform::String^	ToString() override;
 		void						FromString(Platform::String^ strCoord);
+
+	internal:
+		CoordinateImpl getCoordinateImpl();
+
 	private:
 		CoordinateImpl	m_Coordinate;
 	};
