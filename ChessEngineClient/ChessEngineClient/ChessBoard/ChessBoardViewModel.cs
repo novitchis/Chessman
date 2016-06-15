@@ -10,7 +10,29 @@ namespace ChessEngineClient.ViewModel
 {
     public class ChessBoardViewModel : ViewModelBase
     {
+        private SquareViewModel selectedSquare = null;
+
         public List<SquareViewModel> Squares { get; private set; }
+
+        public SquareViewModel SelectedSquare
+        {
+            get { return selectedSquare; }
+            set
+            {
+                if (selectedSquare != value)
+                {
+                    if (selectedSquare != null)
+                        selectedSquare.IsSelected = false;
+
+                    selectedSquare = value;
+
+                    if (selectedSquare != null)
+                        selectedSquare.IsSelected = true;
+
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         public ChessBoardViewModel()
         {

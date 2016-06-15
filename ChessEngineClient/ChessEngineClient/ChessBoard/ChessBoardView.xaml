@@ -12,6 +12,7 @@
     <Grid>
         <Grid Background="LightGray">
             <ListBox ItemsSource="{Binding Squares}"
+                     SelectedItem="{Binding SelectedSquare, Mode=TwoWay}"
                      HorizontalAlignment="Center"
                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
                 <ListBox.ItemContainerStyle>

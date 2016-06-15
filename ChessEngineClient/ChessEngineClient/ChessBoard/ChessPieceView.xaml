@@ -19,20 +19,6 @@
     <Grid>
         <Viewbox>
             <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource ChessPieceTemplateSelector}" />
-            <!--<FontIcon x:Name="icon" FontSize="52em" FontFamily="Segoe UI Symbol" Glyph="{Binding Type}">
-                <i:Interaction.Behaviors>
-                    <ic:DataTriggerBehavior Binding="{Binding Type}" ComparisonCondition="NotEqual">
-                        <ic:DataTriggerBehavior.Value>
-                            <ce:PieceType>Pawn</ce:PieceType>
-                        </ic:DataTriggerBehavior.Value>
-                        <ic:DataTriggerBehavior.Actions>
-                            <ic:ChangePropertyAction PropertyName="Glyph" Value="&#x2659;"/>
-                        </ic:DataTriggerBehavior.Actions>
-                    </ic:DataTriggerBehavior>
-                </i:Interaction.Behaviors>
-            </FontIcon>-->
-
         </Viewbox>
-
     </Grid>
 </UserControl>
