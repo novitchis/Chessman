@@ -8,13 +8,25 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        
+        <ControlTemplate x:Key="NoScrollListTemplate" TargetType="ListBox">
+            <Border x:Name="LayoutRoot" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                <Grid Padding="{TemplateBinding Padding}">
+                    <ItemsPresenter/>
+                </Grid>
+            </Border>
+        </ControlTemplate>
+        
+    </UserControl.Resources>
 
     <Grid>
         <Grid Background="LightGray">
             <ListBox ItemsSource="{Binding Squares}"
                      SelectedItem="{Binding SelectedSquare, Mode=TwoWay}"
                      HorizontalAlignment="Center"
-                     ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                     ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                     Template="{StaticResource NoScrollListTemplate}">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -35,7 +47,7 @@
                         <view:BoardCanvas />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
-                
+
             </ListBox>
         </Grid>
     </Grid>
