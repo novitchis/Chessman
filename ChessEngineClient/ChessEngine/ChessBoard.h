@@ -17,6 +17,7 @@ namespace ChessEngine
 		bool				LoadFrom(Platform::String^ strData, int type);
 		void				StorePGN();
 		ChessPiece^         GetPiece(Coordinate^ coord);
+		bool				SubmitMove(Coordinate^ from, Coordinate^ to);
 
 
 	private:

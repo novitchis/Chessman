@@ -10,7 +10,10 @@ namespace ChessEngineClient.ViewModel
 {
     public class ChessBoardViewModel : ViewModelBase
     {
+        private IChessBoardService chessBoardService = null;
         private SquareViewModel selectedSquare = null;
+
+        #region "Properties"
 
         public List<SquareViewModel> Squares { get; private set; }
 
@@ -34,19 +37,19 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        public ChessBoardViewModel()
+        #endregion
+
+        public ChessBoardViewModel(IChessBoardService chessBoardService)
         {
+            this.chessBoardService = chessBoardService;
             Squares = new List<SquareViewModel>();
 
-            ChessBoard chessBoard = new ChessBoard();
-            chessBoard.Initialize();
-            //TODO: just for test
             for (int y = 0; y < 8; y++)
             {
                 for (int x = 0; x < 8; x++)
                 {
                     SquareViewModel squareViewModel = new SquareViewModel(new Coordinate(x, y));
-                    squareViewModel.Piece = chessBoard.GetPiece(squareViewModel.Coordinate);
+                    squareViewModel.Piece = chessBoardService.GetPiece(squareViewModel.Coordinate);
                     Squares.Add(squareViewModel);
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using Framework.MVVM;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace ChessEngineClient.ViewModel
 
         public MainViewModel()
         {
-            BoardViewModel = new ChessBoardViewModel();
+            BoardViewModel = ViewModelLocator.IOCContainer.Resolve<ChessBoardViewModel>();
             AnalysisViewModel = new AnalysisViewModel();
             NotationViewModel = new NotationViewModel();
         }

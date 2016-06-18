@@ -42,6 +42,11 @@ ChessPiece^ ChessBoard::GetPiece(Coordinate^ coord)
 	return ref new ChessPiece(piece);
 }
 
+bool ChessBoard::SubmitMove(Coordinate^ from, Coordinate^ to)
+{
+	return m_ChessBoardImpl.SubmitMove(MoveImpl(from->getCoordinateImpl(), to->getCoordinateImpl()));
+}
+
 void ChessBoard::StorePGN()
 {
 	m_ChessBoardImpl.StorePGN();

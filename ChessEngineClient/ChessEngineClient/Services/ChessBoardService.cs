@@ -9,9 +9,22 @@ namespace ChessEngineClient
 {
     public class ChessBoardService : IChessBoardService
     {
-        public bool Move(Coordinate from, Coordinate to)
+        private ChessBoard chessBoard = null;
+
+        public ChessBoardService()
         {
-            throw new NotImplementedException();
+            chessBoard = new ChessBoard();
+            chessBoard.Initialize();
+        }
+
+        public ChessPiece GetPiece(Coordinate coordinate)
+        {
+            return chessBoard.GetPiece(coordinate);
+        }
+
+        public bool SubmitMove(Coordinate from, Coordinate to)
+        {
+            return chessBoard.SubmitMove(from, to);
         }
     }
 }
