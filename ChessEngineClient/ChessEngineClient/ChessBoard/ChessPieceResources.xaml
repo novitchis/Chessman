@@ -17,52 +17,55 @@
     <x:String x:Key="BlackKnight">&#x265E;</x:String>
     <x:String x:Key="BlackPawn">&#x265F;</x:String>
 
+    <!--The font icon properties should come from a style, but there are some 
+        properties that are not dependency properties so postpone it for now-->
+    
     <DataTemplate x:Key="WhiteKingTemplate">
-        <FontIcon x:Name="icon" FontSize="52em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhiteKing}" />
+        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhiteKing}" />
     </DataTemplate>
 
     <DataTemplate x:Key="WhiteQueenTemplate">
-        <FontIcon x:Name="icon" FontSize="52em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhiteQueen}" />
+        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhiteQueen}" />
     </DataTemplate>
 
     <DataTemplate x:Key="WhiteRookTemplate">
-        <FontIcon x:Name="icon" FontSize="52em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhiteRook}" />
+        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhiteRook}" />
     </DataTemplate>
 
     <DataTemplate x:Key="WhiteBishopTemplate">
-        <FontIcon x:Name="icon" FontSize="52em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhiteBishop}" />
+        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhiteBishop}" />
     </DataTemplate>
 
     <DataTemplate x:Key="WhiteKnightTemplate">
-        <FontIcon x:Name="icon" FontSize="52em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhiteKnight}" />
+        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhiteKnight}" />
     </DataTemplate>
 
     <DataTemplate x:Key="WhitePawnTemplate">
-        <FontIcon x:Name="icon" FontSize="52em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhitePawn}" />
+        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhitePawn}" />
     </DataTemplate>
 
     <DataTemplate x:Key="BlackKingTemplate">
-        <FontIcon x:Name="icon" FontSize="52em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackKing}" />
+        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackKing}" />
     </DataTemplate>
 
     <DataTemplate x:Key="BlackQueenTemplate">
-        <FontIcon x:Name="icon" FontSize="52em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackQueen}" />
+        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackQueen}" />
     </DataTemplate>
 
     <DataTemplate x:Key="BlackRookTemplate">
-        <FontIcon x:Name="icon" FontSize="52em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackRook}" />
+        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackRook}" />
     </DataTemplate>
 
     <DataTemplate x:Key="BlackBishopTemplate">
-        <FontIcon x:Name="icon" FontSize="52em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackBishop}" />
+        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackBishop}" />
     </DataTemplate>
 
     <DataTemplate x:Key="BlackKnightTemplate">
-        <FontIcon x:Name="icon" FontSize="52em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackKnight}" />
+        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackKnight}" />
     </DataTemplate>
 
     <DataTemplate x:Key="BlackPawnTemplate">
-        <FontIcon x:Name="icon" FontSize="52em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackPawn}" />
+        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackPawn}" />
     </DataTemplate>
 
 
