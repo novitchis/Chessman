@@ -37,7 +37,7 @@ namespace ChessEngine
 
 		property PieceColor Color
 		{
-			PieceColor get() { return m_Piece.bWhite ? PieceColor::Black : PieceColor::White; }
+			PieceColor get() { return m_Piece.bWhite ? PieceColor::White : PieceColor::Black; }
 		}
 	internal:
 		ChessPieceImpl getPieceImpl();
