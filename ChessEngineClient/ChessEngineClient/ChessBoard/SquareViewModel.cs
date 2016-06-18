@@ -11,10 +11,24 @@ namespace ChessEngineClient.ViewModel
     public class SquareViewModel : ViewModelBase
     {
         private bool isSelected = false;
+        private ChessPiece piece = null;
+
+        #region "Properties"
 
         public Coordinate Coordinate { get; private set; }
 
-        public ChessPiece Piece { get; set; }
+        public ChessPiece Piece
+        {
+            get { return piece; }
+            set
+            {
+                if (piece != value)
+                {
+                    piece = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         public bool IsSelected
         {
@@ -28,6 +42,8 @@ namespace ChessEngineClient.ViewModel
                 }
             }
         }
+
+        #endregion
 
         public SquareViewModel(Coordinate coordinate)
         {

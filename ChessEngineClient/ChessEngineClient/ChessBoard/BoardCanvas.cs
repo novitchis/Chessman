@@ -43,9 +43,21 @@ namespace ChessEngineClient.View
             return finalSize;
         }
 
-        protected override Size MeasureOverride(Size availableSize)
+        /// <summary>
+        /// Updates DesiredSize of the Canvas.  Called by parent UIElement.  This is the first pass of layout.
+        /// </summary>
+        /// <param name="constraint">Constraint size is an "upper limit" that Canvas should not exceed.</param>
+        /// <returns>Canvas' desired size.</returns>
+        protected override Size MeasureOverride(Size constraint)
         {
-            double boardSize = Math.Min(availableSize.Width, availableSize.Height);
+            double boardSize = Math.Min(constraint.Width, constraint.Height);
+            Size childConstraint = new Size(Double.PositiveInfinity, Double.PositiveInfinity);
+
+            foreach (UIElement child in Children)
+            {
+                if (child == null) { continue; }
+                child.Measure(childConstraint);
+            }
 
             return new Size(boardSize, boardSize);
         }

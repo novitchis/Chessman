@@ -25,7 +25,6 @@
             <ListBox ItemsSource="{Binding Squares}"
                      SelectedItem="{Binding SelectedSquare, Mode=TwoWay}"
                      HorizontalAlignment="Center"
-                     ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                      Template="{StaticResource NoScrollListTemplate}">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">

@@ -27,6 +27,7 @@ namespace ChessEngineClient.ViewModel
                     if (selectedSquare != null)
                         selectedSquare.IsSelected = false;
 
+                    OnSelectionChanged(selectedSquare, value);
                     selectedSquare = value;
 
                     if (selectedSquare != null)
@@ -47,12 +48,24 @@ namespace ChessEngineClient.ViewModel
             for (int y = 0; y < 8; y++)
             {
                 for (int x = 0; x < 8; x++)
-                {
-                    SquareViewModel squareViewModel = new SquareViewModel(new Coordinate(x, y));
-                    squareViewModel.Piece = chessBoardService.GetPiece(squareViewModel.Coordinate);
-                    Squares.Add(squareViewModel);
-                }
+                    Squares.Add(new SquareViewModel(new Coordinate(x, y)));
             }
+            RefreshPieces();
+        }
+
+        private void OnSelectionChanged(SquareViewModel oldSquare, SquareViewModel newSquare)
+        {
+            if (oldSquare == null || newSquare == null)
+                return;
+
+            if (chessBoardService.SubmitMove(oldSquare.Coordinate, newSquare.Coordinate))
+                RefreshPieces();
+        }
+
+        private void RefreshPieces()
+        {
+            foreach (SquareViewModel square in Squares)
+                square.Piece = chessBoardService.GetPiece(square.Coordinate);
         }
     }
 }
