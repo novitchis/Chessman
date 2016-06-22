@@ -20,7 +20,7 @@ namespace ChessEngineClient.ViewModel
         {
             BoardViewModel = ViewModelLocator.IOCContainer.Resolve<ChessBoardViewModel>();
             AnalysisViewModel = new AnalysisViewModel();
-            NotationViewModel = new NotationViewModel();
+            NotationViewModel = ViewModelLocator.IOCContainer.Resolve<NotationViewModel>();
         }
     }
 }

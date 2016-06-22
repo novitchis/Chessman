@@ -22,7 +22,7 @@ namespace ChessEngineClient
 
         public ViewModelLocator()
         {
-            IOCContainer.RegisterType<IChessBoardService, ChessBoardService>();
+            IOCContainer.RegisterType<IChessBoardService, ChessBoardService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterInstance<MainViewModel>(new MainViewModel());
         }
     }

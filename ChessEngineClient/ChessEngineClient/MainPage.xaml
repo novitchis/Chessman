@@ -20,6 +20,6 @@
 
         <view:AnalysisView />
         <view:ChessBoardView Grid.Row="1" DataContext="{Binding BoardViewModel}" />
-        <view:NotationView Grid.Row="2"/>
+        <view:NotationView Grid.Row="2" DataContext="{Binding NotationViewModel}" />
     </Grid>
 </Page>

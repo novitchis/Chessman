@@ -10,7 +10,18 @@
 
     <Grid>
         <Grid Background="Aquamarine">
-            <TextBlock Text="Notation" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <GridView ItemsSource="{Binding Moves}">
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
         </Grid>
     </Grid>
 </UserControl>

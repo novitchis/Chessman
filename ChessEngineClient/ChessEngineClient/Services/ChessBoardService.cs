@@ -11,6 +11,8 @@ namespace ChessEngineClient
     {
         private ChessBoard chessBoard = null;
 
+        public event EventHandler<ChessEventArgs> ChessmanMoved;
+
         public ChessBoardService()
         {
             chessBoard = new ChessBoard();
@@ -24,7 +26,29 @@ namespace ChessEngineClient
 
         public bool SubmitMove(Coordinate from, Coordinate to)
         {
-            return chessBoard.SubmitMove(from, to);
+            Move move = new Move(from, to);
+            bool result = chessBoard.SubmitMove(from, to);
+
+            if (result)
+                OnChessmanMoved(new ChessEventArgs(move));
+
+            return result;
+        }
+
+        protected virtual void OnChessmanMoved(ChessEventArgs e)
+        {
+            ChessmanMoved?.Invoke(this, e);
+        }
+    }
+
+
+    public class ChessEventArgs: EventArgs
+    {
+        public Move Move { get; private set; }
+
+        public ChessEventArgs(Move move)
+        {
+            Move = move;
         }
     }
 }
