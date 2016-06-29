@@ -24,14 +24,8 @@ namespace ChessEngineClient.ViewModel
             {
                 if (selectedSquare != value)
                 {
-                    if (selectedSquare != null)
-                        selectedSquare.IsSelected = false;
-
                     OnSelectionChanged(selectedSquare, value);
                     selectedSquare = value;
-
-                    if (selectedSquare != null)
-                        selectedSquare.IsSelected = true;
 
                     NotifyPropertyChanged();
                 }
@@ -55,6 +49,12 @@ namespace ChessEngineClient.ViewModel
 
         private void OnSelectionChanged(SquareViewModel oldSquare, SquareViewModel newSquare)
         {
+            if (oldSquare != null)
+                oldSquare.IsSelected = false;
+
+            if (newSquare != null)
+                newSquare.IsSelected = true;
+
             if (oldSquare == null || newSquare == null)
                 return;
 

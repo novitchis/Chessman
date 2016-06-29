@@ -11,12 +11,13 @@ namespace ChessEngineClient
     {
         private ChessBoard chessBoard = null;
 
-        public event EventHandler<ChessEventArgs> ChessmanMoved;
+        public event EventHandler<ChessEventArgs> MoveExecuted;
 
         public ChessBoardService()
         {
             chessBoard = new ChessBoard();
             chessBoard.Initialize();
+            chessBoard.StorePGN();
         }
 
         public ChessPiece GetPiece(Coordinate coordinate)
@@ -30,14 +31,19 @@ namespace ChessEngineClient
             bool result = chessBoard.SubmitMove(from, to);
 
             if (result)
-                OnChessmanMoved(new ChessEventArgs(move));
+                OnMovedExecuted(new ChessEventArgs(move));
 
             return result;
         }
 
-        protected virtual void OnChessmanMoved(ChessEventArgs e)
+        protected virtual void OnMovedExecuted(ChessEventArgs e)
         {
-            ChessmanMoved?.Invoke(this, e);
+            MoveExecuted?.Invoke(this, e);
+        }
+
+        public IList<MoveData> GetMoves()
+        {
+            return chessBoard.GetMoves();
         }
     }
 

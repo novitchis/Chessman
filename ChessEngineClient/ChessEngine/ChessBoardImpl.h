@@ -24,14 +24,14 @@ namespace ChessEngine
 
 	const int FullCastlingMask = CT_WhiteKingSide | CT_WhiteQueenSide | CT_BlackKingSide | CT_BlackQueenSide;
 
-	struct MoveData
+	struct MoveDataImpl
 	{
-		MoveData ()
+		MoveDataImpl ()
 			: nCastlingMask( FullCastlingMask )
 		{
 
 		}
-		MoveData( const MoveImpl& _move, const ChessPieceImpl& _capturedPiece )
+		MoveDataImpl( const MoveImpl& _move, const ChessPieceImpl& _capturedPiece )
 			: move( _move )
 			, capturedPiece( _capturedPiece )
 			, nCastlingMask( FullCastlingMask )
@@ -70,8 +70,10 @@ namespace ChessEngine
 		bool						LoadFrom( const std::string& strData, SerializationType type );
 		void						StorePGN();
 
-		ChessPieceImpl					GetPiece( const CoordinateImpl& coord ) const;
+		ChessPieceImpl				GetPiece( const CoordinateImpl& coord ) const;
 		void						SetPiece( const ChessPieceImpl& piece, const CoordinateImpl& coord );
+
+		std::list<MoveDataImpl>		GetMoves();
 
 		std::list<CoordinateImpl>	GetAvailableMoves( const CoordinateImpl& coord ) const;
 		bool						SubmitMove( const MoveImpl& move, AdditionalMoveInfo& additionalInfo);
@@ -104,7 +106,7 @@ namespace ChessEngine
 		ChessPieceImpl							m_memBoard[8][8];
 		CoordinateImpl							m_coordWhiteKing;
 		CoordinateImpl							m_coordBlackKing;
-		std::list<MoveData>					m_listMoves;
+		std::list<MoveDataImpl>					m_listMoves;
 		ChessPieceImpl							m_lastPiece;
 		int									m_nCastlingMask;
 		int									m_nLastPawnMoveOrCapture;

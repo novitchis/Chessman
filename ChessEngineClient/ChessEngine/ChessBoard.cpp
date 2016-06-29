@@ -1,8 +1,13 @@
 #include "pch.h"
 #include "ChessBoard.h"
 #include "ManagedConverter.h"
+#include <collection.h>
+#include <algorithm>
 
 using namespace ChessEngine;
+using namespace Platform;
+using namespace Platform::Collections;
+using namespace Windows::Foundation::Collections;
 
 ChessBoard::ChessBoard()
 {
@@ -52,6 +57,16 @@ void ChessBoard::StorePGN()
 	m_ChessBoardImpl.StorePGN();
 }
 
+IVector<MoveData^>^ ChessBoard::GetMoves()
+{
+	Vector<MoveData^>^ result = ref new Vector<MoveData^>();
+	std::list<MoveDataImpl> listMoves = m_ChessBoardImpl.GetMoves();
+
+	for (auto it = listMoves.begin(); it != listMoves.end(); ++it)
+		result->Append(ref new MoveData(*it));
+
+	return result;
+}
 
 SerializationType ChessBoard::GetSerializationType(int type)
 {

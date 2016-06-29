@@ -3,9 +3,13 @@
 #include "ManagedDefines.h"
 #include "Move.h"
 #include "ChessPiece.h"
+#include "MoveData.h"
+
+using namespace Windows::Foundation::Collections;
 
 namespace ChessEngine
 {
+
 	public ref class ChessBoard sealed
 	{
 	public:
@@ -18,6 +22,7 @@ namespace ChessEngine
 		void				StorePGN();
 		ChessPiece^         GetPiece(Coordinate^ coord);
 		bool				SubmitMove(Coordinate^ from, Coordinate^ to);
+		Windows::Foundation::Collections::IVector<MoveData^>^ GetMoves();
 
 
 	private:

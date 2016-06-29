@@ -9,14 +9,11 @@ Move::Move()
 
 }
 
-
 Move::Move(Coordinate^ from, Coordinate^ to)
 {
-	m_Move.from = CoordinateImpl(from->X, to->Y);
-	m_Move.to = CoordinateImpl(to->X, to->Y);
+	m_Move.from = CoordinateImpl(from->Y, from->X);
+	m_Move.to = CoordinateImpl(to->Y, to->X);
 }
-
-
 
 Coordinate^	Move::GetFrom()
 {

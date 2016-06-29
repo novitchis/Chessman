@@ -9,10 +9,12 @@ namespace ChessEngineClient
 {
     public interface IChessBoardService
     {
-        event EventHandler<ChessEventArgs> ChessmanMoved;
+        event EventHandler<ChessEventArgs> MoveExecuted;
 
         ChessPiece GetPiece(Coordinate coordinate);
 
         bool SubmitMove(Coordinate from, Coordinate to);
+
+        IList<MoveData> GetMoves();
     }
 }

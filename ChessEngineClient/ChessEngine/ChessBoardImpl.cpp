@@ -85,6 +85,11 @@ void ChessBoardImpl::SetPiece( const ChessPieceImpl& piece, const CoordinateImpl
 }
 
 
+std::list<MoveDataImpl> ChessBoardImpl::GetMoves()
+{
+	return m_listMoves;
+}
+
 std::list<CoordinateImpl> ChessBoardImpl::GetAvailableMoves( const CoordinateImpl& coord ) const
 {
 	ChessBoardImpl copy( *this );
@@ -140,7 +145,7 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 		SetPiece( ChessPieceImpl(), additionalInfo.RockMove.from );
 	}
 
-	MoveData moveData( move, capturedPiece );
+	MoveDataImpl moveData( move, capturedPiece );
 	
 	bool bKingCastle = false;
 	bool bBQueenCastle = false;
@@ -293,7 +298,7 @@ bool ChessBoardImpl::UndoMove( bool bWhiteMove )
 
 	while ( nMovesToUndo-- )
 	{
-		MoveData moveData = m_listMoves.back();
+		MoveDataImpl moveData = m_listMoves.back();
 		m_nCastlingMask |= ~moveData.nCastlingMask;
 		m_nCastlingMask &= 0xF;
 
@@ -334,7 +339,7 @@ bool ChessBoardImpl::UndoMove( bool bWhiteMove )
 	}
 	else
 	{
-		MoveData moveData = m_listMoves.back();
+		MoveDataImpl moveData = m_listMoves.back();
 		m_lastPiece = GetPiece( moveData.move.to );
 	}
 	return true;

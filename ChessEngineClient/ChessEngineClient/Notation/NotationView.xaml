@@ -18,7 +18,7 @@
                 </GridView.ItemsPanel>
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" />
+                        <ContentPresenter Content="{Binding}" />
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>

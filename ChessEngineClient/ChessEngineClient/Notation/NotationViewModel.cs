@@ -1,4 +1,5 @@
-﻿using Framework.MVVM;
+﻿using ChessEngine;
+using Framework.MVVM;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,16 +12,13 @@ namespace ChessEngineClient.ViewModel
     public class NotationViewModel : ViewModelBase
     {
         private IChessBoardService chessBoardService = null;
-        private List<string> moves;
+        private IList<string> moves = null;
 
         #region Properties
 
-        public List<string> Moves
+        public IList<string> Moves
         {
-            get
-            {
-                return moves;
-            }
+            get { return moves; }
             set
             {
                 if (value != moves)
@@ -36,20 +34,12 @@ namespace ChessEngineClient.ViewModel
         public NotationViewModel(IChessBoardService chessBoardService)
         {
             this.chessBoardService = chessBoardService;
-            this.chessBoardService.ChessmanMoved += ChessBoardService_ChessmanMoved;
-            Moves = new List<string>();
+            this.chessBoardService.MoveExecuted += OnMoveExecuted;
         }
 
-        private void ChessBoardService_ChessmanMoved(object sender, ChessEventArgs e)
+        private void OnMoveExecuted(object sender, ChessEventArgs e)
         {
-            Moves = GetTableMoves(e.Move.ToString());
-        }
-
-        private List<string> GetTableMoves(string newMove)
-        {
-            List<string> result = new List<string>(Moves);
-            result = result.Concat(new List<string> { newMove }).ToList();
-            return result;
+            Moves = chessBoardService.GetMoves().Select(m => m.ToString()).ToList();
         }
     }
 }
