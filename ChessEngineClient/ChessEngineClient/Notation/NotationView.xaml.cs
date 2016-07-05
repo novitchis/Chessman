@@ -20,7 +20,10 @@ namespace ChessEngineClient.View
 {
     public sealed partial class NotationView : UserControl
     {
-        public NotationViewModel ViewModel { get { return DataContext as NotationViewModel; } }
+        public NotationViewModel ViewModel
+        {
+            get { return DataContext as NotationViewModel; }
+        }
 
         public NotationView()
         {
