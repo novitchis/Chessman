@@ -6,24 +6,25 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Data;
 
 namespace ChessEngineClient.ViewModel
 {
     public class NotationViewModel : ViewModelBase
     {
         private IChessBoardService chessBoardService = null;
-        private IList<string> moves = null;
+        private IList<MoveDataGroup> groupedMoves = new List<MoveDataGroup>();
 
         #region Properties
 
-        public IList<string> Moves
+        public IList<MoveDataGroup> GroupedMoves
         {
-            get { return moves; }
+            get { return groupedMoves; }
             set
             {
-                if (value != moves)
+                if (value != groupedMoves)
                 {
-                    moves = value;
+                    groupedMoves = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -39,7 +40,28 @@ namespace ChessEngineClient.ViewModel
 
         private void OnMoveExecuted(object sender, ChessEventArgs e)
         {
-            Moves = chessBoardService.GetMoves().Select(m => m.ToString()).ToList();
+            int moveIndex = 1;
+            List<MoveDataGroup> newMoves = new List<MoveDataGroup>();
+
+            using (var movesEnumerator = chessBoardService.GetMoves().GetEnumerator())
+            {
+                while (movesEnumerator.MoveNext())
+                {
+                    // white move
+                    MoveDataGroup moveGroup = new MoveDataGroup(moveIndex);
+                    moveGroup.WhiteMove = movesEnumerator.Current;
+
+                    // black move
+                    if (movesEnumerator.MoveNext())
+                        moveGroup.BlackMove = movesEnumerator.Current;
+
+                    newMoves.Add(moveGroup);
+
+                    moveIndex++;
+                }
+            }
+
+            GroupedMoves = newMoves;
         }
     }
 }

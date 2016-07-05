@@ -115,11 +115,14 @@
       <DependentUpon>SquareView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ChessBoard\SquareViewModel.cs" />
+    <Compile Include="Controls\WrapPanel.cs" />
     <Compile Include="EngineNotifications.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="Notation\MoveDataGroup.cs" />
+    <Compile Include="Notation\NotationPanel.cs" />
     <Compile Include="Notation\NotationView.xaml.cs">
       <DependentUpon>NotationView.xaml</DependentUpon>
     </Compile>

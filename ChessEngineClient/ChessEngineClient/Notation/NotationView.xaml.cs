@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChessEngineClient.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace ChessEngineClient.View
 {
     public sealed partial class NotationView : UserControl
     {
+        public NotationViewModel ViewModel { get { return DataContext as NotationViewModel; } }
+
         public NotationView()
         {
             this.InitializeComponent();

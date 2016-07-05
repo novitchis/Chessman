@@ -13,8 +13,13 @@ namespace ChessEngine
 
 		virtual Platform::String^ ToString()override
 		{
-			return ManagedConverter::String2ManagedString(m_moveData.strPGNMove);
+			return PgnMove;
 		};
+
+		property Platform::String^ PgnMove
+		{
+			Platform::String^ get() { return ManagedConverter::String2ManagedString(m_moveData.strPGNMove); }
+		}
 
 	private:
 		MoveDataImpl m_moveData;
