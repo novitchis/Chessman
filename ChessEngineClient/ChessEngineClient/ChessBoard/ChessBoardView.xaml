@@ -17,13 +17,81 @@
                 </Grid>
             </Border>
         </ControlTemplate>
-        
+
+        <Style x:Key="RankOrFieldText" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{StaticResource WhiteSquareBrush}" />
+            <Setter Property="MinWidth" Value="8" />
+        </Style>
+
+        <ControlTemplate x:Key="FieldLettersTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Style="{StaticResource RankOrFieldText}">A</TextBlock>
+                <TextBlock Style="{StaticResource RankOrFieldText}" Grid.Column="1">B</TextBlock>
+                <TextBlock Style="{StaticResource RankOrFieldText}" Grid.Column="2">C</TextBlock>
+                <TextBlock Style="{StaticResource RankOrFieldText}" Grid.Column="3">D</TextBlock>
+                <TextBlock Style="{StaticResource RankOrFieldText}" Grid.Column="4">E</TextBlock>
+                <TextBlock Style="{StaticResource RankOrFieldText}" Grid.Column="5">F</TextBlock>
+                <TextBlock Style="{StaticResource RankOrFieldText}" Grid.Column="6">G</TextBlock>
+                <TextBlock Style="{StaticResource RankOrFieldText}" Grid.Column="7">H</TextBlock>
+            </Grid>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="RankNumbersTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource RankOrFieldText}">8</TextBlock>
+                <TextBlock Style="{StaticResource RankOrFieldText}" Grid.Row="1">7</TextBlock>
+                <TextBlock Style="{StaticResource RankOrFieldText}" Grid.Row="2">6</TextBlock>
+                <TextBlock Style="{StaticResource RankOrFieldText}" Grid.Row="3">5</TextBlock>
+                <TextBlock Style="{StaticResource RankOrFieldText}" Grid.Row="4">4</TextBlock>
+                <TextBlock Style="{StaticResource RankOrFieldText}" Grid.Row="5">3</TextBlock>
+                <TextBlock Style="{StaticResource RankOrFieldText}" Grid.Row="6">2</TextBlock>
+                <TextBlock Style="{StaticResource RankOrFieldText}" Grid.Row="7">1</TextBlock>
+            </Grid>
+        </ControlTemplate>
+
     </UserControl.Resources>
 
     <Grid>
         <Grid Background="{StaticResource BlackSquareBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ContentControl Grid.Column="1" Template="{StaticResource FieldLettersTemplate}" />
+            <ContentControl Grid.Row="1" Template="{StaticResource RankNumbersTemplate}" />
+
             <ListBox ItemsSource="{Binding Squares}"
-                     Margin="10"
+                     Grid.Row="1"
+                     Grid.Column="1"
                      BorderThickness="2"
                      BorderBrush="{StaticResource WhiteSquareBrush}"
                      SelectedItem="{Binding SelectedSquare, Mode=TwoWay}"
@@ -51,6 +119,10 @@
                 </ListBox.ItemsPanel>
 
             </ListBox>
+
+            <ContentControl Grid.Row="1" Grid.Column="2" Template="{StaticResource RankNumbersTemplate}" />
+            <ContentControl Grid.Column="1" Grid.Row="2" Template="{StaticResource FieldLettersTemplate}" />
+
         </Grid>
     </Grid>
 </UserControl>
