@@ -27,9 +27,7 @@
                 </ic:DataTriggerBehavior>
             </i:Interaction.Behaviors>
         </Grid>
-
         <view:ChessPieceView x:Name="pieceView" DataContext="{Binding Piece}" />
-
         <i:Interaction.Behaviors>
             <ic:DataTriggerBehavior Binding="{Binding Coordinate.IsWhiteSquare}" Value="True">
                 <ic:DataTriggerBehavior.Actions>

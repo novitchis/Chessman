@@ -21,8 +21,11 @@
     </UserControl.Resources>
 
     <Grid>
-        <Grid Background="LightGray">
+        <Grid Background="{StaticResource BlackSquareBrush}">
             <ListBox ItemsSource="{Binding Squares}"
+                     Margin="10"
+                     BorderThickness="2"
+                     BorderBrush="{StaticResource WhiteSquareBrush}"
                      SelectedItem="{Binding SelectedSquare, Mode=TwoWay}"
                      HorizontalAlignment="Center"
                      Template="{StaticResource NoScrollListTemplate}">

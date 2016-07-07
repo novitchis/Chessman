@@ -16,7 +16,7 @@
     </UserControl.Resources>
     <Grid>
         <Grid Background="Aquamarine">
-            <ListBox 
+            <ListBox
                 ItemsSource="{Binding Source={StaticResource GroupedMovesCollection}}"
                 SelectedItem="{Binding CurrentMove, Mode=TwoWay}">
                 <ItemsControl.GroupStyle>
@@ -48,7 +48,7 @@
                         </GroupStyle.Panel>
                         <GroupStyle.HeaderTemplate>
                             <DataTemplate>
-                                <TextBlock Margin="10 0" Text="{Binding MoveNumber}" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <TextBlock Margin="5 0" Text="{Binding MoveNumber}" FontWeight="Bold" VerticalAlignment="Center"/>
                             </DataTemplate>
                         </GroupStyle.HeaderTemplate>
                     </GroupStyle>
