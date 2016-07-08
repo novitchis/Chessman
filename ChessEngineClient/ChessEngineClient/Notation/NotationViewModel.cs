@@ -15,6 +15,7 @@ namespace ChessEngineClient.ViewModel
     {
         private IChessBoardService chessBoardService = null;
         private IList<MoveDataGroup> groupedMoves = new List<MoveDataGroup>();
+        private MoveData currentMove = null;
 
         #region Properties
 
@@ -39,6 +40,19 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
+        public MoveData CurrentMove
+        {
+            get { return currentMove; }
+            set
+            {
+                if (currentMove != value)
+                {
+                    currentMove = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         #endregion
 
         public NotationViewModel(IChessBoardService chessBoardService)
@@ -51,9 +65,11 @@ namespace ChessEngineClient.ViewModel
         private void OnMoveExecuted(object sender, ChessEventArgs e)
         {
             int moveIndex = 1;
-            List<MoveDataGroup> newMoves = new List<MoveDataGroup>();
+            List<MoveDataGroup> newGroupedMoves = new List<MoveDataGroup>();
 
-            using (var movesEnumerator = chessBoardService.GetMoves().GetEnumerator())
+            var moves = chessBoardService.GetMoves();
+
+            using (var movesEnumerator = moves.GetEnumerator())
             {
                 while (movesEnumerator.MoveNext())
                 {
@@ -65,13 +81,14 @@ namespace ChessEngineClient.ViewModel
                     if (movesEnumerator.MoveNext())
                         moveGroup.BlackMove = movesEnumerator.Current;
 
-                    newMoves.Add(moveGroup);
+                    newGroupedMoves.Add(moveGroup);
 
                     moveIndex++;
                 }
             }
 
-            GroupedMoves = newMoves;
+            GroupedMoves = newGroupedMoves;
+            CurrentMove = moves.Last();
         }
     }
 }

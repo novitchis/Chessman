@@ -9,30 +9,65 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="GroupedMovesCollection" Source="{x:Bind ViewModel.GroupedMoves, Mode=OneWay}" IsSourceGrouped="True" ItemsPath="Moves">
+            
+        </CollectionViewSource>
+    </UserControl.Resources>
     <Grid>
         <Grid Background="Aquamarine">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="50" />
             </Grid.RowDefinitions>
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding GroupedMoves}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="0 0 4 0" Text="{Binding MoveNumber}" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding WhiteMove.PgnMove}" Margin="0 0 4 0" />
-                                <TextBlock Text="{Binding BlackMove.PgnMove}" Margin="0 0 8 0" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <c:WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </ScrollViewer>
+            <ListBox
+                ItemsSource="{Binding Source={StaticResource GroupedMovesCollection}}"
+                SelectedItem="{Binding CurrentMove, Mode=TwoWay}">
+                <ItemsControl.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="GroupItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="GroupItem">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Margin="{TemplateBinding Padding}"/>
+                                                    <ItemsControl x:Name="ItemsControl" ItemsSource="{Binding GroupItems}" Grid.Column="1"/>
+                                                </Grid>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
+                        <GroupStyle.Panel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </GroupStyle.Panel>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="5 0" Text="{Binding MoveNumber}" FontWeight="Bold" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ItemsControl.GroupStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding PgnMove}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <c:WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ListBox>
             <Button Grid.Row="2" Command="{Binding SeekBackCommand}" Content="Go to 2nd group" />
         </Grid>
     </Grid>
