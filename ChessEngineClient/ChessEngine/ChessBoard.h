@@ -20,9 +20,11 @@ namespace ChessEngine
 		Platform::String^	Serialize(int type);
 		bool				LoadFrom(Platform::String^ strData, int type);
 		void				StorePGN();
-		ChessPiece^         GetPiece(Coordinate^ coord);
+		ChessPiece^			GetPiece(Coordinate^ coord);
 		bool				SubmitMove(Coordinate^ from, Coordinate^ to);
-		Windows::Foundation::Collections::IVector<MoveData^>^ GetMoves();
+		bool				UndoMove(bool bWhiteMove);
+
+		Windows::Foundation::Collections::IVector<MoveData^>^	GetMoves();
 
 
 	private:

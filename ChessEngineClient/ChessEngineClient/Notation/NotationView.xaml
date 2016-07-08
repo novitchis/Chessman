@@ -11,6 +11,10 @@
     d:DesignWidth="400">
     <Grid>
         <Grid Background="Aquamarine">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding GroupedMoves}">
                     <ItemsControl.ItemTemplate>
@@ -29,6 +33,7 @@
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
             </ScrollViewer>
+            <Button Grid.Row="2" Command="{Binding SeekBackCommand}" Content="Go to 2nd group" />
         </Grid>
     </Grid>
 </UserControl>

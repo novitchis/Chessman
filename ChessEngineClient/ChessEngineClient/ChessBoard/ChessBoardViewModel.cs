@@ -37,6 +37,7 @@ namespace ChessEngineClient.ViewModel
         public ChessBoardViewModel(IChessBoardService chessBoardService)
         {
             this.chessBoardService = chessBoardService;
+            this.chessBoardService.GoToExecuted += OnGoToExecuted;
             Squares = new List<SquareViewModel>();
 
             for (int y = 0; y < 8; y++)
@@ -44,6 +45,11 @@ namespace ChessEngineClient.ViewModel
                 for (int x = 0; x < 8; x++)
                     Squares.Add(new SquareViewModel(new Coordinate(x, y)));
             }
+            RefreshPieces();
+        }
+
+        private void OnGoToExecuted(object sender, ChessEventArgs e)
+        {
             RefreshPieces();
         }
 
@@ -60,6 +66,7 @@ namespace ChessEngineClient.ViewModel
 
             if (chessBoardService.SubmitMove(oldSquare.Coordinate, newSquare.Coordinate))
                 RefreshPieces();
+
         }
 
         private void RefreshPieces()

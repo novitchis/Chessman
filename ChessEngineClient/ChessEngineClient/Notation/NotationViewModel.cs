@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.UI.Xaml.Data;
 
 namespace ChessEngineClient.ViewModel
@@ -30,12 +31,21 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
+        public ICommand SeekBackCommand
+        {
+            get
+            {
+                return new RelayCommand((p) => { chessBoardService.GoToMove(2); });
+            }
+        }
+
         #endregion
 
         public NotationViewModel(IChessBoardService chessBoardService)
         {
             this.chessBoardService = chessBoardService;
             this.chessBoardService.MoveExecuted += OnMoveExecuted;
+            this.chessBoardService.GoToExecuted += OnMoveExecuted;
         }
 
         private void OnMoveExecuted(object sender, ChessEventArgs e)

@@ -12,6 +12,7 @@ namespace ChessEngineClient
         private ChessBoard chessBoard = null;
 
         public event EventHandler<ChessEventArgs> MoveExecuted;
+        public event EventHandler<ChessEventArgs> GoToExecuted;
 
         public ChessBoardService()
         {
@@ -31,9 +32,32 @@ namespace ChessEngineClient
             bool result = chessBoard.SubmitMove(from, to);
 
             if (result)
-                OnMovedExecuted(new ChessEventArgs(move));
+                OnMovedExecuted(new ChessEventArgs());
 
             return result;
+        }
+
+        public IList<MoveData> GetMoves()
+        {
+            return chessBoard.GetMoves();
+        }
+
+        public void GoToMove(int moveIndex)
+        {
+            IList<MoveData> moves = GetMoves();
+            int itemsToRemove = moves.Count - moveIndex;
+            bool executed = false;
+            while (itemsToRemove > 0)
+            {
+                executed = true;
+                bool isWhiteMove = moves.Count % 2 == 1;
+                moves.RemoveAt(moves.Count - 1);
+                chessBoard.UndoMove(isWhiteMove);
+                itemsToRemove--;
+            }
+
+            if (executed)
+                OnGoToExecuted(new ChessEventArgs());
         }
 
         protected virtual void OnMovedExecuted(ChessEventArgs e)
@@ -41,20 +65,14 @@ namespace ChessEngineClient
             MoveExecuted?.Invoke(this, e);
         }
 
-        public IList<MoveData> GetMoves()
+        protected virtual void OnGoToExecuted(ChessEventArgs e)
         {
-            return chessBoard.GetMoves();
+            GoToExecuted?.Invoke(this, e);
         }
     }
 
-
     public class ChessEventArgs: EventArgs
     {
-        public Move Move { get; private set; }
 
-        public ChessEventArgs(Move move)
-        {
-            Move = move;
-        }
     }
 }

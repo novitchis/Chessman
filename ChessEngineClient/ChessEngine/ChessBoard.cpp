@@ -52,6 +52,11 @@ bool ChessBoard::SubmitMove(Coordinate^ from, Coordinate^ to)
 	return m_ChessBoardImpl.SubmitMove(MoveImpl(from->getCoordinateImpl(), to->getCoordinateImpl()));
 }
 
+bool ChessBoard::UndoMove(bool bWhiteMove)
+{
+	return m_ChessBoardImpl.UndoMove(bWhiteMove);
+}
+
 void ChessBoard::StorePGN()
 {
 	m_ChessBoardImpl.StorePGN();
