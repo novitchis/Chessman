@@ -21,6 +21,11 @@ namespace ChessEngine
 			Platform::String^ get() { return ManagedConverter::String2ManagedString(m_moveData.strPGNMove); }
 		}
 
+		property int Index
+		{
+			int get() { return m_moveData.moveIndex; }
+		}
+
 	private:
 		MoveDataImpl m_moveData;
 	};

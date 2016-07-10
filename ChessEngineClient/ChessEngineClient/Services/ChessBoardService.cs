@@ -45,7 +45,7 @@ namespace ChessEngineClient
         public void GoToMove(int moveIndex)
         {
             IList<MoveData> moves = GetMoves();
-            int itemsToRemove = moves.Count - moveIndex;
+            int itemsToRemove = moves.Count - moveIndex - 1;
             bool executed = false;
             while (itemsToRemove > 0)
             {

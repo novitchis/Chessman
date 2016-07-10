@@ -16,12 +16,9 @@
     </UserControl.Resources>
     <Grid>
         <Grid Background="Aquamarine">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="50" />
-            </Grid.RowDefinitions>
             <ListBox 
                 SelectionChanged="OnSelectedMoveChanged"
+                IsSynchronizedWithCurrentItem="False"
                 ItemsSource="{Binding Source={StaticResource GroupedMovesCollection}}"
                 SelectedItem="{Binding CurrentMove, Mode=TwoWay}">
                 <ItemsControl.GroupStyle>
@@ -74,7 +71,6 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
-            <Button Grid.Row="2" Command="{Binding SeekBackCommand}" Content="Go to 2nd group" />
         </Grid>
     </Grid>
 </UserControl>

@@ -145,7 +145,7 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 		SetPiece( ChessPieceImpl(), additionalInfo.RockMove.from );
 	}
 
-	MoveDataImpl moveData( move, capturedPiece );
+	MoveDataImpl moveData( (int)m_listMoves.size(), move, capturedPiece );
 	
 	bool bKingCastle = false;
 	bool bBQueenCastle = false;

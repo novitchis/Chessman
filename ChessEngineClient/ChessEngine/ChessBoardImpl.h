@@ -31,19 +31,21 @@ namespace ChessEngine
 		{
 
 		}
-		MoveDataImpl( const MoveImpl& _move, const ChessPieceImpl& _capturedPiece )
+		MoveDataImpl( const int _moveIndex, const MoveImpl& _move, const ChessPieceImpl& _capturedPiece )
 			: move( _move )
 			, capturedPiece( _capturedPiece )
 			, nCastlingMask( FullCastlingMask )
+			, moveIndex( _moveIndex )
 		{
 
 		}
 		MoveImpl			move;
 		ChessPieceImpl		capturedPiece;
-		int				nCastlingMask;
-		int				nLastPawnMoveOrCapture;
-		std::string		strPGNMove;
-		std::string		strPGNUserFriendly;
+		int					nCastlingMask;
+		int					nLastPawnMoveOrCapture;
+		int					moveIndex;
+		std::string			strPGNMove;
+		std::string			strPGNUserFriendly;
 	};
 
 	enum StatePreserveType
@@ -64,7 +66,7 @@ namespace ChessEngine
 		~ChessBoardImpl();
 		
 		// TODO //
-        void						Initialize(); //Initial Position
+		void						Initialize(); //Initial Position
 		void						Clear();
 		std::string					Serialize( SerializationType type ); 
 		bool						LoadFrom( const std::string& strData, SerializationType type );
@@ -92,7 +94,7 @@ namespace ChessEngine
 		bool						IsMate();
 		bool						IsStaleMate();
 		MoveImpl						GetLastMove() const;
-		std::map<ChessPieceImpl, int>	GetCapturedPieces() const;	
+		std::map<ChessPieceImpl, int>	GetCapturedPieces() const;
 		void						GetPreservedState( StatePreserveType type, Core::StatePreserver& state );
 		void						UpdateState( StatePreserveType type, const Core::Variant& vtState );
 

@@ -36,7 +36,7 @@ namespace ChessEngineClient.ViewModel
         {
             get
             {
-                return new RelayCommand((p) => { chessBoardService.GoToMove(2); });
+                return new RelayCommand((p) => { chessBoardService.GoToMove(CurrentMove.Index); });
             }
         }
 
@@ -49,6 +49,9 @@ namespace ChessEngineClient.ViewModel
                 {
                     currentMove = value;
                     NotifyPropertyChanged();
+                    if (currentMove != null)
+                        chessBoardService.GoToMove(currentMove.Index);
+
                 }
             }
         }
@@ -64,9 +67,8 @@ namespace ChessEngineClient.ViewModel
 
         private void OnMoveExecuted(object sender, ChessEventArgs e)
         {
-            int moveIndex = 1;
+            int groupIndex = 1;
             List<MoveDataGroup> newGroupedMoves = new List<MoveDataGroup>();
-
             var moves = chessBoardService.GetMoves();
 
             using (var movesEnumerator = moves.GetEnumerator())
@@ -74,7 +76,7 @@ namespace ChessEngineClient.ViewModel
                 while (movesEnumerator.MoveNext())
                 {
                     // white move
-                    MoveDataGroup moveGroup = new MoveDataGroup(moveIndex);
+                    MoveDataGroup moveGroup = new MoveDataGroup(groupIndex);
                     moveGroup.WhiteMove = movesEnumerator.Current;
 
                     // black move
@@ -82,11 +84,9 @@ namespace ChessEngineClient.ViewModel
                         moveGroup.BlackMove = movesEnumerator.Current;
 
                     newGroupedMoves.Add(moveGroup);
-
-                    moveIndex++;
+                    groupIndex++;
                 }
             }
-
             GroupedMoves = newGroupedMoves;
             CurrentMove = moves.Last();
         }
