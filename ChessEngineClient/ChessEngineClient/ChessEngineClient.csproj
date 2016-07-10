@@ -122,7 +122,6 @@
     </Compile>
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Notation\MoveDataGroup.cs" />
-    <Compile Include="Notation\NotationPanel.cs" />
     <Compile Include="Notation\NotationView.xaml.cs">
       <DependentUpon>NotationView.xaml</DependentUpon>
     </Compile>

@@ -49,7 +49,6 @@ namespace ChessEngineClient.Controls
         protected override Size ArrangeOverride(Size finalSize)
         {
             Rect finalRect = new Rect(0, 0, finalSize.Width, finalSize.Height);
-
             double rowHeight = 0;
             foreach (var child in Children)
             {

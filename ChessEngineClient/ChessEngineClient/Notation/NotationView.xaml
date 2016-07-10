@@ -20,7 +20,8 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="50" />
             </Grid.RowDefinitions>
-            <ListBox
+            <ListBox 
+                SelectionChanged="OnSelectedMoveChanged"
                 ItemsSource="{Binding Source={StaticResource GroupedMovesCollection}}"
                 SelectedItem="{Binding CurrentMove, Mode=TwoWay}">
                 <ItemsControl.GroupStyle>
@@ -67,6 +68,11 @@
                         <c:WrapPanel />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem" >
+                        <Setter Property="UseSystemFocusVisuals" Value="False" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
             </ListBox>
             <Button Grid.Row="2" Command="{Binding SeekBackCommand}" Content="Go to 2nd group" />
         </Grid>
