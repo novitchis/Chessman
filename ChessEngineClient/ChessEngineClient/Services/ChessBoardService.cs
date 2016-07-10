@@ -37,27 +37,22 @@ namespace ChessEngineClient
             return result;
         }
 
-        public IList<MoveData> GetMoves()
+        public MoveData GetCurrentMove()
         {
-            return chessBoard.GetMoves();
+            return chessBoard.GetCurrentMove();
+        }
+
+        public IList<MoveData> GetMoves(bool stopOnCurrentMove = true)
+        {
+            return chessBoard.GetMoves(stopOnCurrentMove);
         }
 
         public void GoToMove(int moveIndex)
         {
-            IList<MoveData> moves = GetMoves();
-            int itemsToRemove = moves.Count - moveIndex - 1;
-            bool executed = false;
-            while (itemsToRemove > 0)
-            {
-                executed = true;
-                bool isWhiteMove = moves.Count % 2 == 1;
-                moves.RemoveAt(moves.Count - 1);
-                chessBoard.UndoMove(isWhiteMove);
-                itemsToRemove--;
-            }
-
-            if (executed)
+            bool result = chessBoard.GoToMove(moveIndex);
+            if (result)
                 OnGoToExecuted(new ChessEventArgs());
+
         }
 
         protected virtual void OnMovedExecuted(ChessEventArgs e)

@@ -31,6 +31,7 @@ ChessBoardImpl::ChessBoardImpl(const ChessBoardImpl& board)
 	m_nCastlingMask = board.m_nCastlingMask;
 	m_nLastPawnMoveOrCapture = board.m_nLastPawnMoveOrCapture;
 	m_listMoves = board.m_listMoves;
+	m_currentMoveIndex = board.m_currentMoveIndex;
 }
 
 ChessBoardImpl::~ChessBoardImpl(void)
@@ -90,6 +91,11 @@ std::list<MoveDataImpl> ChessBoardImpl::GetMoves()
 	return m_listMoves;
 }
 
+int ChessBoardImpl::GetCurrentMoveIndex()
+{
+	return m_currentMoveIndex;
+}
+
 std::list<CoordinateImpl> ChessBoardImpl::GetAvailableMoves( const CoordinateImpl& coord ) const
 {
 	ChessBoardImpl copy( *this );
@@ -100,8 +106,8 @@ std::list<CoordinateImpl> ChessBoardImpl::GetAvailableMoves( const CoordinateImp
 
 std::string	ChessBoardImpl::GetLastMoveText()
 {
-	if ( m_listMoves.empty() ) return "";
-	else return m_listMoves.back().strPGNUserFriendly;
+	if ( m_currentMoveIndex ) return "";
+	else return GetLastMove().strPGNUserFriendly;
 }
 
 
@@ -145,7 +151,7 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 		SetPiece( ChessPieceImpl(), additionalInfo.RockMove.from );
 	}
 
-	MoveDataImpl moveData( (int)m_listMoves.size(), move, capturedPiece );
+	MoveDataImpl moveData( m_currentMoveIndex + 1, move, capturedPiece );
 	
 	bool bKingCastle = false;
 	bool bBQueenCastle = false;
@@ -274,7 +280,18 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 		}
 	}
 
-	m_listMoves.push_back( moveData );
+	if (m_listMoves.size() > m_currentMoveIndex + 1) {
+		int moveCount = 0;
+		auto it = std::next(m_listMoves.begin(), m_currentMoveIndex + 1);
+		if (it->strPGNMove != moveData.strPGNMove)
+			m_listMoves.erase(it, m_listMoves.end());
+	}
+
+	if (m_listMoves.size() == m_currentMoveIndex + 1) {
+		m_listMoves.push_back( moveData );
+	}
+
+	m_currentMoveIndex++;
 
 	return true;
 }
@@ -286,19 +303,45 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move )
 }
 
 
+bool ChessBoardImpl::GoToMove( int moveIndex )
+{
+	if (moveIndex > m_currentMoveIndex)
+	{
+		auto it = std::next(m_listMoves.begin(), m_currentMoveIndex);
+		for (int i = m_currentMoveIndex + 1; i <= moveIndex; ++i)
+		{
+			++it;
+			SubmitMove(it->move);
+		}
+		return true;
+	}
+	else if (moveIndex < m_currentMoveIndex)
+	{
+		for (int i = m_currentMoveIndex; i > moveIndex; --i)
+		{
+			bool isWhiteMove = i % 2 == 0;
+			UndoMove(isWhiteMove);
+		}
+		return true;
+	}
+
+	return false;
+}
+
+
 bool ChessBoardImpl::UndoMove( bool bWhiteMove )
 {
-	if ( m_listMoves.empty() ) return false;
+	if ( m_currentMoveIndex < 0 ) return false;
 	for ( auto& it : m_mapStates )
 		it.second.OnStateChange();
 
 	int nMovesToUndo = 0;
-	if ( ( bWhiteMove != m_lastPiece.bWhite ) && m_listMoves.size() >= 2 ) nMovesToUndo = 2;
+	if ( ( bWhiteMove != m_lastPiece.bWhite ) && m_currentMoveIndex >= 1 ) nMovesToUndo = 2;
 	else nMovesToUndo = 1;
 
 	while ( nMovesToUndo-- )
 	{
-		MoveDataImpl moveData = m_listMoves.back();
+		MoveDataImpl moveData = GetLastMove();
 		m_nCastlingMask |= ~moveData.nCastlingMask;
 		m_nCastlingMask &= 0xF;
 
@@ -328,18 +371,18 @@ bool ChessBoardImpl::UndoMove( bool bWhiteMove )
 				SetPiece( ChessPieceImpl(), coordRock );
 			}
 		}
-		m_listMoves.pop_back();
+		m_currentMoveIndex--;
 	}
 
 	// update last piece //
-	if( m_listMoves.empty() )
+	if( m_currentMoveIndex < 0 )
 	{
 		m_lastPiece.bWhite = false;
 		m_lastPiece.cPiece = ChessPieceImpl::None;
 	}
 	else
 	{
-		MoveDataImpl moveData = m_listMoves.back();
+		MoveDataImpl moveData = GetLastMove();
 		m_lastPiece = GetPiece( moveData.move.to );
 	}
 	return true;
@@ -480,10 +523,11 @@ END:
 }
 
 
-MoveImpl ChessBoardImpl::GetLastMove() const
+MoveDataImpl ChessBoardImpl::GetLastMove() const
 {
-	if ( m_listMoves.empty() ) return MoveImpl();
-	return m_listMoves.back().move;
+	if ( m_currentMoveIndex < 0 ) return MoveDataImpl();
+	auto it = std::next(m_listMoves.begin(), m_currentMoveIndex);
+	return *it;
 }
 
 
@@ -531,6 +575,7 @@ void ChessBoardImpl::UpdateState( StatePreserveType type, const Core::Variant& v
 void ChessBoardImpl::Clear()
 {
 	m_listMoves.clear();
+	m_currentMoveIndex = -1;
 	// generate empty chess board //
 	for ( int i = 0; i < 8; ++i )
 		for ( int j = 0; j < 8; ++j )
@@ -622,9 +667,9 @@ std::string ChessBoardImpl::Serialize2FEN() const
 
 	// add en-passant possibilities //
 	std::string strEnPassant = "-";
-	if ( ( m_lastPiece.cPiece == ChessPieceImpl::Pawn ) && !m_listMoves.empty() )
+	if ( ( m_lastPiece.cPiece == ChessPieceImpl::Pawn ) && m_currentMoveIndex >= 0 )
 	{
-		auto lastMove = m_listMoves.back().move;
+		auto lastMove = GetLastMove().move;
 		if ( abs( lastMove.from.nRank - lastMove.to.nRank ) == 2 )
 			strEnPassant = CoordinateImpl( (lastMove.from.nRank + lastMove.to.nRank ) / 2, lastMove.from.nColumn ).ToString();
 	}
@@ -634,7 +679,7 @@ std::string ChessBoardImpl::Serialize2FEN() const
 	strFEN += std::to_string( m_nLastPawnMoveOrCapture );
 	strFEN += " ";
 	// move count //
-	strFEN += std::to_string( m_listMoves.size() / 2 + 1 );
+	strFEN += std::to_string( (m_currentMoveIndex + 1) / 2 + 1 );
 	
 	return strFEN;
 }
@@ -693,6 +738,9 @@ std::string ChessBoardImpl::Serialize2PGN()
 	int nBlackMaxMoveLen = 0;
 	for ( auto it = m_listMoves.begin(); it != m_listMoves.end(); ++it )
 	{
+		if (moveNo > m_currentMoveIndex) 
+			break;
+
 		if( moveNo % 2 )
 		{
 			if ( nWhiteMaxMoveLen < it->strPGNMove.size() ) 
@@ -712,15 +760,16 @@ std::string ChessBoardImpl::Serialize2PGN()
 	moveNo = 0;
 	for ( auto it = m_listMoves.begin(); it != m_listMoves.end(); ++it )
 	{
-		std::string movestr = "";
-		
+		if (moveNo > m_currentMoveIndex)
+			break;
+
 		if ( moveNo % 2 == 0 )
 		{
 			result += "\n";
 			result += std::to_string(moveNo / 2 + 1) + ". ";
 		}
 		
-		movestr += it->strPGNMove;
+		std::string movestr = it->strPGNMove;
 
 		// max move length: 7 e.g. : dxe8=Q+ ( pawn from d7 takes at e8, promoting to queen and giving check ) //
 		int nMaxMoveSize = (moveNo%2) ? nWhiteMaxMoveLen : nBlackMaxMoveLen;

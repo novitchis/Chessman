@@ -57,20 +57,35 @@ bool ChessBoard::UndoMove(bool bWhiteMove)
 	return m_ChessBoardImpl.UndoMove(bWhiteMove);
 }
 
+bool ChessBoard::GoToMove(int moveIndex)
+{
+	return m_ChessBoardImpl.GoToMove(moveIndex);
+}
+
 void ChessBoard::StorePGN()
 {
 	m_ChessBoardImpl.StorePGN();
 }
 
-IVector<MoveData^>^ ChessBoard::GetMoves()
+IVector<MoveData^>^ ChessBoard::GetMoves(bool stopOnCurrent)
 {
 	Vector<MoveData^>^ result = ref new Vector<MoveData^>();
 	std::list<MoveDataImpl> listMoves = m_ChessBoardImpl.GetMoves();
 
-	for (auto it = listMoves.begin(); it != listMoves.end(); ++it)
+	int count = 0;
+	for (auto it = listMoves.begin(); it != listMoves.end(); ++it, ++count) {
+		if (stopOnCurrent && count > m_ChessBoardImpl.GetCurrentMoveIndex())
+			break;
+
 		result->Append(ref new MoveData(*it));
+	}
 
 	return result;
+}
+
+MoveData^ ChessBoard::GetCurrentMove()
+{
+	return ref new MoveData(m_ChessBoardImpl.GetLastMove());
 }
 
 SerializationType ChessBoard::GetSerializationType(int type)

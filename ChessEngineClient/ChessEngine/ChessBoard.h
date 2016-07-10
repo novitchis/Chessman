@@ -23,8 +23,10 @@ namespace ChessEngine
 		ChessPiece^			GetPiece(Coordinate^ coord);
 		bool				SubmitMove(Coordinate^ from, Coordinate^ to);
 		bool				UndoMove(bool bWhiteMove);
+		bool				GoToMove(int moveIndex);
 
-		Windows::Foundation::Collections::IVector<MoveData^>^	GetMoves();
+		IVector<MoveData^>^	GetMoves(bool stopOnCurrent);
+		MoveData^			GetCurrentMove();
 
 
 	private:

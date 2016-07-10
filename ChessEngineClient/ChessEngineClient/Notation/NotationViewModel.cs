@@ -32,14 +32,6 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        public ICommand SeekBackCommand
-        {
-            get
-            {
-                return new RelayCommand((p) => { chessBoardService.GoToMove(CurrentMove.Index); });
-            }
-        }
-
         public MoveData CurrentMove
         {
             get { return currentMove; }
@@ -48,10 +40,8 @@ namespace ChessEngineClient.ViewModel
                 if (currentMove != value)
                 {
                     currentMove = value;
+                    chessBoardService.GoToMove(currentMove.Index);
                     NotifyPropertyChanged();
-                    if (currentMove != null)
-                        chessBoardService.GoToMove(currentMove.Index);
-
                 }
             }
         }
@@ -62,14 +52,14 @@ namespace ChessEngineClient.ViewModel
         {
             this.chessBoardService = chessBoardService;
             this.chessBoardService.MoveExecuted += OnMoveExecuted;
-            this.chessBoardService.GoToExecuted += OnMoveExecuted;
         }
 
         private void OnMoveExecuted(object sender, ChessEventArgs e)
         {
             int groupIndex = 1;
             List<MoveDataGroup> newGroupedMoves = new List<MoveDataGroup>();
-            var moves = chessBoardService.GetMoves();
+            MoveData currentMove = chessBoardService.GetCurrentMove();
+            var moves = chessBoardService.GetMoves(false);
 
             using (var movesEnumerator = moves.GetEnumerator())
             {
@@ -85,10 +75,17 @@ namespace ChessEngineClient.ViewModel
 
                     newGroupedMoves.Add(moveGroup);
                     groupIndex++;
+
+                    // in order for the selected item to work CurrentMove needs to be an object from the moves list
+                    if (moveGroup.WhiteMove.Index == currentMove.Index)
+                        currentMove = moveGroup.WhiteMove;
+                    else if (moveGroup.BlackMove.Index == currentMove.Index)
+                        currentMove = moveGroup.BlackMove;
+
                 }
             }
             GroupedMoves = newGroupedMoves;
-            CurrentMove = moves.Last();
+            CurrentMove = currentMove;
         }
     }
 }

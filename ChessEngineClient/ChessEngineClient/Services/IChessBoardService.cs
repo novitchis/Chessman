@@ -17,7 +17,9 @@ namespace ChessEngineClient
 
         bool SubmitMove(Coordinate from, Coordinate to);
 
-        IList<MoveData> GetMoves();
+        MoveData GetCurrentMove();
+
+        IList<MoveData> GetMoves(bool stopOnCurrentMove = true);
 
         void GoToMove(int moveIndex);
     }
