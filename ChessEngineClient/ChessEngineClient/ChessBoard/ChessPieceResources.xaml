@@ -19,53 +19,60 @@
 
     <!--The font icon properties should come from a style, but there are some 
         properties that are not dependency properties so postpone it for now-->
+
+    <Style TargetType="TextBlock" x:Key="ChessPieceStyle">
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
     
     <DataTemplate x:Key="WhiteKingTemplate">
-        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhiteKing}" />
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource WhiteKing}" />
     </DataTemplate>
 
     <DataTemplate x:Key="WhiteQueenTemplate">
-        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhiteQueen}" />
+        <TextBlock Style="{StaticResource ChessPieceStyle}"  Text="{StaticResource WhiteQueen}" />
     </DataTemplate>
 
     <DataTemplate x:Key="WhiteRookTemplate">
-        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhiteRook}" />
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource WhiteRook}" />
     </DataTemplate>
 
     <DataTemplate x:Key="WhiteBishopTemplate">
-        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhiteBishop}" />
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource WhiteBishop}" />
     </DataTemplate>
 
     <DataTemplate x:Key="WhiteKnightTemplate">
-        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhiteKnight}" />
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource WhiteKnight}" />
     </DataTemplate>
 
     <DataTemplate x:Key="WhitePawnTemplate">
-        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource WhitePawn}" />
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource WhitePawn}" />
     </DataTemplate>
 
     <DataTemplate x:Key="BlackKingTemplate">
-        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackKing}" />
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource BlackKing}" />
     </DataTemplate>
 
     <DataTemplate x:Key="BlackQueenTemplate">
-        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackQueen}" />
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource BlackQueen}" />
     </DataTemplate>
 
     <DataTemplate x:Key="BlackRookTemplate">
-        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackRook}" />
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource BlackRook}" />
     </DataTemplate>
 
     <DataTemplate x:Key="BlackBishopTemplate">
-        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackBishop}" />
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource BlackBishop}" />
     </DataTemplate>
 
     <DataTemplate x:Key="BlackKnightTemplate">
-        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackKnight}" />
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource BlackKnight}" />
     </DataTemplate>
 
     <DataTemplate x:Key="BlackPawnTemplate">
-        <FontIcon x:Name="icon" FontSize="20em" FontFamily="Segoe UI Symbol" Glyph="{StaticResource BlackPawn}" />
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource BlackPawn}" />
     </DataTemplate>
 
 

@@ -18,7 +18,19 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <view:AnalysisView />
+        <Grid Background="LightBlue">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ToggleButton 
+                Width="32"
+                Height="32"
+                Margin="5,0,0,0"
+                Command="{Binding TogglePerspectiveCommand}">
+            </ToggleButton>
+            <view:AnalysisView Grid.Column="1"/>
+        </Grid>
         <view:ChessBoardView Grid.Row="1" DataContext="{Binding BoardViewModel}" />
         <view:NotationView Grid.Row="2" DataContext="{Binding NotationViewModel}" />
     </Grid>

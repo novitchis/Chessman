@@ -8,7 +8,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     
-    <Grid Background="LightBlue">
+    <Grid>
         <TextBlock Text="Analysis" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </UserControl>

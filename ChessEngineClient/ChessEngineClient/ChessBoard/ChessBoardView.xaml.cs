@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChessEngineClient.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace ChessEngineClient.View
 {
     public sealed partial class ChessBoardView : UserControl
     {
+        public ChessBoardViewModel ViewModel { get { return DataContext as ChessBoardViewModel; } }
+
         public ChessBoardView()
         {
             this.InitializeComponent();

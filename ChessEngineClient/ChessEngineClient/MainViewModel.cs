@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ChessEngineClient.ViewModel
 {
@@ -16,11 +17,24 @@ namespace ChessEngineClient.ViewModel
 
         public NotationViewModel NotationViewModel { get; set; }
 
+        public ICommand TogglePerspectiveCommand
+        {
+            get
+            {
+                return new RelayCommand(TogglePerspectiveExecuted);
+            }
+        }
+
         public MainViewModel()
         {
             BoardViewModel = ViewModelLocator.IOCContainer.Resolve<ChessBoardViewModel>();
             AnalysisViewModel = new AnalysisViewModel();
             NotationViewModel = ViewModelLocator.IOCContainer.Resolve<NotationViewModel>();
+        }
+
+        private void TogglePerspectiveExecuted(object obj)
+        {
+            BoardViewModel.TogglePerspective();
         }
     }
 }
