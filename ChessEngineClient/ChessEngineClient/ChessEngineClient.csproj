@@ -127,6 +127,7 @@
       <DependentUpon>NotationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Notation\NotationViewModel.cs" />
+    <Compile Include="NotificationMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ChessBoardService.cs" />
     <Compile Include="Services\IChessBoardService.cs" />

@@ -75,7 +75,7 @@ namespace ChessEngineClient.ViewModel
         public ChessBoardViewModel(IChessBoardService chessBoardService)
         {
             this.chessBoardService = chessBoardService;
-            this.chessBoardService.GoToExecuted += OnGoToExecuted;
+            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.CurrentMoveChanged, OnCurrentMoveChangedMessage);
 
             InitBoard();
         }
@@ -112,7 +112,7 @@ namespace ChessEngineClient.ViewModel
             RefreshPieces();
         }
 
-        private void OnGoToExecuted(object sender, ChessEventArgs e)
+        private void OnCurrentMoveChangedMessage(GenericMessage<MoveData> moveMessage)
         {
             RefreshPieces();
         }
@@ -137,8 +137,10 @@ namespace ChessEngineClient.ViewModel
                 return;
 
             if (chessBoardService.SubmitMove(oldSquare.Coordinate, newSquare.Coordinate))
+            {
                 RefreshPieces();
-
+                Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
+            }
         }
 
         private void RefreshPieces()

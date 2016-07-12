@@ -41,6 +41,7 @@ namespace ChessEngineClient.ViewModel
                 {
                     currentMove = value;
                     chessBoardService.GoToMove(currentMove.Index);
+                    Messenger.Default.Send(new GenericMessage<MoveData>(currentMove), NotificationMessages.CurrentMoveChanged);
                     NotifyPropertyChanged();
                 }
             }
@@ -51,10 +52,10 @@ namespace ChessEngineClient.ViewModel
         public NotationViewModel(IChessBoardService chessBoardService)
         {
             this.chessBoardService = chessBoardService;
-            this.chessBoardService.MoveExecuted += OnMoveExecuted;
+            Messenger.Default.Register<MessageBase>(this, NotificationMessages.MoveExecuted, OnMoveExecutedMessage);
         }
 
-        private void OnMoveExecuted(object sender, ChessEventArgs e)
+        private void OnMoveExecutedMessage(MessageBase message)
         {
             int groupIndex = 1;
             List<MoveDataGroup> newGroupedMoves = new List<MoveDataGroup>();
