@@ -118,10 +118,10 @@
     <Compile Include="Controls\WrapPanel.cs" />
     <Compile Include="EngineNotifications.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Main\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainViewModel.cs" />
+    <Compile Include="Main\MainViewModel.cs" />
     <Compile Include="Notation\MoveDataGroup.cs" />
     <Compile Include="Notation\NotationView.xaml.cs">
       <DependentUpon>NotationView.xaml</DependentUpon>
@@ -180,7 +180,7 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="Main\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -213,9 +213,7 @@
       <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Main\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

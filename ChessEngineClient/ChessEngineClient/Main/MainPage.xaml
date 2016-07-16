@@ -24,11 +24,20 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <ToggleButton 
+                x:Name="toggle"
                 Width="32"
                 Height="32"
                 Margin="5,0,0,0"
-                Command="{Binding TogglePerspectiveCommand}">
+                Command="{Binding TogglePerspectiveCommand}"
+                VerticalContentAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Padding="0">
+                <Grid>
+                    <Rectangle Fill="White" />
+                    <Rectangle Fill="Black" Visibility="{Binding IsChecked, ElementName=toggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+                </Grid>
             </ToggleButton>
+
             <view:AnalysisView Grid.Column="1"/>
         </Grid>
         <view:ChessBoardView Grid.Row="1" DataContext="{Binding BoardViewModel}" />
