@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -20,36 +21,39 @@ namespace ChessEngineClient.View
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    /// 
-
-
-    //class EngineNotificatio: Engine.IEngine
     public sealed partial class MainPage : Page
     {
         // Sample usage the Chess Engine //
 
-        void foo()
-        {
-            // Sample engine usage //
-            try
-            {
-                EngineNotifications notificationHandler = new EngineNotifications();
-                ChessBoard board = new ChessBoard();
-                board.Initialize();
-                ChessEngine.Engine engine = new ChessEngine.Engine(notificationHandler);
-                engine.Start();
-                //engine.Analyze(board);
-            }
-            catch( Exception e)
-            {
+        //void foo()
+        //{
+        //    // Sample engine usage //
+        //    try
+        //    {
+        //        EngineNotifications notificationHandler = new EngineNotifications();
+        //        ChessBoard board = new ChessBoard();
+        //        board.Initialize();
+        //        ChessEngine.Engine engine = new ChessEngine.Engine(notificationHandler);
+        //        engine.Start();
+        //        //engine.Analyze(board);
+        //    }
+        //    catch( Exception e)
+        //    {
 
-            }
-        }
+        //    }
+        //}
 
         public MainPage()
         {
             this.InitializeComponent();
-            foo();
+            SystemNavigationManager navigation = SystemNavigationManager.GetForCurrentView();
+            navigation.BackRequested += OnBackExecuted;
+            //foo();
+        }
+
+        private void OnBackExecuted(object sender, BackRequestedEventArgs e)
+        {
+            Application.Current.Exit();
         }
     }
 }
