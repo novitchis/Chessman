@@ -85,6 +85,9 @@ IVector<MoveData^>^ ChessBoard::GetMoves(bool stopOnCurrent)
 
 MoveData^ ChessBoard::GetCurrentMove()
 {
+	if (m_ChessBoardImpl.GetCurrentMoveIndex() < 0)
+		return nullptr;
+
 	return ref new MoveData(m_ChessBoardImpl.GetLastMove());
 }
 

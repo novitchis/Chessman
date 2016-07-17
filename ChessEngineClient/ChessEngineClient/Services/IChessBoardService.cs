@@ -17,6 +17,6 @@ namespace ChessEngineClient
 
         IList<MoveData> GetMoves(bool stopOnCurrentMove = true);
 
-        void GoToMove(int moveIndex);
+        bool GoToMove(int moveIndex);
     }
 }

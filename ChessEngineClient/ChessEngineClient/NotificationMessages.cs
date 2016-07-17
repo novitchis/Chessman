@@ -10,5 +10,7 @@ namespace ChessEngineClient
     {
         public const string CurrentMoveChanged = "CurrentMoveChanged";
         public const string MoveExecuted = "MoveExecuted";
+        public const string GoBack = "GoBack";
+        public const string GoForward = "GoForward";
     }
 }

@@ -76,8 +76,36 @@ namespace ChessEngineClient.ViewModel
         {
             this.chessBoardService = chessBoardService;
             Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.CurrentMoveChanged, OnCurrentMoveChangedMessage);
+            Messenger.Default.Register<MessageBase>(this, NotificationMessages.GoBack, OnGoBackMessage);
+            Messenger.Default.Register<MessageBase>(this, NotificationMessages.GoForward, OnGoForwardMessage);
 
             InitBoard();
+        }
+
+        private void OnGoForwardMessage(object obj)
+        {
+            MoveData currentMove = chessBoardService.GetCurrentMove();
+            if (currentMove != null)
+            {
+                if (chessBoardService.GoToMove(currentMove.Index + 1))
+                {
+                    Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
+                    RefreshPieces();
+                }
+            }
+        }
+
+        private void OnGoBackMessage(object obj)
+        {
+            MoveData currentMove = chessBoardService.GetCurrentMove();
+            if (currentMove != null)
+            {
+                if (chessBoardService.GoToMove(currentMove.Index - 1))
+                {
+                    Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
+                    RefreshPieces();
+                }
+            }
         }
 
         private void InitBoard()
