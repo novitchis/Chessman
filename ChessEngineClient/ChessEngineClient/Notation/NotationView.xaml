@@ -19,7 +19,7 @@
         </CollectionViewSource>
     </UserControl.Resources>
     <Grid>
-        <Grid Background="Aquamarine">
+        <Grid>
             <ListBox
                 x:Name="notationList"
                 SelectionChanged="OnSelectedMoveChanged"
@@ -77,11 +77,11 @@
                 </ListBox.ItemContainerStyle>
             </ListBox>
             <TextBlock x:Name="notationText"
-                Text="Notation" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center"
-                FontSize="40"
-                Foreground="LightGray">
+                       Text="Notation" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"
+                       FontSize="40"
+                       Style="{StaticResource PlaceHolderTextStyle}">
                 
             </TextBlock>
             <i:Interaction.Behaviors>
