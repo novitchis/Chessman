@@ -40,9 +40,12 @@ namespace ChessEngineClient.ViewModel
                 if (currentMove != value)
                 {
                     currentMove = value;
-                    chessBoardService.GoToMove(currentMove.Index);
-                    Messenger.Default.Send(new GenericMessage<MoveData>(currentMove), NotificationMessages.CurrentMoveChanged);
-                    NotifyPropertyChanged();
+                    if (currentMove != null)
+                    {
+                        chessBoardService.GoToMove(currentMove.Index);
+                        Messenger.Default.Send(new GenericMessage<MoveData>(currentMove), NotificationMessages.CurrentMoveChanged);
+                        NotifyPropertyChanged();
+                    }
                 }
             }
         }
@@ -59,7 +62,6 @@ namespace ChessEngineClient.ViewModel
         {
             int groupIndex = 1;
             List<MoveDataGroup> newGroupedMoves = new List<MoveDataGroup>();
-            MoveData currentMove = chessBoardService.GetCurrentMove();
             var moves = chessBoardService.GetMoves(false);
 
             using (var movesEnumerator = moves.GetEnumerator())
@@ -76,17 +78,12 @@ namespace ChessEngineClient.ViewModel
 
                     newGroupedMoves.Add(moveGroup);
                     groupIndex++;
-
-                    // in order for the selected item to work CurrentMove needs to be an object from the moves list
-                    if (moveGroup.WhiteMove.Index == currentMove.Index)
-                        currentMove = moveGroup.WhiteMove;
-                    else if (moveGroup.BlackMove.Index == currentMove.Index)
-                        currentMove = moveGroup.BlackMove;
-
                 }
             }
+
             GroupedMoves = newGroupedMoves;
-            CurrentMove = currentMove;
+            MoveData currentMove = chessBoardService.GetCurrentMove();
+            CurrentMove = moves[currentMove.Index];
         }
     }
 }
