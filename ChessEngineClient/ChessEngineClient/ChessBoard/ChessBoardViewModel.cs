@@ -85,13 +85,14 @@ namespace ChessEngineClient.ViewModel
         private void OnGoForwardMessage(object obj)
         {
             MoveData currentMove = chessBoardService.GetCurrentMove();
+            int moveIndex = 0;
             if (currentMove != null)
+                moveIndex = currentMove.Index + 1;
+
+            if (chessBoardService.GoToMove(moveIndex))
             {
-                if (chessBoardService.GoToMove(currentMove.Index + 1))
-                {
-                    Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
-                    RefreshPieces();
-                }
+                Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
+                RefreshPieces();
             }
         }
 

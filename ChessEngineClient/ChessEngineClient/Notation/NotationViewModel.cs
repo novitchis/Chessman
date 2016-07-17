@@ -83,8 +83,9 @@ namespace ChessEngineClient.ViewModel
 
             GroupedMoves = newGroupedMoves;
             MoveData currentMove = chessBoardService.GetCurrentMove();
-            // in order for the selected item to work CurrentMove needs to be an object from the moves list
-            CurrentMove = moves[currentMove.Index];
+            // in order for the selected item to work CurrentMove needs to be an object from the 'moves' list
+            if (currentMove != null)
+                CurrentMove = moves[currentMove.Index];
         }
     }
 }

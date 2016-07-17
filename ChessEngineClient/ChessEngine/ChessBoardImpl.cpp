@@ -305,6 +305,18 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move )
 
 bool ChessBoardImpl::GoToMove( int moveIndex )
 {
+	if (moveIndex > (int)(m_listMoves.size() - 1))
+		return false;
+
+	// first handle go to first move
+	if (m_currentMoveIndex < 0) 
+	{
+		auto it = m_listMoves.begin();
+		SubmitMove(it->move);
+		if (moveIndex == 0)
+			return true;
+	}
+
 	if (moveIndex > m_currentMoveIndex)
 	{
 		auto it = std::next(m_listMoves.begin(), m_currentMoveIndex);
