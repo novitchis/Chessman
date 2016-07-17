@@ -61,7 +61,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid HorizontalAlignment="Center">
         <Grid Background="{StaticResource BlackSquareBrush}" 
               ManipulationMode="All" 
               ManipulationStarted="Grid_ManipulationStarted" 

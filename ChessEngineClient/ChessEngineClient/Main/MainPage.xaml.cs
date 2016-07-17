@@ -7,6 +7,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -51,9 +52,18 @@ namespace ChessEngineClient.View
             //foo();
         }
 
-        private void OnBackExecuted(object sender, BackRequestedEventArgs e)
+        private async void OnBackExecuted(object sender, BackRequestedEventArgs e)
         {
-            Application.Current.Exit();
+            e.Handled = true;
+
+            var dialog = new MessageDialog("Are you sure you want to exit?");
+            dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+            dialog.Commands.Add(new UICommand { Label = "Cancel", Id = 1 });
+
+            var result = await dialog.ShowAsync();
+
+            if ((int)result.Id == 0)
+                Application.Current.Exit();
         }
     }
 }

@@ -9,7 +9,12 @@
     d:DesignWidth="400">
     
     <Grid>
-        <TextBlock Text="Analysis" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock 
+            FontSize="25"
+            Style="{StaticResource PlaceHolderTextStyle}" 
+            Text="Analysis" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center"/>
     </Grid>
 </UserControl>
 

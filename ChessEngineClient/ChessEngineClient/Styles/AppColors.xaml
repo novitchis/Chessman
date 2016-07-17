@@ -7,5 +7,5 @@
     <Brush x:Key="BlackSquareBrush">#AC6A2B</Brush>
     <Brush x:Key="SelectedSquareBrush">Gold</Brush>
     <Brush x:Key="HoveredSquareBrush">Khaki</Brush>
-
+    
 </ResourceDictionary>
