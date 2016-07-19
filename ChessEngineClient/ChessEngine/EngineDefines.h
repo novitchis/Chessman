@@ -64,7 +64,7 @@ namespace ChessEngine
 		
         bool IsWhiteSquare()
             {
-            return ((nRank) % 2) != ((nColumn) % 2);
+            return ((nRank) % 2) == ((nColumn) % 2);
             }
 
         std::string ToString() const

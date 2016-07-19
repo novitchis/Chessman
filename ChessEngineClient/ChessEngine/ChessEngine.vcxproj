@@ -238,6 +238,7 @@
     <ClInclude Include="ManagedConverter.h" />
     <ClInclude Include="ManagedDefines.h" />
     <ClInclude Include="Move.h" />
+    <ClInclude Include="MoveData.h" />
     <ClInclude Include="MoveDatabase.h" />
     <ClInclude Include="MoveScope.h" />
     <ClInclude Include="MoveValidationAlgorithm.h" />
@@ -265,6 +266,7 @@
     <ClCompile Include="InProcEngineCommThread.cpp" />
     <ClCompile Include="ManagedConverter.cpp" />
     <ClCompile Include="Move.cpp" />
+    <ClCompile Include="MoveData.cpp" />
     <ClCompile Include="MoveScope.cpp" />
     <ClCompile Include="MoveValidationAlgorithm.cpp" />
     <ClCompile Include="pch.cpp">

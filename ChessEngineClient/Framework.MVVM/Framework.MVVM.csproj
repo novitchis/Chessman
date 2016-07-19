@@ -108,7 +108,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters.cs" />
+    <Compile Include="Helpers\WeakAction.cs" />
+    <Compile Include="Helpers\WeakActionGeneric.cs" />
     <Compile Include="INavigationService.cs" />
+    <Compile Include="Helpers\IExecuteWithObject.cs" />
+    <Compile Include="Messaging\GenericMessage.cs" />
+    <Compile Include="Messaging\IMessager.cs" />
+    <Compile Include="Messaging\MessageBase.cs" />
+    <Compile Include="Messaging\Messenger.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelayCommand.cs" />

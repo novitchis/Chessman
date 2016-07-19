@@ -7,15 +7,18 @@ ChessPiece::ChessPiece()
 {
 }
 
-
 ChessPiece::ChessPiece(PieceType type, bool bWhite)
 	: m_Piece((char)type, bWhite)
 {
-
 }
 
-
-PieceType ChessPiece::GetType()
+ChessPiece::ChessPiece(ChessPieceImpl pieceImpl)
+	: m_Piece(pieceImpl)
 {
-	return (PieceType)m_Piece.cPiece;
 }
+
+ChessPieceImpl ChessPiece::getPieceImpl()
+{
+	return m_Piece;
+}
+

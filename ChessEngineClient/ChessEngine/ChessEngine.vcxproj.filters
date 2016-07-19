@@ -81,6 +81,12 @@
     <ClCompile Include="EngineNotificationAdaptor.cpp">
       <Filter>Impl</Filter>
     </ClCompile>
+    <ClCompile Include="ChessPiece.cpp">
+      <Filter>Managed</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveData.cpp">
+      <Filter>Managed</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

@@ -337,7 +337,7 @@ bool MoveValidationAlgorithm::IsFieldAttacked( const CoordinateImpl& coord, bool
 	{
 		if ( i == 0 ) continue;
 		auto nColDif = 3 - abs( i );
-		for ( int j = -nColDif; j <= nColDif; ++j )
+		for ( int j = -nColDif; j <= nColDif; j += nColDif)
 		{
 			if ( j == 0 ) continue;
 			CoordinateImpl	crtCoord( coord.nRank + i, coord.nColumn + j);

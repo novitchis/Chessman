@@ -1,0 +1,11 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- TODO: here should be added resources for colors that may change based on user selected style -->
+    <Brush x:Key="WhiteSquareBrush">#FCCE94</Brush>
+    <Brush x:Key="BlackSquareBrush">#AC6A2B</Brush>
+    <Brush x:Key="SelectedSquareBrush">Gold</Brush>
+    <Brush x:Key="HoveredSquareBrush">Khaki</Brush>
+    
+</ResourceDictionary>

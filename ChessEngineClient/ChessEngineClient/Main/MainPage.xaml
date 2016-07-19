@@ -1,0 +1,45 @@
+﻿<Page
+    x:Class="ChessEngineClient.View.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ChessEngineClient"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="using:ChessEngineClient.View"
+    mc:Ignorable="d"
+    DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}"
+    d:DesignHeight="1080"
+    d:DesignWidth="612">
+    <Grid Background="LightGray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="58"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Background="#F2F2F2" Margin="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ToggleButton 
+                x:Name="toggle"
+                Width="32"
+                Height="32"
+                Margin="5,0,0,0"
+                Command="{Binding TogglePerspectiveCommand}"
+                VerticalContentAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Padding="0">
+                <Grid>
+                    <Rectangle Fill="White" />
+                    <Rectangle Fill="Black" Visibility="{Binding IsChecked, ElementName=toggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+                </Grid>
+            </ToggleButton>
+
+            <view:AnalysisView Grid.Column="1"/>
+        </Grid>
+        <view:ChessBoardView Grid.Row="1" DataContext="{Binding BoardViewModel}" />
+        <view:NotationView Grid.Row="2" Margin="4" DataContext="{Binding NotationViewModel}" />
+    </Grid>
+</Page>

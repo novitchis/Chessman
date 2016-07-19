@@ -6,8 +6,39 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
-namespace Framework.MVVM
+namespace Framework.MVVM.Converters
 {
+    public enum ConversionType
+    {
+        Normal,
+        Inverted,
+    }
+
+    public class BoolToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            Visibility result = (value is bool && (bool)value) ? Visibility.Visible : Visibility.Collapsed;
+            ConversionType conversionType = parameter != null ? (ConversionType)parameter : ConversionType.Normal;
+
+            if (conversionType == ConversionType.Inverted)
+                result = result == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+
+            return result;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            bool result = value is Visibility && (Visibility)value == Visibility.Visible;
+            ConversionType conversionType = parameter != null ? (ConversionType)parameter : ConversionType.Normal;
+
+            if (conversionType == ConversionType.Inverted)
+                result = !result;
+
+            return result;
+        }
+    }
+
     public class EnumToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)

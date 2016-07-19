@@ -1,8 +1,13 @@
 #include "pch.h"
 #include "ChessBoard.h"
 #include "ManagedConverter.h"
+#include <collection.h>
+#include <algorithm>
 
 using namespace ChessEngine;
+using namespace Platform;
+using namespace Platform::Collections;
+using namespace Windows::Foundation::Collections;
 
 ChessBoard::ChessBoard()
 {
@@ -33,12 +38,58 @@ bool ChessBoard::LoadFrom(Platform::String^ strData, int type)
 	return m_ChessBoardImpl.LoadFrom(strNativeData, GetSerializationType(type));
 }
 
+ChessPiece^ ChessBoard::GetPiece(Coordinate^ coord)
+{
+	ChessPieceImpl piece = m_ChessBoardImpl.GetPiece(coord->getCoordinateImpl());
+	if (piece.IsEmpty())
+		return nullptr;
+
+	return ref new ChessPiece(piece);
+}
+
+bool ChessBoard::SubmitMove(Coordinate^ from, Coordinate^ to)
+{
+	return m_ChessBoardImpl.SubmitMove(MoveImpl(from->getCoordinateImpl(), to->getCoordinateImpl()));
+}
+
+bool ChessBoard::UndoMove(bool bWhiteMove)
+{
+	return m_ChessBoardImpl.UndoMove(bWhiteMove);
+}
+
+bool ChessBoard::GoToMove(int moveIndex)
+{
+	return m_ChessBoardImpl.GoToMove(moveIndex);
+}
 
 void ChessBoard::StorePGN()
 {
 	m_ChessBoardImpl.StorePGN();
 }
 
+IVector<MoveData^>^ ChessBoard::GetMoves(bool stopOnCurrent)
+{
+	Vector<MoveData^>^ result = ref new Vector<MoveData^>();
+	std::list<MoveDataImpl> listMoves = m_ChessBoardImpl.GetMoves();
+
+	int count = 0;
+	for (auto it = listMoves.begin(); it != listMoves.end(); ++it, ++count) {
+		if (stopOnCurrent && count > m_ChessBoardImpl.GetCurrentMoveIndex())
+			break;
+
+		result->Append(ref new MoveData(*it));
+	}
+
+	return result;
+}
+
+MoveData^ ChessBoard::GetCurrentMove()
+{
+	if (m_ChessBoardImpl.GetCurrentMoveIndex() < 0)
+		return nullptr;
+
+	return ref new MoveData(m_ChessBoardImpl.GetLastMove());
+}
 
 SerializationType ChessBoard::GetSerializationType(int type)
 {
