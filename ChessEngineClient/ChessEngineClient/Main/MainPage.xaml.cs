@@ -1,4 +1,5 @@
 ﻿using ChessEngine;
+using ChessEngineClient;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,27 +27,19 @@ namespace ChessEngineClient.View
     {
         // Sample usage the Chess Engine //
 
-        //void foo()
-        //{
-        //    // Sample engine usage //
-        //    try
-        //    {
-        //        EngineNotifications notificationHandler = new EngineNotifications();
-        //        ChessBoard board = new ChessBoard();
-        //        board.Initialize();
-        //        ChessEngine.Engine engine = new ChessEngine.Engine(notificationHandler);
-        //        engine.Start();
-        //        //engine.Analyze(board);
-        //    }
-        //    catch( Exception e)
-        //    {
-
-        //    }
-        //}
-
-        public MainPage()
-        {
             // Sample engine usage //
+        //try
+        //{
+        //    EngineNotifications notificationHandler = new EngineNotifications();
+        //    ChessBoard board = new ChessBoard();
+        //    board.Initialize();
+        //    ChessEngine.Engine engine = new ChessEngine.Engine(notificationHandler);
+        //    EngineNotifications.Start();
+        //    engine.Analyze(board);
+        //}
+           // Sample engine usage //
+        void foo()
+        {
             try
             {
                 EngineNotifications notificationHandler = new EngineNotifications();
@@ -56,8 +49,26 @@ namespace ChessEngineClient.View
                 engine.Start();
                 engine.Analyze(board);
             }
-            catch( Exception e)
+            catch(Exception e)
             {
+
+            }
+        }
+        public MainPage()
+        {
+            this.InitializeComponent();
+            SystemNavigationManager navigation = SystemNavigationManager.GetForCurrentView();
+            navigation.BackRequested += OnBackExecuted;
+            foo();
+        }
+
+        private async void OnBackExecuted(object sender, BackRequestedEventArgs e)
+        {
+            e.Handled = true;
+
+            var dialog = new MessageDialog("Are you sure you want to exit?");
+            dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+            dialog.Commands.Add(new UICommand { Label = "Cancel", Id = 1 });
 
             var result = await dialog.ShowAsync();
 
@@ -66,4 +77,3 @@ namespace ChessEngineClient.View
         }
     }
 }
-    

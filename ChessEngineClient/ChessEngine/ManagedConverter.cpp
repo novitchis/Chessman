@@ -47,7 +47,7 @@ Move^ ManagedConverter::ConvertNativeMove(MoveImpl move)
 
 CoordinateImpl ManagedConverter::ConvertManagedCoord(Coordinate^ coord)
 {
-	return CoordinateImpl(coord->GetX(), coord->GetY());
+	return CoordinateImpl(coord->X, coord->Y);
 }
 
 
