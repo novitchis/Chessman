@@ -17,3 +17,4 @@
 #include <cassert>
 #include <ostream>
 
+#include "Thread.h"

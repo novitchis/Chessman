@@ -2,6 +2,7 @@
 #include "IChessEngine.h"
 #include "EngineCommunicationThread.h"
 #include "ChessBoardImpl.h"
+#include <queue>
 
 namespace ChessEngine
 {
@@ -14,6 +15,16 @@ namespace ChessEngine
 		UC_Stop,
 		UC_IsReady, 
 		UC_SetOption,
+	};
+
+	struct EngineCommand
+	{
+		EngineCommand(UCICommand _type, const std::string& _strCommand)
+			: type(_type)
+			, strCommand(_strCommand)
+		{}
+		UCICommand		type;
+		std::string		strCommand;
 	};
 
 	class UCIChessEngine : public IChessEngine
@@ -46,11 +57,12 @@ namespace ChessEngine
 	
 	private:
 		IChessEngineNotifications*				m_pNotification;
-		EngineCommunicationThread				m_CommThread;
+		std::shared_ptr<IEngineCommThread>		m_pCommThread;
 		EngineIOData							m_IOData;
 		HANDLE									m_hEngineProcess;
 		std::map<UCICommand, std::string>		m_mapCommands;
 		UCICommand								m_state; // maybe a std::stack<UCIEgineState> in the future //
+		std::queue<EngineCommand>				m_queueCommands;
 		bool									m_bDelayResponse;
 	};
 }

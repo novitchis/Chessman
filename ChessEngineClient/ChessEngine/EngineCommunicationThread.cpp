@@ -7,27 +7,10 @@
 
 using namespace ChessEngine;
 
-EngineIOData::EngineIOData()
-	: hStdInputRd( NULL )
-	, hStdInputWr( NULL )
-	, hStdOutputRd( NULL )
-	, hStdOutputWr( NULL )
-{
-}
-
-
-EngineIOData::~EngineIOData()
-{
-	SafeCloseHandle( hStdInputRd );
-	SafeCloseHandle( hStdInputWr );
-	SafeCloseHandle( hStdOutputRd );
-	SafeCloseHandle( hStdOutputWr );
-}
-
 
 EngineCommunicationThread::EngineCommunicationThread( IChessEngine* pEngine )
-	: m_pIOData( NULL )
-	, m_pEngine( pEngine )
+	: IEngineCommThread(pEngine)
+	, m_pIOData( NULL )
 	, m_bStop( false )
 	, m_bErrorOccurred( false )
 	, m_hCommandEvent( NULL )
@@ -121,26 +104,28 @@ bool EngineCommunicationThread::ReadData( std::string& strData )
 
 bool EngineCommunicationThread::GetAvailableBytes ( int& nBytes )
 {
-	//DWORD dwBytesAvailable = 0;
-	//if(!m_pIOData )
- //       {
- //       printf( __FUNCTION__ " NULL found: %d",GetLastError() );
- //       return false;
- //       }
- //   try
- //       {
- //       if ( !PeekNamedPipe( m_pIOData->hStdOutputRd, NULL, 0, NULL, &dwBytesAvailable, NULL ) )
- //           {
- //           printf( "[EngineCommunicationThread::ReadData] PeekNamedPipe failed with error %d", GetLastError() );
- //           return false;
- //           }
- //       }
- //   catch (...)
- //       {
- //       printf( __FUNCTION__ " Exception found: %d",GetLastError() );
- //       return false;
- //       }
-	//
-	//nBytes = dwBytesAvailable;
+#ifdef BACKEND
+	DWORD dwBytesAvailable = 0;
+	if(!m_pIOData )
+        {
+        printf( __FUNCTION__ " NULL found: %d",GetLastError() );
+        return false;
+        }
+    try
+        {
+        if ( !PeekNamedPipe( m_pIOData->hStdOutputRd, NULL, 0, NULL, &dwBytesAvailable, NULL ) )
+            {
+            printf( "[EngineCommunicationThread::ReadData] PeekNamedPipe failed with error %d", GetLastError() );
+            return false;
+            }
+        }
+    catch (...)
+        {
+        printf( __FUNCTION__ " Exception found: %d",GetLastError() );
+        return false;
+        }
+	
+	nBytes = dwBytesAvailable;
+#endif
 	return true;
 }

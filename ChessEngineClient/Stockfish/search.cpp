@@ -38,6 +38,9 @@
 #include "uci.h"
 #include "syzygy/tbprobe.h"
 
+extern std::shared_ptr<MemoryStream>	g_stmInput;
+extern std::shared_ptr<MemoryStream>	g_stmOutput;
+
 namespace Search {
 
   SignalsType Signals;
@@ -214,7 +217,12 @@ uint64_t Search::perft(Position& pos, Depth depth) {
           pos.undo_move(m);
       }
       if (Root)
-          sync_cout << UCI::move(m, pos.is_chess960()) << ": " << cnt << sync_endl;
+	  {
+		  std::stringstream stmToWrite;
+		  //sync_cout << UCI::move(m, pos.is_chess960()) << ": " << cnt << sync_endl;
+		  stmToWrite << UCI::move(m, pos.is_chess960()) << ": " << cnt << std::endl;
+		  g_stmOutput->Write(stmToWrite.str());
+	  }
   }
   return nodes;
 }
@@ -248,12 +256,16 @@ void MainThread::search() {
       TB::ProbeDepth = DEPTH_ZERO;
   }
 
+  std::stringstream stmToWrite;
   if (rootMoves.empty())
   {
       rootMoves.push_back(RootMove(MOVE_NONE));
-      sync_cout << "info depth 0 score "
-                << UCI::value(rootPos.checkers() ? -VALUE_MATE : VALUE_DRAW)
-                << sync_endl;
+	  //sync_cout << "info depth 0 score "
+   //             << UCI::value(rootPos.checkers() ? -VALUE_MATE : VALUE_DRAW)
+   //             << sync_endl;
+	  stmToWrite << "info depth 0 score "
+		  << UCI::value(rootPos.checkers() ? -VALUE_MATE : VALUE_DRAW) << std::endl;
+	  //g_stmOutput->Write(stmToWrite.str());
   }
   else
   {
@@ -340,15 +352,29 @@ void MainThread::search() {
   }
 
   // Send new PV when needed
-  if (bestThread != this)
-      sync_cout << UCI::pv(bestThread->rootPos, bestThread->completedDepth, -VALUE_INFINITE, VALUE_INFINITE) << sync_endl;
+  if (bestThread != this) {
+	  //std::stringstream	stmToWrite;
+	  //sync_cout << UCI::pv(bestThread->rootPos, bestThread->completedDepth, -VALUE_INFINITE, VALUE_INFINITE) << sync_endl;
+	  stmToWrite << UCI::pv(bestThread->rootPos, bestThread->completedDepth, -VALUE_INFINITE, VALUE_INFINITE) << std::endl;
+	  //g_stmOutput->Write(stmToWrite.str());
+  }
+  {
+	  //std::stringstream	stmToWrite;
 
-  sync_cout << "bestmove " << UCI::move(bestThread->rootMoves[0].pv[0], rootPos.is_chess960());
+	  //sync_cout << "bestmove " << UCI::move(bestThread->rootMoves[0].pv[0], rootPos.is_chess960());
+	  stmToWrite << "bestmove " << UCI::move(bestThread->rootMoves[0].pv[0], rootPos.is_chess960());
+	  //g_stmOutput->Write(stmToWrite.str());
+  }
 
-  if (bestThread->rootMoves[0].pv.size() > 1 || bestThread->rootMoves[0].extract_ponder_from_tt(rootPos))
-      std::cout << " ponder " << UCI::move(bestThread->rootMoves[0].pv[1], rootPos.is_chess960());
+  if (bestThread->rootMoves[0].pv.size() > 1 || bestThread->rootMoves[0].extract_ponder_from_tt(rootPos)) {
+	  //std::stringstream stm;
+	  stmToWrite << " ponder " << UCI::move(bestThread->rootMoves[0].pv[1], rootPos.is_chess960()) << std::endl;
+	  //g_stmOutput->Write(stm.str());
+  }
+  
+  g_stmOutput->Write(stmToWrite.str());
 
-  std::cout << sync_endl;
+  //std::cout << sync_endl;
 }
 
 
@@ -368,6 +394,7 @@ void Thread::search() {
   bestValue = delta = alpha = -VALUE_INFINITE;
   beta = VALUE_INFINITE;
   completedDepth = DEPTH_ZERO;
+  std::stringstream stmToWrite;
 
   if (mainThread)
   {
@@ -467,7 +494,12 @@ void Thread::search() {
                   && multiPV == 1
                   && (bestValue <= alpha || bestValue >= beta)
                   && Time.elapsed() > 3000)
-                  sync_cout << UCI::pv(rootPos, rootDepth, alpha, beta) << sync_endl;
+			  {
+				  //std::stringstream stmToWrite;
+				  //sync_cout << UCI::pv(rootPos, rootDepth, alpha, beta) << sync_endl;
+				  stmToWrite << UCI::pv(rootPos, rootDepth, alpha, beta) << std::endl;
+				  //g_stmOutput->Write(stmToWrite.str());
+			  }
 
               // In case of failing low/high increase aspiration window and
               // re-search, otherwise exit the loop.
@@ -502,12 +534,25 @@ void Thread::search() {
               break;
 
           if (Signals.stop)
-              sync_cout << "info nodes " << Threads.nodes_searched()
-                        << " time " << Time.elapsed() << sync_endl;
+		  {
+			  //std::stringstream stmToWrite;
+			  //sync_cout << "info nodes " << Threads.nodes_searched()
+				 // << " time " << Time.elapsed() << sync_endl;
+			  stmToWrite << "info nodes " << Threads.nodes_searched()
+				  << " time " << Time.elapsed() << std::endl;
+			  //g_stmOutput->Write(stmToWrite.str());
+		  }
 
           else if (PVIdx + 1 == multiPV || Time.elapsed() > 3000)
-              sync_cout << UCI::pv(rootPos, rootDepth, alpha, beta) << sync_endl;
+		  {
+			  //std::stringstream stmToWrite;
+			  //sync_cout << UCI::pv(rootPos, rootDepth, alpha, beta) << sync_endl;
+			  stmToWrite << UCI::pv(rootPos, rootDepth, alpha, beta) << std::endl;
+			  //g_stmOutput->Write(stmToWrite.str());
+		  }
       }
+
+	  g_stmOutput->Write(stmToWrite.str());
 
       if (!Signals.stop)
           completedDepth = rootDepth;
@@ -886,9 +931,16 @@ moves_loop: // When in check search starts from here
       ss->moveCount = ++moveCount;
 
       if (RootNode && thisThread == Threads.main() && Time.elapsed() > 3000)
-          sync_cout << "info depth " << depth / ONE_PLY
-                    << " currmove " << UCI::move(move, pos.is_chess960())
-                    << " currmovenumber " << moveCount + thisThread->PVIdx << sync_endl;
+	  {
+		  std::stringstream stmToWrite;
+		  //sync_cout << "info depth " << depth / ONE_PLY
+			 // << " currmove " << UCI::move(move, pos.is_chess960())
+			 // << " currmovenumber " << moveCount + thisThread->PVIdx << sync_endl;
+			stmToWrite << "info depth " << depth / ONE_PLY
+			 << " currmove " << UCI::move(move, pos.is_chess960())
+			 << " currmovenumber " << moveCount + thisThread->PVIdx << std::endl;
+			g_stmOutput->Write(stmToWrite.str());
+	  }
 
       if (PvNode)
           (ss+1)->pv = nullptr;

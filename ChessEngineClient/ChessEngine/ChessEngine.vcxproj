@@ -124,7 +124,7 @@
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories> ..\Common;..\Stockfish;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,7 +140,7 @@
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories> ..\Common;..\Stockfish;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,7 +156,7 @@
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories> ..\Common;..\Stockfish;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -172,7 +172,7 @@
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories> ..\Common;..\Stockfish;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -188,7 +188,7 @@
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories> ..\Common;..\Stockfish;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -204,7 +204,7 @@
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>28204</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories> ..\Common;..\Stockfish;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -213,9 +213,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\AutoLock.h" />
+    <ClInclude Include="..\Common\Event.h" />
     <ClInclude Include="..\Common\json.h" />
+    <ClInclude Include="..\Common\MemoryStream.h" />
     <ClInclude Include="..\Common\StatePreserver.h" />
-    <ClInclude Include="..\Common\Thread.h" />
+    <ClInclude Include="..\Common\ThreadBase.h" />
     <ClInclude Include="ChessBoardImpl.h" />
     <ClInclude Include="ChessEngineFactory.h" />
     <ClInclude Include="ChessEngineImpl.h" />
@@ -224,11 +226,15 @@
     <ClInclude Include="ChessPiece.h" />
     <ClInclude Include="Coordinate.h" />
     <ClInclude Include="DataConverter.h" />
+    <ClInclude Include="EngineCommThreadFactory.h" />
     <ClInclude Include="EngineCommunicationThread.h" />
     <ClInclude Include="EngineDefines.h" />
+    <ClInclude Include="EngineNotificationAdaptor.h" />
     <ClInclude Include="IChessEngine.h" />
     <ClInclude Include="IChessEngineNotifications.h" />
+    <ClInclude Include="IEngineCommThread.h" />
     <ClInclude Include="IEngineNotification.h" />
+    <ClInclude Include="InProcEngineCommThread.h" />
     <ClInclude Include="ManagedConverter.h" />
     <ClInclude Include="ManagedDefines.h" />
     <ClInclude Include="Move.h" />
@@ -242,8 +248,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Common\AutoLock.cpp" />
+    <ClCompile Include="..\Common\Event.cpp" />
     <ClCompile Include="..\Common\json.cpp" />
-    <ClCompile Include="..\Common\Thread.cpp" />
+    <ClCompile Include="..\Common\MemoryStream.cpp" />
+    <ClCompile Include="..\Common\ThreadBase.cpp" />
     <ClCompile Include="ChessBoardImpl.cpp" />
     <ClCompile Include="ChessEngineImpl.cpp" />
     <ClCompile Include="ChessGames.cpp" />
@@ -253,6 +261,8 @@
     <ClCompile Include="DataConverter.cpp" />
     <ClCompile Include="EngineCommunicationThread.cpp" />
     <ClCompile Include="EngineDefines.cpp" />
+    <ClCompile Include="EngineNotificationAdaptor.cpp" />
+    <ClCompile Include="InProcEngineCommThread.cpp" />
     <ClCompile Include="ManagedConverter.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="MoveScope.cpp" />
@@ -267,6 +277,11 @@
     </ClCompile>
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="UCIChessEngine.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Stockfish\Stockfish.vcxproj">
+      <Project>{8e89ce83-308a-4569-b0f6-fb194946c147}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

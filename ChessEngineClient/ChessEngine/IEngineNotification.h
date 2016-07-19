@@ -1,5 +1,4 @@
 #pragma once
-#include "ManagedDefines.h"
 #include "Move.h"
 namespace ChessEngine
 {

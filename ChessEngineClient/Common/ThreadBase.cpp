@@ -1,22 +1,22 @@
 #include "pch.h"
-#include "Thread.h"
+#include "ThreadBase.h"
 
 using namespace Core;
 
 static DWORD WINAPI ThreadProc( LPVOID lpParam )
 {
-	Thread* pThis = (Thread*)lpParam;
+	ThreadBase* pThis = (ThreadBase*)lpParam;
 	pThis->Run();
-	return 0;
+ 	return 0;
 }
 
-Thread::Thread(void)
+ThreadBase::ThreadBase(void)
 	: m_hThread( NULL )
 {
 }
 
 
-Thread::~Thread(void)
+ThreadBase::~ThreadBase(void)
 {
 	if ( m_hThread ) 
 	{
@@ -26,13 +26,13 @@ Thread::~Thread(void)
 }
 
 
-void Thread::Start()
+void ThreadBase::Start()
 {
 	m_hThread = CreateThread( NULL, 0, ThreadProc, this, 0, NULL );
 }
 
 
-bool Thread::Join()
+bool ThreadBase::Join()
 {
 	return WaitForSingleObject( m_hThread, INFINITE ) == WAIT_OBJECT_0;
 }

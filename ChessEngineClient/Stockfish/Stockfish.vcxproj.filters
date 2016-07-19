@@ -29,6 +29,10 @@
     <ClCompile Include="ucioption.cpp" />
     <ClCompile Include="syzygy\tbcore.cpp" />
     <ClCompile Include="syzygy\tbprobe.cpp" />
+    <ClCompile Include="ChessEngineEntryPoint.cpp" />
+    <ClCompile Include="..\Common\ThreadBase.cpp" />
+    <ClCompile Include="..\Common\Event.cpp" />
+    <ClCompile Include="..\Common\MemoryStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bitboard.h" />
@@ -51,6 +55,10 @@
     <ClInclude Include="uci.h" />
     <ClInclude Include="syzygy\tbcore.h" />
     <ClInclude Include="syzygy\tbprobe.h" />
+    <ClInclude Include="ChessEngineEntryPoint.h" />
+    <ClInclude Include="..\Common\ThreadBase.h" />
+    <ClInclude Include="..\Common\Event.h" />
+    <ClInclude Include="..\Common\MemoryStream.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile" />

@@ -67,14 +67,17 @@
 #  define USE_BSFQ
 #endif
 
+#undef USE_POPCNT
 #if defined(USE_POPCNT) && defined(__INTEL_COMPILER) && defined(_MSC_VER)
 #  include <nmmintrin.h> // Intel header for _mm_popcnt_u64() intrinsic
 #endif
 
+#define NO_PREFETCH
 #if !defined(NO_PREFETCH) && (defined(__INTEL_COMPILER) || defined(_MSC_VER))
 #  include <xmmintrin.h> // Intel and Microsoft header for _mm_prefetch()
 #endif
 
+#undef USE_PEXT
 #if defined(USE_PEXT)
 #  include <immintrin.h> // Header for _pext_u64() intrinsic
 #  define pext(b, m) _pext_u64(b, m)

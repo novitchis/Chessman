@@ -1,26 +1,13 @@
 #pragma once
 #include "pch.h"
-#include "Thread.h"
+#include "ThreadBase.h"
 #include "IChessEngineNotifications.h"
+#include "IEngineCommThread.h"
 #include <queue>
 
 namespace ChessEngine
 {
-	// forward declarations //
-	class IChessEngine;
-
-	struct EngineIOData
-	{
-		EngineIOData();
-		~EngineIOData();
-
-		HANDLE hStdInputRd;
-		HANDLE hStdInputWr;
-		HANDLE hStdOutputRd;
-		HANDLE hStdOutputWr;
-	};
-
-	class EngineCommunicationThread: public Core::Thread
+	class EngineCommunicationThread: public IEngineCommThread
 	{
 	public:
 		EngineCommunicationThread( IChessEngine* pEngine );
@@ -39,7 +26,6 @@ namespace ChessEngine
 
 	private:
 		EngineIOData*				m_pIOData;// someone else has ownership over this //
-		IChessEngine*				m_pEngine;
 		HANDLE						m_hCommandEvent;
 		volatile bool				m_bStop;
 		bool						m_bErrorOccurred;

@@ -46,10 +46,22 @@ struct Tie: public streambuf { // MSVC requires split streambuf for cin and cout
 
   Tie(streambuf* b, streambuf* l) : buf(b), logBuf(l) {}
 
-  int sync() { return logBuf->pubsync(), buf->pubsync(); }
-  int overflow(int c) { return log(buf->sputc((char)c), "<< "); }
-  int underflow() { return buf->sgetc(); }
-  int uflow() { return log(buf->sbumpc(), ">> "); }
+  int sync() 
+  { 
+	  return logBuf->pubsync(), buf->pubsync(); 
+  }
+  int overflow(int c) 
+  { 
+	  return log(buf->sputc((char)c), "<< "); 
+  }
+  int underflow() 
+  { 
+	  return buf->sgetc(); 
+  }
+  int uflow() 
+  { 
+	  return log(buf->sbumpc(), ">> "); 
+  }
 
   streambuf *buf, *logBuf;
 

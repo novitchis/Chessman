@@ -36,6 +36,9 @@ using namespace std;
 
 extern void benchmark(const Position& pos, istream& is);
 
+std::shared_ptr<MemoryStream>	g_stmInput;
+std::shared_ptr<MemoryStream>	g_stmOutput;
+
 namespace {
 
   // FEN string of the initial position, normal chess
@@ -102,7 +105,12 @@ namespace {
     if (Options.count(name))
         Options[name] = value;
     else
-        sync_cout << "No such option: " << name << sync_endl;
+	{
+		std::stringstream stmToWrite;
+		//sync_cout << "No such option: " << name << sync_endl;
+		stmToWrite << "No such option: " << name << std::endl;
+		g_stmOutput->Write(stmToWrite.str());
+	}
   }
 
 
@@ -139,12 +147,22 @@ namespace {
 
 } // namespace
 
+void UCI::setInputStream(std::shared_ptr<MemoryStream>	stmInput)
+{
+	g_stmInput = stmInput;
+}
+
+void UCI::setOutputStream(std::shared_ptr<MemoryStream>	stmOutput)
+{
+	g_stmOutput = stmOutput;
+}
 
 /// UCI::loop() waits for a command from stdin, parses it and calls the appropriate
 /// function. Also intercepts EOF from stdin to ensure gracefully exiting if the
 /// GUI dies unexpectedly. When called with some command line arguments, e.g. to
 /// run 'bench', once the command is executed the function returns immediately.
 /// In addition to the UCI ones, also some additional debug commands are supported.
+
 
 void UCI::loop(int argc, char* argv[]) {
 
@@ -155,7 +173,8 @@ void UCI::loop(int argc, char* argv[]) {
       cmd += std::string(argv[i]) + " ";
 
   do {
-      if (argc == 1 && !getline(cin, cmd)) // Block here waiting for input or EOF
+
+      if (argc == 1 && !g_stmInput->ReadLine(cmd)) // Block here waiting for input or EOF
           cmd = "quit";
 
       istringstream is(cmd);
@@ -179,25 +198,46 @@ void UCI::loop(int argc, char* argv[]) {
           Search::Limits.ponder = 0; // Switch to normal search
 
       else if (token == "uci")
-          sync_cout << "id name " << engine_info(true)
-                    << "\n"       << Options
-                    << "\nuciok"  << sync_endl;
+	  {
+		  std::stringstream stmToWrite;
+		  stmToWrite << "id name " << engine_info(true)
+			  << "\n" << Options
+			  << "\nuciok";
+		  g_stmOutput->Write(stmToWrite.str());
+	  }
 
       else if (token == "ucinewgame")
       {
           Search::clear();
           Time.availableNodes = 0;
       }
-      else if (token == "isready")    sync_cout << "readyok" << sync_endl;
+	  else if (token == "isready")    g_stmOutput->Write("readyok");// << sync_endl;
       else if (token == "go")         go(pos, is);
-      else if (token == "position")   position(pos, is);
+	  else if (token == "position") {
+		  position(pos, is);
+		  g_stmOutput->Write("foo");
+	  }
       else if (token == "setoption")  setoption(is);
 
       // Additional custom non-UCI commands, useful for debugging
       else if (token == "flip")       pos.flip();
       else if (token == "bench")      benchmark(pos, is);
-      else if (token == "d")          sync_cout << pos << sync_endl;
-      else if (token == "eval")       sync_cout << Eval::trace(pos) << sync_endl;
+      else if (token == "d")          
+	  {
+		  std::stringstream stmToWrite;
+		  //sync_cout << pos << sync_endl;
+		  stmToWrite << pos << std::endl;
+		  g_stmOutput->Write(stmToWrite.str());
+	  }
+      else if (token == "eval")       
+	  {
+		  std::stringstream stmToWrite;
+		  // sync_cout << Eval::trace(pos) << sync_endl;
+
+		  stmToWrite << Eval::trace(pos) << std::endl;
+		  g_stmOutput->Write(stmToWrite.str());
+
+	  }
       else if (token == "perft")
       {
           int depth;
@@ -210,7 +250,12 @@ void UCI::loop(int argc, char* argv[]) {
           benchmark(pos, ss);
       }
       else
-          sync_cout << "Unknown command: " << cmd << sync_endl;
+	  {
+		  std::stringstream stmToWrite;
+		  //sync_cout << "Unknown command: " << cmd << sync_endl;
+		  stmToWrite << "Unknown command: " << cmd << std::endl;
+		  g_stmOutput->Write(stmToWrite.str());
+	  }
 
   } while (token != "quit" && argc == 1); // Passed args have one-shot behaviour
 

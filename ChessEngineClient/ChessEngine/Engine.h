@@ -2,6 +2,7 @@
 #include "ChessEngineImpl.h"
 #include "IEngineNotification.h"
 #include "ChessBoard.h"
+#include "EngineNotificationAdaptor.h"
 
 namespace ChessEngine
 {
@@ -16,7 +17,7 @@ namespace ChessEngine
 		bool Analyze(ChessBoard^ board);
 
 	private:
-		IEngineNotification^				m_pNotifications;
 		std::shared_ptr<IChessEngine>		m_pEngineImpl;
+		EngineNotificationAdaptor			m_NotificationAdaptor;
 	};
 }

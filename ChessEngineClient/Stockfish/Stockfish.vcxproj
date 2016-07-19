@@ -27,9 +27,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Common\Event.cpp" />
+    <ClCompile Include="..\Common\MemoryStream.cpp" />
+    <ClCompile Include="..\Common\ThreadBase.cpp" />
     <ClCompile Include="benchmark.cpp" />
     <ClCompile Include="bitbase.cpp" />
     <ClCompile Include="bitboard.cpp" />
+    <ClCompile Include="ChessEngineEntryPoint.cpp" />
     <ClCompile Include="endgame.cpp" />
     <ClCompile Include="evaluate.cpp" />
     <ClCompile Include="main.cpp" />
@@ -58,8 +62,12 @@
     <ClCompile Include="ucioption.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Common\Event.h" />
+    <ClInclude Include="..\Common\MemoryStream.h" />
+    <ClInclude Include="..\Common\ThreadBase.h" />
     <ClInclude Include="bitboard.h" />
     <ClInclude Include="bitcount.h" />
+    <ClInclude Include="ChessEngineEntryPoint.h" />
     <ClInclude Include="endgame.h" />
     <ClInclude Include="evaluate.h" />
     <ClInclude Include="material.h" />
@@ -182,6 +190,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -194,6 +203,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -206,6 +216,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <CompileAsWinRT>true</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -218,6 +229,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -230,6 +242,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -242,6 +255,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

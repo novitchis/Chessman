@@ -3,11 +3,11 @@
 
 namespace Core
 {
-	class Thread
+	class ThreadBase
 	{
 	public:
-		Thread(void);
-		~Thread(void);
+		ThreadBase(void);
+		~ThreadBase(void);
 		
 		virtual void Run() = 0;
 		void Start();

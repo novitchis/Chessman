@@ -32,9 +32,6 @@
     <ClCompile Include="ManagedConverter.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\Common\Thread.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
     <ClCompile Include="ChessBoardImpl.cpp">
       <Filter>Impl</Filter>
     </ClCompile>
@@ -69,6 +66,21 @@
       <Filter>Managed</Filter>
     </ClCompile>
     <ClCompile Include="ChessPiece.cpp" />
+    <ClCompile Include="..\Common\ThreadBase.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="InProcEngineCommThread.cpp">
+      <Filter>Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\MemoryStream.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\Event.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineNotificationAdaptor.cpp">
+      <Filter>Impl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -88,9 +100,6 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\StatePreserver.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Common\Thread.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
@@ -148,5 +157,26 @@
       <Filter>Managed</Filter>
     </ClInclude>
     <ClInclude Include="ChessPiece.h" />
+    <ClInclude Include="..\Common\ThreadBase.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="IEngineCommThread.h">
+      <Filter>Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="InProcEngineCommThread.h">
+      <Filter>Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCommThreadFactory.h">
+      <Filter>Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\MemoryStream.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Event.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineNotificationAdaptor.h">
+      <Filter>Impl</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

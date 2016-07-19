@@ -38,7 +38,7 @@ namespace ChessEngineClient.View
                 board.Initialize();
                 ChessEngine.Engine engine = new ChessEngine.Engine(notificationHandler);
                 engine.Start();
-                //engine.Analyze(board);
+                engine.Analyze(board);
             }
             catch( Exception e)
             {

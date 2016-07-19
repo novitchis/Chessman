@@ -33,6 +33,31 @@ String^	ManagedConverter::String2ManagedString( string strNative )
 	return ManagedConverter::WString2ManagedString( wstrNative );
 }
 
+MoveImpl ManagedConverter::ConvertManagedMove(Move^ move)
+{
+	return MoveImpl(ConvertManagedCoord(move->GetFrom()), ConvertManagedCoord(move->GetTo()));
+}
+
+
+Move^ ManagedConverter::ConvertNativeMove(MoveImpl move)
+{
+	return ref new Move(ConvertNativeCoord(move.from), ConvertNativeCoord(move.to));
+}
+
+
+CoordinateImpl ManagedConverter::ConvertManagedCoord(Coordinate^ coord)
+{
+	return CoordinateImpl(coord->GetX(), coord->GetY());
+}
+
+
+Coordinate^ ManagedConverter::ConvertNativeCoord(CoordinateImpl coord)
+{
+	return ref new Coordinate(coord.nColumn, coord.nRank);
+}
+
+
+
 //void ManagedConverter::ConvertServerInfo( ServerInfo^ managedServerInfo, NativeImpl::ServerInfo& ServerInfo )
 //{
 //	if ( !managedServerInfo ) return;
