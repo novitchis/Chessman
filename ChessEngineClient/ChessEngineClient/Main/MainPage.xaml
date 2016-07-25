@@ -10,11 +10,17 @@
     DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}"
     d:DesignHeight="1080"
     d:DesignWidth="612">
-    <Grid Background="LightGray">
+    <Grid x:Name="MainGrid"
+          Background="LightGray" 
+          ManipulationMode="All"
+          ManipulationStarted="GridManipulationStarted"
+          ManipulationDelta="GridManipulationDelta"
+          ManipulationCompleted="GridManipulationCompleted">
         <Grid.RowDefinitions>
             <RowDefinition Height="58"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <Grid Background="#F2F2F2" Margin="4">
@@ -41,5 +47,11 @@
         </Grid>
         <view:ChessBoardView Grid.Row="1" DataContext="{Binding BoardViewModel}" />
         <view:NotationView Grid.Row="2" Margin="4" DataContext="{Binding NotationViewModel}" />
+        <CommandBar x:Name="CommandBar" Grid.Row="3">
+            <AppBarButton Label="Rotate" Icon="Rotate"/>
+            <AppBarButton Label="Undo" Icon="Back"/>
+            <AppBarButton Label="Redo" Icon="Forward"/>
+            <!--<AppBarSeparator/>-->
+        </CommandBar>
     </Grid>
 </Page>

@@ -24,6 +24,7 @@ namespace ChessEngineClient.View
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private int manipulation_threshold = 50;
         // Sample usage the Chess Engine //
 
         //void foo()
@@ -65,6 +66,41 @@ namespace ChessEngineClient.View
             if ((int)result.Id == 0)
                 Application.Current.Exit();
         }
+
+        private void GridManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
+        {
+            if (IsMultiTouchGesture(e))
+            {
+                if (IsNorthToSouth(e))
+                    CommandBar.ClosedDisplayMode = AppBarClosedDisplayMode.Hidden;
+                else if (IsSouthToNorth(e))
+                    CommandBar.ClosedDisplayMode = AppBarClosedDisplayMode.Compact;
+            }
+
+        }
+
+        private bool IsSouthToNorth(ManipulationCompletedRoutedEventArgs e)
+        {
+            return IsVertical(e) &&
+                e.Cumulative.Translation.Y < 0 &&
+                e.Cumulative.Translation.Y < -manipulation_threshold;
+        }
+
+        private bool IsNorthToSouth(ManipulationCompletedRoutedEventArgs e)
+        {
+            return IsVertical(e) &&
+                e.Cumulative.Translation.Y > 0 &&
+                e.Cumulative.Translation.Y > manipulation_threshold;
+        }
+
+        private bool IsVertical(ManipulationCompletedRoutedEventArgs e)
+        {
+            return Math.Abs(e.Cumulative.Translation.X) < Math.Abs(e.Cumulative.Translation.Y);
+        }
+
+        private bool IsMultiTouchGesture(ManipulationCompletedRoutedEventArgs e)
+        {
+            return e.Cumulative.Rotation != 0 && e.Cumulative.Expansion != 0;
+        }
     }
 }
-    
