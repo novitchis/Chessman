@@ -116,6 +116,10 @@
     <Compile Include="ChessBoard\SquareViewModel.cs" />
     <Compile Include="Controls\UniformGrid.cs" />
     <Compile Include="Controls\WrapPanel.cs" />
+    <Compile Include="EditPosition\EditPositionPage.xaml.cs">
+      <DependentUpon>EditPositionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditPosition\EditPositionViewModel.cs" />
     <Compile Include="EngineNotifications.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Main\MainPage.xaml.cs">
@@ -179,6 +183,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="EditPosition\EditPositionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Main\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>

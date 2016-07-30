@@ -12,6 +12,8 @@ namespace ChessEngineClient.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        private INavigationService navigationService = null;
+
         private IChessBoardService chessBoardService;
 
         public ChessBoardViewModel BoardViewModel { get; set; }
@@ -22,10 +24,12 @@ namespace ChessEngineClient.ViewModel
 
         public ICommand TogglePerspectiveCommand
         {
-            get
-            {
-                return new RelayCommand(TogglePerspectiveExecuted);
-            }
+            get { return new RelayCommand(TogglePerspectiveExecuted); }
+        }
+
+        public ICommand EditPositionCommand
+        {
+            get { return new RelayCommand(EditPositionExecuted); }
         }
 
         public ICommand GoBackCommand
@@ -52,8 +56,9 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        public MainViewModel(IChessBoardService chessBoardService)
+        public MainViewModel(INavigationService navigationService, IChessBoardService chessBoardService)
         {
+            this.navigationService = navigationService;
             this.chessBoardService = chessBoardService;
             BoardViewModel = ViewModelLocator.IOCContainer.Resolve<ChessBoardViewModel>();
             AnalysisViewModel = new AnalysisViewModel();
@@ -94,6 +99,11 @@ namespace ChessEngineClient.ViewModel
         {
             chessBoardService.ResetBoard();
             Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
+        }
+
+        private void EditPositionExecuted(object obj)
+        {
+            navigationService.NavigateTo(ViewModelLocator.EditPositionPageNavigationName);
         }
     }
 }

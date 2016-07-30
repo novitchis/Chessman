@@ -1,4 +1,5 @@
 ﻿using ChessEngineClient.View;
+using Framework.MVVM;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +16,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Practices.Unity;
 
 namespace ChessEngineClient
 {
@@ -33,7 +35,19 @@ namespace ChessEngineClient
                 Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
                 Microsoft.ApplicationInsights.WindowsCollectors.Session);
             this.InitializeComponent();
-            this.Suspending += OnSuspending; 
+            this.Suspending += OnSuspending;
+
+            BootstrapNavigationService();
+        }
+
+        private void BootstrapNavigationService()
+        {
+            NavigationService navigationService = new NavigationService();
+
+            navigationService.Configure(ViewModelLocator.MainPageNavigationName, typeof(MainPage));
+            navigationService.Configure(ViewModelLocator.EditPositionPageNavigationName, typeof(EditPositionPage));
+
+            ViewModelLocator.IOCContainer.RegisterInstance<INavigationService>(navigationService);
         }
 
         /// <summary>
