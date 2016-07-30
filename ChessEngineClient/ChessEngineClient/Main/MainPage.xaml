@@ -10,14 +10,13 @@
     DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}"
     d:DesignHeight="1080"
     d:DesignWidth="612">
+
     <Grid x:Name="MainGrid"
-          Background="LightGray" 
-          ManipulationMode="All"
-          ManipulationStarted="GridManipulationStarted"
-          ManipulationDelta="GridManipulationDelta"
-          ManipulationCompleted="GridManipulationCompleted">
+            Background="LightGray" 
+            ManipulationMode="All"
+            ManipulationCompleted="GridManipulationCompleted">
         <Grid.RowDefinitions>
-            <RowDefinition Height="58"/>
+            <RowDefinition Height="44"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
@@ -28,7 +27,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <ToggleButton 
+            <!--<ToggleButton 
                 x:Name="toggle"
                 Width="32"
                 Height="32"
@@ -41,7 +40,7 @@
                     <Rectangle Fill="White" />
                     <Rectangle Fill="Black" Visibility="{Binding IsChecked, ElementName=toggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
                 </Grid>
-            </ToggleButton>
+            </ToggleButton>-->
 
             <view:AnalysisView Grid.Column="1"/>
         </Grid>
@@ -49,9 +48,15 @@
         <view:NotationView Grid.Row="2" Margin="4" DataContext="{Binding NotationViewModel}" />
         <CommandBar x:Name="CommandBar" Grid.Row="3">
             <AppBarButton Label="Rotate" Icon="Rotate"/>
-            <AppBarButton Label="Undo" Icon="Back"/>
-            <AppBarButton Label="Redo" Icon="Forward"/>
-            <!--<AppBarSeparator/>-->
+            <AppBarButton Label="Start" Icon="GoToStart"/>
+            <AppBarButton Label="Back" Icon="Back"/>
+            <AppBarButton Label="Forward" Icon="Forward"/>
+            <AppBarButton Label="End" Icon="BackToWindow"/>
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="New game" />
+                <AppBarButton Label="Edit position" />
+            </CommandBar.SecondaryCommands>
         </CommandBar>
     </Grid>
 </Page>

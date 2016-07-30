@@ -55,14 +55,18 @@
                         </GroupStyle.Panel>
                         <GroupStyle.HeaderTemplate>
                             <DataTemplate>
-                                <TextBlock Margin="5 0" Text="{Binding MoveNumber}" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <TextBlock 
+                                    Margin="5 0" 
+                                    Text="{Binding MoveNumber}" 
+                                    FontWeight="Bold" 
+                                    VerticalAlignment="Center"/>
                             </DataTemplate>
                         </GroupStyle.HeaderTemplate>
                     </GroupStyle>
                 </ItemsControl.GroupStyle>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding PgnMove}" />
+                        <TextBlock Text="{Binding PgnMove}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.ItemsPanel>
@@ -73,6 +77,7 @@
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem" >
                         <Setter Property="UseSystemFocusVisuals" Value="False" />
+                        <Setter Property="Padding" Value="8" />
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
