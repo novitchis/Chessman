@@ -43,9 +43,9 @@ namespace ChessEngineClient.ViewModel
                     if (currentMove != null)
                     {
                         chessBoardService.GoToMove(currentMove.Index);
-                        Messenger.Default.Send(new GenericMessage<MoveData>(currentMove), NotificationMessages.CurrentMoveChanged);
                         NotifyPropertyChanged();
                     }
+                    Messenger.Default.Send(new GenericMessage<MoveData>(currentMove), NotificationMessages.CurrentMoveChanged);
                 }
             }
         }

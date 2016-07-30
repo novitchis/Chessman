@@ -65,10 +65,7 @@
     </UserControl.Resources>
 
     <Grid HorizontalAlignment="Center">
-        <Grid Background="{StaticResource BlackSquareBrush}" 
-              ManipulationMode="All" 
-              ManipulationStarted="Grid_ManipulationStarted" 
-              ManipulationDelta="Grid_ManipulationDelta">
+        <Grid Background="{StaticResource BlackSquareBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>

@@ -1,4 +1,4 @@
-﻿using ChessEngine;
+﻿using Framework.MVVM;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,33 +24,13 @@ namespace ChessEngineClient.View
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private int manipulation_threshold = 50;
-        // Sample usage the Chess Engine //
-
-        //void foo()
-        //{
-        //    // Sample engine usage //
-        //    try
-        //    {
-        //        EngineNotifications notificationHandler = new EngineNotifications();
-        //        ChessBoard board = new ChessBoard();
-        //        board.Initialize();
-        //        ChessEngine.Engine engine = new ChessEngine.Engine(notificationHandler);
-        //        engine.Start();
-        //        //engine.Analyze(board);
-        //    }
-        //    catch( Exception e)
-        //    {
-
-        //    }
-        //}
+        private int manipulationThreshold = 50;
 
         public MainPage()
         {
             this.InitializeComponent();
             SystemNavigationManager navigation = SystemNavigationManager.GetForCurrentView();
             navigation.BackRequested += OnBackExecuted;
-            //foo();
         }
 
         private async void OnBackExecuted(object sender, BackRequestedEventArgs e)
@@ -75,27 +55,49 @@ namespace ChessEngineClient.View
                     CommandBar.ClosedDisplayMode = AppBarClosedDisplayMode.Hidden;
                 else if (IsSouthToNorth(e))
                     CommandBar.ClosedDisplayMode = AppBarClosedDisplayMode.Compact;
+                else if (IsWestToEast(e))
+                    Messenger.Default.Send(new MessageBase(), NotificationMessages.GoBack);
+                else if (IsEastToWest(e))
+                    Messenger.Default.Send(new MessageBase(), NotificationMessages.GoForward);
             }
-
         }
 
         private bool IsSouthToNorth(ManipulationCompletedRoutedEventArgs e)
         {
             return IsVertical(e) &&
                 e.Cumulative.Translation.Y < 0 &&
-                e.Cumulative.Translation.Y < -manipulation_threshold;
+                e.Cumulative.Translation.Y < -manipulationThreshold;
         }
 
         private bool IsNorthToSouth(ManipulationCompletedRoutedEventArgs e)
         {
             return IsVertical(e) &&
                 e.Cumulative.Translation.Y > 0 &&
-                e.Cumulative.Translation.Y > manipulation_threshold;
+                e.Cumulative.Translation.Y > manipulationThreshold;
+        }
+
+        private bool IsEastToWest(ManipulationCompletedRoutedEventArgs e)
+        {
+            return IsHorizontal(e) &&
+                e.Cumulative.Translation.X > 0 &&
+                e.Cumulative.Translation.X > manipulationThreshold;
+        }
+
+        private bool IsWestToEast(ManipulationCompletedRoutedEventArgs e)
+        {
+            return IsHorizontal(e) &&
+                e.Cumulative.Translation.X < 0 &&
+                e.Cumulative.Translation.X < -manipulationThreshold;
         }
 
         private bool IsVertical(ManipulationCompletedRoutedEventArgs e)
         {
             return Math.Abs(e.Cumulative.Translation.X) < Math.Abs(e.Cumulative.Translation.Y);
+        }
+
+        private bool IsHorizontal(ManipulationCompletedRoutedEventArgs e)
+        {
+            return Math.Abs(e.Cumulative.Translation.Y) < Math.Abs(e.Cumulative.Translation.X);
         }
 
         private bool IsMultiTouchGesture(ManipulationCompletedRoutedEventArgs e)

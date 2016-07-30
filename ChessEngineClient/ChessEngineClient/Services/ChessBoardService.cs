@@ -18,6 +18,11 @@ namespace ChessEngineClient
             chessBoard.StorePGN();
         }
 
+        public void ResetBoard()
+        {
+            chessBoard.Initialize();
+        }
+
         public ChessPiece GetPiece(Coordinate coordinate)
         {
             return chessBoard.GetPiece(coordinate);

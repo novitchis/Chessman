@@ -9,6 +9,8 @@ namespace ChessEngineClient
 {
     public interface IChessBoardService
     {
+        void ResetBoard();
+
         ChessPiece GetPiece(Coordinate coordinate);
 
         bool SubmitMove(Coordinate from, Coordinate to);
