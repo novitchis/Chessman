@@ -37,7 +37,7 @@
             <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}"/>
 
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="New game" Command="{Binding NewGameCommand}/>
+                <AppBarButton Label="New game" Command="{Binding NewGameCommand}" />
                 <AppBarSeparator/>
                 <AppBarButton Label="Edit position" Command="{Binding EditPositionCommand}" />
             </CommandBar.SecondaryCommands>
