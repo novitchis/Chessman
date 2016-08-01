@@ -16,7 +16,7 @@ namespace ChessEngineClient
 
         public static UnityContainer IOCContainer = new UnityContainer();
 
-        public MainViewModel MainViewModel
+        public static MainViewModel MainViewModel
         {
             get
             {
@@ -24,7 +24,7 @@ namespace ChessEngineClient
             }
         }
 
-        public EditPositionViewModel EditPositionViewModel
+        public static EditPositionViewModel EditPositionViewModel
         {
             get
             {
@@ -34,6 +34,7 @@ namespace ChessEngineClient
 
         public ViewModelLocator()
         {
+            IOCContainer.RegisterType<MainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IChessBoardService, ChessBoardService>(new ContainerControlledLifetimeManager());
         }
     }

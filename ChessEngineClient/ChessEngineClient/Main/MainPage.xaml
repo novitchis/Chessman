@@ -22,13 +22,9 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Background="#F2F2F2" Margin="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <view:AnalysisView Grid.Column="1"/>
-        </Grid>
+        <Border Background="#F2F2F2" Margin="4" >
+            <view:AnalysisView />
+        </Border>
         <view:ChessBoardView Grid.Row="1" DataContext="{Binding BoardViewModel}" />
         <view:NotationView Grid.Row="2" Margin="4" DataContext="{Binding NotationViewModel}" />
         <CommandBar x:Name="CommandBar" Grid.Row="3">

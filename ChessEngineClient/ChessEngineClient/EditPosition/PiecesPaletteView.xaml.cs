@@ -1,5 +1,4 @@
 ﻿using ChessEngineClient.ViewModel;
-using Framework.MVVM;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,18 +18,16 @@ using Windows.UI.Xaml.Navigation;
 
 namespace ChessEngineClient.View
 {
-    public sealed partial class SquareView : UserControl
+    public sealed partial class PiecesPaletteView : UserControl
     {
-        public SquareView()
+        public PiecesPaletteViewModel ViewModel
         {
-            this.InitializeComponent();
-
-            this.PointerPressed += OnSquareViewPointerPressed;
+            get { return DataContext as PiecesPaletteViewModel; }
         }
 
-        private void OnSquareViewPointerPressed(object sender, PointerRoutedEventArgs e)
+        public PiecesPaletteView()
         {
-            Messenger.Default.Send((SquareViewModel)DataContext, NotificationMessages.SquarePressed);
+            this.InitializeComponent();
         }
     }
 }

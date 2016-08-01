@@ -70,12 +70,16 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
+        public bool IsEdit { get; set; }
+
         #endregion
 
         public ChessBoardViewModel(IChessBoardService chessBoardService)
         {
             this.chessBoardService = chessBoardService;
-            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.CurrentMoveChanged, OnCurrentMoveChangedMessage);
+
+            if (!IsEdit)
+                Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.CurrentMoveChanged, OnCurrentMoveChangedMessage);
 
             InitBoard();
         }
@@ -136,7 +140,7 @@ namespace ChessEngineClient.ViewModel
             if (oldSquare == null || newSquare == null)
                 return;
 
-            if (chessBoardService.SubmitMove(oldSquare.Coordinate, newSquare.Coordinate))
+            if (!IsEdit && chessBoardService.SubmitMove(oldSquare.Coordinate, newSquare.Coordinate))
             {
                 RefreshPieces();
                 Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
@@ -147,6 +151,11 @@ namespace ChessEngineClient.ViewModel
         {
             foreach (SquareViewModel square in Squares)
                 square.Piece = chessBoardService.GetPiece(square.Coordinate);
+        }
+
+        public void ClearPieces()
+        {
+            Squares.ForEach(s => s.Piece = null);
         }
     }
 }

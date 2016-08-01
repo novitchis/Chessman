@@ -27,7 +27,12 @@
                 </ic:DataTriggerBehavior>
             </i:Interaction.Behaviors>
         </Grid>
+        <Viewbox>
+            <!--This is a hack to take up space-->
+            <Border Width="20" Height="20"/>
+        </Viewbox>
         <view:ChessPieceView x:Name="pieceView" DataContext="{Binding Piece}" />
+
         <i:Interaction.Behaviors>
             <ic:DataTriggerBehavior Binding="{Binding Coordinate.IsWhiteSquare}" Value="True">
                 <ic:DataTriggerBehavior.Actions>
