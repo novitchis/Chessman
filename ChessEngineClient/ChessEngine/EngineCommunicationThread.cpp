@@ -49,7 +49,8 @@ void EngineCommunicationThread::Stop()
 
 void EngineCommunicationThread::QueueCommand( const std::string& strCommand )
 {
-	WriteData( strCommand );
+	if (!strCommand.empty())
+		WriteData( strCommand );
 	SetEvent( m_hCommandEvent );
 }
 

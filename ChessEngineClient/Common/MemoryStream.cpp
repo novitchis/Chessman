@@ -66,6 +66,7 @@ bool MemoryStream::ReadToEnd(std::string& strData)
 		m_lock.Lock();
 	}
 
+
 	_ASSERTE(GetAvailableByteCount());
 
 	strData = m_strBuffer.substr(m_nStartIndex);
@@ -91,7 +92,7 @@ bool MemoryStream::Peek(int& nAvailableBytes)
 
 void MemoryStream::Resize(int nDesiredSize)
 {
-	auto bla = GetRemainingByteCount();
+	auto nByteCount = GetRemainingByteCount();
 	if (GetRemainingByteCount() >= nDesiredSize) return;
 	if (GetAvailableByteCount() == 0 && (nDesiredSize <= GetRemainingByteCount() + m_nStartIndex) ) {
 		ResetCurrent();

@@ -218,6 +218,7 @@
     <ClInclude Include="..\Common\MemoryStream.h" />
     <ClInclude Include="..\Common\StatePreserver.h" />
     <ClInclude Include="..\Common\ThreadBase.h" />
+    <ClInclude Include="AnalysisData.h" />
     <ClInclude Include="ChessBoardImpl.h" />
     <ClInclude Include="ChessEngineFactory.h" />
     <ClInclude Include="ChessEngineImpl.h" />

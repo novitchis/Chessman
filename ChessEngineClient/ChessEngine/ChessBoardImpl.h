@@ -10,7 +10,7 @@ namespace ChessEngine
 {
 	enum SerializationType
 	{
-		ST_FEN,
+		ST_FEN = 0,
 		ST_PGN,
 	};
 

@@ -63,6 +63,7 @@ namespace ChessEngine
 		std::map<UCICommand, std::string>		m_mapCommands;
 		UCICommand								m_state; // maybe a std::stack<UCIEgineState> in the future //
 		std::queue<EngineCommand>				m_queueCommands;
-		bool									m_bDelayResponse;
+		bool									m_bDelayResponse;		
+		std::string								m_strCumul;
 	};
 }

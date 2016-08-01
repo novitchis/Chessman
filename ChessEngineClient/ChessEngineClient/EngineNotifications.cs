@@ -11,17 +11,15 @@ namespace ChessEngineClient
     {
         public void OnEngineError()
         {
-            throw new NotImplementedException();
+            
         }
 
-        public void OnEngineMoveFinished(Move move)
+        public void OnEngineMoveFinished(Move move, AnalysisData analysis)
         {
-            throw new NotImplementedException();
         }
 
         public void OnGameEnded(bool bWhiteWins)
         {
-            throw new NotImplementedException();
         }
     }
 }

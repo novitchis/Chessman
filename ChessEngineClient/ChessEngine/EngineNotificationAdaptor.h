@@ -9,7 +9,7 @@ namespace ChessEngine
 	{
 	public:
 		EngineNotificationAdaptor(IEngineNotification^ pManagedNofitication);
-		virtual void OnEngineMoveFinished(const MoveImpl& move);
+		virtual void OnEngineMoveFinished(const MoveImpl& move, const AnalysisDataImpl& analysis);
 		virtual void OnEngineError();
 		virtual void OnGameEnded(bool bWhiteWins);
 

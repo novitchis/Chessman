@@ -184,5 +184,9 @@
     <ClInclude Include="EngineNotificationAdaptor.h">
       <Filter>Impl</Filter>
     </ClInclude>
+    <ClInclude Include="MoveData.h" />
+    <ClInclude Include="AnalysisData.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Core;
@@ -25,31 +26,25 @@ namespace ChessEngineClient.View
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        // Sample usage the Chess Engine //
-
-            // Sample engine usage //
-        //try
-        //{
-        //    EngineNotifications notificationHandler = new EngineNotifications();
-        //    ChessBoard board = new ChessBoard();
-        //    board.Initialize();
-        //    ChessEngine.Engine engine = new ChessEngine.Engine(notificationHandler);
-        //    EngineNotifications.Start();
-        //    engine.Analyze(board);
-        //}
-           // Sample engine usage //
-        void foo()
+        // Sample engine usage //
+        async void foo()
         {
             try
             {
                 EngineNotifications notificationHandler = new EngineNotifications();
                 ChessBoard board = new ChessBoard();
                 board.Initialize();
+
+                String testFEN = "rnbqkbnr/pppp1ppp/8/8/3pP3/2P5/PP3PPP/RNBQKBNR b KQkq - 0 3";
+                testFEN = "rnbqkbnr/pp1ppppp/2p5/8/3P4/2P5/PP2PPPP/RNBQKBNR b KQkq d3";
+                //board.LoadFrom(testFEN, 0);
+
                 ChessEngine.Engine engine = new ChessEngine.Engine(notificationHandler);
                 engine.Start();
                 engine.Analyze(board);
+                await Task.Delay(TimeSpan.FromSeconds(1000));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
 
             }

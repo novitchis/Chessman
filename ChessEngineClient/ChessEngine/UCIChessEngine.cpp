@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "UCIChessEngine.h"
 #include "EngineCommThreadFactory.h"
+#include "Utils.h"
 #include <sstream>
 #include <iostream>
 #include <time.h>
+#include <regex>
 
 using namespace ChessEngine;
 
@@ -170,10 +172,14 @@ void UCIChessEngine::OnEngineResponse( const std::string& strResponse )
 		break;
 	case ChessEngine::UC_Position:
 		newState = UC_Go;
-		m_pCommThread->QueueCommand( "go\n" );
+		m_pCommThread->QueueCommand( "go depth 8\n" );
 		break;
 	case ChessEngine::UC_Go:
-		ProcessGoResponse( strResponse );
+		if (ProcessGoResponse(strResponse))
+		{
+			newState = UC_Go; // remain in this state //
+			m_pCommThread->QueueCommand("");
+		}
 		break;
 	case ChessEngine::UC_None:
 	default:
@@ -221,26 +227,52 @@ bool UCIChessEngine::ProcessGoResponse( const std::string& strResponse )
 	// parse bestmove //
 	std::string strBestMove = "bestmove";
 	auto nPos = strResponse.find( strBestMove );
-	if ( nPos == -1 ) 
-	{
-		m_pNotification->OnEngineError();
+	if ( nPos != -1 ) 
 		return false;
-	}
 
-	auto strMove = strResponse.substr( nPos + strBestMove.size() + 1 );
-	auto nSpacePos = strMove.find( ' ' );
-	if ( nSpacePos != std::string::npos ) 
-		strMove = strMove.substr( 0, nSpacePos );
-
-	MoveImpl move = MoveImpl::FromString( strMove );
-
-	if ( m_bDelayResponse )
+	m_strCumul += strResponse;
+	auto vecLines = split<std::string>(strResponse, "\n");
+	std::vector<std::string>	vecProspectedLines;
+	for (auto it : vecLines)
 	{
-		auto nSleepValue = 1000 + rand() % 1000;
-		Sleep( nSleepValue );
+		if (it.find("info depth 8 seldepth 8") == 0) {
+			vecProspectedLines.push_back(it);
+			break; // ignore line, at least for now
+		}
 	}
+	
+	if (vecProspectedLines.empty()) return true;
 
-	m_pNotification->OnEngineMoveFinished( move );
+	AnalysisDataImpl analysisData;
+	for (auto iter : vecProspectedLines)
+	{
+		int nCpPos = iter.find("cp");
+		int nPvPos = iter.rfind("pv");
+		nCpPos += 3;
+		nPvPos += 3;
+
+		int nNextSpace = iter.find(" ", nCpPos);
+		auto strCp = iter.substr(nCpPos, nNextSpace - nCpPos);
+		auto strMoves = iter.substr(nPvPos, iter.size() - nPvPos);
+		auto vecMoves = split<std::string>(strMoves, " ");
+
+		if (vecMoves.empty()) continue;
+
+		AnalysisDataImpl crtAnalysisData;
+		
+		crtAnalysisData.fScore = atof(strCp.c_str()) / 100.;
+		for (auto it : vecMoves)
+		{
+			crtAnalysisData.listAnalysis.push_back(MoveImpl::FromString(it));
+		}
+
+		if (crtAnalysisData > analysisData) 
+			analysisData = crtAnalysisData;
+	}
+	
+	if (analysisData.listAnalysis.size() == 0) return true; // ignore it!
+	m_pNotification->OnEngineMoveFinished( analysisData.listAnalysis.front(), analysisData );
+
 	return true;
 }
 

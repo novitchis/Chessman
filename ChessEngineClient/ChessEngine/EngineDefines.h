@@ -6,7 +6,7 @@
 #include <memory>
 #include <algorithm>
 #include <tchar.h>
-
+#include <list>
 namespace ChessEngine
 {
 	enum ChessEngineType
@@ -253,6 +253,17 @@ namespace ChessEngine
 		ChessPieceImpl promotionPiece;
 	};
 
+
+	struct AnalysisDataImpl
+	{
+		std::list<MoveImpl>			listAnalysis;
+		float						fScore;
+		
+		bool operator > (const AnalysisDataImpl& rhs)
+		{
+			return listAnalysis.size() > rhs.listAnalysis.size();
+		}
+	};
 
 	enum MoveInfo
 	{

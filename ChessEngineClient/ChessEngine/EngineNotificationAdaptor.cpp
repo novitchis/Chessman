@@ -5,13 +5,23 @@
 using namespace ChessEngine;
 
 EngineNotificationAdaptor::EngineNotificationAdaptor(IEngineNotification^ pManagedNofitication)
+	:m_pManagedNotification( pManagedNofitication )
 {
 }
 
 
-void EngineNotificationAdaptor::OnEngineMoveFinished(const MoveImpl& move)
+void EngineNotificationAdaptor::OnEngineMoveFinished(const MoveImpl& move, const AnalysisDataImpl& analysis)
 {
-	m_pManagedNotification->OnEngineMoveFinished(ManagedConverter::ConvertNativeMove(move));
+	Platform::Array<Move^>^ arrayAnalysis = ref new Platform::Array<Move^>(analysis.listAnalysis.size());
+	AnalysisData^ analysisData = ref new AnalysisData();
+	
+	int iCrtIdx = -1;
+	for (auto it : analysis.listAnalysis) {
+		arrayAnalysis->set(++iCrtIdx, ManagedConverter::ConvertNativeMove(it));
+	}
+	analysisData->Analysis = arrayAnalysis;
+	analysisData->Score = analysis.fScore;
+	m_pManagedNotification->OnEngineMoveFinished(ManagedConverter::ConvertNativeMove(move), analysisData);
 }
 
 
