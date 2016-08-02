@@ -9,7 +9,7 @@
     xmlns:view="using:ChessEngineClient.View"
     mc:Ignorable="d">
 
-    <Grid Background="LightSteelBlue">
+    <Grid Background="LightGray">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*" />
             <RowDefinition Height="*"/>
@@ -21,7 +21,7 @@
         <view:PiecesPaletteView 
             Grid.Row="1"
             Margin="4" 
-            DataContext="{Binding PiecesPaletteViewModel}" 
+            DataContext="{Binding PiecesPaletteViewModel}"
             HorizontalAlignment="Center" 
             VerticalAlignment="Top"/>
         

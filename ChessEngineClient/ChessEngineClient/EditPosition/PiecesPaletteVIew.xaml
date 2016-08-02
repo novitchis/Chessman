@@ -14,6 +14,7 @@
 
     <Grid>
         <ListBox 
+            Background="Transparent"
             ItemsSource="{Binding Pieces}" 
             SelectedItem="{Binding SelectedPiece, Mode=TwoWay}"
             ScrollViewer.VerticalScrollBarVisibility="Disabled">
@@ -27,6 +28,14 @@
                     <c:UniformGrid Columns="6" Rows="2" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Margin" Value="2" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Background" Value="#F2F2F2" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            
         </ListBox>
     </Grid>
 </UserControl>

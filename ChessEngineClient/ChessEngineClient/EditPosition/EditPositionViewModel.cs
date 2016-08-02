@@ -48,6 +48,8 @@ namespace ChessEngineClient.ViewModel
 
         private void CancelExecuted(object obj)
         {
+            Messenger.Default.Unregister<SquareViewModel>(this);
+
             navigationService.NavigateTo(ViewModelLocator.MainPageNavigationName);
         }
 
