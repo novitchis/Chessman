@@ -12,22 +12,38 @@
     d:DesignWidth="612">
 
     <Grid x:Name="MainGrid"
-            Background="LightGray" 
+          Background="{StaticResource BackgroundDark}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid 
+            Margin="4"
             ManipulationMode="All"
             ManipulationCompleted="GridManipulationCompleted">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="44"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="44"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <Border Background="#F2F2F2" Margin="4" >
-            <view:AnalysisView />
-        </Border>
-        <view:ChessBoardView Grid.Row="1" DataContext="{Binding BoardViewModel}" />
-        <view:NotationView Grid.Row="2" Margin="4" DataContext="{Binding NotationViewModel}" />
-        <CommandBar x:Name="CommandBar" Grid.Row="3">
+            <Border Background="{StaticResource BackgroundLight}" >
+                <view:AnalysisView />
+            </Border>
+
+            <RelativePanel Grid.Row="1" Margin="0 4 0 0">
+                <view:ChessBoardView x:Name="chessBoard"
+                                     MaxWidth="500"
+                                     MaxHeight="500"
+                                     RelativePanel.AlignHorizontalCenterWithPanel="True"
+                                     DataContext="{Binding BoardViewModel}" />
+                <view:NotationView 
+                    Margin="0 4 0 0" 
+                    RelativePanel.AlignBottomWithPanel="True"
+                    RelativePanel.Below="chessBoard"
+                    DataContext="{Binding NotationViewModel}" />
+            </RelativePanel>
+        </Grid>
+        <CommandBar x:Name="CommandBar" Grid.Row="1">
             <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding TogglePerspectiveCommand}"/>
             <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}"/>
             <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}"/>

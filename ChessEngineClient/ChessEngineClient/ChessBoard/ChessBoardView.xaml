@@ -10,15 +10,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
-        
-        <ControlTemplate x:Key="NoScrollListTemplate" TargetType="ListBox">
-            <Border x:Name="LayoutRoot" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
-                <Grid Padding="{TemplateBinding Padding}">
-                    <ItemsPresenter/>
-                </Grid>
-            </Border>
-        </ControlTemplate>
-
+                
         <Style x:Key="RankOrFieldText" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />

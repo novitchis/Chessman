@@ -9,27 +9,44 @@
     xmlns:view="using:ChessEngineClient.View"
     mc:Ignorable="d">
 
-    <Grid Background="LightGray">
+    <Grid Background="{StaticResource BackgroundDark}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="*"/>
+            <RowDefinition />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <Grid Margin="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="44"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid Background="{StaticResource BackgroundLight}">
+                <TextBlock 
+                    Text="Set-up a position"
+                    FontSize="20"
+                    Style="{StaticResource PlaceHolderTextStyle}" />
+            </Grid>
+            <RelativePanel Grid.Row="1" >
+                <view:ChessBoardView x:Name="chessBoard"
+                                     Margin="0 4"
+                                     MaxWidth="500"
+                                     MaxHeight="500"
+                                     RelativePanel.AlignHorizontalCenterWithPanel="True" 
+                                     DataContext="{Binding BoardViewModel}" />
 
-        <view:ChessBoardView Margin="0 12" DataContext="{Binding BoardViewModel}" />
+                <view:PiecesPaletteView 
+                    RelativePanel.AlignBottomWithPanel="True"
+                    RelativePanel.Below="chessBoard"
+                    RelativePanel.AlignLeftWith="chessBoard"
+                    RelativePanel.AlignRightWith="chessBoard"
+                    Margin="-2" 
+                    DataContext="{Binding PiecesPaletteViewModel}" />
+            </RelativePanel>
+        </Grid>
 
-        <view:PiecesPaletteView 
-            Grid.Row="1"
-            Margin="4" 
-            DataContext="{Binding PiecesPaletteViewModel}"
-            HorizontalAlignment="Center" 
-            VerticalAlignment="Top"/>
-        
-        <CommandBar x:Name="CommandBar" Grid.Row="2">
+        <CommandBar x:Name="CommandBar" Grid.Row="1">
             <AppBarButton Label="Clear" Icon="Clear" Foreground="Red" Command="{Binding ClearCommand}"/>
             <AppBarButton Label="Done" Icon="Accept" />
             <AppBarButton Label="Cancel" Icon="Cancel" Command="{Binding CancelCommand}"/>
         </CommandBar>
     </Grid>
-    
 </Page>

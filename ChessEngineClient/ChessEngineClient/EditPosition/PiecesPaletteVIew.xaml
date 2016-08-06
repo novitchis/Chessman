@@ -17,7 +17,7 @@
             Background="Transparent"
             ItemsSource="{Binding Pieces}" 
             SelectedItem="{Binding SelectedPiece, Mode=TwoWay}"
-            ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            Template="{StaticResource NoScrollListTemplate}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <view:ChessPieceView />
@@ -32,10 +32,10 @@
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Margin" Value="2" />
                     <Setter Property="Padding" Value="0" />
-                    <Setter Property="Background" Value="#F2F2F2" />
+                    <Setter Property="Background" Value="{StaticResource BackgroundLight}" />
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
                 </Style>
             </ListBox.ItemContainerStyle>
-            
         </ListBox>
     </Grid>
 </UserControl>
