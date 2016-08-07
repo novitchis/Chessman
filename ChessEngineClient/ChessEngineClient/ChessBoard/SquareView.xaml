@@ -34,7 +34,7 @@
         <view:ChessPieceView x:Name="pieceView" DataContext="{Binding Piece}" />
 
         <i:Interaction.Behaviors>
-            <ic:DataTriggerBehavior Binding="{Binding Coordinate.IsWhiteSquare}" Value="True">
+            <ic:DataTriggerBehavior Binding="{Binding Coordinate.IsWhiteSquare}" Value="False">
                 <ic:DataTriggerBehavior.Actions>
                     <ic:ChangePropertyAction PropertyName="Background" Value="{StaticResource BlackSquareBrush}"/>
                 </ic:DataTriggerBehavior.Actions>
