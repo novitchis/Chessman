@@ -2,43 +2,41 @@
     x:Class="ChessEngineClient.View.SquareView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:i="using:Microsoft.Xaml.Interactivity" 
-    xmlns:ic="using:Microsoft.Xaml.Interactions.Core" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="using:ChessEngineClient.View"
-    xmlns:co="using:Framework.MVVM.Converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid Background="{StaticResource WhiteSquareBrush}">
-        <Grid Background="Transparent">
-            <i:Interaction.Behaviors>
-                <ic:DataTriggerBehavior Binding="{Binding IsSelected}" Value="True">
-                    <ic:DataTriggerBehavior.Actions>
-                        <ic:ChangePropertyAction PropertyName="Background" Value="{StaticResource SelectedSquareBrush}"/>
-                    </ic:DataTriggerBehavior.Actions>
-                </ic:DataTriggerBehavior>
-                <ic:DataTriggerBehavior Binding="{Binding IsSelected}" Value="False">
-                    <ic:DataTriggerBehavior.Actions>
-                        <ic:ChangePropertyAction PropertyName="Background" Value="Transparent"/>
-                    </ic:DataTriggerBehavior.Actions>
-                </ic:DataTriggerBehavior>
-            </i:Interaction.Behaviors>
-        </Grid>
+    <Grid x:Name="rootGrid" Background="{StaticResource BlackSquareBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="DefaultState">
+                <VisualState>
+                    <VisualState.Setters>
+                        <Setter Target="rootGrid.Background" Value="{StaticResource WhiteSquareBrush}" />
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding Coordinate.IsWhiteSquare}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="SelectedState">
+                <VisualState>
+                    <VisualState.Setters>
+                        <Setter Target="selectionOverlay.Background" Value="{StaticResource SelectedSquareBrush}" />
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding IsSelected}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid x:Name="selectionOverlay"></Grid>
         <Viewbox>
             <!--This is a hack to take up space-->
             <Border Width="20" Height="20"/>
         </Viewbox>
         <view:ChessPieceView x:Name="pieceView" DataContext="{Binding Piece}" />
-
-        <i:Interaction.Behaviors>
-            <ic:DataTriggerBehavior Binding="{Binding Coordinate.IsWhiteSquare}" Value="False">
-                <ic:DataTriggerBehavior.Actions>
-                    <ic:ChangePropertyAction PropertyName="Background" Value="{StaticResource BlackSquareBrush}"/>
-                </ic:DataTriggerBehavior.Actions>
-            </ic:DataTriggerBehavior>
-        </i:Interaction.Behaviors>
     </Grid>
 </UserControl>
