@@ -18,9 +18,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid 
-            Margin="4"
-            ManipulationMode="All"
-            ManipulationCompleted="GridManipulationCompleted">
+            Margin="4">
             <Grid.RowDefinitions>
                 <RowDefinition Height="44"/>
                 <RowDefinition Height="*"/>

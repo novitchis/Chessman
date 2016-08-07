@@ -17,6 +17,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Practices.Unity;
+using Windows.UI.Core;
+using Windows.UI.Popups;
 
 namespace ChessEngineClient
 {
@@ -37,7 +39,7 @@ namespace ChessEngineClient
             this.InitializeComponent();
             this.Suspending += OnSuspending;
 
-            BootstrapNavigationService();
+            BootstrapNavigationService();            
         }
 
         private void BootstrapNavigationService()
@@ -95,6 +97,40 @@ namespace ChessEngineClient
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+
+            SystemNavigationManager navigation = SystemNavigationManager.GetForCurrentView();
+            navigation.BackRequested += OnBackExecuted;
+        }
+
+        private void OnBackExecuted(object sender, BackRequestedEventArgs e)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            e.Handled = true;
+
+            if (rootFrame.CurrentSourcePageType == typeof(MainPage))
+            {
+                ConfirmAndExit();
+            }
+            else if (rootFrame.CurrentSourcePageType == typeof(EditPositionPage))
+            {
+                rootFrame.Navigate(typeof(MainPage));
+            }
+            else
+            {
+                throw new NotImplementedException("The back button is not implemented for this page");
+            }
+        }
+
+        private async void ConfirmAndExit()
+        {
+            var dialog = new MessageDialog("Are you sure you want to exit?");
+            dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+            dialog.Commands.Add(new UICommand { Label = "Cancel", Id = 1 });
+
+            var result = await dialog.ShowAsync();
+
+            if ((int)result.Id == 0)
+                Application.Current.Exit();
         }
 
         /// <summary>

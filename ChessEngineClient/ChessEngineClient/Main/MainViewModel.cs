@@ -63,8 +63,6 @@ namespace ChessEngineClient.ViewModel
             BoardViewModel = ViewModelLocator.IOCContainer.Resolve<ChessBoardViewModel>();
             AnalysisViewModel = new AnalysisViewModel();
             NotationViewModel = ViewModelLocator.IOCContainer.Resolve<NotationViewModel>();
-            Messenger.Default.Register<MessageBase>(this, NotificationMessages.GoBack, OnGoBackCommand);
-            Messenger.Default.Register<MessageBase>(this, NotificationMessages.GoForward, OnGoForwardCommand);
         }
 
         public void ReloadPosition()
