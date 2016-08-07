@@ -13,10 +13,6 @@
 
     <Grid x:Name="MainGrid"
           Background="{StaticResource BackgroundDark}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
         <Grid 
             Margin="4">
             <Grid.RowDefinitions>
@@ -41,6 +37,8 @@
                     DataContext="{Binding NotationViewModel}" />
             </RelativePanel>
         </Grid>
+    </Grid>
+    <Page.BottomAppBar>
         <CommandBar x:Name="CommandBar" Grid.Row="1">
             <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding TogglePerspectiveCommand}"/>
             <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}"/>
@@ -48,9 +46,8 @@
 
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="New game" Command="{Binding NewGameCommand}" />
-                <AppBarSeparator/>
                 <AppBarButton Label="Edit position" Command="{Binding EditPositionCommand}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
-    </Grid>
+    </Page.BottomAppBar>
 </Page>

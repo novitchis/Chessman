@@ -100,7 +100,7 @@ namespace ChessEngineClient.ViewModel
         private void OnNewGameCommand(object obj)
         {
             chessBoardService.ResetBoard();
-            Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
+            ReloadPosition();
         }
 
         private void EditPositionExecuted(object obj)
