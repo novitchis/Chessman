@@ -23,6 +23,11 @@ namespace ChessEngineClient
             chessBoard.Initialize();
         }
 
+        public void LoadFromFen(string fenString)
+        {
+            chessBoard.LoadFrom(fenString, 0);
+        }
+
         public ChessPiece GetPiece(Coordinate coordinate)
         {
             return chessBoard.GetPiece(coordinate);

@@ -39,6 +39,12 @@ namespace ChessEngine
 		{
 			PieceColor get() { return m_Piece.bWhite ? PieceColor::White : PieceColor::Black; }
 		}
+
+		property char16 NotationChar
+		{
+			char16 get() { return m_Piece.cPiece; }
+		}
+
 	internal:
 		ChessPieceImpl getPieceImpl();
 

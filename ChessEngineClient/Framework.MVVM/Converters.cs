@@ -98,5 +98,4 @@ namespace Framework.MVVM.Converters
             return (double)value * -1;
         }
     }
- 
 }

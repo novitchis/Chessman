@@ -16,7 +16,7 @@ namespace ChessEngineClient.ViewModel
         private IChessBoardService chessBoardService = null;
         private List<SquareViewModel> squares = null;
         private SquareViewModel selectedSquare = null;
-        private AnalysisPerspective perspective = AnalysisPerspective.White;
+        private SideColor perspective = SideColor.White;
         private int[] rankNumbers = RankNumbersAsWhite;
         private char[] fieldLetters = FieldLettersAsWhite;
 
@@ -78,6 +78,7 @@ namespace ChessEngineClient.ViewModel
         {
             this.chessBoardService = chessBoardService;
 
+            // this is retarder ... fix asap
             if (!IsEdit)
                 Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.CurrentMoveChanged, OnCurrentMoveChangedMessage);
 
@@ -88,7 +89,7 @@ namespace ChessEngineClient.ViewModel
         {
             var newSquares = new List<SquareViewModel>();
 
-            if (perspective == AnalysisPerspective.White)
+            if (perspective == SideColor.White)
             {
                 RankNumbers = RankNumbersAsWhite;
                 FieldLetters = FieldLettersAsWhite;
@@ -123,8 +124,8 @@ namespace ChessEngineClient.ViewModel
 
         public void TogglePerspective()
         {
-            perspective = perspective == AnalysisPerspective.Black ?
-                AnalysisPerspective.White : AnalysisPerspective.Black;
+            perspective = perspective == SideColor.Black ?
+                SideColor.White : SideColor.Black;
 
             InitBoard();
         }
@@ -147,7 +148,7 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        private void RefreshPieces()
+        public void RefreshPieces()
         {
             foreach (SquareViewModel square in Squares)
                 square.Piece = chessBoardService.GetPiece(square.Coordinate);

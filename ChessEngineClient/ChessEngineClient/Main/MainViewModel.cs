@@ -67,6 +67,12 @@ namespace ChessEngineClient.ViewModel
             Messenger.Default.Register<MessageBase>(this, NotificationMessages.GoForward, OnGoForwardCommand);
         }
 
+        public void ReloadPosition()
+        {
+            BoardViewModel.RefreshPieces();
+            NotationViewModel.ReloadMoves();
+        }
+
         private void TogglePerspectiveExecuted(object obj)
         {
             BoardViewModel.TogglePerspective();
@@ -81,7 +87,6 @@ namespace ChessEngineClient.ViewModel
 
             if (chessBoardService.GoToMove(moveIndex))
                 Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
-
         }
 
         private void OnGoBackCommand(object obj)
@@ -91,7 +96,6 @@ namespace ChessEngineClient.ViewModel
             {
                 if (chessBoardService.GoToMove(currentMove.Index - 1))
                     Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
-
             }
         }
 

@@ -60,6 +60,11 @@ namespace ChessEngineClient.ViewModel
 
         private void OnMoveExecutedMessage(MessageBase message)
         {
+            ReloadMoves();
+        }
+
+        public void ReloadMoves()
+        {
             int groupIndex = 1;
             List<MoveDataGroup> newGroupedMoves = new List<MoveDataGroup>();
             var moves = chessBoardService.GetMoves(false);
