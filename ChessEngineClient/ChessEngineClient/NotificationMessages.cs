@@ -12,5 +12,6 @@ namespace ChessEngineClient
         public const string MoveExecuted = "MoveExecuted";
         public const string GoBack = "GoBack";
         public const string GoForward = "GoForward";
+        public const string SquarePressed = "SquarePressed";
     }
 }

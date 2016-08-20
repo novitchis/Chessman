@@ -15,13 +15,17 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
+
 namespace ChessEngineClient.View
 {
-    public sealed partial class ChessBoardView : UserControl
+    public sealed partial class PiecesPaletteView : UserControl
     {
-        public ChessBoardViewModel ViewModel { get { return DataContext as ChessBoardViewModel; } }
+        public PiecesPaletteViewModel ViewModel
+        {
+            get { return DataContext as PiecesPaletteViewModel; }
+        }
 
-        public ChessBoardView()
+        public PiecesPaletteView()
         {
             this.InitializeComponent();
         }

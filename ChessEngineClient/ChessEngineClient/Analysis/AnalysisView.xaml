@@ -10,11 +10,9 @@
     
     <Grid>
         <TextBlock 
-            FontSize="25"
+            FontSize="20"
             Style="{StaticResource PlaceHolderTextStyle}" 
-            Text="Analysis" 
-            HorizontalAlignment="Center" 
-            VerticalAlignment="Center"/>
+            Text="Analysis" />
     </Grid>
 </UserControl>
 

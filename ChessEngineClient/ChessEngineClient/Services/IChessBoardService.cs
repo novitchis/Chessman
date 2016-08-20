@@ -9,6 +9,12 @@ namespace ChessEngineClient
 {
     public interface IChessBoardService
     {
+        bool IsWhiteTurn { get; }
+
+        void ResetBoard();
+
+        void LoadFromFen(string fenString);
+
         ChessPiece GetPiece(Coordinate coordinate);
 
         bool SubmitMove(Coordinate from, Coordinate to);

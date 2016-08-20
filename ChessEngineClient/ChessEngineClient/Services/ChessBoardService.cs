@@ -11,11 +11,26 @@ namespace ChessEngineClient
     {
         private ChessBoard chessBoard = null;
 
+        public bool IsWhiteTurn
+        {
+            get { return chessBoard.IsWhiteTurn(); }
+        }
+
         public ChessBoardService()
         {
             chessBoard = new ChessBoard();
             chessBoard.Initialize();
             chessBoard.StorePGN();
+        }
+
+        public void ResetBoard()
+        {
+            chessBoard.Initialize();
+        }
+
+        public void LoadFromFen(string fenString)
+        {
+            chessBoard.LoadFrom(fenString, 0);
         }
 
         public ChessPiece GetPiece(Coordinate coordinate)

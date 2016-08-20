@@ -329,9 +329,10 @@ bool ChessBoardImpl::GoToMove( int moveIndex )
 	}
 	else if (moveIndex < m_currentMoveIndex)
 	{
+		bool isWhiteMove = IsWhiteTurn();
 		for (int i = m_currentMoveIndex; i > moveIndex; --i)
 		{
-			bool isWhiteMove = i % 2 == 0;
+			isWhiteMove = !isWhiteMove;
 			UndoMove(isWhiteMove);
 		}
 		return true;
@@ -389,7 +390,7 @@ bool ChessBoardImpl::UndoMove( bool bWhiteMove )
 	// update last piece //
 	if( m_currentMoveIndex < 0 )
 	{
-		m_lastPiece.bWhite = false;
+		m_lastPiece.bWhite = !m_lastPiece.bWhite;
 		m_lastPiece.cPiece = ChessPieceImpl::None;
 	}
 	else
@@ -802,11 +803,9 @@ bool ChessBoardImpl::LoadFromFEN( const std::string& strData )
 	std::string strToken;
 	std::istringstream stm( strData );
 	std::getline( stm, strToken, ' ' );
-	
-	// reset board //
-	for ( int i = 0; i < 8; ++i )
-		for ( int j= 0; j < 8; ++j )
-			m_memBoard[i][j] = ChessPieceImpl();
+
+	Clear();
+
 	// parse pieces
 	int nCrtRank = 7;
 	int nCrtColumn = 0;

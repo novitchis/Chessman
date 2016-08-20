@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ChessEngineClient.ViewModel;
+using Framework.MVVM;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,6 +24,13 @@ namespace ChessEngineClient.View
         public SquareView()
         {
             this.InitializeComponent();
+
+            this.PointerPressed += OnSquareViewPointerPressed;
+        }
+
+        private void OnSquareViewPointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            Messenger.Default.Send((SquareViewModel)DataContext, NotificationMessages.SquarePressed);
         }
     }
 }

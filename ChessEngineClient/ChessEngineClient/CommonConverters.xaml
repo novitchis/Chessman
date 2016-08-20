@@ -5,6 +5,6 @@
     xmlns:co="using:Framework.MVVM.Converters">
 
     <co:ConversionType x:Key="InvertedConversionType">Inverted</co:ConversionType>
-    
+
     <co:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 </ResourceDictionary>

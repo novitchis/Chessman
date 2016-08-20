@@ -4,6 +4,16 @@
 
     <Style x:Key="PlaceHolderTextStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="LightGray" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
     </Style>
+
+    <ControlTemplate x:Key="NoScrollListTemplate" TargetType="ListBox">
+        <Border x:Name="LayoutRoot" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+            <Grid Padding="{TemplateBinding Padding}">
+                <ItemsPresenter/>
+            </Grid>
+        </Border>
+    </ControlTemplate>
 
 </ResourceDictionary>

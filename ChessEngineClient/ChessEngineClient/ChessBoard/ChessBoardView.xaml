@@ -10,23 +10,17 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
-        
-        <ControlTemplate x:Key="NoScrollListTemplate" TargetType="ListBox">
-            <Border x:Name="LayoutRoot" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
-                <Grid Padding="{TemplateBinding Padding}">
-                    <ItemsPresenter/>
-                </Grid>
-            </Border>
-        </ControlTemplate>
-
+                
         <Style x:Key="RankOrFieldText" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Foreground" Value="{StaticResource WhiteSquareBrush}" />
-            <Setter Property="MinWidth" Value="8" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="10" />
         </Style>
 
         <Style x:Key="RankNumberListStyle" TargetType="ItemsControl">
+            <Setter Property="Width" Value="12" />
             <Setter Property="ItemsPanel">
                 <Setter.Value>
                     <ItemsPanelTemplate>
@@ -44,6 +38,7 @@
         </Style>
 
         <Style x:Key="FieldLettersListStyle" TargetType="ItemsControl">
+            <Setter Property="Height" Value="12" />
             <Setter Property="ItemsPanel">
                 <Setter.Value>
                     <ItemsPanelTemplate>
@@ -62,10 +57,7 @@
     </UserControl.Resources>
 
     <Grid HorizontalAlignment="Center">
-        <Grid Background="{StaticResource BlackSquareBrush}" 
-              ManipulationMode="All" 
-              ManipulationStarted="Grid_ManipulationStarted" 
-              ManipulationDelta="Grid_ManipulationDelta">
+        <Grid Background="{StaticResource BlackSquareBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>

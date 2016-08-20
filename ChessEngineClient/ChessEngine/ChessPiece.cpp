@@ -21,4 +21,3 @@ ChessPieceImpl ChessPiece::getPieceImpl()
 {
 	return m_Piece;
 }
-

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChessEngineClient
 {
-    public enum AnalysisPerspective
+    public enum SideColor
     {
         White,
         Black,

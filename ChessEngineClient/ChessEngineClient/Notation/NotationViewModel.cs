@@ -43,9 +43,9 @@ namespace ChessEngineClient.ViewModel
                     if (currentMove != null)
                     {
                         chessBoardService.GoToMove(currentMove.Index);
-                        Messenger.Default.Send(new GenericMessage<MoveData>(currentMove), NotificationMessages.CurrentMoveChanged);
                         NotifyPropertyChanged();
                     }
+                    Messenger.Default.Send(new GenericMessage<MoveData>(currentMove), NotificationMessages.CurrentMoveChanged);
                 }
             }
         }
@@ -60,20 +60,27 @@ namespace ChessEngineClient.ViewModel
 
         private void OnMoveExecutedMessage(MessageBase message)
         {
+            ReloadMoves();
+        }
+
+        public void ReloadMoves()
+        {
             int groupIndex = 1;
             List<MoveDataGroup> newGroupedMoves = new List<MoveDataGroup>();
             var moves = chessBoardService.GetMoves(false);
+            bool startedAsBlack = StartedAsBlack();
 
             using (var movesEnumerator = moves.GetEnumerator())
             {
                 while (movesEnumerator.MoveNext())
                 {
-                    // white move
                     MoveDataGroup moveGroup = new MoveDataGroup(groupIndex);
-                    moveGroup.WhiteMove = movesEnumerator.Current;
+                    if (startedAsBlack && groupIndex == 1)
+                        moveGroup.WhiteMove = null;
+                    else
+                        moveGroup.WhiteMove = movesEnumerator.Current;
 
-                    // black move
-                    if (movesEnumerator.MoveNext())
+                    if (moveGroup.WhiteMove == null || movesEnumerator.MoveNext())
                         moveGroup.BlackMove = movesEnumerator.Current;
 
                     newGroupedMoves.Add(moveGroup);
@@ -86,6 +93,15 @@ namespace ChessEngineClient.ViewModel
             // in order for the selected item to work CurrentMove needs to be an object from the 'moves' list
             if (currentMove != null)
                 CurrentMove = moves[currentMove.Index];
+        }
+
+        private bool StartedAsBlack()
+        {
+            MoveData currentMove = chessBoardService.GetCurrentMove();
+            if (currentMove == null || currentMove.Index % 2 != 0)
+                return !chessBoardService.IsWhiteTurn;
+
+            return chessBoardService.IsWhiteTurn;
         }
     }
 }

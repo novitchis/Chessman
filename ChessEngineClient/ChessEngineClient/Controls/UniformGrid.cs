@@ -10,6 +10,7 @@ using Windows.UI.Xaml.Controls;
 namespace ChessEngineClient.Controls
 {
     /// <summary>
+    /// //TODO: transform this into a chess board panel
     /// Provides a way to arrange content in a grid where all the cells in the grid have the same size. 
     /// </summary>
     public class UniformGrid : Panel
@@ -44,6 +45,16 @@ namespace ChessEngineClient.Controls
                 typeof(UniformGrid),
                 new PropertyMetadata(0));
 
+        /// <summary>
+        /// Are items squares
+        /// </summary>
+        public static readonly DependencyProperty SquareItemsProperty =
+            DependencyProperty.Register(
+                "SquareItems", 
+                typeof(bool), 
+                typeof(UniformGrid), 
+                new PropertyMetadata(false));
+
         private int _columns;
         private int _rows;
 
@@ -75,6 +86,15 @@ namespace ChessEngineClient.Controls
         }
 
         /// <summary>
+        /// Gets or sets whether the items are squares
+        /// </summary>
+        public bool SquareItems
+        {
+            get { return (bool)GetValue(SquareItemsProperty); }
+            set { SetValue(SquareItemsProperty, value); }
+        }
+
+        /// <summary>
         /// Provides the behavior for the Arrange pass of layout. Classes can override
         /// this method to define their own Arrange pass behavior.
         /// </summary>
@@ -85,11 +105,14 @@ namespace ChessEngineClient.Controls
         /// <returns></returns>
         protected override Size ArrangeOverride(Size arrangeSize)
         {
-            var finalRect = new Rect(
-                0.0,
-                0.0,
-                arrangeSize.Width / _columns,
-                arrangeSize.Height / _rows);
+            if (SquareItems)
+            {
+                double minSize = Math.Min(arrangeSize.Width, arrangeSize.Height);
+                arrangeSize = new Size(minSize, minSize);
+            }
+
+            var finalRect = new Rect(0.0, 0.0, arrangeSize.Width / _columns, arrangeSize.Height / _rows);            
+
             var width = finalRect.Width;
             var num2 = arrangeSize.Width - 1.0;
             finalRect.X += finalRect.Width * this.FirstColumn;
@@ -130,6 +153,13 @@ namespace ChessEngineClient.Controls
         {
             UpdateComputedValues();
             var availableSize = new Size(constraint.Width / (_columns), constraint.Height / (_rows));
+
+            if (SquareItems)
+            {
+                var minSize = Math.Min(availableSize.Height, availableSize.Width);
+                availableSize = new Size(minSize, minSize);
+            }
+
             var width = 0.0;
             var height = 0.0;
             var num3 = 0;

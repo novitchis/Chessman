@@ -10,36 +10,44 @@
     DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}"
     d:DesignHeight="1080"
     d:DesignWidth="612">
-    <Grid Background="LightGray">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="58"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
 
-        <Grid Background="#F2F2F2" Margin="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <ToggleButton 
-                x:Name="toggle"
-                Width="32"
-                Height="32"
-                Margin="5,0,0,0"
-                Command="{Binding TogglePerspectiveCommand}"
-                VerticalContentAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
-                Padding="0">
-                <Grid>
-                    <Rectangle Fill="White" />
-                    <Rectangle Fill="Black" Visibility="{Binding IsChecked, ElementName=toggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
-                </Grid>
-            </ToggleButton>
+    <Grid x:Name="MainGrid"
+          Background="{StaticResource BackgroundDark}">
+        <Grid 
+            Margin="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="44"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <view:AnalysisView Grid.Column="1"/>
+            <Border Background="{StaticResource BackgroundLight}" >
+                <view:AnalysisView />
+            </Border>
+
+            <RelativePanel Grid.Row="1" Margin="0 4 0 0">
+                <view:ChessBoardView x:Name="chessBoard"
+                                     MaxWidth="500"
+                                     MaxHeight="500"
+                                     RelativePanel.AlignHorizontalCenterWithPanel="True"
+                                     DataContext="{Binding BoardViewModel}" />
+                <view:NotationView 
+                    Margin="0 4 0 0" 
+                    RelativePanel.AlignBottomWithPanel="True"
+                    RelativePanel.Below="chessBoard"
+                    DataContext="{Binding NotationViewModel}" />
+            </RelativePanel>
         </Grid>
-        <view:ChessBoardView Grid.Row="1" DataContext="{Binding BoardViewModel}" />
-        <view:NotationView Grid.Row="2" Margin="4" DataContext="{Binding NotationViewModel}" />
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar x:Name="CommandBar" Grid.Row="1">
+            <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding TogglePerspectiveCommand}"/>
+            <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}"/>
+            <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}"/>
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="New game" Command="{Binding NewGameCommand}" />
+                <AppBarButton Label="Edit position" Command="{Binding EditPositionCommand}" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

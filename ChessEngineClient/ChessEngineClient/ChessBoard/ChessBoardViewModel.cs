@@ -16,7 +16,7 @@ namespace ChessEngineClient.ViewModel
         private IChessBoardService chessBoardService = null;
         private List<SquareViewModel> squares = null;
         private SquareViewModel selectedSquare = null;
-        private AnalysisPerspective perspective = AnalysisPerspective.White;
+        private SideColor perspective = SideColor.White;
         private int[] rankNumbers = RankNumbersAsWhite;
         private char[] fieldLetters = FieldLettersAsWhite;
 
@@ -70,50 +70,26 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
+        public bool IsEdit { get; set; }
+
         #endregion
 
         public ChessBoardViewModel(IChessBoardService chessBoardService)
         {
             this.chessBoardService = chessBoardService;
-            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.CurrentMoveChanged, OnCurrentMoveChangedMessage);
-            Messenger.Default.Register<MessageBase>(this, NotificationMessages.GoBack, OnGoBackMessage);
-            Messenger.Default.Register<MessageBase>(this, NotificationMessages.GoForward, OnGoForwardMessage);
+
+            // this is retarder ... fix asap
+            if (!IsEdit)
+                Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.CurrentMoveChanged, OnCurrentMoveChangedMessage);
 
             InitBoard();
-        }
-
-        private void OnGoForwardMessage(object obj)
-        {
-            MoveData currentMove = chessBoardService.GetCurrentMove();
-            int moveIndex = 0;
-            if (currentMove != null)
-                moveIndex = currentMove.Index + 1;
-
-            if (chessBoardService.GoToMove(moveIndex))
-            {
-                Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
-                RefreshPieces();
-            }
-        }
-
-        private void OnGoBackMessage(object obj)
-        {
-            MoveData currentMove = chessBoardService.GetCurrentMove();
-            if (currentMove != null)
-            {
-                if (chessBoardService.GoToMove(currentMove.Index - 1))
-                {
-                    Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
-                    RefreshPieces();
-                }
-            }
         }
 
         private void InitBoard()
         {
             var newSquares = new List<SquareViewModel>();
 
-            if (perspective == AnalysisPerspective.White)
+            if (perspective == SideColor.White)
             {
                 RankNumbers = RankNumbersAsWhite;
                 FieldLetters = FieldLettersAsWhite;
@@ -148,8 +124,8 @@ namespace ChessEngineClient.ViewModel
 
         public void TogglePerspective()
         {
-            perspective = perspective == AnalysisPerspective.Black ?
-                AnalysisPerspective.White : AnalysisPerspective.Black;
+            perspective = perspective == SideColor.Black ?
+                SideColor.White : SideColor.Black;
 
             InitBoard();
         }
@@ -165,17 +141,22 @@ namespace ChessEngineClient.ViewModel
             if (oldSquare == null || newSquare == null)
                 return;
 
-            if (chessBoardService.SubmitMove(oldSquare.Coordinate, newSquare.Coordinate))
+            if (!IsEdit && chessBoardService.SubmitMove(oldSquare.Coordinate, newSquare.Coordinate))
             {
                 RefreshPieces();
                 Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
             }
         }
 
-        private void RefreshPieces()
+        public void RefreshPieces()
         {
             foreach (SquareViewModel square in Squares)
                 square.Piece = chessBoardService.GetPiece(square.Coordinate);
+        }
+
+        public void ClearPieces()
+        {
+            Squares.ForEach(s => s.Piece = null);
         }
     }
 }
