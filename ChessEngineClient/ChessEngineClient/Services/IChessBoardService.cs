@@ -9,6 +9,8 @@ namespace ChessEngineClient
 {
     public interface IChessBoardService
     {
+        bool IsWhiteTurn { get; }
+
         void ResetBoard();
 
         void LoadFromFen(string fenString);

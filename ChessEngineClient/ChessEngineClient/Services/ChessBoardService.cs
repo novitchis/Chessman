@@ -11,6 +11,11 @@ namespace ChessEngineClient
     {
         private ChessBoard chessBoard = null;
 
+        public bool IsWhiteTurn
+        {
+            get { return chessBoard.IsWhiteTurn(); }
+        }
+
         public ChessBoardService()
         {
             chessBoard = new ChessBoard();

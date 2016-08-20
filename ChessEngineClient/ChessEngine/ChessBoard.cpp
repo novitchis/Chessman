@@ -76,8 +76,12 @@ IVector<MoveData^>^ ChessBoard::GetMoves(bool stopOnCurrent)
 	for (auto it = listMoves.begin(); it != listMoves.end(); ++it, ++count) {
 		if (stopOnCurrent && count > m_ChessBoardImpl.GetCurrentMoveIndex())
 			break;
-
-		result->Append(ref new MoveData(*it));
+		if (it->move == NULL) {
+			result->Append(nullptr);
+		}
+		else {
+			result->Append(ref new MoveData(*it));
+		}
 	}
 
 	return result;
@@ -89,6 +93,11 @@ MoveData^ ChessBoard::GetCurrentMove()
 		return nullptr;
 
 	return ref new MoveData(m_ChessBoardImpl.GetLastMove());
+}
+
+bool ChessBoard::IsWhiteTurn()
+{
+	return m_ChessBoardImpl.IsWhiteTurn();
 }
 
 SerializationType ChessBoard::GetSerializationType(int type)
