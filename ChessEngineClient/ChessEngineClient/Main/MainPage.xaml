@@ -21,7 +21,7 @@
             </Grid.RowDefinitions>
 
             <Border Background="{StaticResource BackgroundLight}" >
-                <view:AnalysisView />
+                <view:AnalysisView DataContext="{Binding AnalysisViewModel}"/>
             </Border>
 
             <RelativePanel Grid.Row="1" Margin="0 4 0 0">

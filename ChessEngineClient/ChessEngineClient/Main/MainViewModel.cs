@@ -61,7 +61,7 @@ namespace ChessEngineClient.ViewModel
             this.navigationService = navigationService;
             this.chessBoardService = chessBoardService;
             BoardViewModel = ViewModelLocator.IOCContainer.Resolve<ChessBoardViewModel>();
-            AnalysisViewModel = new AnalysisViewModel();
+            AnalysisViewModel = ViewModelLocator.IOCContainer.Resolve<AnalysisViewModel>();
             NotationViewModel = ViewModelLocator.IOCContainer.Resolve<NotationViewModel>();
         }
 

@@ -1,4 +1,5 @@
-﻿using ChessEngineClient.ViewModel;
+﻿using ChessEngine;
+using ChessEngineClient.ViewModel;
 using Framework.MVVM;
 using Microsoft.Practices.Unity;
 using System;
@@ -35,6 +36,11 @@ namespace ChessEngineClient
         public ViewModelLocator()
         {
             IOCContainer.RegisterType<MainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
+
+            AnalysisReceiver analysisReceiver = new AnalysisReceiver();
+            IOCContainer.RegisterInstance<IAnalysisReceiver>(analysisReceiver);
+            IOCContainer.RegisterInstance<IEngineNotification>(analysisReceiver);
+
             IOCContainer.RegisterType<IChessBoardService, ChessBoardService>(new ContainerControlledLifetimeManager());
         }
     }

@@ -8,6 +8,10 @@
         <Setter Property="HorizontalAlignment" Value="Center" />
     </Style>
 
+    <Style x:Key="StrongTextStyle" TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
     <ControlTemplate x:Key="NoScrollListTemplate" TargetType="ListBox">
         <Border x:Name="LayoutRoot" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
             <Grid Padding="{TemplateBinding Padding}">

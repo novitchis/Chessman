@@ -27,35 +27,11 @@ namespace ChessEngineClient.View
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        // Sample engine usage //
-        async void foo()
-        {
-            try
-            {
-                EngineNotifications notificationHandler = new EngineNotifications();
-                ChessBoard board = new ChessBoard();
-                board.Initialize();
-
-                String testFEN = "rnbqkbnr/pppp1ppp/8/8/3pP3/2P5/PP3PPP/RNBQKBNR b KQkq - 0 3";
-                testFEN = "rnbqkbnr/pp1ppppp/2p5/8/3P4/2P5/PP2PPPP/RNBQKBNR b KQkq d3";
-                //board.LoadFrom(testFEN, 0);
-
-                ChessEngine.Engine engine = new ChessEngine.Engine(notificationHandler);
-                engine.Start();
-                engine.Analyze(board);
-                await Task.Delay(TimeSpan.FromSeconds(1000));
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
         public MainPage()
         {
             this.InitializeComponent();
             SystemNavigationManager navigation = SystemNavigationManager.GetForCurrentView();
             navigation.BackRequested += OnBackExecuted;
-            foo();
         }
 
         private async void OnBackExecuted(object sender, BackRequestedEventArgs e)

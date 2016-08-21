@@ -124,7 +124,6 @@
       <DependentUpon>PiecesPaletteView.xaml</DependentUpon>
     </Compile>
     <Compile Include="EditPosition\PiecesPaletteViewModel.cs" />
-    <Compile Include="EngineNotifications.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Main\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -137,8 +136,11 @@
     <Compile Include="Notation\NotationViewModel.cs" />
     <Compile Include="NotificationMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AnalysisEventArgs.cs" />
     <Compile Include="Services\ChessBoardService.cs" />
+    <Compile Include="Services\AnalysisReceiver.cs" />
     <Compile Include="Services\IChessBoardService.cs" />
+    <Compile Include="Services\IAnalysisReceiver.cs" />
     <Compile Include="ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>

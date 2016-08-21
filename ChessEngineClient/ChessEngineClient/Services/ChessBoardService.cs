@@ -10,27 +10,34 @@ namespace ChessEngineClient
     public class ChessBoardService : IChessBoardService
     {
         private ChessBoard chessBoard = null;
+        private Engine engine = null;
 
         public bool IsWhiteTurn
         {
             get { return chessBoard.IsWhiteTurn(); }
         }
 
-        public ChessBoardService()
+        public ChessBoardService(IEngineNotification engineNotification)
         {
             chessBoard = new ChessBoard();
             chessBoard.Initialize();
             chessBoard.StorePGN();
+
+            engine = new Engine(engineNotification);
+            engine.Start();
+            RefreshAnalysis();
         }
 
         public void ResetBoard()
         {
             chessBoard.Initialize();
+            RefreshAnalysis();
         }
 
         public void LoadFromFen(string fenString)
         {
             chessBoard.LoadFrom(fenString, 0);
+            RefreshAnalysis();
         }
 
         public ChessPiece GetPiece(Coordinate coordinate)
@@ -40,7 +47,11 @@ namespace ChessEngineClient
 
         public bool SubmitMove(Coordinate from, Coordinate to)
         {
-            return chessBoard.SubmitMove(from, to);
+            bool result = chessBoard.SubmitMove(from, to);
+            if (result)
+                RefreshAnalysis();
+
+            return result;
         }
 
         public MoveData GetCurrentMove()
@@ -55,7 +66,16 @@ namespace ChessEngineClient
 
         public bool GoToMove(int moveIndex)
         {
-            return chessBoard.GoToMove(moveIndex);
+            bool result = chessBoard.GoToMove(moveIndex);
+            if (result)
+                RefreshAnalysis();
+
+            return result;
+        }
+
+        private void RefreshAnalysis()
+        {
+            engine.Analyze(chessBoard);
         }
     }
 }
