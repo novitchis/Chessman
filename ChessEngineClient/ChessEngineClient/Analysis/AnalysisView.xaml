@@ -9,15 +9,25 @@
     d:DesignWidth="400">
     
     <Grid>
-        <!--<TextBlock 
-            FontSize="20"
-            Style="{StaticResource PlaceHolderTextStyle}" 
-            Text="Analysis" />-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Background="DarkGray">
+            <TextBlock 
+                FontSize="16"
+                Style="{StaticResource StrongTextStyle}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="{Binding Evaluation}" />
+        </Border>
+        
         <TextBlock 
-            FontSize="20"
+            Grid.Column="1"
             Margin="10 0 0 0"
             VerticalAlignment="Center"
-            Text="{Binding AnalysisString}" />
+            Text="{Binding Moves}" />
     </Grid>
 </UserControl>
 
