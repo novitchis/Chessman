@@ -42,6 +42,7 @@ namespace ChessEngine
 		MoveImpl			move;
 		ChessPieceImpl		capturedPiece;
 		int					nCastlingMask;
+		bool				enPassantCapture;
 		int					nLastPawnMoveOrCapture;
 		int					moveIndex;
 		std::string			strPGNMove;
@@ -105,6 +106,7 @@ namespace ChessEngine
 		std::string					Serialize2PGN();
 		bool						LoadFromFEN( const std::string& strData );
 		bool						LoadFromPGN( const std::string& strData );
+		bool						IsEnPassantMove(AdditionalMoveInfo& coordEnPassant) const;
 
 	private:
 		ChessPieceImpl				m_memBoard[8][8];

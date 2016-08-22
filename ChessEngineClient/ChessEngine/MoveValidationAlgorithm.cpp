@@ -134,7 +134,7 @@ bool MoveValidationAlgorithm::ValidatePawnMove( const MoveImpl& move, const Ches
 		{
 			if ( m_pChessBoard->m_listMoves.empty() ) return false;
 			// check en passant //
-			MoveImpl prevMove = m_pChessBoard->m_listMoves.back().move;
+			MoveImpl prevMove = m_pChessBoard->GetLastMove().move;
 			ChessPieceImpl prevPiece = m_pChessBoard->GetPiece( prevMove.to );
 			if ( prevPiece.cPiece != ChessPieceImpl::Pawn ) return false;
 			if ( abs ( prevMove.from.nRank - prevMove.to.nRank ) != 2 ) return false;
