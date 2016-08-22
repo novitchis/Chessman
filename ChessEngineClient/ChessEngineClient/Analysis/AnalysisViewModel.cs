@@ -10,18 +10,32 @@ namespace ChessEngineClient.ViewModel
 {
     public class AnalysisViewModel : ViewModelBase
     {
-        private string analysisString = String.Empty;
+        private string moves = String.Empty;
         private IAnalysisReceiver analysisReceiver = null;
         SynchronizationContext uiSynchronizationContext = null;
+        private float evaluation = 0.0f;
 
-        public string AnalysisString
+        public float Evaluation
         {
-            get { return analysisString; }
+            get { return evaluation; }
             set
             {
-                if (analysisString != value)
+                if (evaluation != value)
                 {
-                    analysisString = value;
+                    evaluation = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string Moves
+        {
+            get { return moves; }
+            set
+            {
+                if (moves != value)
+                {
+                    moves = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -37,13 +51,11 @@ namespace ChessEngineClient.ViewModel
 
         private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
         {
-            string value = String.Format("{0} ", e.Data.Score);
-            value += String.Join(" ", e.Data.Analysis.Cast<object>());
-
             // make sure it is executed on the ui thread
             uiSynchronizationContext.Post(o =>
             {
-                AnalysisString = value;
+                Evaluation = e.Data.Score;
+                Moves = String.Join(" ", e.Data.Analysis.Cast<object>());
             }, null);
 
             
