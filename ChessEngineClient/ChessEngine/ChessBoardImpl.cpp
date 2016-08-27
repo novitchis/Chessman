@@ -143,6 +143,9 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 	else ++m_nLastPawnMoveOrCapture;
 
 	auto capturedPiece = GetPiece( move.to );
+	if (IsEnPassantMove(additionalInfo))
+		capturedPiece = GetPiece(additionalInfo.coordEnPassant);
+
 	// handle pawn promotion //
 	bool bPromotion = ( m_lastPiece.cPiece == ChessPieceImpl::Pawn ) && ( ( move.to.nRank == 0 ) || ( move.to.nRank == 7 ) );
 	if ( bPromotion )
@@ -170,7 +173,8 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 	}
 
 	MoveDataImpl moveData( m_currentMoveIndex + 1, move, capturedPiece );
-	
+	moveData.enPassantCapture = IsEnPassantMove(additionalInfo);
+
 	bool bKingCastle = false;
 	bool bBQueenCastle = false;
 	// update castling info //
@@ -382,7 +386,13 @@ bool ChessBoardImpl::UndoMove( bool bWhiteMove )
 			piece.cPiece = ChessPieceImpl::Pawn;
 
 		SetPiece( piece, moveData.move.from );
-		SetPiece( moveData.capturedPiece, moveData.move.to );
+		CoordinateImpl capturedCoordinates = moveData.move.to;
+		if (moveData.enPassantCapture)
+		{
+			capturedCoordinates = CoordinateImpl(moveData.move.from.nRank, moveData.move.to.nColumn);
+			SetPiece(ChessPieceImpl(), moveData.move.to);
+		}
+		SetPiece( moveData.capturedPiece, capturedCoordinates);
 		m_lastPiece = piece;
 		if ( m_lastPiece.cPiece == ChessPieceImpl::King ) 
 		{
@@ -419,6 +429,12 @@ bool ChessBoardImpl::UndoMove( bool bWhiteMove )
 	return true;
 }
 
+bool ChessBoardImpl::IsEnPassantMove(AdditionalMoveInfo& additionalMove) const
+{
+	return additionalMove.coordEnPassant &&
+		additionalMove.coordEnPassant.nColumn != -1 &&
+		additionalMove.coordEnPassant.nRank != -1;
+}
 
 bool ChessBoardImpl::ValidateMove( const MoveImpl& move, AdditionalMoveInfo& additionalMove ) const
 {
