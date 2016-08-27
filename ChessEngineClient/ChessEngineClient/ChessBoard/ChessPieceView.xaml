@@ -16,7 +16,7 @@
     </UserControl.Resources>
 
     <Grid>
-        <Viewbox>
+        <Viewbox Margin="3">
             <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource ChessPieceTemplateSelector}" />
         </Viewbox>
     </Grid>

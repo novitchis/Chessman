@@ -9,7 +9,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/AppColors.xaml"/>
                 <ResourceDictionary Source="Styles/ControlsStyles.xaml"/>
-                <ResourceDictionary Source="ChessBoard/ChessPieceResources.xaml"/>
+                <ResourceDictionary Source="ChessBoard/ChessPiecesGraphics.xaml"/>
                 <ResourceDictionary Source="CommonConverters.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         <local:ViewModelLocator x:Key="ViewModelLocator" />

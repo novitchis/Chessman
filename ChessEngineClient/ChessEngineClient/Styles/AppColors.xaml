@@ -3,9 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- TODO: here should be added resources for colors that may change based on user selected style -->
-    <Brush x:Key="WhiteSquareBrush">#FCCE94</Brush>
-    <Brush x:Key="BlackSquareBrush">#AC6A2B</Brush>
-    <Brush x:Key="SelectedSquareBrush">Gold</Brush>
+    <Brush x:Key="WhiteSquareBrush">#F0D9B5</Brush>
+    <Brush x:Key="BlackSquareBrush">#B58863</Brush>
+    <Brush x:Key="SelectedSquareBrush">#88FFD700</Brush>
     <Brush x:Key="HoveredSquareBrush">Khaki</Brush>
 
     <Brush x:Key="BackgroundLight">#F2F2F2</Brush>

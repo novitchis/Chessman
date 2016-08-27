@@ -177,6 +177,11 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
+    <Page Include="ChessBoard\ChessPiecesGraphics.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
     <Page Include="ChessBoard\ChessPieceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -234,6 +239,9 @@
   <ItemGroup>
     <SDKReference Include="Microsoft.VCLibs, Version=14.0">
       <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
+    </SDKReference>
+    <SDKReference Include="WindowsMobile, Version=10.0.10586.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
   <ItemGroup />

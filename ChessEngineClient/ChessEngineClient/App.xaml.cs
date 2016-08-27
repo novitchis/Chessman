@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Navigation;
 using Microsoft.Practices.Unity;
 using Windows.UI.Core;
 using Windows.UI.Popups;
+using Windows.Foundation.Metadata;
 
 namespace ChessEngineClient
 {
@@ -100,6 +101,18 @@ namespace ChessEngineClient
 
             SystemNavigationManager navigation = SystemNavigationManager.GetForCurrentView();
             navigation.BackRequested += OnBackExecuted;
+
+            HideMobileStatusBar();
+        }
+
+        private async void HideMobileStatusBar()
+        {
+            // If we have a phone contract, hide the status bar
+            if (ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1, 0))
+            {
+                var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
+                await statusBar.HideAsync();
+            }
         }
 
         private void OnBackExecuted(object sender, BackRequestedEventArgs e)
