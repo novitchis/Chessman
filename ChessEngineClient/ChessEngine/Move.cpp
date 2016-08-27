@@ -40,4 +40,8 @@ void Move::FromString(Platform::String^ strMove)
 	m_Move = MoveImpl::FromString(strNative);
 }
 
+MoveImpl Move::getMoveImpl() const
+{
+	return m_Move;
+}
 

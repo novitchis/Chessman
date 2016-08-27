@@ -7,4 +7,5 @@
     <co:ConversionType x:Key="InvertedConversionType">Inverted</co:ConversionType>
 
     <co:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <co:StringFormatter x:Key="StringFormatter" />
 </ResourceDictionary>

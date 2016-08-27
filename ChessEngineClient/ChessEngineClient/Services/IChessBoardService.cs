@@ -23,6 +23,8 @@ namespace ChessEngineClient
 
         IList<MoveData> GetMoves(bool stopOnCurrentMove = true);
 
+        IList<MoveData> GetVariationMoveData(IList<Move> moves);
+
         bool GoToMove(int moveIndex);
     }
 }

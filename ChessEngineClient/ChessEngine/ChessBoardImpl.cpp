@@ -31,7 +31,9 @@ ChessBoardImpl::ChessBoardImpl(const ChessBoardImpl& board)
 	m_nCastlingMask = board.m_nCastlingMask;
 	m_nLastPawnMoveOrCapture = board.m_nLastPawnMoveOrCapture;
 	m_listMoves = board.m_listMoves;
+	m_lastPiece = board.m_lastPiece;
 	m_currentMoveIndex = board.m_currentMoveIndex;
+	m_bStorePGN = board.m_bStorePGN;
 }
 
 ChessBoardImpl::~ChessBoardImpl(void)
@@ -94,6 +96,22 @@ std::list<MoveDataImpl> ChessBoardImpl::GetMoves()
 int ChessBoardImpl::GetCurrentMoveIndex()
 {
 	return m_currentMoveIndex;
+}
+
+std::list<MoveDataImpl>	ChessBoardImpl::GetVariationMoveData(std::list<MoveImpl> moves)
+{
+	std::list<MoveDataImpl> variationMoves;
+	ChessBoardImpl copy(*this);
+
+	for (auto it = moves.begin(); it != moves.end(); ++it)
+	{
+		if (!copy.SubmitMove(*it))
+			throw std::invalid_argument("received invalid move");
+
+		variationMoves.push_back(copy.m_listMoves.back());
+	}
+
+	return variationMoves;
 }
 
 std::list<CoordinateImpl> ChessBoardImpl::GetAvailableMoves( const CoordinateImpl& coord ) const

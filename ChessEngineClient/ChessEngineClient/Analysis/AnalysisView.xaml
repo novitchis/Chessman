@@ -8,7 +8,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     
-    <Grid>
+    <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60" />
             <ColumnDefinition Width="*" />
@@ -23,11 +23,13 @@
                 Text="{Binding Evaluation}" />
         </Border>
         
-        <TextBlock 
+        <TextBox 
             Grid.Column="1"
-            Margin="10 0 0 0"
+            Text="{Binding Moves}" 
+            Padding="10,5,6,5"
             VerticalAlignment="Center"
-            Text="{Binding Moves}" />
+            IsReadOnly="True" 
+            BorderThickness="0" />
     </Grid>
 </UserControl>
 

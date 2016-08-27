@@ -95,6 +95,21 @@ MoveData^ ChessBoard::GetCurrentMove()
 	return ref new MoveData(m_ChessBoardImpl.GetLastMove());
 }
 
+IVector<MoveData^>^	ChessBoard::GetVariationMoveData(IVector<Move^>^ moves)
+{
+	std::list<MoveImpl> movesImpl;
+	for (auto&& elem : moves)
+		movesImpl.push_back(elem->getMoveImpl());
+
+	std::list<MoveDataImpl> variationMoves = m_ChessBoardImpl.GetVariationMoveData(movesImpl);
+
+	Vector<MoveData^>^ result = ref new Vector<MoveData^>();
+	for (auto it = variationMoves.begin(); it != variationMoves.end(); ++it)
+		result->Append(ref new MoveData(*it));
+
+	return result;
+}
+
 bool ChessBoard::IsWhiteTurn()
 {
 	return m_ChessBoardImpl.IsWhiteTurn();

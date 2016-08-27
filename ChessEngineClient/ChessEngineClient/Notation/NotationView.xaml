@@ -57,9 +57,10 @@
                             <DataTemplate>
                                 <TextBlock 
                                     Margin="5 0" 
-                                    Text="{Binding MoveNumber}" 
-                                    FontWeight="Bold" 
-                                    VerticalAlignment="Center"/>
+                                    FontWeight="SemiBold" 
+                                    VerticalAlignment="Center"
+                                    Text="{Binding MoveNumber, Converter={StaticResource StringFormatter}, 
+                                    ConverterParameter='{}{0}.'}"/>
                             </DataTemplate>
                         </GroupStyle.HeaderTemplate>
                     </GroupStyle>

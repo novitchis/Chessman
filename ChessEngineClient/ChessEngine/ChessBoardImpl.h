@@ -77,6 +77,7 @@ namespace ChessEngine
 
 		std::list<MoveDataImpl>		GetMoves();
 		int							GetCurrentMoveIndex();
+		std::list<MoveDataImpl>		GetVariationMoveData(std::list<MoveImpl> moves);
 
 		std::list<CoordinateImpl>	GetAvailableMoves( const CoordinateImpl& coord ) const;
 		bool						SubmitMove( const MoveImpl& move, AdditionalMoveInfo& additionalInfo);

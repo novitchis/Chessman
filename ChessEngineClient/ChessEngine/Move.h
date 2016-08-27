@@ -15,7 +15,9 @@ namespace ChessEngine
 		Coordinate^					GetTo();
 		virtual Platform::String^	ToString() override;
 		void						FromString(Platform::String^ strMove);
-	
+
+	internal:
+		MoveImpl getMoveImpl() const;
 	private:
 		MoveImpl	m_Move;
 	};

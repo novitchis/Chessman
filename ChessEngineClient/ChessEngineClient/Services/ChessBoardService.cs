@@ -64,6 +64,11 @@ namespace ChessEngineClient
             return chessBoard.GetMoves(stopOnCurrentMove);
         }
 
+        public IList<MoveData> GetVariationMoveData(IList<Move> moves)
+        {
+            return chessBoard.GetVariationMoveData(moves);
+        }
+
         public bool GoToMove(int moveIndex)
         {
             bool result = chessBoard.GoToMove(moveIndex);

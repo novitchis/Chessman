@@ -27,6 +27,8 @@ namespace ChessEngine
 
 		IVector<MoveData^>^	GetMoves(bool stopOnCurrent);
 		MoveData^			GetCurrentMove();
+		IVector<MoveData^>^	GetVariationMoveData(IVector<Move^>^ moves);
+
 		bool				IsWhiteTurn();
 
 
