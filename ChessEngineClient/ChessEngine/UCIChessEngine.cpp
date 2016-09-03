@@ -232,16 +232,19 @@ bool UCIChessEngine::ProcessGoResponse( const std::string& strResponse )
 
 	m_strCumul += strResponse;
 	auto vecLines = split<std::string>(strResponse, "\n");
-	std::vector<std::string>	vecProspectedLines;
+	std::string lastSelDepthLine;
 	for (auto it : vecLines)
 	{
-		if (it.find("info depth 8 seldepth 8") == 0) {
-			vecProspectedLines.push_back(it);
-			break; // ignore line, at least for now
+		if (it.find("seldepth") != -1) {
+			// use the last line available
+			lastSelDepthLine = it;
 		}
 	}
 	
-	if (vecProspectedLines.empty()) return true;
+	if (lastSelDepthLine.empty()) return true;
+
+	std::vector<std::string>	vecProspectedLines;
+	vecProspectedLines.push_back(lastSelDepthLine);
 
 	AnalysisDataImpl analysisData;
 	for (auto iter : vecProspectedLines)

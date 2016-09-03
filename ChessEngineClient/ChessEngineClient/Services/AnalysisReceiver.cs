@@ -34,7 +34,7 @@ namespace ChessEngineClient
 
         public void OnGameEnded(bool bWhiteWins)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
