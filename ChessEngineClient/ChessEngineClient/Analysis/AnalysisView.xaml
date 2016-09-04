@@ -8,13 +8,17 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     
-    <Grid Background="White">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border Background="DarkGray">
+        <Border 
+            Style="{StaticResource ViewDefaultBorder}"
+            Background="DarkGray" 
+            CornerRadius="8 0 0 8"
+            BorderThickness="1 1 0 1">
             <TextBlock 
                 FontSize="16"
                 Style="{StaticResource StrongTextStyle}"
@@ -22,14 +26,19 @@
                 VerticalAlignment="Center"
                 Text="{Binding Evaluation}" />
         </Border>
-        
-        <TextBox 
-            Grid.Column="1"
-            Text="{Binding Moves}" 
-            Padding="10,5,6,5"
-            VerticalAlignment="Center"
-            IsReadOnly="True" 
-            BorderThickness="0" />
+        <Border 
+            Style="{StaticResource ViewDefaultBorder}"
+            CornerRadius="0 8 8 0" 
+            Grid.Column="1">
+            <TextBox 
+                Margin="0 0 5 0"
+                Text="{Binding Moves}"  
+                Padding="10,5,6,5"
+                VerticalAlignment="Center"
+                IsReadOnly="True" 
+                BorderThickness="0" />
+        </Border>
+
     </Grid>
 </UserControl>
 

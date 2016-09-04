@@ -18,10 +18,13 @@
                               ItemsPath="Moves">
         </CollectionViewSource>
     </UserControl.Resources>
-    <Grid>
+
+    <Border Style="{StaticResource ViewDefaultBorder}">
         <Grid>
             <ListBox
                 x:Name="notationList"
+                Margin="3"
+                Background="White"
                 SelectionChanged="OnSelectedMoveChanged"
                 IsSynchronizedWithCurrentItem="False"
                 ItemsSource="{Binding Source={StaticResource GroupedMovesCollection}}"
@@ -99,5 +102,5 @@
                 </ic:DataTriggerBehavior>
             </i:Interaction.Behaviors>
         </Grid>
-    </Grid>
+    </Border>
 </UserControl>

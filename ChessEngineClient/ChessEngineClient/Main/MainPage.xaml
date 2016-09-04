@@ -16,13 +16,11 @@
         <Grid 
             Margin="4">
             <Grid.RowDefinitions>
-                <RowDefinition Height="44"/>
+                <RowDefinition Height="36"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border Background="{StaticResource BackgroundLight}" >
-                <view:AnalysisView DataContext="{Binding AnalysisViewModel}"/>
-            </Border>
+            <view:AnalysisView DataContext="{Binding AnalysisViewModel}"/>
 
             <RelativePanel Grid.Row="1" Margin="0 4 0 0">
                 <view:ChessBoardView x:Name="chessBoard"

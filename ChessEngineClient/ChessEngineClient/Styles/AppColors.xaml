@@ -10,5 +10,7 @@
 
     <Brush x:Key="BackgroundLight">#F2F2F2</Brush>
     <Brush x:Key="BackgroundDark">LightGray</Brush>
-    
+
+    <Brush x:Key="DefaultBorderBrush">Gray</Brush>
+
 </ResourceDictionary>
