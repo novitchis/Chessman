@@ -20,7 +20,9 @@
             Template="{StaticResource NoScrollListTemplate}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <view:ChessPieceView />
+                    <Border BorderBrush="{StaticResource DefaultBorderBrush}" BorderThickness="1">
+                        <view:ChessPieceView />
+                    </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
             <ListBox.ItemsPanel>
@@ -32,8 +34,9 @@
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Margin" Value="2" />
                     <Setter Property="Padding" Value="0" />
-                    <Setter Property="Background" Value="{StaticResource BackgroundLight}" />
-                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>

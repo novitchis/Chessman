@@ -27,7 +27,7 @@
                 <RowDefinition Height="36"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Grid Background="{StaticResource BackgroundLight}">
+            <Grid Background="White">
                 <TextBlock 
                     Text="Set-up a position"
                     FontSize="20"
