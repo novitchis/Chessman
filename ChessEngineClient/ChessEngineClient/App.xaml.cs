@@ -39,8 +39,9 @@ namespace ChessEngineClient
                 Microsoft.ApplicationInsights.WindowsCollectors.Session);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.UnhandledException += OnUnhandledException;
 
-            BootstrapNavigationService();            
+            BootstrapNavigationService();
         }
 
         private void BootstrapNavigationService()
@@ -168,6 +169,25 @@ namespace ChessEngineClient
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        private async void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            try
+            {
+                var dialog = new MessageDialog("Ooops! We didn't anticipate this: " + e.Exception.Message);
+                dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+
+                var result = await dialog.ShowAsync();
+            }
+            catch
+            {
+                var dialog = new MessageDialog("An unhandled error occurred.");
+                dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+
+                var result = await dialog.ShowAsync();
+            }
         }
     }
 }

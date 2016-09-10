@@ -3,6 +3,7 @@
 #include "ChessEngineFactory.h"
 
 using namespace ChessEngine;
+using namespace Platform;
 
 
 Engine::Engine(IEngineNotification^ pNotifications)
@@ -34,15 +35,36 @@ bool Engine::Connect()
 
 bool Engine::Start()
 {
-	return m_pEngineImpl->Start();
+	try
+	{
+		return m_pEngineImpl->Start();
+	}
+	catch (...)
+	{
+		throw ref new Exception(2, ref new String(L"Failed to start the engine."));
+	}
 }
 
 bool Engine::Stop()
 {
-	return m_pEngineImpl->Stop();
+	try
+	{
+		return m_pEngineImpl->Stop();
+	}
+	catch (...)
+	{
+		throw ref new Exception(2, ref new String(L"Failed to stop the engine."));
+	}
 }
 
 bool Engine::Analyze(ChessBoard^ board)
 {
-	return m_pEngineImpl->Analyze(board->m_ChessBoardImpl);
+	try
+	{
+		return m_pEngineImpl->Analyze(board->m_ChessBoardImpl);
+	}
+	catch (...)
+	{
+		throw ref new Exception(2, ref new String(L"Failed to analyze the current board."));
+	}
 }
