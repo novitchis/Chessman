@@ -52,8 +52,8 @@
         </Grid>
 
         <CommandBar x:Name="CommandBar" Grid.Row="1">
-            <AppBarButton Label="Clear" Icon="Clear" Foreground="Red" Command="{Binding ClearCommand}"/>
-            <AppBarButton Label="Done" Icon="Accept">
+            <AppBarButton Label="Clear" Icon="Delete" Command="{Binding ClearCommand}"/>
+            <AppBarButton Label="Done" Icon="Accept" Foreground="Green">
                 <AppBarButton.Flyout>
                     <Flyout Placement="Top">
                         <StackPanel>
@@ -77,12 +77,13 @@
                             <Button
                                 HorizontalAlignment="Center"
                                 Command="{Binding SaveCommand}"
+                                Padding="10 5"
                                 >Save</Button>
                         </StackPanel>
                     </Flyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <AppBarButton Label="Cancel" Icon="Cancel" Command="{Binding CancelCommand}"/>
+            <AppBarButton Label="Cancel" Icon="Cancel" Foreground="Red" Command="{Binding CancelCommand}"/>
         </CommandBar>
     </Grid>
 </Page>
