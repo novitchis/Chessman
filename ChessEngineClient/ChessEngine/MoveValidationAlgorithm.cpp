@@ -230,16 +230,27 @@ bool MoveValidationAlgorithm::ValidateKingMove( const MoveImpl& move, const Ches
 	if ( nColDif <= 1 ) return true;
 	if ( nRankDif != 0 ) return false;
 
-	bool bColumnIncrease = move.to.nColumn > move.from.nColumn;
 	// handle castle //
-	for ( auto i = __min( move.to.nColumn, move.from.nColumn ); i <= __max( move.to.nColumn, move.from.nColumn ); ++i )
-		if ( i != move.from.nColumn && !IsFieldAvailable( CoordinateImpl( move.to.nRank, i ) ) ) return false;
-	
+	CoordinateImpl currentKingCoord = move.from;
+	auto listAttackers = GetAttackingFields(currentKingCoord, !piece.bWhite);
+	if (!listAttackers.empty())
+		return false;
+
+	bool bColumnIncrease = move.to.nColumn > move.from.nColumn;
+	for (auto i = __min(move.to.nColumn, move.from.nColumn); i <= __max(move.to.nColumn, move.from.nColumn); ++i)
+	{
+		if (i != move.from.nColumn)
+		{
+			CoordinateImpl squareCoordinate = CoordinateImpl(move.to.nRank, i);
+			if (!IsFieldAvailable(squareCoordinate) || !GetAttackingFields(squareCoordinate, !piece.bWhite).empty()) 
+				return false;
+		}
+	}
+
 	if ( piece.bWhite ) 
 	{
 		if( bColumnIncrease && !( m_pChessBoard->m_nCastlingMask & CT_WhiteKingSide ) ) return false;
 		if( !bColumnIncrease && !( m_pChessBoard->m_nCastlingMask & CT_WhiteQueenSide ) ) return false;
-
 	}
 	else
 	{
@@ -250,8 +261,6 @@ bool MoveValidationAlgorithm::ValidateKingMove( const MoveImpl& move, const Ches
 	CoordinateImpl from ( piece.bWhite ? 0 : 7, bColumnIncrease ? 7 : 0);
 	CoordinateImpl to ( piece.bWhite ? 0 : 7, bColumnIncrease ? 5 : 3 );
 	additionalInfo.RockMove = MoveImpl( from, to );
-
-	// TODO: handle check //
 
 	return true;
 }
