@@ -20,6 +20,7 @@ using Microsoft.Practices.Unity;
 using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.Foundation.Metadata;
+using Windows.Phone.UI.Input;
 
 namespace ChessEngineClient
 {
@@ -100,10 +101,19 @@ namespace ChessEngineClient
                 Window.Current.Activate();
             }
 
+            if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
+                HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+
             SystemNavigationManager navigation = SystemNavigationManager.GetForCurrentView();
             navigation.BackRequested += OnBackExecuted;
 
             HideMobileStatusBar();
+        }
+
+        private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
+        {
+            e.Handled = true;
+            ExecuteBackAction();
         }
 
         private async void HideMobileStatusBar()
@@ -118,22 +128,20 @@ namespace ChessEngineClient
 
         private void OnBackExecuted(object sender, BackRequestedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
             e.Handled = true;
+            ExecuteBackAction();
+        }
 
+        private void ExecuteBackAction()
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame.CurrentSourcePageType == typeof(MainPage))
-            {
-                return;
-                //ConfirmAndExit();
-            }
+                ConfirmAndExit();
             else if (rootFrame.CurrentSourcePageType == typeof(EditPositionPage))
-            {
                 rootFrame.Navigate(typeof(MainPage));
-            }
             else
-            {
                 throw new NotImplementedException("The back button is not implemented for this page");
-            }
+
         }
 
         private async void ConfirmAndExit()
