@@ -123,7 +123,8 @@ namespace ChessEngineClient
 
             if (rootFrame.CurrentSourcePageType == typeof(MainPage))
             {
-                ConfirmAndExit();
+                return;
+                //ConfirmAndExit();
             }
             else if (rootFrame.CurrentSourcePageType == typeof(EditPositionPage))
             {
