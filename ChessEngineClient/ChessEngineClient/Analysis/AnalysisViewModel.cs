@@ -63,6 +63,9 @@ namespace ChessEngineClient.ViewModel
             {
                 Evaluation = e.Data.Score > 0 ? String.Format("+{0}", e.Data.Score) : e.Data.Score.ToString();
                 Moves = GetEvaluationVariationString(e.Data);
+                if (Moves.EndsWith("# "))
+                    Evaluation = "M" + Moves.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
+
             }, null);
         }
 
