@@ -52,6 +52,7 @@ namespace ChessEngine
 		
 		// engine response processing //
 		bool ProcessGoResponse( const std::string& strResponse );
+		bool ProcessGoResponseBestMove( const std::string& strResponse );
 		bool ProcessInitResponse( const std::string& strResponse );
 		bool ProcessKeepAliveResponse( const std::string& strResponse );
 	

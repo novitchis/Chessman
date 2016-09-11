@@ -113,13 +113,20 @@ bool UCIChessEngine::Analyze( ChessBoardImpl& board )
 	strCommand += board.Serialize( ST_FEN );
 	strCommand += "\n";
 	
-	if (m_state == UC_None)
+	if (m_state == UC_Go)
 	{
-		EnterState(UC_Position);
-		m_pCommThread->QueueCommand(strCommand);
+		EnterState(UC_Stop);
+		m_pCommThread->QueueCommand("stop\n");
+		m_queueCommands.push(EngineCommand(UC_IsReady, "isready\n"));
+		m_queueCommands.push(EngineCommand(UC_Position, strCommand));
 	}
 	else
 	{
+		if (m_state == UC_None)
+			SendKeepAliveMessage();
+		else
+			m_queueCommands.push(EngineCommand(UC_IsReady, "isready\n"));
+
 		m_queueCommands.push(EngineCommand(UC_Position, strCommand));
 	}
 
@@ -161,18 +168,23 @@ void UCIChessEngine::EnableMoveDelay()
 
 void UCIChessEngine::OnEngineResponse( const std::string& strResponse )
 {
-	UCICommand newState = UC_None;
+	UCICommand newState = m_state;
 	switch (m_state)
 	{
 	case ChessEngine::UC_Uci:
-		ProcessInitResponse( strResponse );
+		if (ProcessInitResponse(strResponse))
+			newState = UC_None;
 		break;
 	case ChessEngine::UC_IsReady:
-		ProcessKeepAliveResponse( strResponse );
+		// wait for is ready response
+		if (ProcessKeepAliveResponse( strResponse ))
+			newState = UC_None;
+
+		m_pCommThread->QueueCommand("");
 		break;
 	case ChessEngine::UC_Position:
 		newState = UC_Go;
-		m_pCommThread->QueueCommand( "go depth 8\n" );
+		m_pCommThread->QueueCommand( "go infinite\n" );
 		break;
 	case ChessEngine::UC_Go:
 		if (ProcessGoResponse(strResponse))
@@ -181,18 +193,28 @@ void UCIChessEngine::OnEngineResponse( const std::string& strResponse )
 			m_pCommThread->QueueCommand("");
 		}
 		break;
+	case ChessEngine::UC_Stop:
+
+		if (ProcessGoResponseBestMove(strResponse))
+			newState = UC_None;
+		else
+			m_pCommThread->QueueCommand("");
+		break;
 	case ChessEngine::UC_None:
 	default:
 		break;
 	}
 
-	EnterState( newState );
 	if (newState == UC_None && !m_queueCommands.empty())
 	{
 		auto nextCommand = m_queueCommands.front();
 		EnterState(nextCommand.type);
 		m_pCommThread->QueueCommand(nextCommand.strCommand);
 		m_queueCommands.pop();
+	}
+	else
+	{
+		EnterState(newState);
 	}
 }
 
@@ -206,7 +228,7 @@ void UCIChessEngine::Initialize()
 void UCIChessEngine::SendKeepAliveMessage()
 {
 	EnterState( UC_IsReady );
-	m_pCommThread->QueueCommand( "isready" );
+	m_pCommThread->QueueCommand( "isready\n" );
 }
 
 
@@ -222,15 +244,22 @@ void UCIChessEngine::ResetState()
 }
 
 
-bool UCIChessEngine::ProcessGoResponse( const std::string& strResponse )
-{	
+bool UCIChessEngine::ProcessGoResponseBestMove(const std::string& strResponse)
+{
 	// parse bestmove //
 	std::string strBestMove = "bestmove";
-	auto nPos = strResponse.find( strBestMove );
-	if ( nPos != -1 ) 
-		return false;
+	return strResponse.find(strBestMove) != -1;
+}
 
-	m_strCumul += strResponse;
+bool UCIChessEngine::ProcessGoResponse( const std::string& strResponse)
+{	
+	//// parse bestmove //
+	//std::string strBestMove = "bestmove";
+	//auto nPos = strResponse.find( strBestMove );
+	//if ( nPos != -1 ) 
+	//	return false;
+
+	//m_strCumul += strResponse;
 	auto vecLines = split<std::string>(strResponse, "\n");
 	std::string lastSelDepthLine;
 	for (auto it : vecLines)

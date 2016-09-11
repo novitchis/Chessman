@@ -101,13 +101,19 @@ IVector<MoveData^>^	ChessBoard::GetVariationMoveData(IVector<Move^>^ moves)
 	for (auto&& elem : moves)
 		movesImpl.push_back(elem->getMoveImpl());
 
-	std::list<MoveDataImpl> variationMoves = m_ChessBoardImpl.GetVariationMoveData(movesImpl);
+	try
+	{
+		std::list<MoveDataImpl> variationMoves = m_ChessBoardImpl.GetVariationMoveData(movesImpl);
+		Vector<MoveData^>^ result = ref new Vector<MoveData^>();
+		for (auto it = variationMoves.begin(); it != variationMoves.end(); ++it)
+			result->Append(ref new MoveData(*it));
 
-	Vector<MoveData^>^ result = ref new Vector<MoveData^>();
-	for (auto it = variationMoves.begin(); it != variationMoves.end(); ++it)
-		result->Append(ref new MoveData(*it));
-
-	return result;
+		return result;
+	}
+	catch (std::invalid_argument e)
+	{
+		throw ref new Platform::InvalidArgumentException();
+	}
 }
 
 bool ChessBoard::IsWhiteTurn()

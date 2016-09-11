@@ -61,8 +61,15 @@ namespace ChessEngineClient.ViewModel
             // make sure it is executed on the ui thread
             uiSynchronizationContext.Post(o =>
             {
-                Evaluation = e.Data.Score > 0 ? String.Format("+{0}", e.Data.Score) : e.Data.Score.ToString();
-                Moves = GetEvaluationVariationString(e.Data);
+                try
+                {
+                    Moves = GetEvaluationVariationString(e.Data);
+                    Evaluation = e.Data.Score > 0 ? String.Format("+{0}", e.Data.Score) : e.Data.Score.ToString();
+                }
+                catch
+                {
+                }
+                
             }, null);
         }
 
