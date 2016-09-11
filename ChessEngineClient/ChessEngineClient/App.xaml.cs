@@ -20,6 +20,7 @@ using Microsoft.Practices.Unity;
 using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.Foundation.Metadata;
+using Windows.Phone.UI.Input;
 
 namespace ChessEngineClient
 {
@@ -39,8 +40,9 @@ namespace ChessEngineClient
                 Microsoft.ApplicationInsights.WindowsCollectors.Session);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.UnhandledException += OnUnhandledException;
 
-            BootstrapNavigationService();            
+            BootstrapNavigationService();
         }
 
         private void BootstrapNavigationService()
@@ -99,10 +101,19 @@ namespace ChessEngineClient
                 Window.Current.Activate();
             }
 
+            if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
+                HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+
             SystemNavigationManager navigation = SystemNavigationManager.GetForCurrentView();
             navigation.BackRequested += OnBackExecuted;
 
             HideMobileStatusBar();
+        }
+
+        private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
+        {
+            e.Handled = true;
+            ExecuteBackAction();
         }
 
         private async void HideMobileStatusBar()
@@ -117,21 +128,20 @@ namespace ChessEngineClient
 
         private void OnBackExecuted(object sender, BackRequestedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
             e.Handled = true;
+            ExecuteBackAction();
+        }
 
+        private void ExecuteBackAction()
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame.CurrentSourcePageType == typeof(MainPage))
-            {
                 ConfirmAndExit();
-            }
             else if (rootFrame.CurrentSourcePageType == typeof(EditPositionPage))
-            {
                 rootFrame.Navigate(typeof(MainPage));
-            }
             else
-            {
                 throw new NotImplementedException("The back button is not implemented for this page");
-            }
+
         }
 
         private async void ConfirmAndExit()
@@ -168,6 +178,25 @@ namespace ChessEngineClient
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        private async void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            try
+            {
+                var dialog = new MessageDialog("Ooops! We didn't anticipate this: " + e.Exception.Message);
+                dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+
+                var result = await dialog.ShowAsync();
+            }
+            catch
+            {
+                var dialog = new MessageDialog("An unhandled error occurred.");
+                dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+
+                var result = await dialog.ShowAsync();
+            }
         }
     }
 }

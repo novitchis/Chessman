@@ -28,97 +28,168 @@ void ChessBoard::Clear()
 
 Platform::String^ ChessBoard::Serialize(int type)
 {
-	auto strData = m_ChessBoardImpl.Serialize(GetSerializationType(type));
-	return ManagedConverter::String2ManagedString(strData);
+	try
+	{
+		auto strData = m_ChessBoardImpl.Serialize(GetSerializationType(type));
+		return ManagedConverter::String2ManagedString(strData);
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to serialize the board."));
+	}
 }
 
 bool ChessBoard::LoadFrom(Platform::String^ strData, int type)
 {
-	auto strNativeData = ManagedConverter::ManagedString2String(strData);
-	return m_ChessBoardImpl.LoadFrom(strNativeData, GetSerializationType(type));
+	try
+	{
+		auto strNativeData = ManagedConverter::ManagedString2String(strData);
+		return m_ChessBoardImpl.LoadFrom(strNativeData, GetSerializationType(type));
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to load the board."));
+	}
 }
 
 ChessPiece^ ChessBoard::GetPiece(Coordinate^ coord)
 {
-	ChessPieceImpl piece = m_ChessBoardImpl.GetPiece(coord->getCoordinateImpl());
-	if (piece.IsEmpty())
-		return nullptr;
+	try
+	{
+		ChessPieceImpl piece = m_ChessBoardImpl.GetPiece(coord->getCoordinateImpl());
+		if (piece.IsEmpty())
+			return nullptr;
 
-	return ref new ChessPiece(piece);
+		return ref new ChessPiece(piece);
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to get the chessman."));
+	}
 }
 
 bool ChessBoard::SubmitMove(Coordinate^ from, Coordinate^ to)
 {
-	return m_ChessBoardImpl.SubmitMove(MoveImpl(from->getCoordinateImpl(), to->getCoordinateImpl()));
+	try
+	{
+		return m_ChessBoardImpl.SubmitMove(MoveImpl(from->getCoordinateImpl(), to->getCoordinateImpl()));
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to submit move."));
+	}
 }
 
 bool ChessBoard::UndoMove(bool bWhiteMove)
 {
-	return m_ChessBoardImpl.UndoMove(bWhiteMove);
+	try
+	{
+		return m_ChessBoardImpl.UndoMove(bWhiteMove);
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to undo move."));
+	}
 }
 
 bool ChessBoard::GoToMove(int moveIndex)
 {
-	return m_ChessBoardImpl.GoToMove(moveIndex);
+	try
+	{
+		return m_ChessBoardImpl.GoToMove(moveIndex);
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to move."));
+	}
 }
 
 void ChessBoard::StorePGN()
 {
-	m_ChessBoardImpl.StorePGN();
+	try
+	{
+		m_ChessBoardImpl.StorePGN();
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to store PGN."));
+	}
 }
 
 IVector<MoveData^>^ ChessBoard::GetMoves(bool stopOnCurrent)
 {
-	Vector<MoveData^>^ result = ref new Vector<MoveData^>();
-	std::list<MoveDataImpl> listMoves = m_ChessBoardImpl.GetMoves();
+	try
+	{
+		Vector<MoveData^>^ result = ref new Vector<MoveData^>();
+		std::list<MoveDataImpl> listMoves = m_ChessBoardImpl.GetMoves();
 
-	int count = 0;
-	for (auto it = listMoves.begin(); it != listMoves.end(); ++it, ++count) {
-		if (stopOnCurrent && count > m_ChessBoardImpl.GetCurrentMoveIndex())
-			break;
-		if (it->move == NULL) {
-			result->Append(nullptr);
+		int count = 0;
+		for (auto it = listMoves.begin(); it != listMoves.end(); ++it, ++count) {
+			if (stopOnCurrent && count > m_ChessBoardImpl.GetCurrentMoveIndex())
+				break;
+			if (it->move == NULL) {
+				result->Append(nullptr);
+			}
+			else {
+				result->Append(ref new MoveData(*it));
+			}
 		}
-		else {
-			result->Append(ref new MoveData(*it));
-		}
+
+		return result;
 	}
-
-	return result;
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to get the list of moves."));
+	}
 }
 
 MoveData^ ChessBoard::GetCurrentMove()
 {
-	if (m_ChessBoardImpl.GetCurrentMoveIndex() < 0)
-		return nullptr;
+	try
+	{
+		if (m_ChessBoardImpl.GetCurrentMoveIndex() < 0)
+			return nullptr;
 
-	return ref new MoveData(m_ChessBoardImpl.GetLastMove());
+		return ref new MoveData(m_ChessBoardImpl.GetLastMove());
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to get current move."));
+	}
 }
 
 IVector<MoveData^>^	ChessBoard::GetVariationMoveData(IVector<Move^>^ moves)
 {
-	std::list<MoveImpl> movesImpl;
-	for (auto&& elem : moves)
-		movesImpl.push_back(elem->getMoveImpl());
-
 	try
 	{
+		std::list<MoveImpl> movesImpl;
+		for (auto&& elem : moves)
+			movesImpl.push_back(elem->getMoveImpl());
+
 		std::list<MoveDataImpl> variationMoves = m_ChessBoardImpl.GetVariationMoveData(movesImpl);
+
 		Vector<MoveData^>^ result = ref new Vector<MoveData^>();
 		for (auto it = variationMoves.begin(); it != variationMoves.end(); ++it)
 			result->Append(ref new MoveData(*it));
 
 		return result;
 	}
-	catch (std::invalid_argument e)
+	catch (...)
 	{
-		throw ref new Platform::InvalidArgumentException();
+		throw ref new Exception(3, ref new String(L"Failed to get engine results."));
 	}
 }
 
 bool ChessBoard::IsWhiteTurn()
 {
-	return m_ChessBoardImpl.IsWhiteTurn();
+	try
+	{
+		return m_ChessBoardImpl.IsWhiteTurn();
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to get current side."));
+	}
 }
 
 SerializationType ChessBoard::GetSerializationType(int type)
