@@ -30,6 +30,7 @@ namespace ChessEngine
 		IVector<MoveData^>^	GetVariationMoveData(IVector<Move^>^ moves);
 
 		bool				IsWhiteTurn();
+		bool				IsValid(Platform::String^ strFen);
 
 
 	private:

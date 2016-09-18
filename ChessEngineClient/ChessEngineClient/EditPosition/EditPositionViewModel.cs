@@ -15,6 +15,7 @@ namespace ChessEngineClient.ViewModel
         private INavigationService navigationService = null;
         private IChessBoardService chessBoardService = null;
         private SideColor toMoveSide = SideColor.White;
+        private bool isBoardValid = false;
 
         #region "Properties"
 
@@ -32,6 +33,19 @@ namespace ChessEngineClient.ViewModel
                     toMoveSide = value;
                     NotifyPropertyChanged();
                 } 
+            }
+        }
+
+        public bool IsBoardValid
+        {
+            get { return isBoardValid; }
+            set
+            {
+                if (isBoardValid != value)
+                {
+                    isBoardValid = value;
+                    NotifyPropertyChanged();
+                }
             }
         }
 
@@ -59,6 +73,7 @@ namespace ChessEngineClient.ViewModel
 
             BoardViewModel = ViewModelLocator.IOCContainer.Resolve<ChessBoardViewModel>();
             BoardViewModel.IsEdit = true;
+            IsBoardValid = chessBoardService.IsValid(GetFen());
 
             PiecesPaletteViewModel = new PiecesPaletteViewModel();
 
@@ -71,6 +86,8 @@ namespace ChessEngineClient.ViewModel
                 square.Piece = null;
             else
                 square.Piece = PiecesPaletteViewModel.SelectedPiece;
+
+            IsBoardValid = chessBoardService.IsValid(GetFen());
         }
 
         private void CancelExecuted(object obj)
@@ -87,6 +104,7 @@ namespace ChessEngineClient.ViewModel
         private void ClearExecuted(object obj)
         {
             BoardViewModel.ClearPieces();
+            IsBoardValid = false;
         }
 
         private void SaveExecuted(object obj)

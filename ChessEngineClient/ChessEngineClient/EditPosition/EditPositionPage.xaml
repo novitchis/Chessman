@@ -57,28 +57,35 @@
                 <AppBarButton.Flyout>
                     <Flyout Placement="Top">
                         <StackPanel>
-                            <TextBlock Text="To move:"/>
-                            <StackPanel Orientation="Horizontal" Margin="0 10 0 20">
-                                <RadioButton Content="White" IsChecked="True">
-                                    <i:Interaction.Behaviors>
-                                        <ic:EventTriggerBehavior EventName="Checked">
-                                            <ic:ChangePropertyAction TargetObject="{Binding}" PropertyName="ToMoveSide" Value="{StaticResource SideColorValueWhite}" />
-                                        </ic:EventTriggerBehavior>
-                                    </i:Interaction.Behaviors>
-                                </RadioButton>
-                                <RadioButton Content="Black">
-                                    <i:Interaction.Behaviors>
-                                        <ic:EventTriggerBehavior EventName="Checked">
-                                            <ic:ChangePropertyAction TargetObject="{Binding}" PropertyName="ToMoveSide" Value="{StaticResource SideColorValueBlack}" />
-                                        </ic:EventTriggerBehavior>
-                                    </i:Interaction.Behaviors>
-                                </RadioButton>
+                            <StackPanel Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Text="To move:"/>
+                                <StackPanel Orientation="Horizontal" Margin="0 10 0 20">
+                                    <RadioButton Content="White" IsChecked="True">
+                                        <i:Interaction.Behaviors>
+                                            <ic:EventTriggerBehavior EventName="Checked">
+                                                <ic:ChangePropertyAction TargetObject="{Binding}" PropertyName="ToMoveSide" Value="{StaticResource SideColorValueWhite}" />
+                                            </ic:EventTriggerBehavior>
+                                        </i:Interaction.Behaviors>
+                                    </RadioButton>
+                                    <RadioButton Content="Black">
+                                        <i:Interaction.Behaviors>
+                                            <ic:EventTriggerBehavior EventName="Checked">
+                                                <ic:ChangePropertyAction TargetObject="{Binding}" PropertyName="ToMoveSide" Value="{StaticResource SideColorValueBlack}" />
+                                            </ic:EventTriggerBehavior>
+                                        </i:Interaction.Behaviors>
+                                    </RadioButton>
+                                </StackPanel>
+                                <Button
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding SaveCommand}"
+                                    Padding="10 5"
+                                    >Save</Button>
                             </StackPanel>
-                            <Button
-                                HorizontalAlignment="Center"
-                                Command="{Binding SaveCommand}"
-                                Padding="10 5"
-                                >Save</Button>
+                            <TextBlock Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource InvertedConversionType}}" >
+                                I have a hunch your setup is faulty.
+                                <LineBreak/>
+                                Can you double check it for me?
+                            </TextBlock>
                         </StackPanel>
                     </Flyout>
                 </AppBarButton.Flyout>

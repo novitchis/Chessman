@@ -192,6 +192,19 @@ bool ChessBoard::IsWhiteTurn()
 	}
 }
 
+bool ChessBoard::IsValid(Platform::String^ strFen)
+{
+	try
+	{
+		auto strNativeData = ManagedConverter::ManagedString2String(strFen);
+		return m_ChessBoardImpl.IsValid(strNativeData);
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to check the board."));
+	}
+}
+
 SerializationType ChessBoard::GetSerializationType(int type)
 {
 	if (type == BoardSerialization::BS_FEN) return ST_FEN;

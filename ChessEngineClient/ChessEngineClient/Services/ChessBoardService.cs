@@ -78,6 +78,11 @@ namespace ChessEngineClient
             return result;
         }
 
+        public bool IsValid(string fen)
+        {
+            return chessBoard.IsValid(fen);
+        }
+
         private void RefreshAnalysis()
         {
             engine.Analyze(chessBoard);

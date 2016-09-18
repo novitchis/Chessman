@@ -26,5 +26,7 @@ namespace ChessEngineClient
         IList<MoveData> GetVariationMoveData(IList<Move> moves);
 
         bool GoToMove(int moveIndex);
+
+        bool IsValid(string fen);
     }
 }

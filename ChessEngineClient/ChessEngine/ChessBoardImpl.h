@@ -97,6 +97,7 @@ namespace ChessEngine
 		bool							InCheck();
 		bool							IsMate();
 		bool							IsStaleMate();
+		bool							IsValid(const std::string& strFen);
 		MoveDataImpl					GetLastMove() const;
 		std::map<ChessPieceImpl, int>	GetCapturedPieces() const;
 		void							GetPreservedState( StatePreserveType type, Core::StatePreserver& state );

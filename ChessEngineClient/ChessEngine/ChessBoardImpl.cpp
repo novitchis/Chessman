@@ -570,6 +570,33 @@ END:
 }
 
 
+bool ChessBoardImpl::IsValid(const std::string& strFen)
+{
+	ChessBoardImpl copy(*this);
+	copy.LoadFromFEN(strFen);
+
+	int whiteKingCount = 0;
+	int blackKingCount = 0;
+
+	for (int i = 0; i < 8; ++i)
+	{
+		for (int j = 0; j < 8; ++j)
+		{
+			ChessPieceImpl piece = copy.GetPiece(CoordinateImpl(i, j));
+			if (piece.cPiece == ChessPieceImpl::King)
+			{
+				if (piece.bWhite)
+					whiteKingCount += 1;
+				else
+					blackKingCount += 1;
+			}
+		}
+	}
+
+	return whiteKingCount == 1 && blackKingCount == 1;
+}
+
+
 MoveDataImpl ChessBoardImpl::GetLastMove() const
 {
 	if ( m_currentMoveIndex < 0 ) return MoveDataImpl();
