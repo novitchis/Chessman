@@ -5,6 +5,9 @@
 
 #include <iostream>
 
+#include <Windows.h>
+#include <sstream>
+
 using namespace ChessEngine;
 using namespace Core;
 
@@ -40,6 +43,15 @@ void InProcEngineCommThread::Run()
 		//	break;
 		//}
 
+#ifdef LOGCOMM
+		if (!strEngineResponse.empty())
+		{
+			std::wostringstream os_;
+			os_ << "<-- " << strEngineResponse.c_str() << "\n";
+			OutputDebugStringW(os_.str().c_str());
+		}
+#endif // LOGCOMM
+
 		m_pEngine->OnEngineResponse( strEngineResponse );
 		
 		// remove the command only after the response has finished //
@@ -61,10 +73,19 @@ void InProcEngineCommThread::Stop()
 
 void InProcEngineCommThread::QueueCommand( const std::string& strCommand )
 {
+#ifdef LOGCOMM
+	if (!strCommand.empty())
+	{
+		std::wostringstream os_;    
+		os_ << "--> ";
+		os_ << strCommand.c_str();
+		OutputDebugStringW( os_.str().c_str() );
+	}
+#endif
+
 	WriteData( strCommand );
 	SetEvent( m_hCommandEvent );
 }
-
 
 bool InProcEngineCommThread::HasErrors()
 {
@@ -101,7 +122,6 @@ bool InProcEngineCommThread::ReadData( std::string& strData )
 		
 		Sleep(50);
 	}
-
 	return bRes;
 }
 

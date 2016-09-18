@@ -102,6 +102,7 @@ std::list<MoveDataImpl>	ChessBoardImpl::GetVariationMoveData(std::list<MoveImpl>
 {
 	std::list<MoveDataImpl> variationMoves;
 	ChessBoardImpl copy(*this);
+	copy.RemoveMovesAfterCurrent();
 
 	for (auto it = moves.begin(); it != moves.end(); ++it)
 	{
@@ -303,10 +304,9 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 	}
 
 	if (m_listMoves.size() > m_currentMoveIndex + 1) {
-		int moveCount = 0;
 		auto it = std::next(m_listMoves.begin(), m_currentMoveIndex + 1);
 		if (it->strPGNMove != moveData.strPGNMove)
-			m_listMoves.erase(it, m_listMoves.end());
+			RemoveMovesAfterCurrent();
 	}
 
 	if (m_listMoves.size() == m_currentMoveIndex + 1) {
@@ -318,6 +318,13 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 	return true;
 }
 
+void ChessBoardImpl::RemoveMovesAfterCurrent()
+{
+	if (m_listMoves.size() > m_currentMoveIndex + 1) {
+		auto it = std::next(m_listMoves.begin(), m_currentMoveIndex + 1);
+		m_listMoves.erase(it, m_listMoves.end());
+	}
+}
 
 bool ChessBoardImpl::SubmitMove( const MoveImpl& move )
 {

@@ -109,6 +109,7 @@ namespace ChessEngine
 		bool						LoadFromFEN( const std::string& strData );
 		bool						LoadFromPGN( const std::string& strData );
 		bool						IsEnPassantMove(AdditionalMoveInfo& coordEnPassant) const;
+		void						RemoveMovesAfterCurrent();
 
 	private:
 		ChessPieceImpl				m_memBoard[8][8];
