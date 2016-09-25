@@ -57,7 +57,7 @@
                 <AppBarButton.Flyout>
                     <Flyout Placement="Top">
                         <StackPanel>
-                            <StackPanel Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel>
                                 <TextBlock Text="To move:"/>
                                 <StackPanel Orientation="Horizontal" Margin="0 10 0 20">
                                     <RadioButton Content="White" IsChecked="True">
@@ -78,14 +78,16 @@
                                 <Button
                                     HorizontalAlignment="Center"
                                     Command="{Binding SaveCommand}"
-                                    Padding="10 5"
-                                    >Save</Button>
+                                    Padding="10 8"
+                                    Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Content="Save"/>
+                                <TextBlock 
+                                    Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource InvertedConversionType}}" >
+                                    Your setup looks to be faulty.
+                                    <LineBreak/>
+                                    Can you double check it for me?
+                                </TextBlock>
                             </StackPanel>
-                            <TextBlock Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource InvertedConversionType}}" >
-                                I have a hunch your setup is faulty.
-                                <LineBreak/>
-                                Can you double check it for me?
-                            </TextBlock>
                         </StackPanel>
                     </Flyout>
                 </AppBarButton.Flyout>

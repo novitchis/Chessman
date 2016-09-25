@@ -33,7 +33,8 @@ namespace ChessEngineClient.ViewModel
                 {
                     toMoveSide = value;
                     NotifyPropertyChanged();
-                } 
+                    IsBoardValid = chessBoardService.IsValid(GetFen());
+                }
             }
         }
 
@@ -62,7 +63,7 @@ namespace ChessEngineClient.ViewModel
 
         public ICommand SaveCommand
         {
-            get { return new RelayCommand(SaveExecuted);  }
+            get { return new RelayCommand(SaveExecuted); }
         }
 
         #endregion

@@ -600,7 +600,12 @@ bool ChessBoardImpl::IsValid(const std::string& strFen)
 		}
 	}
 
-	return whiteKingCount == 1 && blackKingCount == 1;
+	if (whiteKingCount != 1 && blackKingCount != 1)
+		return false;
+
+	// check if the side which is NOT currently to move is in check
+	std::list<CoordinateImpl> listAttackers;
+	return !copy.GetAttackingFields(copy.GetKingPos(!copy.IsWhiteTurn()), copy.IsWhiteTurn(), listAttackers);
 }
 
 
