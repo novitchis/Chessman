@@ -1,4 +1,5 @@
-﻿using Framework.MVVM;
+﻿using ChessEngine;
+using Framework.MVVM;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
@@ -126,16 +127,62 @@ namespace ChessEngineClient.ViewModel
 
                 char squareContent = '1';
                 if (square.Piece != null)
-                    squareContent = square.Piece.Color == ChessEngine.PieceColor.Black ? square.Piece.NotationChar : Char.ToUpper(square.Piece.NotationChar);
+                    squareContent = square.Piece.Color == PieceColor.Black ? square.Piece.NotationChar : Char.ToUpper(square.Piece.NotationChar);
 
                 fenBuilder.Append(squareContent);
                 index++;
             }
 
             //only who's on move is implemented
-            fenBuilder.AppendFormat(" {0} KQkq - 0 1", toMoveSide == SideColor.White ? 'w' : 'b');
+            string castling = GetCastlingFen();
+            fenBuilder.AppendFormat(" {0} {1} - 0 1", toMoveSide == SideColor.White ? 'w' : 'b', castling);
 
             return fenBuilder.ToString();
+        }
+
+        private string GetCastlingFen()
+        {
+            return GetWhiteCastlingFen() + GetBlackCastlingFen();
+        }
+
+        private string GetBlackCastlingFen()
+        {
+            string result = "";
+            ChessPiece blackKing = BoardViewModel.Squares[4].Piece;
+            ChessPiece a8Rook = BoardViewModel.Squares[0].Piece;
+            ChessPiece h8Rook = BoardViewModel.Squares[7].Piece;
+
+            if (blackKing == null || a8Rook == null || h8Rook == null ||
+                blackKing.Type != PieceType.King || blackKing.Color != PieceColor.Black)
+                return result;
+
+            if (h8Rook.Type == PieceType.Rook && h8Rook.Color == PieceColor.Black)
+                result += "k";
+
+            if (a8Rook.Type == PieceType.Rook && a8Rook.Color == PieceColor.Black)
+                result += "q";
+
+            return result;
+        }
+
+        private string GetWhiteCastlingFen()
+        {
+            string result = "";
+            ChessPiece whiteKing = BoardViewModel.Squares[60].Piece;
+            ChessPiece a1Rook = BoardViewModel.Squares[56].Piece;
+            ChessPiece h1Rook = BoardViewModel.Squares[63].Piece;
+            if (whiteKing == null || a1Rook == null || h1Rook == null || 
+                whiteKing.Type != PieceType.King || whiteKing.Color != PieceColor.White)
+                return result;
+
+            if (h1Rook.Type == PieceType.Rook && h1Rook.Color == PieceColor.White)
+                result += "K";
+
+            if (a1Rook.Type == PieceType.Rook && a1Rook.Color == PieceColor.White)
+                result += "Q";
+
+            return result;
+
         }
     }
 }
