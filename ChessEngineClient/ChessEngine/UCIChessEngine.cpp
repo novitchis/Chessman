@@ -109,6 +109,9 @@ bool UCIChessEngine::Stop()
 
 bool UCIChessEngine::Analyze( ChessBoardImpl& board )
 {
+	if (board.IsMate() || board.IsStaleMate())
+		return false;
+
 	std::string strCommand = "position fen ";
 	strCommand += board.Serialize( ST_FEN );
 	strCommand += "\n";
