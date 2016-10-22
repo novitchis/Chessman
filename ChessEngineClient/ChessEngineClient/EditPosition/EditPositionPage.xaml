@@ -82,10 +82,11 @@
                                     Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Content="Save"/>
                                 <TextBlock 
+                                    Foreground="Red"
+                                    HorizontalAlignment="Center"
+                                    Padding="10 8"
                                     Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource InvertedConversionType}}" >
-                                    Your setup looks to be faulty.
-                                    <LineBreak/>
-                                    Can you double check it for me?
+                                    The position in invalid.
                                 </TextBlock>
                             </StackPanel>
                         </StackPanel>
