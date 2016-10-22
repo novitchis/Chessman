@@ -606,7 +606,7 @@ bool ChessBoardImpl::IsValid(const std::string& strFen)
 		}
 	}
 
-	if (whiteKingCount != 1 && blackKingCount != 1)
+	if (whiteKingCount != 1 || blackKingCount != 1)
 		return false;
 
 	// check if the side which is NOT currently to move is in check
