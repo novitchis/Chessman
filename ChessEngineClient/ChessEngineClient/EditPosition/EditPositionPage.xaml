@@ -86,7 +86,7 @@
                                     HorizontalAlignment="Center"
                                     Padding="10 8"
                                     Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource InvertedConversionType}}" >
-                                    The position in invalid.
+                                    The position is invalid.
                                 </TextBlock>
                             </StackPanel>
                         </StackPanel>
