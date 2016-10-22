@@ -68,7 +68,7 @@ namespace ChessEngineClient.ViewModel
             int groupIndex = 1;
             List<MoveDataGroup> newGroupedMoves = new List<MoveDataGroup>();
             var moves = chessBoardService.GetMoves(false);
-            bool startedAsBlack = StartedAsBlack();
+            bool startedAsBlack = chessBoardService.WasBlackFirstToMove();
 
             using (var movesEnumerator = moves.GetEnumerator())
             {
@@ -76,11 +76,11 @@ namespace ChessEngineClient.ViewModel
                 {
                     MoveDataGroup moveGroup = new MoveDataGroup(groupIndex);
                     if (startedAsBlack && groupIndex == 1)
-                        moveGroup.WhiteMove = null;
+                        moveGroup.WhiteMove = MoveData.CreateEmptyMove();
                     else
                         moveGroup.WhiteMove = movesEnumerator.Current;
 
-                    if (moveGroup.WhiteMove == null || movesEnumerator.MoveNext())
+                    if (moveGroup.WhiteMove.Index == -1 || movesEnumerator.MoveNext())
                         moveGroup.BlackMove = movesEnumerator.Current;
 
                     newGroupedMoves.Add(moveGroup);
@@ -89,19 +89,15 @@ namespace ChessEngineClient.ViewModel
             }
 
             GroupedMoves = newGroupedMoves;
+
             MoveData currentMove = chessBoardService.GetCurrentMove();
             // in order for the selected item to work CurrentMove needs to be an object from the 'moves' list
             if (currentMove != null)
                 CurrentMove = moves[currentMove.Index];
+            // select the first ... item by default
+            else if (startedAsBlack && GroupedMoves.Count > 0)
+                CurrentMove = GroupedMoves[0].WhiteMove;
         }
 
-        private bool StartedAsBlack()
-        {
-            MoveData currentMove = chessBoardService.GetCurrentMove();
-            if (currentMove == null || currentMove.Index % 2 != 0)
-                return !chessBoardService.IsWhiteTurn;
-
-            return chessBoardService.IsWhiteTurn;
-        }
     }
 }

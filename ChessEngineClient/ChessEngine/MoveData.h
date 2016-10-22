@@ -25,7 +25,7 @@ namespace ChessEngine
 		{
 			int get() { return m_moveData.moveIndex; }
 		}
-
+		static MoveData^ CreateEmptyMove();
 	private:
 		MoveDataImpl m_moveData;
 	};

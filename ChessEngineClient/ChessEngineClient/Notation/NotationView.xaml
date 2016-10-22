@@ -70,7 +70,9 @@
                 </ItemsControl.GroupStyle>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding PgnMove}"/>
+                        <TextBlock 
+                            Name="moveText"
+                            Text="{Binding PgnMove, FallbackValue='...'}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.ItemsPanel>

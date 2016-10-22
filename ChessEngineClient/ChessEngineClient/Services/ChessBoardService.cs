@@ -59,6 +59,15 @@ namespace ChessEngineClient
             return chessBoard.GetCurrentMove();
         }
 
+        public bool WasBlackFirstToMove()
+        {
+            MoveData currentMove = GetCurrentMove();
+            if (currentMove == null || currentMove.Index % 2 != 0)
+                return !IsWhiteTurn;
+
+            return IsWhiteTurn;
+        }
+
         public IList<MoveData> GetMoves(bool stopOnCurrentMove = true)
         {
             return chessBoard.GetMoves(stopOnCurrentMove);

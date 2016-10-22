@@ -85,14 +85,17 @@ namespace ChessEngineClient.ViewModel
             bool isFirstMoveProcesssed = false;
             foreach (MoveData moveData in chessBoardService.GetVariationMoveData(data.Analysis))
             {
-                // TODO: this is not true when editing position and black is to move
-                bool isWhiteMove = moveData.Index % 2 == 0;
-                int moveGroupNumber = moveData.Index / 2 + 1;
+                int actualMoveindex = moveData.Index;
+                if (chessBoardService.WasBlackFirstToMove())
+                    actualMoveindex++;
+
+                bool isWhiteMove = actualMoveindex % 2 == 0;
+                int moveGroupNumber = actualMoveindex / 2 + 1;
 
                 if (isWhiteMove)
-                    variationBuilder.AppendFormat("{0}.{1}", moveGroupNumber, moveData.PgnMove);
+                    variationBuilder.AppendFormat("{0}. {1}", moveGroupNumber, moveData.PgnMove);
                 else if (!isFirstMoveProcesssed)
-                    variationBuilder.AppendFormat("{0}...{1} ", moveGroupNumber, moveData.PgnMove);
+                    variationBuilder.AppendFormat("{0}. ... {1} ", moveGroupNumber, moveData.PgnMove);
                 else
                     variationBuilder.AppendFormat(" {0} ", moveData.PgnMove);
 

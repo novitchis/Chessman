@@ -21,6 +21,8 @@ namespace ChessEngineClient
 
         MoveData GetCurrentMove();
 
+        bool WasBlackFirstToMove();
+
         IList<MoveData> GetMoves(bool stopOnCurrentMove = true);
 
         IList<MoveData> GetVariationMoveData(IList<Move> moves);
