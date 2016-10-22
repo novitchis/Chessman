@@ -194,8 +194,11 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 				SetPiece(ChessPieceImpl(ChessPieceImpl::Rock, true), CoordinateImpl(0,5));		
 				bKingCastle = true;
 			}
-			moveData.nCastlingMask &= ~CT_WhiteQueenSide;
-			moveData.nCastlingMask &= ~CT_WhiteKingSide ;
+
+			// for undo purposese moveData.nCastlingMask should have 0 bits
+			// only for castling that was prevoiusly available and is not anymore after this move
+			moveData.nCastlingMask &= ~(m_nCastlingMask & CT_WhiteQueenSide);
+			moveData.nCastlingMask &= ~(m_nCastlingMask & CT_WhiteKingSide);
 		}
 	}
 	else
@@ -214,8 +217,11 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 				SetPiece(ChessPieceImpl(ChessPieceImpl::Rock, false), CoordinateImpl(7,5));
 				bKingCastle = true;
 			}
-			moveData.nCastlingMask &= ~CT_BlackKingSide;
-			moveData.nCastlingMask  &= ~CT_BlackQueenSide;
+
+			// for undo purposese moveData.nCastlingMask should have 0 bits
+			// only for castling that was prevoiusly available and is not anymore after this move
+			moveData.nCastlingMask &= ~(m_nCastlingMask & CT_BlackKingSide);
+			moveData.nCastlingMask &= ~(m_nCastlingMask & CT_BlackQueenSide);
 		}
 	}
 	if ( m_lastPiece.bWhite )
