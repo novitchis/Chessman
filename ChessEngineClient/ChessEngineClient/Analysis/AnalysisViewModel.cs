@@ -105,11 +105,7 @@ namespace ChessEngineClient.ViewModel
             if (moveCount % 2 == 0)
                 sign = "-";
 
-            //if (!chessBoardService.WasBlackFirstToMove() && moveCount % 2 == 0 ||
-            //    chessBoardService.WasBlackFirstToMove() && moveCount % 2 != 0)
-            //    sign = "-";
-
-            return sign + "M" + moveCount.ToString();
+            return sign + "M" + Math.Ceiling(((float)moveCount) / 2).ToString();
         }
 
         private string GetEvaluationVariationString(AnalysisData data)
