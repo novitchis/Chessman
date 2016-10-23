@@ -12,6 +12,7 @@ namespace ChessEngineClient
     public class AnalysisReceiver : IAnalysisReceiver, IEngineNotification
     {
         public event AnalysisEventHandler AnalysisReceived;
+        public event AnalysisEventHandler AnalysisStopped;
 
         public AnalysisReceiver()
         {
@@ -35,6 +36,11 @@ namespace ChessEngineClient
         public void OnGameEnded(bool bWhiteWins)
         {
             //throw new NotImplementedException();
+        }
+
+        public void OnEngineStop()
+        {
+            AnalysisStopped?.Invoke(this, new AnalysisEventArgs());
         }
     }
 }

@@ -52,8 +52,15 @@ namespace ChessEngineClient.ViewModel
             this.chessBoardService = chessBoardService;
             this.analysisReceiver = analysisReceiver;
             this.analysisReceiver.AnalysisReceived += OnAnalysisReceived;
+            this.analysisReceiver.AnalysisStopped += OnAnalysisStopped;
 
             uiSynchronizationContext = SynchronizationContext.Current;
+        }
+
+        private void OnAnalysisStopped(object sender, AnalysisEventArgs e)
+        {
+            Evaluation = "-";
+            Moves = string.Empty;
         }
 
         private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
@@ -66,13 +73,27 @@ namespace ChessEngineClient.ViewModel
                     Moves = GetEvaluationVariationString(e.Data);
                     Evaluation = e.Data.Score > 0 ? String.Format("+{0}", e.Data.Score) : e.Data.Score.ToString();
                     if (Moves.Trim().EndsWith("#"))
-                        Evaluation = "M" + Moves.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
+                        Evaluation = GetMateEvaluation();
                 }
                 catch
                 {
                 }
-                
             }, null);
+        }
+
+        private string GetMateEvaluation()
+        {
+            int moveCount = Moves.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Where(p => !p.Contains('.')).Count();
+            string sign = "+";
+
+            if (moveCount % 2 == 0)
+                sign = "-";
+
+            //if (!chessBoardService.WasBlackFirstToMove() && moveCount % 2 == 0 ||
+            //    chessBoardService.WasBlackFirstToMove() && moveCount % 2 != 0)
+            //    sign = "-";
+
+            return sign + "M" + moveCount.ToString();
         }
 
         private string GetEvaluationVariationString(AnalysisData data)

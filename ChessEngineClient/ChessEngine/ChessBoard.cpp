@@ -205,6 +205,33 @@ bool ChessBoard::IsValid(Platform::String^ strFen)
 	}
 }
 
+
+bool ChessBoard::IsStalemate()
+{
+	try
+	{
+		return m_ChessBoardImpl.IsStaleMate();
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to check for stalemate."));
+	}
+}
+
+
+bool ChessBoard::IsCheckmate()
+{
+	try
+	{
+		return m_ChessBoardImpl.IsMate();
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to check for checkmate."));
+	}
+}
+
+
 SerializationType ChessBoard::GetSerializationType(int type)
 {
 	if (type == BoardSerialization::BS_FEN) return ST_FEN;

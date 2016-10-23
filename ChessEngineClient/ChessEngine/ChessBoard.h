@@ -31,6 +31,8 @@ namespace ChessEngine
 
 		bool				IsWhiteTurn();
 		bool				IsValid(Platform::String^ strFen);
+		bool				IsStalemate();
+		bool				IsCheckmate();
 
 
 	private:

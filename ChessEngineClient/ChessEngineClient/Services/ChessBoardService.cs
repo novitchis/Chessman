@@ -11,6 +11,7 @@ namespace ChessEngineClient
     {
         private ChessBoard chessBoard = null;
         private Engine engine = null;
+        private IEngineNotification engineNotification = null;
 
         public bool IsWhiteTurn
         {
@@ -23,6 +24,7 @@ namespace ChessEngineClient
             chessBoard.Initialize();
             chessBoard.StorePGN();
 
+            this.engineNotification = engineNotification;
             engine = new Engine(engineNotification);
             engine.Start();
             RefreshAnalysis();
@@ -94,7 +96,10 @@ namespace ChessEngineClient
 
         private void RefreshAnalysis()
         {
-            engine.Analyze(chessBoard);
+            if (!chessBoard.IsStalemate() && !chessBoard.IsCheckmate())
+                engine.Analyze(chessBoard);
+            else
+                engineNotification.OnEngineStop();
         }
     }
 }
