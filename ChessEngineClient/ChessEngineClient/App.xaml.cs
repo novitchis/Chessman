@@ -138,7 +138,7 @@ namespace ChessEngineClient
             if (rootFrame.CurrentSourcePageType == typeof(MainPage))
                 ConfirmAndExit();
             else if (rootFrame.CurrentSourcePageType == typeof(EditPositionPage))
-                rootFrame.Navigate(typeof(MainPage));
+                ViewModelLocator.EditPositionViewModel.ReturnToMainView();
             else
                 throw new NotImplementedException("The back button is not implemented for this page");
 

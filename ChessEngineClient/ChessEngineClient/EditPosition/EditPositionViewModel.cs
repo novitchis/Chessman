@@ -97,7 +97,7 @@ namespace ChessEngineClient.ViewModel
             ReturnToMainView();
         }
 
-        private void ReturnToMainView()
+        public void ReturnToMainView()
         {
             Messenger.Default.Unregister<SquareViewModel>(this);
             navigationService.NavigateTo(ViewModelLocator.MainPageNavigationName);
