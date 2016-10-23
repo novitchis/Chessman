@@ -93,7 +93,6 @@
                        VerticalAlignment="Center"
                        FontSize="40"
                        Style="{StaticResource PlaceHolderTextStyle}">
-                
             </TextBlock>
             <i:Interaction.Behaviors>
                 <ic:DataTriggerBehavior Binding="{Binding GroupedMoves.Count}" Value="0">

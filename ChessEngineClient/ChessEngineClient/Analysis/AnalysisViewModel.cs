@@ -16,6 +16,7 @@ namespace ChessEngineClient.ViewModel
         private string moves = String.Empty;
         SynchronizationContext uiSynchronizationContext = null;
         private string evaluation = "0.0";
+        private bool isActive = true;
 
         #region "Properties"
 
@@ -45,6 +46,19 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
+        public bool IsActive
+        {
+            get { return isActive; }
+            set
+            {
+                if (isActive != value)
+                {
+                    isActive = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         #endregion
 
         public AnalysisViewModel(IChessBoardService chessBoardService, IAnalysisReceiver analysisReceiver)
@@ -59,6 +73,7 @@ namespace ChessEngineClient.ViewModel
 
         private void OnAnalysisStopped(object sender, AnalysisEventArgs e)
         {
+            IsActive = false;
             Evaluation = "-";
             Moves = string.Empty;
         }
@@ -70,6 +85,7 @@ namespace ChessEngineClient.ViewModel
             {
                 try
                 {
+                    IsActive = true;
                     Moves = GetEvaluationVariationString(e.Data);
                     Evaluation = e.Data.Score > 0 ? String.Format("+{0}", e.Data.Score) : e.Data.Score.ToString();
                     if (Moves.Trim().EndsWith("#"))
