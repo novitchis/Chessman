@@ -20,6 +20,14 @@ namespace ChessEngineClient.View
 {
     public sealed partial class PiecesPaletteView : UserControl
     {
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(PiecesPaletteView), new PropertyMetadata(Orientation.Vertical));
+
+        public Orientation Orientation
+        {
+            get { return (Orientation)GetValue(OrientationProperty); }
+            set { SetValue(OrientationProperty, value); }
+        }
+
         public PiecesPaletteViewModel ViewModel
         {
             get { return DataContext as PiecesPaletteViewModel; }

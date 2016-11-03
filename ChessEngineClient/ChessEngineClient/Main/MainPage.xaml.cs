@@ -47,5 +47,20 @@ namespace ChessEngineClient.View
             if ((int)result.Id == 0)
                 Application.Current.Exit();
         }
+
+        private void PageSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // for now there is no other way to enforce a min width on the right column
+            // for pc layout that can be honored by the parent pannel
+            if (analysisView.MinWidth > 0)
+                chessBoard.MaxWidth = e.NewSize.Width - analysisView.MinWidth - 50;
+            else
+                chessBoard.MaxWidth = Double.PositiveInfinity;
+
+             if (notationView.MinHeight > 0)
+                chessBoard.MaxHeight = e.NewSize.Height - notationView.MinHeight - 130;
+            else
+                chessBoard.MaxHeight = Double.PositiveInfinity;
+        }
     }
 }

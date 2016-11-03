@@ -55,7 +55,7 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <Border 
+    <Border         
         Style="{StaticResource ViewDefaultBorder}" 
         HorizontalAlignment="Center"
         Background="{StaticResource BlackSquareBrush}">

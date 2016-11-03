@@ -21,6 +21,7 @@ using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.Foundation.Metadata;
 using Windows.Phone.UI.Input;
+using Windows.UI.ViewManagement;
 
 namespace ChessEngineClient
 {
@@ -38,6 +39,7 @@ namespace ChessEngineClient
             Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
                 Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
                 Microsoft.ApplicationInsights.WindowsCollectors.Session);
+
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             this.UnhandledException += OnUnhandledException;
@@ -68,6 +70,8 @@ namespace ChessEngineClient
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
+            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(400, 500));
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,

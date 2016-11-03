@@ -9,7 +9,9 @@
     xmlns:my="using:ChessEngineClient"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    SizeChanged="PageSizeChanged"
+    RequestedTheme="Light">
 
     <Page.Resources>
         <my:SideColor x:Key="SideColorValueWhite">White</my:SideColor>
@@ -18,35 +20,26 @@
 
     <Grid Background="{StaticResource BackgroundDark}">
         <Grid.RowDefinitions>
-            <RowDefinition />
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Margin="4">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="36"/>
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid Background="White">
-                <TextBlock 
-                    Text="Set-up a position"
-                    FontSize="20"
-                    Style="{StaticResource PlaceHolderTextStyle}" />
-            </Grid>
-            <RelativePanel Grid.Row="1" >
+        <Grid Margin="4" x:Name="contentGrid">
+            <RelativePanel>
+                <Grid x:Name="titlePanel" Background="White" Height="36">
+                    <TextBlock 
+                        Text="Set-up a position"
+                        FontSize="20"
+                        Style="{StaticResource PlaceHolderTextStyle}" />
+                </Grid>
                 <view:ChessBoardView x:Name="chessBoard"
-                                     Margin="0 4"
-                                     MaxWidth="500"
-                                     MaxHeight="500"
-                                     RelativePanel.AlignHorizontalCenterWithPanel="True" 
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"
                                      DataContext="{Binding BoardViewModel}" />
-
-                <view:PiecesPaletteView 
-                    RelativePanel.AlignBottomWithPanel="True"
-                    RelativePanel.Below="chessBoard"
-                    RelativePanel.AlignLeftWith="chessBoard"
-                    RelativePanel.AlignRightWith="chessBoard"
-                    Margin="-2" 
-                    DataContext="{Binding PiecesPaletteViewModel}" />
+                <view:PiecesPaletteView x:Name="piecesPalette"
+                                        Background="Red"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        DataContext="{Binding PiecesPaletteViewModel}" />
             </RelativePanel>
         </Grid>
 
@@ -94,5 +87,54 @@
             </AppBarButton>
             <AppBarButton Label="Cancel" Icon="Cancel" Foreground="Red" Command="{Binding CancelCommand}"/>
         </CommandBar>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="640" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="contentGrid.Margin" Value="12 4"/>
+
+                        <Setter Target="chessBoard.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.Margin" Value="0 0 4 0"/>
+
+                        <Setter Target="titlePanel.Visibility" Value="Collapsed"/>
+
+                        <Setter Target="piecesPalette.(RelativePanel.RightOf)" Value="chessBoard"/>
+                        <Setter Target="piecesPalette.(RelativePanel.AlignTopWithPanel)" Value="true"/>
+                        <Setter Target="piecesPalette.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="piecesPalette.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
+                        <Setter Target="piecesPalette.MinWidth" Value="150"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="titlePanel.(RelativePanel.AlignTopWithPanel)" Value="true"/>
+                        <Setter Target="titlePanel.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="titlePanel.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+
+                        <Setter Target="chessBoard.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.Margin" Value="0 4"/>
+                        <Setter Target="chessBoard.(RelativePanel.Below)" Value="titlePanel"/>
+
+                        <Setter Target="piecesPalette.(RelativePanel.Below)" Value="chessBoard"/>
+                        <Setter Target="piecesPalette.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="piecesPalette.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+                        <Setter Target="piecesPalette.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
+                        <Setter Target="piecesPalette.Orientation" Value="Horizontal"/>
+                        <Setter Target="piecesPalette.MinHeight" Value="100"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
     </Grid>
 </Page>
