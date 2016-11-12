@@ -191,7 +191,7 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 			else if ( move.from.hDistance (move.to) == -2)
 			{
 				SetPiece(ChessPieceImpl(), CoordinateImpl(0,7));
-				SetPiece(ChessPieceImpl(ChessPieceImpl::Rock, true), CoordinateImpl(0,5));		
+				SetPiece(ChessPieceImpl(ChessPieceImpl::Rock, true), CoordinateImpl(0,5));
 				bKingCastle = true;
 			}
 
@@ -395,7 +395,7 @@ bool ChessBoardImpl::UndoMove( bool bWhiteMove )
 
 		m_nLastPawnMoveOrCapture = moveData.nLastPawnMoveOrCapture;
 		auto piece = GetPiece( moveData.move.to );
-		if ( piece.bTransformed )
+		if ( moveData.strPGNMove.find('=') != -1 )
 			piece.cPiece = ChessPieceImpl::Pawn;
 
 		SetPiece( piece, moveData.move.from );
