@@ -74,14 +74,17 @@
                 <ItemsControl Grid.Column="1" Style="{StaticResource FieldLettersListStyle}"  ItemsSource="{Binding FieldLetters}" />
                 <ItemsControl Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" Grid.Row="1" />
 
-                <ListBox ItemsSource="{Binding Squares}"
+                <ListBox x:Name="board"
+                         ItemsSource="{Binding Squares}"
                          Grid.Row="1"
                          Grid.Column="1"
                          BorderThickness="2"
                          BorderBrush="{StaticResource WhiteSquareBrush}"
                          SelectedItem="{Binding SelectedSquare, Mode=TwoWay}"
                          HorizontalAlignment="Center"
-                         Template="{StaticResource NoScrollListTemplate}">
+                         Template="{StaticResource NoScrollListTemplate}"
+                         PointerMoved="board_PointerMoved"
+                         PointerReleased="board_PointerReleased">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -94,7 +97,7 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <view:SquareView DataContext="{Binding }"/>
+                        <view:SquareView DataContext="{Binding }" PointerMoved="square_PointerMoved"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                     <ListBox.ItemsPanel>
@@ -103,8 +106,12 @@
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                 </ListBox>
+                <Canvas
+                    x:Name="dragCanvas"
+                    Grid.Row="1"
+                    Grid.Column="1" />
 
-                <ItemsControl Grid.Row="1" Grid.Column="2" Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" />
+            <ItemsControl Grid.Row="1" Grid.Column="2" Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" />
                 <ItemsControl Grid.Column="1" Grid.Row="2" Style="{StaticResource FieldLettersListStyle}"  ItemsSource="{Binding FieldLetters}" />
             </Grid>
     </Border>
