@@ -83,8 +83,8 @@
                          SelectedItem="{Binding SelectedSquare, Mode=TwoWay}"
                          HorizontalAlignment="Center"
                          Template="{StaticResource NoScrollListTemplate}"
-                         PointerMoved="board_PointerMoved"
-                         PointerReleased="board_PointerReleased">
+                         PointerMoved="OnBoardPointerMoved"
+                         PointerReleased="OnBoardPointerReleased">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -97,7 +97,10 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                        <view:SquareView DataContext="{Binding }" PointerMoved="square_PointerMoved"/>
+                        <view:SquareView 
+                            DataContext="{Binding }" 
+                            PointerMoved="OnSquarePointerMoved"
+                            PointerPressed="OnSquarePointerPressed"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                     <ListBox.ItemsPanel>
@@ -106,13 +109,14 @@
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                 </ListBox>
-                <Canvas
-                    x:Name="dragCanvas"
-                    Grid.Row="1"
-                    Grid.Column="1" />
-
-            <ItemsControl Grid.Row="1" Grid.Column="2" Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" />
+    
+                <ItemsControl Grid.Row="1" Grid.Column="2" Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" />
                 <ItemsControl Grid.Column="1" Grid.Row="2" Style="{StaticResource FieldLettersListStyle}"  ItemsSource="{Binding FieldLetters}" />
-            </Grid>
+            <Canvas
+                x:Name="dragCanvas"
+                Grid.Row="1"
+                Grid.Column="1" />
+
+        </Grid>
     </Border>
 </UserControl>

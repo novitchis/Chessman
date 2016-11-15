@@ -1,4 +1,5 @@
-﻿using ChessEngineClient.ViewModel;
+﻿using ChessEngine;
+using ChessEngineClient.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,15 +22,20 @@ namespace ChessEngineClient.View
 {
     public sealed partial class ChessBoardView : UserControl
     {
+        private const double MinPieceSize = 75;
+        private const double MinimumDragDistance = 15;
+
         public ChessBoardViewModel ViewModel { get { return DataContext as ChessBoardViewModel; } }
         private ChessPieceView draggingPiece = null;
+        private Point dragStartPoint = new Point();
+        private SquareView dragStartSquare = null;
 
         public ChessBoardView()
         {
             this.InitializeComponent();
         }
 
-        private void board_PointerMoved(object sender, PointerRoutedEventArgs e)
+        private void OnBoardPointerMoved(object sender, PointerRoutedEventArgs e)
         {
             if (draggingPiece != null && e.Pointer.IsInContact)
             {
@@ -47,36 +53,67 @@ namespace ChessEngineClient.View
             Canvas.SetTop(draggingPiece, positionY);
         }
 
-        private void board_PointerReleased(object sender, PointerRoutedEventArgs e)
+        private void OnBoardPointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            dragCanvas.Children.Clear();
-            draggingPiece = null;
+            EndDragMove();
             e.Handled = true;
         }
 
-        private void square_PointerMoved(object sender, PointerRoutedEventArgs e)
+        private void EndDragMove()
+        {
+            dragCanvas.Children.Clear();
+            draggingPiece = null;
+            board.ReleasePointerCaptures();
+            dragStartSquare.IsPieceDragged = false;
+        }
+
+        private void OnSquarePointerMoved(object sender, PointerRoutedEventArgs e)
         {
             if (draggingPiece == null && e.Pointer.IsInContact)
             {
-                SquareView square = (SquareView)sender;
-                SquareViewModel squareVM = (SquareViewModel)square.DataContext;
+                SquareViewModel squareVM = (SquareViewModel)dragStartSquare.DataContext;
                 if (squareVM.Piece != null)
                 {
-                    double optimalPieceSize = e.Pointer.PointerDeviceType == PointerDeviceType.Touch ?
-                        Math.Max(square.ActualWidth * 1.5, 75) : square.ActualWidth;
+                    PointerPoint pointerPoint = e.GetCurrentPoint(board);
+                    if (!HasPointerMovedEnaugh(pointerPoint.Position))
+                        return;
 
-                    draggingPiece = new ChessPieceView()
-                    {
-                        Width = optimalPieceSize,
-                        Height = optimalPieceSize,
-                        DataContext = squareVM.Piece,
-                        IsHitTestVisible = false
-                    };
-                    SetDraggedPiecePosition(e.GetCurrentPoint(board));
-                    dragCanvas.Children.Add(draggingPiece);
+                    StartDragMove(e.Pointer, pointerPoint, squareVM.Piece);
                     e.Handled = true;
                 }
             }
+        }
+
+        private void StartDragMove(Pointer pointer, PointerPoint pointerPoint, ChessPiece piece)
+        {
+            double optimalPieceSize = pointer.PointerDeviceType == PointerDeviceType.Touch ?
+                    Math.Max(dragStartSquare.ActualWidth * 1.5, MinPieceSize) : dragStartSquare.ActualWidth;
+
+            draggingPiece = new ChessPieceView()
+            {
+                Width = optimalPieceSize,
+                Height = optimalPieceSize,
+                DataContext = piece,
+                IsHitTestVisible = false
+            };
+
+            SetDraggedPiecePosition(pointerPoint);
+            dragCanvas.Children.Add(draggingPiece);
+            board.CapturePointer(pointer);
+
+            dragStartSquare.IsPieceDragged = true;
+        }
+
+        private bool HasPointerMovedEnaugh(Point postion)
+        {
+            return Math.Abs(postion.X - dragStartPoint.X) > MinimumDragDistance ||
+                Math.Abs(postion.Y - dragStartPoint.Y) > MinimumDragDistance;
+        }
+
+        private void OnSquarePointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            dragStartPoint = e.GetCurrentPoint(board).Position;
+            dragStartSquare = (SquareView)sender;
         }
     }
 }

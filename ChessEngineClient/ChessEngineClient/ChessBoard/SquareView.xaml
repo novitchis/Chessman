@@ -31,6 +31,14 @@
                     </VisualState.StateTriggers>
                 </VisualState>
             </VisualStateGroup>
+            <VisualStateGroup x:Name="DragSource">
+                <VisualState>
+                    <VisualState.Setters>
+                        <Setter Target="selectionOverlay.Background" Value="{StaticResource SelectedSquareBrush}" />
+                        <Setter Target="pieceView.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <Grid x:Name="selectionOverlay"></Grid>
         <Viewbox>

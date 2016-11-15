@@ -21,16 +21,39 @@ namespace ChessEngineClient.View
 {
     public sealed partial class SquareView : UserControl
     {
+        public static readonly DependencyProperty IsPieceDraggedProperty = DependencyProperty.Register("IsPieceDragged", typeof(bool), 
+            typeof(SquareView), new PropertyMetadata(false, OnPropertyChanged));
+
+        public bool IsPieceDragged
+        {
+            get { return (bool)GetValue(IsPieceDraggedProperty); }
+            set { SetValue(IsPieceDraggedProperty, value); }
+        }
+
         public SquareView()
         {
             this.InitializeComponent();
-
             this.PointerPressed += OnSquareViewPointerPressed;
         }
 
         private void OnSquareViewPointerPressed(object sender, PointerRoutedEventArgs e)
         {
             Messenger.Default.Send((SquareViewModel)DataContext, NotificationMessages.SquarePressed);
+        }
+
+        private void RefreshVisualState()
+        {
+            bool test = false;
+            var test2 = VisualStateManager.GetVisualStateGroups(rootGrid).ToList();
+            if (IsPieceDragged)
+                test = VisualStateManager.GoToState(this, "DragSource", true);
+            else
+                test = VisualStateManager.GoToState(this, "DefaultState", true);
+        }
+
+        private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((SquareView)d).RefreshVisualState();
         }
     }
 }
