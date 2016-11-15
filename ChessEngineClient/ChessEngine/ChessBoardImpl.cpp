@@ -296,6 +296,7 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 			if( bPromotion ) {
 				moveData.strPGNMove += "=";
 				moveData.strPGNMove += toupper( m_lastPiece.cPiece );
+				moveData.pawnTransform = true;
 				moveData.strPGNUserFriendly += " Promotes to " + m_lastPiece.GetPieceStr();
 			}
 			if ( IsMate() ) {
@@ -395,7 +396,7 @@ bool ChessBoardImpl::UndoMove( bool bWhiteMove )
 
 		m_nLastPawnMoveOrCapture = moveData.nLastPawnMoveOrCapture;
 		auto piece = GetPiece( moveData.move.to );
-		if ( moveData.strPGNMove.find('=') != -1 )
+		if ( moveData.pawnTransform)
 			piece.cPiece = ChessPieceImpl::Pawn;
 
 		SetPiece( piece, moveData.move.from );

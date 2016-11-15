@@ -29,22 +29,25 @@ namespace ChessEngine
 		MoveDataImpl ()
 			: nCastlingMask( FullCastlingMask )
 		{
-
+			pawnTransform = false;
 		}
+
 		MoveDataImpl( const int _moveIndex, const MoveImpl& _move, const ChessPieceImpl& _capturedPiece )
 			: move( _move )
 			, capturedPiece( _capturedPiece )
 			, nCastlingMask( FullCastlingMask )
 			, moveIndex( _moveIndex )
 		{
-
+			pawnTransform = false;
 		}
+
 		MoveImpl			move;
 		ChessPieceImpl		capturedPiece;
 		int					nCastlingMask;
 		bool				enPassantCapture;
 		int					nLastPawnMoveOrCapture;
 		int					moveIndex;
+		bool				pawnTransform;
 		std::string			strPGNMove;
 		std::string			strPGNUserFriendly;
 	};
