@@ -17,15 +17,15 @@
           Background="{StaticResource BackgroundDark}">
         <Grid Margin="4" x:Name="contentGrid">
             <RelativePanel>
-                <view:ChessBoardView x:Name="chessBoard"
-                                     DataContext="{Binding BoardViewModel}"
-                                     VerticalAlignment="Center"
-                                     HorizontalAlignment="Center" />
                 <view:AnalysisView x:Name="analysisView"
                                    DataContext="{Binding AnalysisViewModel}"
                                    Height="36" />
                 <view:NotationView x:Name="notationView" 
                                    DataContext="{Binding NotationViewModel}" />
+                <view:ChessBoardView x:Name="chessBoard"
+                                     DataContext="{Binding BoardViewModel}"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center" />
             </RelativePanel>
         </Grid>
         <VisualStateManager.VisualStateGroups>

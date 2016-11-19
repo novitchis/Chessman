@@ -43,12 +43,10 @@ namespace ChessEngineClient.View
 
         private void RefreshVisualState()
         {
-            bool test = false;
-            var test2 = VisualStateManager.GetVisualStateGroups(rootGrid).ToList();
             if (IsPieceDragged)
-                test = VisualStateManager.GoToState(this, "DragSource", true);
+                VisualStateManager.GoToState(this, "IsDragSourceSate", true);
             else
-                test = VisualStateManager.GoToState(this, "DefaultState", true);
+                VisualStateManager.GoToState(this, "DefaultState", true);
         }
 
         private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

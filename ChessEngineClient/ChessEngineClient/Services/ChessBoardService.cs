@@ -96,10 +96,10 @@ namespace ChessEngineClient
 
         private void RefreshAnalysis()
         {
-            //if (!chessBoard.IsStalemate() && !chessBoard.IsCheckmate())
-            //    engine.Analyze(chessBoard);
-            //else
-            //    engineNotification.OnEngineStop();
+            if (!chessBoard.IsStalemate() && !chessBoard.IsCheckmate())
+                engine.Analyze(chessBoard);
+            else
+                engineNotification.OnEngineStop();
         }
     }
 }

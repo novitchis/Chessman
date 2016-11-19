@@ -10,7 +10,6 @@ namespace ChessEngineClient.ViewModel
 {
     public class SquareViewModel : ViewModelBase
     {
-        private bool isSelected = false;
         private ChessPiece piece = null;
 
         #region "Properties"
@@ -25,19 +24,6 @@ namespace ChessEngineClient.ViewModel
                 if (piece != value)
                 {
                     piece = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public bool IsSelected
-        {
-            get { return isSelected; }
-            set
-            {
-                if (isSelected != value)
-                {
-                    isSelected = value;
                     NotifyPropertyChanged();
                 }
             }

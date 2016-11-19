@@ -220,6 +220,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ChessBoard\SquareListboxItemStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
     <Page Include="ChessBoard\SquareView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

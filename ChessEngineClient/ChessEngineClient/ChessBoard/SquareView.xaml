@@ -9,32 +9,13 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid x:Name="rootGrid" Background="{StaticResource BlackSquareBrush}">
+    <Grid x:Name="rootGrid" Background="Transparent">
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="DefaultState">
-                <VisualState>
+            <VisualStateGroup>
+                <VisualState x:Name="DefaultState"/>
+
+                <VisualState x:Name="IsDragSourceSate">
                     <VisualState.Setters>
-                        <Setter Target="rootGrid.Background" Value="{StaticResource WhiteSquareBrush}" />
-                    </VisualState.Setters>
-                    <VisualState.StateTriggers>
-                        <StateTrigger IsActive="{Binding Coordinate.IsWhiteSquare}" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-            </VisualStateGroup>
-            <VisualStateGroup x:Name="SelectedState">
-                <VisualState>
-                    <VisualState.Setters>
-                        <Setter Target="selectionOverlay.Background" Value="{StaticResource SelectedSquareBrush}" />
-                    </VisualState.Setters>
-                    <VisualState.StateTriggers>
-                        <StateTrigger IsActive="{Binding IsSelected}" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-            </VisualStateGroup>
-            <VisualStateGroup x:Name="DragSource">
-                <VisualState>
-                    <VisualState.Setters>
-                        <Setter Target="selectionOverlay.Background" Value="{StaticResource SelectedSquareBrush}" />
                         <Setter Target="pieceView.Visibility" Value="Collapsed" />
                     </VisualState.Setters>
                 </VisualState>
