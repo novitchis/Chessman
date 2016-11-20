@@ -14,29 +14,19 @@
             <VisualStateGroup>
                 <VisualState x:Name="DefaultState"/>
 
-                <VisualState x:Name="IsDragSourceState">
+                <VisualState x:Name="IsDragSourceSate">
                     <VisualState.Setters>
                         <Setter Target="pieceView.Visibility" Value="Collapsed" />
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState x:Name="IsDropTargetState">
+                <VisualState x:Name="IsDropTargetSate">
                     <VisualState.Setters>
-                        <Setter Target="highlightBorder.Background" Value="{StaticResource DropSquareBrush}" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="IsDropTargetMagnifiedState">
-                    <VisualState.Setters>
-                        <Setter Target="highlightBorder.Background" Value="{StaticResource DropSquareBrush}" />
+                        <Setter Target="rootGrid.Background" Value="{StaticResource DropSquareBrush}" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <Grid x:Name="selectionOverlay"></Grid>
-        <Canvas>
-            <Border 
-                x:Name="highlightBorder"
-                CornerRadius="0" />
-        </Canvas>
         <Viewbox>
             <!--This is a hack to take up space-->
             <Border Width="20" Height="20"/>
