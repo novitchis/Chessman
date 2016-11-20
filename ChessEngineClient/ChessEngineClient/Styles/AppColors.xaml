@@ -6,7 +6,7 @@
     <Brush x:Key="WhiteSquareBrush">#F0D9B5</Brush>
     <Brush x:Key="BlackSquareBrush">#B58863</Brush>
     <Brush x:Key="SelectedSquareBrush">#88FFD700</Brush>
-    <Brush x:Key="DropSquareBrush">#68FFD700</Brush>
+    <Brush x:Key="DropSquareBrush">#58FFD700</Brush>
     <Brush x:Key="HoveredSquareBrush">Khaki</Brush>
 
     <Brush x:Key="BackgroundLight">#F2F2F2</Brush>

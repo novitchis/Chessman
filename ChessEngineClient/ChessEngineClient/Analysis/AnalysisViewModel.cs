@@ -112,9 +112,6 @@ namespace ChessEngineClient.ViewModel
         {
             StringBuilder variationBuilder = new StringBuilder();
 
-            var analysisVariation = chessBoardService.GetVariationMoveData(data.Analysis);
-            MoveData firstMove = analysisVariation.First();
-
             bool isFirstMoveProcesssed = false;
             foreach (MoveData moveData in chessBoardService.GetVariationMoveData(data.Analysis))
             {
