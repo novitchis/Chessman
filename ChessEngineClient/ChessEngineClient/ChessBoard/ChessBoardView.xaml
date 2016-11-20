@@ -10,102 +10,114 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
-                
-        <Style x:Key="RankOrFieldText" TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Foreground" Value="{StaticResource WhiteSquareBrush}" />
-            <Setter Property="TextAlignment" Value="Center" />
-            <Setter Property="FontSize" Value="10" />
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="SquareListBoxItemStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+            <Style x:Key="RankOrFieldText" TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Foreground" Value="{StaticResource WhiteSquareBrush}" />
+                <Setter Property="TextAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="10" />
+            </Style>
 
-        <Style x:Key="RankNumberListStyle" TargetType="ItemsControl">
-            <Setter Property="Width" Value="10" />
-            <Setter Property="ItemsPanel">
-                <Setter.Value>
-                    <ItemsPanelTemplate>
-                        <c:UniformGrid Rows="8" Columns="1" />
-                    </ItemsPanelTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="ItemTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <TextBlock Style="{StaticResource RankOrFieldText}" Text="{Binding }"/>
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+            <Style x:Key="RankNumberListStyle" TargetType="ItemsControl">
+                <Setter Property="Width" Value="10" />
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <c:UniformGrid Rows="8" Columns="1" />
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ItemTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <TextBlock Style="{StaticResource RankOrFieldText}" Text="{Binding }" />
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
-        <Style x:Key="FieldLettersListStyle" TargetType="ItemsControl">
-            <Setter Property="Height" Value="10" />
-            <Setter Property="ItemsPanel">
-                <Setter.Value>
-                    <ItemsPanelTemplate>
-                        <c:UniformGrid Columns="8" Rows="1"/>
-                    </ItemsPanelTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="ItemTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <TextBlock Style="{StaticResource RankOrFieldText}" Text="{Binding }"/>
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+            <Style x:Key="FieldLettersListStyle" TargetType="ItemsControl">
+                <Setter Property="Height" Value="10" />
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <c:UniformGrid Columns="8" Rows="1"/>
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ItemTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <TextBlock Style="{StaticResource RankOrFieldText}" Text="{Binding }"/>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Border         
         Style="{StaticResource ViewDefaultBorder}" 
         HorizontalAlignment="Center"
         Background="{StaticResource BlackSquareBrush}">
         <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-                <ItemsControl Grid.Column="1" Style="{StaticResource FieldLettersListStyle}"  ItemsSource="{Binding FieldLetters}" />
-                <ItemsControl Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" Grid.Row="1" />
+            <ItemsControl Grid.Column="1" Style="{StaticResource FieldLettersListStyle}"  ItemsSource="{Binding FieldLetters}" />
+            <ItemsControl Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" Grid.Row="1" />
 
-                <ListBox ItemsSource="{Binding Squares}"
-                         Grid.Row="1"
-                         Grid.Column="1"
-                         BorderThickness="2"
-                         BorderBrush="{StaticResource WhiteSquareBrush}"
-                         SelectedItem="{Binding SelectedSquare, Mode=TwoWay}"
-                         HorizontalAlignment="Center"
-                         Template="{StaticResource NoScrollListTemplate}">
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                            <Setter Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter Property="VerticalAlignment" Value="Stretch" />
-                            <Setter Property="Margin" Value="0" />
-                            <Setter Property="Padding" Value="0" />
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <view:SquareView DataContext="{Binding }"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <c:UniformGrid Rows="8" Columns="8" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
+            <ListBox x:Name="board"
+                     ItemsSource="{Binding Squares}"
+                     Grid.Row="1"
+                     Grid.Column="1"
+                     BorderThickness="2"
+                     BorderBrush="{StaticResource WhiteSquareBrush}"
+                     SelectedItem="{Binding SelectedSquare, Mode=TwoWay}"
+                     HorizontalAlignment="Center"
+                     Template="{StaticResource NoScrollListTemplate}"
+                     PointerMoved="OnBoardPointerMoved"
+                     PointerReleased="OnBoardPointerReleased" 
+                     PointerExited="OnBoardPointerExited"
+                     PointerEntered="OnBoardPointerEntered"
+                     ItemContainerStyle="{StaticResource SquareListBoxItemStyle}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <view:SquareView 
+                            DataContext="{Binding }" 
+                            PointerEntered="OnSquarePointerEntered"
+                            PointerExited="OnSquarePointerExited"
+                            PointerMoved="OnSquarePointerMoved"
+                            PointerPressed="OnSquarePointerPressed"
+                            PointerReleased="OnSquarePointerReleased" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <c:UniformGrid Rows="8" Columns="8" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
 
-                <ItemsControl Grid.Row="1" Grid.Column="2" Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" />
-                <ItemsControl Grid.Column="1" Grid.Row="2" Style="{StaticResource FieldLettersListStyle}"  ItemsSource="{Binding FieldLetters}" />
-            </Grid>
+            <ItemsControl Grid.Row="1" Grid.Column="2" Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" />
+            <ItemsControl Grid.Column="1" Grid.Row="2" Style="{StaticResource FieldLettersListStyle}"  ItemsSource="{Binding FieldLetters}" />
+            <Canvas
+                x:Name="dragCanvas"
+                Grid.Row="1"
+                Grid.Column="1" />
+
+        </Grid>
     </Border>
 </UserControl>

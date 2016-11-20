@@ -146,6 +146,7 @@
     <Compile Include="Services\AnalysisReceiver.cs" />
     <Compile Include="Services\IChessBoardService.cs" />
     <Compile Include="Services\IAnalysisReceiver.cs" />
+    <Compile Include="Util\VisualTreeHelperEx.cs" />
     <Compile Include="ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +220,11 @@
     <Page Include="ChessBoard\ChessPieceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChessBoard\SquareListboxItemStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="ChessBoard\SquareView.xaml">
       <SubType>Designer</SubType>

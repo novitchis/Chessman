@@ -132,12 +132,6 @@ namespace ChessEngineClient.ViewModel
 
         private void OnSelectionChanged(SquareViewModel oldSquare, SquareViewModel newSquare)
         {
-            if (oldSquare != null)
-                oldSquare.IsSelected = false;
-
-            if (newSquare != null)
-                newSquare.IsSelected = true;
-
             if (oldSquare == null || newSquare == null)
                 return;
 
