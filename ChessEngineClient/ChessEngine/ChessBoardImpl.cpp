@@ -191,7 +191,7 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 			else if ( move.from.hDistance (move.to) == -2)
 			{
 				SetPiece(ChessPieceImpl(), CoordinateImpl(0,7));
-				SetPiece(ChessPieceImpl(ChessPieceImpl::Rock, true), CoordinateImpl(0,5));		
+				SetPiece(ChessPieceImpl(ChessPieceImpl::Rock, true), CoordinateImpl(0,5));
 				bKingCastle = true;
 			}
 
@@ -226,17 +226,17 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 	}
 	if ( m_lastPiece.bWhite )
 	{
-		if( ( m_lastPiece.cPiece == ChessPieceImpl::Rock ) && (move.from == CoordinateImpl( 0, 7 ) ) )  
+		if( ( m_lastPiece.cPiece == ChessPieceImpl::Rock ) && (move.from == CoordinateImpl( 0, 7 ) ) )
 			moveData.nCastlingMask &= ~CT_WhiteKingSide;
-		if( ( m_lastPiece.cPiece == ChessPieceImpl::Rock ) && (move.from == CoordinateImpl( 0, 0 ) ) )  
+		if( ( m_lastPiece.cPiece == ChessPieceImpl::Rock ) && (move.from == CoordinateImpl( 0, 0 ) ) )
 			moveData.nCastlingMask &= ~CT_WhiteQueenSide;
 	}
 	else
 	{
-		if( ( m_lastPiece.cPiece == ChessPieceImpl::Rock ) && (move.from == CoordinateImpl( 7, 7 ) ) )  
-			moveData.nCastlingMask &= ~CT_WhiteKingSide;
-		if( ( m_lastPiece.cPiece == ChessPieceImpl::Rock ) && (move.from == CoordinateImpl( 7, 0 ) ) )  
-			moveData.nCastlingMask &= ~CT_WhiteQueenSide;
+		if( ( m_lastPiece.cPiece == ChessPieceImpl::Rock ) && (move.from == CoordinateImpl( 7, 7 ) ) )
+			moveData.nCastlingMask &= ~CT_BlackKingSide;
+		if( ( m_lastPiece.cPiece == ChessPieceImpl::Rock ) && (move.from == CoordinateImpl( 7, 0 ) ) )
+			moveData.nCastlingMask &= ~CT_BlackQueenSide;
 	}
 
 	m_nCastlingMask &= moveData.nCastlingMask;

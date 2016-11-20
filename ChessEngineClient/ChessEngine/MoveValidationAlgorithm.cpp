@@ -254,7 +254,7 @@ bool MoveValidationAlgorithm::ValidateKingMove( const MoveImpl& move, const Ches
 	}
 	else
 	{
-		if( bColumnIncrease && !( m_pChessBoard->m_nCastlingMask & CT_BlackQueenSide ) ) return false;
+		if( bColumnIncrease && !( m_pChessBoard->m_nCastlingMask & CT_BlackKingSide ) ) return false;
 		if( !bColumnIncrease && !( m_pChessBoard->m_nCastlingMask & CT_BlackQueenSide ) ) return false;
 	}
 
