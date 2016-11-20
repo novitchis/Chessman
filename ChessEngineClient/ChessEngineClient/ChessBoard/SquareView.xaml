@@ -19,6 +19,11 @@
                         <Setter Target="pieceView.Visibility" Value="Collapsed" />
                     </VisualState.Setters>
                 </VisualState>
+                <VisualState x:Name="IsDropTargetSate">
+                    <VisualState.Setters>
+                        <Setter Target="rootGrid.Background" Value="{StaticResource DropSquareBrush}" />
+                    </VisualState.Setters>
+                </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <Grid x:Name="selectionOverlay"></Grid>

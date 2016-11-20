@@ -26,7 +26,7 @@ namespace ChessEngineClient.View
         private const double MinimumDragDistance = 15;
 
         public ChessBoardViewModel ViewModel { get { return DataContext as ChessBoardViewModel; } }
-        private bool isDragStared = false;
+        private bool isDragStarted = false;
         private ChessPieceView draggingPieceView = null;
         private Point dragStartPoint = new Point();
         private SquareView pointerPressSquare = null;
@@ -38,11 +38,23 @@ namespace ChessEngineClient.View
 
         private void OnBoardPointerMoved(object sender, PointerRoutedEventArgs e)
         {
-            if (draggingPieceView != null && e.Pointer.IsInContact)
+            if (isDragStarted && e.Pointer.IsInContact)
             {
                 MoveDraggedPiece(e.GetCurrentPoint(board));
                 e.Handled = true;
             }
+        }
+
+        private void OnSquarePointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            if (isDragStarted)
+                ((SquareView)sender).IsDropTarget = true;
+        }
+
+        private void OnSquarePointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            if (isDragStarted)
+                ((SquareView)sender).IsDropTarget = false;
         }
 
         private void MoveDraggedPiece(PointerPoint point)
@@ -61,19 +73,19 @@ namespace ChessEngineClient.View
 
         private void EndDragMove()
         {
-            if (!isDragStared)
+            if (!isDragStarted)
                 return;
 
             dragCanvas.Children.Clear();
             draggingPieceView = null;
-            isDragStared = false;
+            isDragStarted = false;
             pointerPressSquare.IsPieceDragged = false;
             pointerPressSquare = null;
         }
 
         private void OnSquarePointerMoved(object sender, PointerRoutedEventArgs e)
         {
-            if (!isDragStared && pointerPressSquare != null && e.Pointer.IsInContact)
+            if (!isDragStarted && pointerPressSquare != null && e.Pointer.IsInContact)
             {
                 SquareViewModel squareVM = (SquareViewModel)pointerPressSquare.DataContext;
                 if (squareVM.Piece != null)
@@ -105,7 +117,7 @@ namespace ChessEngineClient.View
 
             board.SelectedItem = pointerPressSquare.DataContext;
 
-            isDragStared = true;
+            isDragStarted = true;
             pointerPressSquare.IsPieceDragged = true;
         }
 
@@ -126,9 +138,10 @@ namespace ChessEngineClient.View
 
         private void OnSquarePointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            if (isDragStared)
+            if (isDragStarted)
             {
                 SquareView dropSquare = (SquareView)sender;
+                dropSquare.IsDropTarget = false;
                 board.SelectedItem = dropSquare.DataContext;
             }
 
@@ -137,12 +150,38 @@ namespace ChessEngineClient.View
 
         private void OnBoardPointerExited(object sender, PointerRoutedEventArgs e)
         {
-            board.CapturePointer(e.Pointer);
+            if (isDragStarted)
+                board.CapturePointer(e.Pointer);
         }
 
         private void OnBoardPointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            board.ReleasePointerCaptures();
+            if (isDragStarted)
+            {
+                board.ReleasePointerCaptures();
+
+                // if enterd fast enaugh this can cause the square 
+                // not to receive mouse enter events
+                SquareView squareView = FindParent<SquareView>(e.OriginalSource as DependencyObject);
+                if (squareView != null)
+                    squareView.IsDropTarget = true;
+            }
+        }
+
+        public static T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            //get parent item
+            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+
+            //we've reached the end of the tree
+            if (parentObject == null) return null;
+
+            //check if the parent matches the type we're looking for
+            T parent = parentObject as T;
+            if (parent != null)
+                return parent;
+            else
+                return FindParent<T>(parentObject);
         }
     }
 }

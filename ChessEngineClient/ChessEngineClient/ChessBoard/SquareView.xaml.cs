@@ -21,8 +21,14 @@ namespace ChessEngineClient.View
 {
     public sealed partial class SquareView : UserControl
     {
-        public static readonly DependencyProperty IsPieceDraggedProperty = DependencyProperty.Register("IsPieceDragged", typeof(bool), 
-            typeof(SquareView), new PropertyMetadata(false, OnPropertyChanged));
+        public static readonly DependencyProperty IsPieceDraggedProperty = DependencyProperty.Register("IsPieceDragged", typeof(bool), typeof(SquareView), new PropertyMetadata(false, OnVisualStatePropertyChanged));
+        public static readonly DependencyProperty IsDropTargetProperty = DependencyProperty.Register("IsDropTarget", typeof(bool), typeof(SquareView), new PropertyMetadata(false, OnVisualStatePropertyChanged));
+
+        public bool IsDropTarget
+        {
+            get { return (bool)GetValue(IsDropTargetProperty); }
+            set { SetValue(IsDropTargetProperty, value); }
+        }
 
         public bool IsPieceDragged
         {
@@ -45,11 +51,13 @@ namespace ChessEngineClient.View
         {
             if (IsPieceDragged)
                 VisualStateManager.GoToState(this, "IsDragSourceSate", true);
+            else if (IsDropTarget)
+                VisualStateManager.GoToState(this, "IsDropTargetSate", true);
             else
                 VisualStateManager.GoToState(this, "DefaultState", true);
         }
 
-        private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnVisualStatePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((SquareView)d).RefreshVisualState();
         }

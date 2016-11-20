@@ -97,6 +97,8 @@
                     <DataTemplate>
                         <view:SquareView 
                             DataContext="{Binding }" 
+                            PointerEntered="OnSquarePointerEntered"
+                            PointerExited="OnSquarePointerExited"
                             PointerMoved="OnSquarePointerMoved"
                             PointerPressed="OnSquarePointerPressed"
                             PointerReleased="OnSquarePointerReleased" />
