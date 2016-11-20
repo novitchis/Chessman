@@ -1,4 +1,5 @@
 ﻿using ChessEngine;
+using ChessEngineClient.Util;
 using ChessEngineClient.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -16,6 +18,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Shapes;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 namespace ChessEngineClient.View
@@ -30,6 +33,7 @@ namespace ChessEngineClient.View
         private ChessPieceView draggingPieceView = null;
         private Point dragStartPoint = new Point();
         private SquareView pointerPressSquare = null;
+        private Ellipse highlightEllipse = null;
 
         public ChessBoardView()
         {
@@ -48,13 +52,49 @@ namespace ChessEngineClient.View
         private void OnSquarePointerEntered(object sender, PointerRoutedEventArgs e)
         {
             if (isDragStarted)
-                ((SquareView)sender).IsDropTarget = true;
+                HighlightSquareForDrop((SquareView)sender, e.Pointer.PointerDeviceType);
         }
 
         private void OnSquarePointerExited(object sender, PointerRoutedEventArgs e)
         {
             if (isDragStarted)
-                ((SquareView)sender).IsDropTarget = false;
+                RemoveDropHighlightFromSquare((SquareView)sender, e.Pointer.PointerDeviceType);
+        }
+
+        private void RemoveDropHighlightFromSquare(SquareView square, PointerDeviceType pointerType)
+        {
+            square.IsDropTarget = false;
+
+            if (pointerType == PointerDeviceType.Touch)
+            {
+                //TODO: also check the size of the square
+
+            }
+
+        }
+
+        private void HighlightSquareForDrop(SquareView square, PointerDeviceType pointerType)
+        {
+            square.IsDropTarget = true;
+
+            if (pointerType == PointerDeviceType.Touch)
+            {
+                //TODO: also check the size of the square
+                if (highlightEllipse == null)
+                {
+                    highlightEllipse = new Ellipse()
+                    {
+                        Width = square.ActualWidth * 2,
+                        Height = square.ActualHeight * 2,
+                        Fill = new SolidColorBrush(Colors.Black) { Opacity = 0.3 },
+                    };
+                }
+
+                Canvas.SetLeft(highlightEllipse, 0); 
+                Canvas.SetTop(highlightEllipse, 0);
+
+                dragCanvas.Children.Add(highlightEllipse);
+            }
         }
 
         private void MoveDraggedPiece(PointerPoint point)
@@ -162,26 +202,10 @@ namespace ChessEngineClient.View
 
                 // if enterd fast enaugh this can cause the square 
                 // not to receive mouse enter events
-                SquareView squareView = FindParent<SquareView>(e.OriginalSource as DependencyObject);
+                SquareView squareView = VisualTreeHelperEx.FindParent<SquareView>(e.OriginalSource as DependencyObject);
                 if (squareView != null)
                     squareView.IsDropTarget = true;
             }
-        }
-
-        public static T FindParent<T>(DependencyObject child) where T : DependencyObject
-        {
-            //get parent item
-            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
-
-            //we've reached the end of the tree
-            if (parentObject == null) return null;
-
-            //check if the parent matches the type we're looking for
-            T parent = parentObject as T;
-            if (parent != null)
-                return parent;
-            else
-                return FindParent<T>(parentObject);
         }
     }
 }

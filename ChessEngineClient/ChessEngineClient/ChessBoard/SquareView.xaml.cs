@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -50,11 +52,23 @@ namespace ChessEngineClient.View
         private void RefreshVisualState()
         {
             if (IsPieceDragged)
-                VisualStateManager.GoToState(this, "IsDragSourceSate", true);
+            {
+                VisualStateManager.GoToState(this, "IsDragSourceState", true);
+            }
             else if (IsDropTarget)
-                VisualStateManager.GoToState(this, "IsDropTargetSate", true);
+            {
+                VisualStateManager.GoToState(this, "IsDropTargetState", true);
+                highlightBorder.Width = this.ActualWidth;
+                highlightBorder.Height = this.ActualHeight;
+
+                //PointerPoint pointerPoint = PointerPoint.GetCurrentPoint()
+
+                //IReadOnlyList<PointerDevice> pointerDevices = PointerDevice.GetPointerDevices();
+            }
             else
+            {
                 VisualStateManager.GoToState(this, "DefaultState", true);
+            }
         }
 
         private static void OnVisualStatePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
