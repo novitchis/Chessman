@@ -11,6 +11,7 @@ TODO: Guide users through getting your code up and running on their own system. 
 #Build and Test
 TODO: Describe and show how to build your code and run the tests. 
 
+##Contributing:
 #C++ guidelines
 1. const / const& nu are sens pentru tipuri de baza - so const int&; cont int e pointless
 2. cand dati parametri (de input) liste, obiecte, etc e important sa avem const&, pentru ca altfel se apeleaza copy contructorul si e fie unsafe, fie slow
