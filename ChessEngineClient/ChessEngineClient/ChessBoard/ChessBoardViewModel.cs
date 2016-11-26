@@ -70,15 +70,15 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        public bool IsEdit { get; set; }
+        public bool IsEdit { get; private set; }
 
         #endregion
 
-        public ChessBoardViewModel(IChessBoardService chessBoardService)
+        public ChessBoardViewModel(IChessBoardService chessBoardService, bool isEdit = false)
         {
             this.chessBoardService = chessBoardService;
+            this.IsEdit = isEdit;
 
-            // this is retarder ... fix asap
             if (!IsEdit)
                 Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.CurrentMoveChanged, OnCurrentMoveChangedMessage);
 
@@ -114,12 +114,12 @@ namespace ChessEngineClient.ViewModel
 
             Squares = newSquares;
 
-            RefreshPieces();
+            RefreshSquares();
         }
 
         private void OnCurrentMoveChangedMessage(GenericMessage<MoveData> moveMessage)
         {
-            RefreshPieces();
+            RefreshSquares();
         }
 
         public void TogglePerspective()
@@ -136,16 +136,39 @@ namespace ChessEngineClient.ViewModel
                 return;
 
             if (!IsEdit && chessBoardService.SubmitMove(oldSquare.Coordinate, newSquare.Coordinate))
-            {
-                RefreshPieces();
                 Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
+        }
+
+        public void RefreshSquares()
+        {
+            foreach (SquareViewModel square in Squares)
+            {
+                square.Piece = chessBoardService.GetPiece(square.Coordinate);
+                square.IsLastMoveSquare = false;
+            }
+
+            SelectedSquare = null;
+
+            if (IsEdit)
+                return;
+
+            MoveData lastMove = chessBoardService.GetCurrentMove();
+            if (lastMove != null)
+            {
+                Squares[GetSquareIndex(lastMove.Move.GetFrom())].IsLastMoveSquare = true;
+                Squares[GetSquareIndex(lastMove.Move.GetTo())].IsLastMoveSquare = true;
             }
         }
 
-        public void RefreshPieces()
+        private int GetSquareIndex(Coordinate coordinate)
         {
-            foreach (SquareViewModel square in Squares)
-                square.Piece = chessBoardService.GetPiece(square.Coordinate);
+            int index = -1;
+            if (perspective == SideColor.White)
+                index = (7 - coordinate.Y) * 8 + coordinate.X; 
+            else
+                index = coordinate.Y * 8 + 7 - coordinate.X;
+
+            return index;
         }
 
         public void ClearPieces()

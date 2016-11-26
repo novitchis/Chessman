@@ -7,6 +7,10 @@ namespace ChessEngine
 	//wrapper over Move class//
 	public ref class Move sealed
 	{
+
+	internal:
+		Move(MoveImpl moveImpl);
+
 	public:
 		Move();
 		Move(Coordinate^ from, Coordinate^ to);

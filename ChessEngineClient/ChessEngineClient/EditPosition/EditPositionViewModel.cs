@@ -73,8 +73,7 @@ namespace ChessEngineClient.ViewModel
             this.navigationService = navigationService;
             this.chessBoardService = chessBoardService;
 
-            BoardViewModel = ViewModelLocator.IOCContainer.Resolve<ChessBoardViewModel>();
-            BoardViewModel.IsEdit = true;
+            BoardViewModel = new ChessBoardViewModel(chessBoardService, true);
             IsBoardValid = chessBoardService.IsValid(GetFen());
 
             PiecesPaletteViewModel = new PiecesPaletteViewModel();

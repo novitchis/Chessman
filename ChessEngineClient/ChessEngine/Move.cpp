@@ -4,9 +4,13 @@
 
 using namespace ChessEngine;
 
+Move::Move(MoveImpl moveImpl)
+	: m_Move(moveImpl)
+{
+}
+
 Move::Move()
 {
-
 }
 
 Move::Move(Coordinate^ from, Coordinate^ to)

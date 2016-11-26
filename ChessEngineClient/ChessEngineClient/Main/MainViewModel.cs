@@ -60,14 +60,14 @@ namespace ChessEngineClient.ViewModel
         {
             this.navigationService = navigationService;
             this.chessBoardService = chessBoardService;
-            BoardViewModel = ViewModelLocator.IOCContainer.Resolve<ChessBoardViewModel>();
+            BoardViewModel = new ChessBoardViewModel(chessBoardService);
             AnalysisViewModel = ViewModelLocator.IOCContainer.Resolve<AnalysisViewModel>();
             NotationViewModel = ViewModelLocator.IOCContainer.Resolve<NotationViewModel>();
         }
 
         public void ReloadPosition()
         {
-            BoardViewModel.RefreshPieces();
+            BoardViewModel.RefreshSquares();
             NotationViewModel.ReloadMoves();
         }
 

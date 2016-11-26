@@ -23,6 +23,13 @@ namespace ChessEngineClient.View
     {
         public static readonly DependencyProperty IsPieceDraggedProperty = DependencyProperty.Register("IsPieceDragged", typeof(bool), typeof(SquareView), new PropertyMetadata(false, OnVisualStatePropertyChanged));
         public static readonly DependencyProperty IsDropTargetProperty = DependencyProperty.Register("IsDropTarget", typeof(bool), typeof(SquareView), new PropertyMetadata(false, OnVisualStatePropertyChanged));
+        public static readonly DependencyProperty IsHighlightedProperty = DependencyProperty.Register("IsHighlighted", typeof(bool), typeof(SquareView), new PropertyMetadata(false, OnVisualStatePropertyChanged));
+
+        public bool IsPieceDragged
+        {
+            get { return (bool)GetValue(IsPieceDraggedProperty); }
+            set { SetValue(IsPieceDraggedProperty, value); }
+        }
 
         public bool IsDropTarget
         {
@@ -30,10 +37,10 @@ namespace ChessEngineClient.View
             set { SetValue(IsDropTargetProperty, value); }
         }
 
-        public bool IsPieceDragged
+        public bool IsHighlighted
         {
-            get { return (bool)GetValue(IsPieceDraggedProperty); }
-            set { SetValue(IsPieceDraggedProperty, value); }
+            get { return (bool)GetValue(IsHighlightedProperty); }
+            set { SetValue(IsHighlightedProperty, value); }
         }
 
         public SquareView()
@@ -51,8 +58,8 @@ namespace ChessEngineClient.View
         {
             if (IsPieceDragged)
                 VisualStateManager.GoToState(this, "IsDragSourceSate", true);
-            else if (IsDropTarget)
-                VisualStateManager.GoToState(this, "IsDropTargetSate", true);
+            else if (IsDropTarget || IsHighlighted)
+                VisualStateManager.GoToState(this, "Highlighted", true);
             else
                 VisualStateManager.GoToState(this, "DefaultState", true);
         }

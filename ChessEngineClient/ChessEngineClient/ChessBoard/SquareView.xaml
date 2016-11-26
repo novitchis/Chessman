@@ -19,9 +19,9 @@
                         <Setter Target="pieceView.Visibility" Value="Collapsed" />
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState x:Name="IsDropTargetSate">
+                <VisualState x:Name="Highlighted">
                     <VisualState.Setters>
-                        <Setter Target="rootGrid.Background" Value="{StaticResource DropSquareBrush}" />
+                        <Setter Target="rootGrid.Background" Value="{StaticResource SelectedSquareLighterBrush}" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
