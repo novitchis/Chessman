@@ -7,6 +7,7 @@
 #include <time.h>
 #include <regex>
 
+
 using namespace ChessEngine;
 
 UCIChessEngine::UCIChessEngine(void)
@@ -116,6 +117,7 @@ bool UCIChessEngine::Analyze( ChessBoardImpl& board )
 	strCommand += board.Serialize( ST_FEN );
 	strCommand += "\n";
 	
+	Core::AutoLock MLock(&m_lock);
 	if (m_state == UC_Go)
 	{
 		EnterState(UC_Stop);
@@ -169,8 +171,10 @@ void UCIChessEngine::EnableMoveDelay()
 	m_bDelayResponse = true;
 }
 
+
 void UCIChessEngine::OnEngineResponse( const std::string& strResponse )
 {
+	Core::AutoLock MLock(&m_lock);
 	UCICommand newState = m_state;
 	switch (m_state)
 	{
