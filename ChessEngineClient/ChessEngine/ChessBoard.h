@@ -33,7 +33,7 @@ namespace ChessEngine
 		IVector<MoveData^>^	GetVariationMoveData(IVector<Move^>^ moves);
 
 		bool				IsWhiteTurn();
-		bool				IsValid();
+		bool				AcceptEditedPosition();
 		bool				IsStalemate();
 		bool				IsCheckmate();
 

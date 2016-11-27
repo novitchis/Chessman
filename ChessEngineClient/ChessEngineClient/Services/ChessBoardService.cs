@@ -95,11 +95,6 @@ namespace ChessEngineClient
             return result;
         }
 
-        public bool IsValid()
-        {
-            return chessBoard.IsValid();
-        }
-
         private void RefreshAnalysis()
         {
             if (!chessBoard.IsStalemate() && !chessBoard.IsCheckmate())

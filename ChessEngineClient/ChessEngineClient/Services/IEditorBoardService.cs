@@ -13,6 +13,6 @@ namespace ChessEngineClient
 
         void SetSideToMove(bool white);
 
-        bool IsValid();
+        bool AcceptEditedPosition();
     }
 }

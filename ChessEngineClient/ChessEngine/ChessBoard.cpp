@@ -203,11 +203,11 @@ bool ChessBoard::IsWhiteTurn()
 	}
 }
 
-bool ChessBoard::IsValid()
+bool ChessBoard::AcceptEditedPosition()
 {
 	try
 	{
-		return m_ChessBoardImpl.IsValid();
+		return m_ChessBoardImpl.AcceptEditedPosition();
 	}
 	catch (...)
 	{

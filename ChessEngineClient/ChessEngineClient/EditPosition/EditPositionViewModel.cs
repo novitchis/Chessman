@@ -34,7 +34,7 @@ namespace ChessEngineClient.ViewModel
                     isWhiteToMove = value;
                     NotifyPropertyChanged();
                     editorBoardService.SetSideToMove(isWhiteToMove);
-                    IsBoardValid = editorBoardService.IsValid();
+                    IsBoardValid = editorBoardService.AcceptEditedPosition();
                 }
             }
         }
@@ -85,7 +85,7 @@ namespace ChessEngineClient.ViewModel
             editorBoardService.LoadFromFen(loadOptions.Fen);
             BoardViewModel.RefreshBoard(loadOptions.Perspective);
             IsWhiteToMove = editorBoardService.IsWhiteTurn;
-            IsBoardValid = editorBoardService.IsValid();
+            IsBoardValid = editorBoardService.AcceptEditedPosition();
         }
 
         private void OnSquarePressed(SquareViewModel squareVM)
@@ -97,7 +97,7 @@ namespace ChessEngineClient.ViewModel
             ChessPiece newPiece = squareVM.Piece != null ? null : PiecesPaletteViewModel.SelectedPiece;
             squareVM.Piece = newPiece;
             editorBoardService.SetPiece(squareVM.Coordinate, newPiece);
-            IsBoardValid = editorBoardService.IsValid();
+            IsBoardValid = editorBoardService.AcceptEditedPosition();
         }
 
         private void CancelExecuted(object obj)

@@ -38,9 +38,9 @@ namespace ChessEngineClient
             chessBoard.SetSideToMove(white);
         }
 
-        public bool IsValid()
+        public bool AcceptEditedPosition()
         {
-            return chessBoard.IsValid();
+            return chessBoard.AcceptEditedPosition();
         }
 
         public void LoadFromFen(string fenString)
