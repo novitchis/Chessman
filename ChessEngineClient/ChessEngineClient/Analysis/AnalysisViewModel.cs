@@ -80,21 +80,24 @@ namespace ChessEngineClient.ViewModel
 
         private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
         {
-            // make sure it is executed on the ui thread
-            uiSynchronizationContext.Post(o =>
+            try
             {
-                try
+                string newEvalutation = e.Data.Score > 0 ? $"+{e.Data.Score}" : e.Data.Score.ToString();
+                string newMoves = GetEvaluationVariationString(e.Data);
+                if (newMoves.IndexOf('#') > -1)
+                    newEvalutation = GetMateEvaluation();
+
+                // make sure it is executed on the ui thread
+                uiSynchronizationContext.Post(o =>
                 {
                     IsActive = true;
-                    Moves = GetEvaluationVariationString(e.Data);
-                    Evaluation = e.Data.Score > 0 ? String.Format("+{0}", e.Data.Score) : e.Data.Score.ToString();
-                    if (Moves.Trim().EndsWith("#"))
-                        Evaluation = GetMateEvaluation();
-                }
-                catch
-                {
-                }
-            }, null);
+                    Evaluation = newEvalutation;
+                    Moves = newMoves;
+                }, null);
+            }
+            catch
+            {
+            }
         }
 
         private string GetMateEvaluation()
@@ -111,9 +114,6 @@ namespace ChessEngineClient.ViewModel
         private string GetEvaluationVariationString(AnalysisData data)
         {
             StringBuilder variationBuilder = new StringBuilder();
-
-            var analysisVariation = chessBoardService.GetVariationMoveData(data.Analysis);
-            MoveData firstMove = analysisVariation.First();
 
             bool isFirstMoveProcesssed = false;
             foreach (MoveData moveData in chessBoardService.GetVariationMoveData(data.Analysis))
