@@ -68,6 +68,17 @@ ChessPiece^ ChessBoard::GetPiece(Coordinate^ coord)
 	}
 }
 
+void ChessBoard::SetPiece(Coordinate^ coord, ChessPiece^ piece)
+{
+	m_ChessBoardImpl.SetPiece(piece != nullptr ? piece->getPieceImpl() : ChessPieceImpl(), 
+		coord->getCoordinateImpl());
+}
+
+void ChessBoard::SetSideToMove(bool white)
+{
+	m_ChessBoardImpl.SetSideToMove(white);
+}
+
 bool ChessBoard::SubmitMove(Coordinate^ from, Coordinate^ to)
 {
 	try
@@ -192,12 +203,11 @@ bool ChessBoard::IsWhiteTurn()
 	}
 }
 
-bool ChessBoard::IsValid(Platform::String^ strFen)
+bool ChessBoard::AcceptEditedPosition()
 {
 	try
 	{
-		auto strNativeData = ManagedConverter::ManagedString2String(strFen);
-		return m_ChessBoardImpl.IsValid(strNativeData);
+		return m_ChessBoardImpl.AcceptEditedPosition();
 	}
 	catch (...)
 	{

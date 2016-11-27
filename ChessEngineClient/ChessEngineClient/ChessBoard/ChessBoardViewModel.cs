@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ChessEngineClient.ViewModel
 {
@@ -48,7 +49,7 @@ namespace ChessEngineClient.ViewModel
                     NotifyPropertyChanged();
                 }
             }
-        }
+        }       
 
         public int[] RankNumbers
         {
@@ -70,22 +71,24 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        public bool IsEdit { get; set; }
+        public SideColor Perspective
+        {
+            get { return perspective; }
+        }
+
+        public ICommand TogglePerspectiveCommand
+        {
+            get { return new RelayCommand(TogglePerspectiveExecuted); }
+        }
 
         #endregion
 
         public ChessBoardViewModel(IChessBoardService chessBoardService)
         {
             this.chessBoardService = chessBoardService;
-
-            // this is retarder ... fix asap
-            if (!IsEdit)
-                Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.CurrentMoveChanged, OnCurrentMoveChangedMessage);
-
-            InitBoard();
         }
 
-        private void InitBoard()
+        protected void InitBoard()
         {
             var newSquares = new List<SquareViewModel>();
 
@@ -114,43 +117,39 @@ namespace ChessEngineClient.ViewModel
 
             Squares = newSquares;
 
-            RefreshPieces();
+            RefreshSquares();
         }
 
-        private void OnCurrentMoveChangedMessage(GenericMessage<MoveData> moveMessage)
+        public void RefreshBoard(SideColor changedPerspective)
         {
-            RefreshPieces();
-        }
-
-        public void TogglePerspective()
-        {
-            perspective = perspective == SideColor.Black ?
-                SideColor.White : SideColor.Black;
-
-            InitBoard();
-        }
-
-        private void OnSelectionChanged(SquareViewModel oldSquare, SquareViewModel newSquare)
-        {
-            if (oldSquare == null || newSquare == null)
-                return;
-
-            if (!IsEdit && chessBoardService.SubmitMove(oldSquare.Coordinate, newSquare.Coordinate))
+            if (perspective == changedPerspective)
+                RefreshSquares();
+            else
             {
-                RefreshPieces();
-                Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
+                perspective = changedPerspective;
+                InitBoard();
             }
         }
 
-        public void RefreshPieces()
+        public virtual void RefreshSquares()
         {
             foreach (SquareViewModel square in Squares)
+            {
                 square.Piece = chessBoardService.GetPiece(square.Coordinate);
+                square.IsLastMoveSquare = false;
+            }
+
+            SelectedSquare = null;
         }
 
-        public void ClearPieces()
+        protected virtual void OnSelectionChanged(SquareViewModel selectedSquare, SquareViewModel value)
         {
-            Squares.ForEach(s => s.Piece = null);
+        }
+
+        private void TogglePerspectiveExecuted(object obj)
+        {
+            perspective = perspective == SideColor.Black ? SideColor.White : SideColor.Black;
+            InitBoard();
         }
     }
 }

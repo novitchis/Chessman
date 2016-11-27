@@ -44,6 +44,7 @@
         </Grid>
 
         <CommandBar x:Name="CommandBar" Grid.Row="1">
+            <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
             <AppBarButton Label="Clear" Icon="Delete" Command="{Binding ClearCommand}"/>
             <AppBarButton Label="Done" Icon="Accept" Foreground="Green">
                 <AppBarButton.Flyout>
@@ -52,20 +53,8 @@
                             <StackPanel>
                                 <TextBlock Text="To move:"/>
                                 <StackPanel Orientation="Horizontal" Margin="0 10 0 20">
-                                    <RadioButton Content="White" IsChecked="True">
-                                        <i:Interaction.Behaviors>
-                                            <ic:EventTriggerBehavior EventName="Checked">
-                                                <ic:ChangePropertyAction TargetObject="{Binding}" PropertyName="ToMoveSide" Value="{StaticResource SideColorValueWhite}" />
-                                            </ic:EventTriggerBehavior>
-                                        </i:Interaction.Behaviors>
-                                    </RadioButton>
-                                    <RadioButton Content="Black">
-                                        <i:Interaction.Behaviors>
-                                            <ic:EventTriggerBehavior EventName="Checked">
-                                                <ic:ChangePropertyAction TargetObject="{Binding}" PropertyName="ToMoveSide" Value="{StaticResource SideColorValueBlack}" />
-                                            </ic:EventTriggerBehavior>
-                                        </i:Interaction.Behaviors>
-                                    </RadioButton>
+                                    <RadioButton Content="White" IsChecked="{Binding IsWhiteToMove, Mode=TwoWay}"/>
+                                    <RadioButton Content="Black" IsChecked="{Binding IsWhiteToMove, Mode=TwoWay, Converter={StaticResource BoolInverterConverter}}"/>
                                 </StackPanel>
                                 <Button
                                     HorizontalAlignment="Center"

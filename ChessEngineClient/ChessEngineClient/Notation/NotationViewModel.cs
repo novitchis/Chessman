@@ -13,7 +13,7 @@ namespace ChessEngineClient.ViewModel
 {
     public class NotationViewModel : ViewModelBase
     {
-        private IChessBoardService chessBoardService = null;
+        private IAnalysisBoardService analysisBoardService = null;
         private IList<MoveDataGroup> groupedMoves = new List<MoveDataGroup>();
         private MoveData currentMove = null;
 
@@ -42,7 +42,7 @@ namespace ChessEngineClient.ViewModel
                     currentMove = value;
                     if (currentMove != null)
                     {
-                        chessBoardService.GoToMove(currentMove.Index);
+                        analysisBoardService.GoToMove(currentMove.Index);
                         NotifyPropertyChanged();
                     }
                     Messenger.Default.Send(new GenericMessage<MoveData>(currentMove), NotificationMessages.CurrentMoveChanged);
@@ -52,9 +52,9 @@ namespace ChessEngineClient.ViewModel
 
         #endregion
 
-        public NotationViewModel(IChessBoardService chessBoardService)
+        public NotationViewModel(IAnalysisBoardService analysisBoardService)
         {
-            this.chessBoardService = chessBoardService;
+            this.analysisBoardService = analysisBoardService;
             Messenger.Default.Register<MessageBase>(this, NotificationMessages.MoveExecuted, OnMoveExecutedMessage);
         }
 
@@ -67,8 +67,8 @@ namespace ChessEngineClient.ViewModel
         {
             int groupIndex = 1;
             List<MoveDataGroup> newGroupedMoves = new List<MoveDataGroup>();
-            var moves = chessBoardService.GetMoves(false);
-            bool startedAsBlack = chessBoardService.WasBlackFirstToMove();
+            var moves = analysisBoardService.GetMoves(false);
+            bool startedAsBlack = analysisBoardService.WasBlackFirstToMove();
 
             using (var movesEnumerator = moves.GetEnumerator())
             {
@@ -90,7 +90,7 @@ namespace ChessEngineClient.ViewModel
 
             GroupedMoves = newGroupedMoves;
 
-            MoveData currentMove = chessBoardService.GetCurrentMove();
+            MoveData currentMove = analysisBoardService.GetCurrentMove();
             // in order for the selected item to work CurrentMove needs to be an object from the 'moves' list
             if (currentMove != null)
                 CurrentMove = moves[currentMove.Index];

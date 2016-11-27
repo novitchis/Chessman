@@ -39,6 +39,19 @@ namespace Framework.MVVM.Converters
         }
     }
 
+    public class BoolInverterConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            return !(bool)value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return !(bool)value;
+        }
+    }
+
     public class EnumToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)

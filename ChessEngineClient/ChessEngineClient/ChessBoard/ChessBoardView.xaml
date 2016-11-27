@@ -97,6 +97,7 @@
                     <DataTemplate>
                         <view:SquareView 
                             DataContext="{Binding }" 
+                            IsHighlighted="{Binding IsLastMoveSquare}"
                             PointerEntered="OnSquarePointerEntered"
                             PointerExited="OnSquarePointerExited"
                             PointerMoved="OnSquarePointerMoved"

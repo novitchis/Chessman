@@ -25,11 +25,23 @@ namespace ChessEngineClient.View
         private const double MinPieceSize = 75;
         private const double MinimumDragDistance = 15;
 
-        public ChessBoardViewModel ViewModel { get { return DataContext as ChessBoardViewModel; } }
+        public static readonly DependencyProperty HasDragAndDropProperty = DependencyProperty.Register("HasDragAndDrop", typeof(bool), typeof(ChessBoardView), new PropertyMetadata(false));
+
         private bool isDragStarted = false;
         private ChessPieceView draggingPieceView = null;
         private Point dragStartPoint = new Point();
         private SquareView pointerPressSquare = null;
+
+        public bool HasDragAndDrop
+        {
+            get { return (bool)GetValue(HasDragAndDropProperty); }
+            set { SetValue(HasDragAndDropProperty, value); }
+        }
+
+        public ChessBoardViewModel ViewModel
+        {
+            get { return DataContext as ChessBoardViewModel; }
+        }
 
         public ChessBoardView()
         {
@@ -129,7 +141,7 @@ namespace ChessEngineClient.View
 
         private void OnSquarePointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            if (ViewModel.IsEdit)
+            if (!HasDragAndDrop)
                 return;
 
             dragStartPoint = e.GetCurrentPoint(board).Position;

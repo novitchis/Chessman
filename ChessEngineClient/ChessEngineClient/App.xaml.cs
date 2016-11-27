@@ -145,7 +145,6 @@ namespace ChessEngineClient
                 ViewModelLocator.EditPositionViewModel.ReturnToMainView();
             else
                 throw new NotImplementedException("The back button is not implemented for this page");
-
         }
 
         private async void ConfirmAndExit()

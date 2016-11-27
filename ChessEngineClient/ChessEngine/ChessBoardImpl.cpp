@@ -87,6 +87,55 @@ void ChessBoardImpl::SetPiece( const ChessPieceImpl& piece, const CoordinateImpl
 	m_memBoard[coord.nRank][coord.nColumn] = piece;
 }
 
+void ChessBoardImpl::SetSideToMove(bool bWhite)
+{
+	m_lastPiece.bWhite = !bWhite;
+}
+
+bool ChessBoardImpl::AcceptEditedPosition()
+{
+	if (m_currentMoveIndex != -1)
+		throw std::exception("cannot edit a board with executed moves");
+
+	bool whiteKingFound = false;
+	bool blackKingFound = false;
+
+	for (int i = 0; i < 8; ++i)
+	{
+		for (int j = 0; j < 8; ++j)
+		{
+			CoordinateImpl coordinate = CoordinateImpl(i, j);
+			ChessPieceImpl piece = GetPiece(coordinate);
+			if (piece.cPiece == ChessPieceImpl::King)
+			{
+				if (piece.bWhite)
+				{
+					if (whiteKingFound)
+						return false;
+
+					m_coordWhiteKing = coordinate;
+					whiteKingFound = true;
+				}
+				else
+				{
+					if (blackKingFound)
+						return false;
+
+					m_coordBlackKing = coordinate;
+					blackKingFound = true;
+				}
+			}
+		}
+	}
+
+	if (!whiteKingFound || !blackKingFound)
+		return false;
+
+	//TODO: castling to implemented
+
+	std::list<CoordinateImpl> listAttackers;
+	return !GetAttackingFields(GetKingPos(!IsWhiteTurn()), IsWhiteTurn(), listAttackers);
+}
 
 std::list<MoveDataImpl> ChessBoardImpl::GetMoves()
 {
@@ -583,39 +632,6 @@ END:
 	return bRes;
 }
 
-
-bool ChessBoardImpl::IsValid(const std::string& strFen)
-{
-	ChessBoardImpl copy(*this);
-	copy.LoadFromFEN(strFen);
-
-	int whiteKingCount = 0;
-	int blackKingCount = 0;
-
-	for (int i = 0; i < 8; ++i)
-	{
-		for (int j = 0; j < 8; ++j)
-		{
-			ChessPieceImpl piece = copy.GetPiece(CoordinateImpl(i, j));
-			if (piece.cPiece == ChessPieceImpl::King)
-			{
-				if (piece.bWhite)
-					whiteKingCount += 1;
-				else
-					blackKingCount += 1;
-			}
-		}
-	}
-
-	if (whiteKingCount != 1 || blackKingCount != 1)
-		return false;
-
-	// check if the side which is NOT currently to move is in check
-	std::list<CoordinateImpl> listAttackers;
-	return !copy.GetAttackingFields(copy.GetKingPos(!copy.IsWhiteTurn()), copy.IsWhiteTurn(), listAttackers);
-}
-
-
 MoveDataImpl ChessBoardImpl::GetLastMove() const
 {
 	if ( m_currentMoveIndex < 0 ) return MoveDataImpl();
@@ -927,10 +943,15 @@ bool ChessBoardImpl::LoadFromFEN( const std::string& strData )
 	m_nCastlingMask = 0;
 	if ( strToken != "-" )
 	{
-		if ( strToken.find( 'K' ) != -1 ) m_nCastlingMask |= CT_WhiteKingSide; 
-		if ( strToken.find( 'Q' ) != -1 ) m_nCastlingMask |= CT_WhiteQueenSide; 
-		if ( strToken.find( 'k' ) != -1 ) m_nCastlingMask |= CT_BlackKingSide; 
-		if ( strToken.find( 'q' ) != -1 ) m_nCastlingMask |= CT_BlackQueenSide; 
+		// also validate castles even if the FEN allows it
+		if ( strToken.find( 'K' ) != -1 && GetPiece(CoordinateImpl(0, 7)) == ChessPieceImpl(ChessPieceImpl::Rock, true))
+			m_nCastlingMask |= CT_WhiteKingSide;
+		if ( strToken.find( 'Q' ) != -1 && GetPiece(CoordinateImpl(0, 0)) == ChessPieceImpl(ChessPieceImpl::Rock, true)) 
+			m_nCastlingMask |= CT_WhiteQueenSide;
+		if ( strToken.find( 'k' ) != -1 && GetPiece(CoordinateImpl(7, 7)) == ChessPieceImpl(ChessPieceImpl::Rock, false))
+			m_nCastlingMask |= CT_BlackKingSide;
+		if ( strToken.find( 'q' ) != -1 && GetPiece(CoordinateImpl(7, 0)) == ChessPieceImpl(ChessPieceImpl::Rock, false))
+			m_nCastlingMask |= CT_BlackQueenSide;
 	}
 
 	// TODO: load the rest //

@@ -21,6 +21,9 @@ namespace ChessEngine
 		bool				LoadFrom(Platform::String^ strData, int type);
 		void				StorePGN();
 		ChessPiece^			GetPiece(Coordinate^ coord);
+		void				SetPiece(Coordinate^ coord, ChessPiece^ piece);
+		void				SetSideToMove(bool white);
+
 		bool				SubmitMove(Coordinate^ from, Coordinate^ to);
 		bool				UndoMove(bool bWhiteMove);
 		bool				GoToMove(int moveIndex);
@@ -30,7 +33,7 @@ namespace ChessEngine
 		IVector<MoveData^>^	GetVariationMoveData(IVector<Move^>^ moves);
 
 		bool				IsWhiteTurn();
-		bool				IsValid(Platform::String^ strFen);
+		bool				AcceptEditedPosition();
 		bool				IsStalemate();
 		bool				IsCheckmate();
 

@@ -14,26 +14,27 @@ namespace ChessEngineClient.ViewModel
     public class EditPositionViewModel : ViewModelBase
     {
         private INavigationService navigationService = null;
-        private IChessBoardService chessBoardService = null;
-        private SideColor toMoveSide = SideColor.White;
-        private bool isBoardValid = false;
+        private IEditorBoardService editorBoardService = null;
+        private bool isWhiteToMove = true;
+        private bool isBoardValid = true;
 
         #region "Properties"
 
-        public ChessBoardViewModel BoardViewModel { get; set; }
+        public EditChessBoardViewModel BoardViewModel { get; set; }
 
         public PiecesPaletteViewModel PiecesPaletteViewModel { get; set; }
 
-        public SideColor ToMoveSide
+        public bool IsWhiteToMove
         {
-            get { return toMoveSide; }
+            get { return isWhiteToMove; }
             set
             {
-                if (toMoveSide != value)
+                if (isWhiteToMove != value)
                 {
-                    toMoveSide = value;
+                    isWhiteToMove = value;
                     NotifyPropertyChanged();
-                    IsBoardValid = chessBoardService.IsValid(GetFen());
+                    editorBoardService.SetSideToMove(isWhiteToMove);
+                    IsBoardValid = editorBoardService.AcceptEditedPosition();
                 }
             }
         }
@@ -68,28 +69,35 @@ namespace ChessEngineClient.ViewModel
 
         #endregion
 
-        public EditPositionViewModel(INavigationService navigationService, IChessBoardService chessBoardService)
+        public EditPositionViewModel(INavigationService navigationService, IEditorBoardService editorBoardService)
         {
             this.navigationService = navigationService;
-            this.chessBoardService = chessBoardService;
+            this.editorBoardService = editorBoardService;
 
-            BoardViewModel = ViewModelLocator.IOCContainer.Resolve<ChessBoardViewModel>();
-            BoardViewModel.IsEdit = true;
-            IsBoardValid = chessBoardService.IsValid(GetFen());
-
+            BoardViewModel = new EditChessBoardViewModel(editorBoardService);
             PiecesPaletteViewModel = new PiecesPaletteViewModel();
 
             Messenger.Default.Register<SquareViewModel>(this, NotificationMessages.SquarePressed, OnSquarePressed);
         }
 
-        private void OnSquarePressed(SquareViewModel square)
+        public void OnPageNavigatedTo(PositionLoadOptions loadOptions)
         {
-            if (square.Piece != null)
-                square.Piece = null;
-            else
-                square.Piece = PiecesPaletteViewModel.SelectedPiece;
+            editorBoardService.LoadFromFen(loadOptions.Fen);
+            BoardViewModel.RefreshBoard(loadOptions.Perspective);
+            IsWhiteToMove = editorBoardService.IsWhiteTurn;
+            IsBoardValid = editorBoardService.AcceptEditedPosition();
+        }
 
-            IsBoardValid = chessBoardService.IsValid(GetFen());
+        private void OnSquarePressed(SquareViewModel squareVM)
+        {
+            // the square does not belong to our bord
+            if (BoardViewModel.Squares.IndexOf(squareVM) == -1)
+                return;
+
+            ChessPiece newPiece = squareVM.Piece != null ? null : PiecesPaletteViewModel.SelectedPiece;
+            squareVM.Piece = newPiece;
+            editorBoardService.SetPiece(squareVM.Coordinate, newPiece);
+            IsBoardValid = editorBoardService.AcceptEditedPosition();
         }
 
         private void CancelExecuted(object obj)
@@ -99,91 +107,29 @@ namespace ChessEngineClient.ViewModel
 
         public void ReturnToMainView()
         {
-            Messenger.Default.Unregister<SquareViewModel>(this);
             navigationService.NavigateTo(ViewModelLocator.MainPageNavigationName);
         }
 
         private void ClearExecuted(object obj)
         {
-            BoardViewModel.ClearPieces();
+            BoardViewModel.Squares.ForEach(s =>
+            {
+                s.Piece = null;
+                editorBoardService.SetPiece(s.Coordinate, null);
+            });
+
             IsBoardValid = false;
         }
 
         private void SaveExecuted(object obj)
         {
-            chessBoardService.LoadFromFen(GetFen());
-            ViewModelLocator.MainViewModel.ReloadPosition();
-            ReturnToMainView();
-        }
-
-        private string GetFen()
-        {
-            StringBuilder fenBuilder = new StringBuilder();
-
-            int index = 0;
-            foreach(var square in BoardViewModel.Squares)
+            PositionLoadOptions positionLoadOptions = new PositionLoadOptions()
             {
-                if (index != 0 && index % 8 == 0)
-                    fenBuilder.Append('/');
+                Fen = editorBoardService.GetFen(),
+                Perspective = BoardViewModel.Perspective,
+            };
 
-                char squareContent = '1';
-                if (square.Piece != null)
-                    squareContent = square.Piece.Color == PieceColor.Black ? square.Piece.NotationChar : Char.ToUpper(square.Piece.NotationChar);
-
-                fenBuilder.Append(squareContent);
-                index++;
-            }
-
-            //only who's on move is implemented
-            string castling = GetCastlingFen();
-            fenBuilder.AppendFormat(" {0} {1} - 0 1", toMoveSide == SideColor.White ? 'w' : 'b', castling);
-
-            return fenBuilder.ToString();
-        }
-
-        private string GetCastlingFen()
-        {
-            return GetWhiteCastlingFen() + GetBlackCastlingFen();
-        }
-
-        private string GetBlackCastlingFen()
-        {
-            string result = "";
-            ChessPiece blackKing = BoardViewModel.Squares[4].Piece;
-            ChessPiece a8Rook = BoardViewModel.Squares[0].Piece;
-            ChessPiece h8Rook = BoardViewModel.Squares[7].Piece;
-
-            if (blackKing == null || a8Rook == null || h8Rook == null ||
-                blackKing.Type != PieceType.King || blackKing.Color != PieceColor.Black)
-                return result;
-
-            if (h8Rook.Type == PieceType.Rook && h8Rook.Color == PieceColor.Black)
-                result += "k";
-
-            if (a8Rook.Type == PieceType.Rook && a8Rook.Color == PieceColor.Black)
-                result += "q";
-
-            return result;
-        }
-
-        private string GetWhiteCastlingFen()
-        {
-            string result = "";
-            ChessPiece whiteKing = BoardViewModel.Squares[60].Piece;
-            ChessPiece a1Rook = BoardViewModel.Squares[56].Piece;
-            ChessPiece h1Rook = BoardViewModel.Squares[63].Piece;
-            if (whiteKing == null || a1Rook == null || h1Rook == null || 
-                whiteKing.Type != PieceType.King || whiteKing.Color != PieceColor.White)
-                return result;
-
-            if (h1Rook.Type == PieceType.Rook && h1Rook.Color == PieceColor.White)
-                result += "K";
-
-            if (a1Rook.Type == PieceType.Rook && a1Rook.Color == PieceColor.White)
-                result += "Q";
-
-            return result;
-
+            navigationService.NavigateTo(ViewModelLocator.MainPageNavigationName, positionLoadOptions);
         }
     }
 }

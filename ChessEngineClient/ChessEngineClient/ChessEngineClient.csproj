@@ -107,6 +107,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ChessBoard\AnalysisChessBoardViewModel.cs" />
     <Compile Include="ChessBoard\ChessBoardView.xaml.cs">
       <DependentUpon>ChessBoardView.xaml</DependentUpon>
     </Compile>
@@ -115,6 +116,7 @@
     <Compile Include="ChessBoard\ChessPieceView.xaml.cs">
       <DependentUpon>ChessPieceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ChessBoard\EditChessBoardViewModel.cs" />
     <Compile Include="ChessBoard\SquareView.xaml.cs">
       <DependentUpon>SquareView.xaml</DependentUpon>
     </Compile>
@@ -129,6 +131,7 @@
       <DependentUpon>PiecesPaletteView.xaml</DependentUpon>
     </Compile>
     <Compile Include="EditPosition\PiecesPaletteViewModel.cs" />
+    <Compile Include="EditPosition\PositionLoadOptions.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Main\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -144,6 +147,9 @@
     <Compile Include="Services\AnalysisEventArgs.cs" />
     <Compile Include="Services\ChessBoardService.cs" />
     <Compile Include="Services\AnalysisReceiver.cs" />
+    <Compile Include="Services\EditorChessBoardService.cs" />
+    <Compile Include="Services\IAnalysisBoardService.cs" />
+    <Compile Include="Services\IEditorBoardService.cs" />
     <Compile Include="Services\IChessBoardService.cs" />
     <Compile Include="Services\IAnalysisReceiver.cs" />
     <Compile Include="ViewModelLocator.cs" />

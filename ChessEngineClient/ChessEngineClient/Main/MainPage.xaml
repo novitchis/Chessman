@@ -23,6 +23,7 @@
                 <view:NotationView x:Name="notationView" 
                                    DataContext="{Binding NotationViewModel}" />
                 <view:ChessBoardView x:Name="chessBoard"
+                                     HasDragAndDrop="True"
                                      DataContext="{Binding BoardViewModel}"
                                      VerticalAlignment="Center"
                                      HorizontalAlignment="Center" />
@@ -80,7 +81,7 @@
     </Grid>
     <Page.BottomAppBar>
         <CommandBar x:Name="CommandBar" Grid.Row="1">
-            <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding TogglePerspectiveCommand}"/>
+            <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
             <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}"/>
             <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}"/>
 

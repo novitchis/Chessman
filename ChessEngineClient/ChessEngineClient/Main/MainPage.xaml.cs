@@ -1,5 +1,6 @@
 ﻿using ChessEngine;
 using ChessEngineClient;
+using ChessEngineClient.ViewModel;
 using Framework.MVVM;
 using System;
 using System.Collections.Generic;
@@ -61,6 +62,15 @@ namespace ChessEngineClient.View
                 chessBoard.MaxHeight = e.NewSize.Height - notationView.MinHeight - 130;
             else
                 chessBoard.MaxHeight = Double.PositiveInfinity;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            PositionLoadOptions positionLoadOptions = e.Parameter as PositionLoadOptions;
+            if (positionLoadOptions != null)
+                ((MainViewModel)DataContext).OnPageNavigatedTo(positionLoadOptions);
+
+            base.OnNavigatedTo(e);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace ChessEngineClient.ViewModel
     public class SquareViewModel : ViewModelBase
     {
         private ChessPiece piece = null;
+        private bool isLastMoveSquare = false;
 
         #region "Properties"
 
@@ -24,6 +25,19 @@ namespace ChessEngineClient.ViewModel
                 if (piece != value)
                 {
                     piece = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsLastMoveSquare
+        {
+            get { return isLastMoveSquare; }
+            set
+            {
+                if (isLastMoveSquare != value)
+                {
+                    isLastMoveSquare = value;
                     NotifyPropertyChanged();
                 }
             }

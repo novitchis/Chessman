@@ -7,8 +7,9 @@ using ChessEngine;
 
 namespace ChessEngineClient
 {
-    public class ChessBoardService : IChessBoardService
+    public class ChessBoardService : IAnalysisBoardService
     {
+        public const int FenSerializationType = 0;
         private ChessBoard chessBoard = null;
         private Engine engine = null;
         private IEngineNotification engineNotification = null;
@@ -38,8 +39,13 @@ namespace ChessEngineClient
 
         public void LoadFromFen(string fenString)
         {
-            chessBoard.LoadFrom(fenString, 0);
+            chessBoard.LoadFrom(fenString, FenSerializationType);
             RefreshAnalysis();
+        }
+
+        public string GetFen()
+        {
+            return chessBoard.Serialize(FenSerializationType);
         }
 
         public ChessPiece GetPiece(Coordinate coordinate)
@@ -87,11 +93,6 @@ namespace ChessEngineClient
                 RefreshAnalysis();
 
             return result;
-        }
-
-        public bool IsValid(string fen)
-        {
-            return chessBoard.IsValid(fen);
         }
 
         private void RefreshAnalysis()
