@@ -75,6 +75,7 @@ namespace ChessEngine
 
 		ChessPieceImpl				GetPiece( const CoordinateImpl& coord ) const;
 		void						SetPiece( const ChessPieceImpl& piece, const CoordinateImpl& coord );
+		void						SetSideToMove(bool bWhite);
 
 		std::list<MoveDataImpl>		GetMoves();
 		int							GetCurrentMoveIndex();
@@ -97,7 +98,7 @@ namespace ChessEngine
 		bool							InCheck();
 		bool							IsMate();
 		bool							IsStaleMate();
-		bool							IsValid(const std::string& strFen);
+		bool							IsValid();
 		MoveDataImpl					GetLastMove() const;
 		std::map<ChessPieceImpl, int>	GetCapturedPieces() const;
 		void							GetPreservedState( StatePreserveType type, Core::StatePreserver& state );

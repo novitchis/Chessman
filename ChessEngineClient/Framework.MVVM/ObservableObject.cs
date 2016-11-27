@@ -17,7 +17,7 @@ namespace Framework.MVVM
         public void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
         {
 #if DEBUG
-            if (GetType().GetTypeInfo().GetDeclaredProperty(propertyName) == null)
+            if (GetType().GetProperty(propertyName) == null)
                 throw new ArgumentException(String.Format("This class does not have a \"{0}\" property.", propertyName));
 #endif
             if (PropertyChanged != null)

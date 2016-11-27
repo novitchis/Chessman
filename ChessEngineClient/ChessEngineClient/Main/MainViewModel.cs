@@ -13,19 +13,13 @@ namespace ChessEngineClient.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private INavigationService navigationService = null;
+        private IAnalysisBoardService analysisBoardService = null;
 
-        private IChessBoardService chessBoardService;
-
-        public ChessBoardViewModel BoardViewModel { get; set; }
+        public AnalysisChessBoardViewModel BoardViewModel { get; set; }
 
         public AnalysisViewModel AnalysisViewModel { get; set; }
 
         public NotationViewModel NotationViewModel { get; set; }
-
-        public ICommand TogglePerspectiveCommand
-        {
-            get { return new RelayCommand(TogglePerspectiveExecuted); }
-        }
 
         public ICommand EditPositionCommand
         {
@@ -56,56 +50,63 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        public MainViewModel(INavigationService navigationService, IChessBoardService chessBoardService)
+        public MainViewModel(INavigationService navigationService, IAnalysisBoardService analysisBoardService)
         {
             this.navigationService = navigationService;
-            this.chessBoardService = chessBoardService;
-            BoardViewModel = new ChessBoardViewModel(chessBoardService);
+            this.analysisBoardService = analysisBoardService;
+            BoardViewModel = new AnalysisChessBoardViewModel(analysisBoardService);
             AnalysisViewModel = ViewModelLocator.IOCContainer.Resolve<AnalysisViewModel>();
             NotationViewModel = ViewModelLocator.IOCContainer.Resolve<NotationViewModel>();
         }
 
-        public void ReloadPosition()
+        public void OnPageNavigatedTo(PositionLoadOptions positionLoadOptions)
         {
-            BoardViewModel.RefreshSquares();
-            NotationViewModel.ReloadMoves();
+            analysisBoardService.LoadFromFen(positionLoadOptions.Fen);
+            ReloadBoard(positionLoadOptions.Perspective);
         }
 
-        private void TogglePerspectiveExecuted(object obj)
+        public void ReloadBoard(SideColor changedPerspectiveColor)
         {
-            BoardViewModel.TogglePerspective();
+            BoardViewModel.RefreshBoard(changedPerspectiveColor);
+            NotationViewModel.ReloadMoves();
         }
 
         private void OnGoForwardCommand(object obj)
         {
-            MoveData currentMove = chessBoardService.GetCurrentMove();
+            MoveData currentMove = analysisBoardService.GetCurrentMove();
             int moveIndex = 0;
             if (currentMove != null)
                 moveIndex = currentMove.Index + 1;
 
-            if (chessBoardService.GoToMove(moveIndex))
+            if (analysisBoardService.GoToMove(moveIndex))
                 Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
         }
 
         private void OnGoBackCommand(object obj)
         {
-            MoveData currentMove = chessBoardService.GetCurrentMove();
+            MoveData currentMove = analysisBoardService.GetCurrentMove();
             if (currentMove != null)
             {
-                if (chessBoardService.GoToMove(currentMove.Index - 1))
+                if (analysisBoardService.GoToMove(currentMove.Index - 1))
                     Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
             }
         }
 
         private void OnNewGameCommand(object obj)
         {
-            chessBoardService.ResetBoard();
-            ReloadPosition();
+            analysisBoardService.ResetBoard();
+            ReloadBoard(BoardViewModel.Perspective);
         }
 
         private void EditPositionExecuted(object obj)
         {
-            navigationService.NavigateTo(ViewModelLocator.EditPositionPageNavigationName);
+            PositionLoadOptions positionLoadOptions = new PositionLoadOptions()
+            {
+                Fen = analysisBoardService.GetFen(),
+                Perspective = BoardViewModel.Perspective,
+            };
+
+            navigationService.NavigateTo(ViewModelLocator.EditPositionPageNavigationName, positionLoadOptions);
         }
     }
 }

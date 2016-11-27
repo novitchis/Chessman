@@ -11,10 +11,10 @@ namespace ChessEngineClient.ViewModel
 {
     public class AnalysisViewModel : ViewModelBase
     {
-        private IChessBoardService chessBoardService = null;
+        private IAnalysisBoardService analysisBoardService = null;
         private IAnalysisReceiver analysisReceiver = null;
         private string moves = String.Empty;
-        SynchronizationContext uiSynchronizationContext = null;
+        private SynchronizationContext uiSynchronizationContext = null;
         private string evaluation = "0.0";
         private bool isActive = true;
 
@@ -61,9 +61,9 @@ namespace ChessEngineClient.ViewModel
 
         #endregion
 
-        public AnalysisViewModel(IChessBoardService chessBoardService, IAnalysisReceiver analysisReceiver)
+        public AnalysisViewModel(IAnalysisBoardService analysisBoardService, IAnalysisReceiver analysisReceiver)
         {
-            this.chessBoardService = chessBoardService;
+            this.analysisBoardService = analysisBoardService;
             this.analysisReceiver = analysisReceiver;
             this.analysisReceiver.AnalysisReceived += OnAnalysisReceived;
             this.analysisReceiver.AnalysisStopped += OnAnalysisStopped;
@@ -113,10 +113,10 @@ namespace ChessEngineClient.ViewModel
             StringBuilder variationBuilder = new StringBuilder();
 
             bool isFirstMoveProcesssed = false;
-            foreach (MoveData moveData in chessBoardService.GetVariationMoveData(data.Analysis))
+            foreach (MoveData moveData in analysisBoardService.GetVariationMoveData(data.Analysis))
             {
                 int actualMoveindex = moveData.Index;
-                if (chessBoardService.WasBlackFirstToMove())
+                if (analysisBoardService.WasBlackFirstToMove())
                     actualMoveindex++;
 
                 bool isWhiteMove = actualMoveindex % 2 == 0;

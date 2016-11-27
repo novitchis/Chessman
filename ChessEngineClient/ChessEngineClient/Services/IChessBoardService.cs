@@ -11,24 +11,10 @@ namespace ChessEngineClient
     {
         bool IsWhiteTurn { get; }
 
-        void ResetBoard();
-
         void LoadFromFen(string fenString);
 
+        string GetFen();
+
         ChessPiece GetPiece(Coordinate coordinate);
-
-        bool SubmitMove(Coordinate from, Coordinate to);
-
-        MoveData GetCurrentMove();
-
-        bool WasBlackFirstToMove();
-
-        IList<MoveData> GetMoves(bool stopOnCurrentMove = true);
-
-        IList<MoveData> GetVariationMoveData(IList<Move> moves);
-
-        bool GoToMove(int moveIndex);
-
-        bool IsValid(string fen);
     }
 }

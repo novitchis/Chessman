@@ -36,12 +36,14 @@ namespace ChessEngineClient
         public ViewModelLocator()
         {
             IOCContainer.RegisterType<MainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<EditPositionViewModel, EditPositionViewModel>(new ContainerControlledLifetimeManager());
 
             AnalysisReceiver analysisReceiver = new AnalysisReceiver();
             IOCContainer.RegisterInstance<IAnalysisReceiver>(analysisReceiver);
             IOCContainer.RegisterInstance<IEngineNotification>(analysisReceiver);
 
-            IOCContainer.RegisterType<IChessBoardService, ChessBoardService>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<IAnalysisBoardService, ChessBoardService>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<IEditorBoardService, EditorChessBoardService>(new ContainerControlledLifetimeManager());
         }
     }
 }

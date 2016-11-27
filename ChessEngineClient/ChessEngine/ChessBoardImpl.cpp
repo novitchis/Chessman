@@ -87,6 +87,10 @@ void ChessBoardImpl::SetPiece( const ChessPieceImpl& piece, const CoordinateImpl
 	m_memBoard[coord.nRank][coord.nColumn] = piece;
 }
 
+void ChessBoardImpl::SetSideToMove(bool bWhite)
+{
+	m_lastPiece.bWhite = !bWhite;
+}
 
 std::list<MoveDataImpl> ChessBoardImpl::GetMoves()
 {
@@ -583,11 +587,8 @@ END:
 }
 
 
-bool ChessBoardImpl::IsValid(const std::string& strFen)
+bool ChessBoardImpl::IsValid()
 {
-	ChessBoardImpl copy(*this);
-	copy.LoadFromFEN(strFen);
-
 	int whiteKingCount = 0;
 	int blackKingCount = 0;
 
@@ -595,7 +596,7 @@ bool ChessBoardImpl::IsValid(const std::string& strFen)
 	{
 		for (int j = 0; j < 8; ++j)
 		{
-			ChessPieceImpl piece = copy.GetPiece(CoordinateImpl(i, j));
+			ChessPieceImpl piece = GetPiece(CoordinateImpl(i, j));
 			if (piece.cPiece == ChessPieceImpl::King)
 			{
 				if (piece.bWhite)
@@ -611,7 +612,7 @@ bool ChessBoardImpl::IsValid(const std::string& strFen)
 
 	// check if the side which is NOT currently to move is in check
 	std::list<CoordinateImpl> listAttackers;
-	return !copy.GetAttackingFields(copy.GetKingPos(!copy.IsWhiteTurn()), copy.IsWhiteTurn(), listAttackers);
+	return !GetAttackingFields(GetKingPos(!IsWhiteTurn()), IsWhiteTurn(), listAttackers);
 }
 
 
