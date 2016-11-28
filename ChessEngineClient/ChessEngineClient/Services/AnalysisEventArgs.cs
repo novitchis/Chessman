@@ -13,4 +13,17 @@ namespace ChessEngineClient
     {
         public AnalysisData Data { get; set; }
     }
+
+
+    public delegate void AnalysisStateEventHandler(object sender, AnalysisStateEventArgs e);
+    public class AnalysisStateEventArgs: EventArgs
+    {
+        public EngineState NewState { get; private set; }
+
+        public AnalysisStateEventArgs(EngineState state)
+        {
+            NewState = state;
+        }
+
+    }
 }

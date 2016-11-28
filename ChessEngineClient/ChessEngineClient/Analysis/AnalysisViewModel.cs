@@ -66,12 +66,28 @@ namespace ChessEngineClient.ViewModel
             this.analysisBoardService = analysisBoardService;
             this.analysisReceiver = analysisReceiver;
             this.analysisReceiver.AnalysisReceived += OnAnalysisReceived;
-            this.analysisReceiver.AnalysisStopped += OnAnalysisStopped;
+            this.analysisReceiver.AnalysisStateChanged += OnAnalysisStateChanged;
 
             uiSynchronizationContext = SynchronizationContext.Current;
         }
 
-        private void OnAnalysisStopped(object sender, AnalysisEventArgs e)
+        private void OnAnalysisStateChanged(object sender, AnalysisStateEventArgs e)
+        {
+            switch (e.NewState)
+            {
+                case EngineState.Analyze:
+                    IsActive = true;
+                    break;
+                case EngineState.Stop:
+                    OnAnalysisStopped();
+                    break;
+                case EngineState.Start:
+                default:
+                    break;
+            }
+        }
+
+        private void OnAnalysisStopped()
         {
             IsActive = false;
             Evaluation = "-";
@@ -90,7 +106,9 @@ namespace ChessEngineClient.ViewModel
                 // make sure it is executed on the ui thread
                 uiSynchronizationContext.Post(o =>
                 {
-                    IsActive = true;
+                    if (!IsActive)
+                        return;
+
                     Evaluation = newEvalutation;
                     Moves = newMoves;
                 }, null);

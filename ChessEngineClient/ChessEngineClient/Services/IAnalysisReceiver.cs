@@ -10,6 +10,6 @@ namespace ChessEngineClient
     public interface IAnalysisReceiver
     {
         event AnalysisEventHandler AnalysisReceived;
-        event AnalysisEventHandler AnalysisStopped;
+        event AnalysisStateEventHandler AnalysisStateChanged;
     }
 }

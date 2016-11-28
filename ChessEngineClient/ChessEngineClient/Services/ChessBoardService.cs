@@ -98,9 +98,14 @@ namespace ChessEngineClient
         private void RefreshAnalysis()
         {
             if (!chessBoard.IsStalemate() && !chessBoard.IsCheckmate())
+            {
+                engineNotification.OnStateChanged(EngineState.Analyze);
                 engine.Analyze(chessBoard);
+            }
             else
-                engineNotification.OnEngineStop();
+            {
+                engineNotification.OnStateChanged(EngineState.Stop);
+            }
         }
     }
 }

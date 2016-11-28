@@ -12,7 +12,7 @@ namespace ChessEngineClient
     public class AnalysisReceiver : IAnalysisReceiver, IEngineNotification
     {
         public event AnalysisEventHandler AnalysisReceived;
-        public event AnalysisEventHandler AnalysisStopped;
+        public event AnalysisStateEventHandler AnalysisStateChanged;
 
         public AnalysisReceiver()
         {
@@ -38,9 +38,9 @@ namespace ChessEngineClient
             //throw new NotImplementedException();
         }
 
-        public void OnEngineStop()
+        public void OnStateChanged(EngineState state)
         {
-            AnalysisStopped?.Invoke(this, new AnalysisEventArgs());
+            AnalysisStateChanged?.Invoke(this, new AnalysisStateEventArgs(state));
         }
     }
 }
