@@ -100,16 +100,16 @@ namespace ChessEngineClient
                     // configuring the new page by passing required information as a navigation
                     // parameter
                     rootFrame.Navigate(typeof(MainPage), e.Arguments);
+
+                    if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
+                        HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+
+                    SystemNavigationManager navigation = SystemNavigationManager.GetForCurrentView();
+                    navigation.BackRequested += OnBackExecuted;
                 }
                 // Ensure the current window is active
-                Window.Current.Activate();
+                Window.Current.Activate();  
             }
-
-            if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
-                HardwareButtons.BackPressed += HardwareButtons_BackPressed;
-
-            SystemNavigationManager navigation = SystemNavigationManager.GetForCurrentView();
-            navigation.BackRequested += OnBackExecuted;
 
             HideMobileStatusBar();
         }
