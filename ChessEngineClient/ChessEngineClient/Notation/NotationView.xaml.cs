@@ -42,7 +42,15 @@ namespace ChessEngineClient.View
                 ListBoxItem item = list.ItemContainerGenerator.ContainerFromItem(list.SelectedItem) as ListBoxItem;
                 item?.Focus(FocusState.Keyboard);
             });
-            
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var list = (ListBox)sender;
+            if (list != null && ViewModel != null && ViewModel.CurrentMove != null)
+            {
+                list.SelectedItem = ViewModel.CurrentMove;
+            }
         }
     }
 }

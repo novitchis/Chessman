@@ -26,6 +26,7 @@
                 Margin="3"
                 Background="White"
                 SelectionChanged="OnSelectedMoveChanged"
+                Loaded="OnLoaded"
                 IsSynchronizedWithCurrentItem="False"
                 ItemsSource="{Binding Source={StaticResource GroupedMovesCollection}}"
                 SelectedItem="{Binding CurrentMove, Mode=TwoWay}">
