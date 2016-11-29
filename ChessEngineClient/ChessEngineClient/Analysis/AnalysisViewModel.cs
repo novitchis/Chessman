@@ -15,8 +15,8 @@ namespace ChessEngineClient.ViewModel
         private IAnalysisReceiver analysisReceiver = null;
         private string moves = String.Empty;
         private SynchronizationContext uiSynchronizationContext = null;
-        private string evaluation = "0.0";
-        private bool isActive = true;
+        private string evaluation = "-";
+        private bool isActive = false;
 
         #region "Properties"
 

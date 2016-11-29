@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ChessEngine;
+using System.Threading;
 
 namespace ChessEngineClient
 {
@@ -28,7 +29,15 @@ namespace ChessEngineClient
             this.engineNotification = engineNotification;
             engine = new Engine(engineNotification);
             engine.Start();
-            RefreshAnalysis();
+
+            SynchronizationContext mainSynchronizationContext = SynchronizationContext.Current;
+
+            // this is a quick test to identify whether our crashes occur on initial engine start 
+            Task.Run(async () =>
+            {
+                await Task.Delay(1500).ConfigureAwait(true);
+                mainSynchronizationContext.Post(o => { RefreshAnalysis(); }, null);
+            });
         }
 
         public void ResetBoard()
