@@ -30,6 +30,8 @@ namespace ChessEngineClient
     /// </summary>
     sealed partial class App : Application
     {
+        private MessageDialog exitConfirmationDialog = null;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -149,13 +151,17 @@ namespace ChessEngineClient
 
         private async void ConfirmAndExit()
         {
-            var dialog = new MessageDialog("Are you sure you want to exit?");
-            dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
-            dialog.Commands.Add(new UICommand { Label = "Cancel", Id = 1 });
+            // dialog is open
+            if (exitConfirmationDialog != null)
+                return;
 
-            var result = await dialog.ShowAsync();
+            exitConfirmationDialog = new MessageDialog("Are you sure you want to exit?");
+            exitConfirmationDialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+            exitConfirmationDialog.Commands.Add(new UICommand { Label = "Cancel", Id = 1 });
 
-            if ((int)result.Id == 0)
+            var result = await exitConfirmationDialog.ShowAsync();
+            exitConfirmationDialog = null;
+            if (result != null && (int)result.Id == 0)
                 Application.Current.Exit();
         }
 
