@@ -182,8 +182,7 @@ std::string	ChessBoardImpl::GetLastMoveText()
 bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& additionalInfo )
 {
 	if( !ValidateMove( move, additionalInfo ) ) return false;
-	for ( auto& it : m_mapStates )
-		it.second.OnStateChange();
+	ClearPreservedStates();
 	m_lastPiece = GetPiece( move.from );
 	
 	// update last piece or pawn move for FEN serialization //
@@ -430,8 +429,7 @@ bool ChessBoardImpl::GoToMove( int moveIndex )
 bool ChessBoardImpl::UndoMove( bool bWhiteMove )
 {
 	if ( m_currentMoveIndex < 0 ) return false;
-	for ( auto& it : m_mapStates )
-		it.second.OnStateChange();
+	ClearPreservedStates();
 
 	int nMovesToUndo = 0;
 	if ( ( bWhiteMove != m_lastPiece.bWhite ) && m_currentMoveIndex >= 1 ) nMovesToUndo = 2;
@@ -681,6 +679,12 @@ void ChessBoardImpl::UpdateState( StatePreserveType type, const Core::Variant& v
 	m_mapStates[type].SetState( vtState );
 }
 
+void ChessBoardImpl::ClearPreservedStates()
+{
+	for (auto& it : m_mapStates)
+		it.second.OnStateChange();
+}
+
 void ChessBoardImpl::Clear()
 {
 	m_listMoves.clear();
@@ -689,6 +693,8 @@ void ChessBoardImpl::Clear()
 	for ( int i = 0; i < 8; ++i )
 		for ( int j = 0; j < 8; ++j )
 			m_memBoard[ i ][ j ] = ChessPieceImpl();
+
+	ClearPreservedStates();
 }
 
 void ChessBoardImpl::Initialize()

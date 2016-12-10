@@ -108,6 +108,7 @@ namespace ChessEngine
 		std::map<ChessPieceImpl, int>	GetCapturedPieces() const;
 		void							GetPreservedState( StatePreserveType type, Core::StatePreserver& state );
 		void							UpdateState( StatePreserveType type, const Core::Variant& vtState );
+		void							ClearPreservedStates();
 
 	private:
 		std::string					Serialize2FEN() const;
