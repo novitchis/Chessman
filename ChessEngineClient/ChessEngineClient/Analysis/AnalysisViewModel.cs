@@ -100,8 +100,8 @@ namespace ChessEngineClient.ViewModel
             {
                 string newEvalutation = e.Data.Score > 0 ? $"+{e.Data.Score}" : e.Data.Score.ToString();
                 string newMoves = GetEvaluationVariationString(e.Data);
-                if (newMoves.IndexOf('#') > -1)
-                    newEvalutation = GetMateEvaluation();
+                if (newMoves.TrimEnd().EndsWith("#"))
+                    newEvalutation = GetMateEvaluation(e.Data);
 
                 // make sure it is executed on the ui thread
                 uiSynchronizationContext.Post(o =>
@@ -118,15 +118,14 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        private string GetMateEvaluation()
+        private string GetMateEvaluation(AnalysisData data)
         {
-            int moveCount = Moves.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Where(p => !p.Contains('.')).Count();
             string sign = "+";
 
-            if (moveCount % 2 == 0)
+            if (data.Analysis.Length % 2 == 0)
                 sign = "-";
 
-            return sign + "M" + Math.Ceiling(((float)moveCount) / 2).ToString();
+            return sign + "M" + Math.Ceiling(((float)data.Analysis.Length) / 2).ToString();
         }
 
         private string GetEvaluationVariationString(AnalysisData data)
