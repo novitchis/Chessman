@@ -25,7 +25,7 @@
         </Grid.RowDefinitions>
         <Grid Margin="4" x:Name="contentGrid">
             <RelativePanel>
-                <Grid x:Name="titlePanel" Background="White" Height="36">
+                <Grid x:Name="titlePanel" Background="White" Height="44">
                     <TextBlock 
                         Text="Set-up a position"
                         FontSize="20"
@@ -108,6 +108,7 @@
                         <Setter Target="titlePanel.(RelativePanel.AlignTopWithPanel)" Value="true"/>
                         <Setter Target="titlePanel.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="titlePanel.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+                        <Setter Target="titlePanel.Margin" Value="48 0 0 0"/>
 
                         <Setter Target="chessBoard.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>

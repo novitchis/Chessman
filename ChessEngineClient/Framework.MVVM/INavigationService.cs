@@ -22,6 +22,11 @@ namespace Framework.MVVM
         }
 
         /// <summary>
+        /// Currently displayed page has changed
+        /// </summary>
+        event EventHandler CurrentPageChanged;
+
+        /// <summary>
         /// If possible, instructs the navigation service
         /// to discard the current page and display the previous page
         /// on the navigation stack.

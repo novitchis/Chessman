@@ -19,7 +19,7 @@
             <RelativePanel>
                 <view:AnalysisView x:Name="analysisView"
                                    DataContext="{Binding AnalysisViewModel}"
-                                   Height="36" />
+                                   Height="44" />
                 <view:NotationView x:Name="notationView" 
                                    DataContext="{Binding NotationViewModel}" />
                 <view:ChessBoardView x:Name="chessBoard"
@@ -63,6 +63,7 @@
                         <Setter Target="analysisView.(RelativePanel.AlignTopWithPanel)" Value="true"/>
                         <Setter Target="analysisView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="analysisView.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+                        <Setter Target="analysisView.Margin" Value="48 0 0 0"/>
 
                         <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignRightWithPanel)" Value="true"/>

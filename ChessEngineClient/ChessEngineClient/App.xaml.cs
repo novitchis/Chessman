@@ -45,13 +45,11 @@ namespace ChessEngineClient
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             this.UnhandledException += OnUnhandledException;
-
-            BootstrapNavigationService();
         }
 
-        private void BootstrapNavigationService()
+        private void BootstrapNavigationService(Frame frame)
         {
-            NavigationService navigationService = new NavigationService();
+            NavigationService navigationService = new NavigationService(frame);
 
             navigationService.Configure(ViewModelLocator.MainPageNavigationName, typeof(MainPage));
             navigationService.Configure(ViewModelLocator.EditPositionPageNavigationName, typeof(EditPositionPage));
@@ -74,16 +72,18 @@ namespace ChessEngineClient
 #endif
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(400, 500));
 
-            Frame rootFrame = Window.Current.Content as Frame;
+            AppShell appShell = Window.Current.Content as AppShell;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
-            if (rootFrame == null)
+            if (appShell == null)
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
-                rootFrame = new Frame();
+                appShell = new AppShell();
+                BootstrapNavigationService(appShell.AppFrame);
 
-                rootFrame.NavigationFailed += OnNavigationFailed;
+                appShell.DataContext = ViewModelLocator.IOCContainer.Resolve<AppShellViewModel>();
+                appShell.AppFrame.NavigationFailed += OnNavigationFailed;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
@@ -91,35 +91,23 @@ namespace ChessEngineClient
                 }
 
                 // Place the frame in the current Window
-                Window.Current.Content = rootFrame;
+                Window.Current.Content = appShell;
             }
 
             if (e.PrelaunchActivated == false)
             {
-                if (rootFrame.Content == null)
+                if (appShell.AppFrame.Content == null)
                 {
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
-
-                    if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
-                        HardwareButtons.BackPressed += HardwareButtons_BackPressed;
-
-                    SystemNavigationManager navigation = SystemNavigationManager.GetForCurrentView();
-                    navigation.BackRequested += OnBackExecuted;
+                    //appShell.AppFrame.Navigate(typeof(MainPage), e.Arguments);
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();  
             }
 
             HideMobileStatusBar();
-        }
-
-        private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
-        {
-            e.Handled = true;
-            ExecuteBackAction();
         }
 
         private async void HideMobileStatusBar()
@@ -130,39 +118,6 @@ namespace ChessEngineClient
                 var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
                 await statusBar.HideAsync();
             }
-        }
-
-        private void OnBackExecuted(object sender, BackRequestedEventArgs e)
-        {
-            e.Handled = true;
-            ExecuteBackAction();
-        }
-
-        private void ExecuteBackAction()
-        {
-            Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame.CurrentSourcePageType == typeof(MainPage))
-                ConfirmAndExit();
-            else if (rootFrame.CurrentSourcePageType == typeof(EditPositionPage))
-                ViewModelLocator.EditPositionViewModel.ReturnToMainView();
-            else
-                throw new NotImplementedException("The back button is not implemented for this page");
-        }
-
-        private async void ConfirmAndExit()
-        {
-            // dialog is open
-            if (exitConfirmationDialog != null)
-                return;
-
-            exitConfirmationDialog = new MessageDialog("Are you sure you want to exit?");
-            exitConfirmationDialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
-            exitConfirmationDialog.Commands.Add(new UICommand { Label = "Cancel", Id = 1 });
-
-            var result = await exitConfirmationDialog.ShowAsync();
-            exitConfirmationDialog = null;
-            if (result != null && (int)result.Id == 0)
-                Application.Current.Exit();
         }
 
         /// <summary>

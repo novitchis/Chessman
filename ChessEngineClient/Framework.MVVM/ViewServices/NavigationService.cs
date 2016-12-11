@@ -25,14 +25,27 @@ namespace Framework.MVVM
     public class NavigationService : INavigationService
     {
         private readonly Dictionary<string, Type> _pagesByKey = new Dictionary<string, Type>();
+        private Frame frame = null;
+        private string currentPageKey = null;
 
         /// <summary>
         /// The key corresponding to the currently displayed page.
         /// </summary>
         public string CurrentPageKey
         {
-            get;
-            private set;
+            get { return currentPageKey; }
+            private set
+            {
+                currentPageKey = value;
+                OnCurrentPageChanged(EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler CurrentPageChanged;
+
+        public NavigationService(Frame frame)
+        {
+            this.frame = frame;
         }
 
         /// <summary>
@@ -41,11 +54,11 @@ namespace Framework.MVVM
         /// </summary>
         public void GoBack()
         {
-            var frame = ((Frame)Window.Current.Content);
-
             if (frame.CanGoBack)
             {
                 frame.GoBack();
+                lock (_pagesByKey)
+                    CurrentPageKey = _pagesByKey.FirstOrDefault(k => k.Value == frame.Content.GetType()).Key;
             }
         }
 
@@ -88,7 +101,7 @@ namespace Framework.MVVM
                         "pageKey");
                 }
 
-                ((Frame)Window.Current.Content).Navigate(_pagesByKey[pageKey], parameter);
+                frame.Navigate(_pagesByKey[pageKey], parameter);
                 CurrentPageKey = pageKey;
             }
         }
@@ -112,6 +125,11 @@ namespace Framework.MVVM
                     _pagesByKey.Add(key, pageType);
                 }
             }
+        }
+
+        protected virtual void OnCurrentPageChanged(EventArgs e)
+        {
+            CurrentPageChanged?.Invoke(this, e);
         }
     }
 }
