@@ -90,7 +90,7 @@
                     <TransitionCollection>
                         <NavigationThemeTransition>
                             <NavigationThemeTransition.DefaultNavigationTransitionInfo>
-                                <EntranceNavigationTransitionInfo/>
+                                <EntranceNavigationTransitionInfo />
                             </NavigationThemeTransition.DefaultNavigationTransitionInfo>
                         </NavigationThemeTransition>
                     </TransitionCollection>

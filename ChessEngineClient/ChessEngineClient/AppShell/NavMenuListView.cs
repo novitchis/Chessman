@@ -90,23 +90,14 @@ namespace ChessEngineClient.Controls
         /// <param name="item"></param>
         public void SetSelectedItem(ListViewItem item)
         {
-            int index = -1;
-            if (item != null)
+            if (item == null && SelectedItem != null)
             {
-                index = this.IndexFromContainer(item);
+                var lvi = (ListViewItem)this.ContainerFromIndex(SelectedIndex);
+                lvi.IsSelected = false;
             }
-
-            for (int i = 0; i < this.Items.Count; i++)
+            else
             {
-                var lvi = (ListViewItem)this.ContainerFromIndex(i);
-                if (i != index)
-                {
-                    lvi.IsSelected = false;
-                }
-                else if (i == index)
-                {
-                    lvi.IsSelected = true;
-                }
+                item.IsSelected = true;
             }
         }
 

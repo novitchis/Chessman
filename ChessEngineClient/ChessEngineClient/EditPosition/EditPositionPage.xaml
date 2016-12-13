@@ -81,7 +81,7 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="640" />
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="contentGrid.Margin" Value="12 4"/>
@@ -102,7 +102,7 @@
                 </VisualState>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="titlePanel.(RelativePanel.AlignTopWithPanel)" Value="true"/>

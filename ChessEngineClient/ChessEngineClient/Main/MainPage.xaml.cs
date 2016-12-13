@@ -31,19 +31,33 @@ namespace ChessEngineClient.View
         public MainPage()
         {
             this.InitializeComponent();
+            this.Loaded += OnMainPageLoaded;
+        }
+
+        private void OnMainPageLoaded(object sender, RoutedEventArgs e)
+        {
+            // When changing the current page the PageSizeChanged event
+            // is raised before layout is performed
+            // UpdateColumnsRestraints needs AdaptiveTrigger for windows size to be applied
+            UpdateColumnsRestraints(RenderSize);
         }
 
         private void PageSizeChanged(object sender, SizeChangedEventArgs e)
         {
+            UpdateColumnsRestraints(e.NewSize);
+        }
+
+        private void UpdateColumnsRestraints(Size newSize)
+        {
             // for now there is no other way to enforce a min width on the right column
             // for pc layout that can be honored by the parent pannel
             if (analysisView.MinWidth > 0)
-                chessBoard.MaxWidth = e.NewSize.Width - analysisView.MinWidth - 50;
+                chessBoard.MaxWidth = newSize.Width - analysisView.MinWidth - 50;
             else
                 chessBoard.MaxWidth = Double.PositiveInfinity;
 
-             if (notationView.MinHeight > 0)
-                chessBoard.MaxHeight = e.NewSize.Height - notationView.MinHeight - 130;
+            if (notationView.MinHeight > 0)
+                chessBoard.MaxHeight = newSize.Height - notationView.MinHeight - 130;
             else
                 chessBoard.MaxHeight = Double.PositiveInfinity;
         }
