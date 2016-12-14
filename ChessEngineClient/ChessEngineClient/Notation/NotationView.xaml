@@ -19,12 +19,15 @@
         </CollectionViewSource>
     </UserControl.Resources>
 
-    <Border Style="{StaticResource ViewDefaultBorder}">
+    <Border 
+        BorderBrush="{x:Bind BorderBrush, Mode=OneWay}"
+        BorderThickness="{x:Bind BorderThickness, Mode=OneWay}"
+        Background="{StaticResource AppBackgroundHighestBrush}">
         <Grid>
             <ListBox
                 x:Name="notationList"
                 Margin="3"
-                Background="White"
+                Background="{StaticResource AppBackgroundHighestBrush}"
                 SelectionChanged="OnSelectedMoveChanged"
                 Loaded="OnLoaded"
                 IsSynchronizedWithCurrentItem="False"

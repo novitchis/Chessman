@@ -8,8 +8,10 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
 using Windows.Phone.UI.Input;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -39,6 +41,16 @@ namespace ChessEngineClient
         public AppShell()
         {
             InitializeComponent();
+
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            if (titleBar != null)
+            {
+                titleBar.ButtonBackgroundColor = new Color() { R = 85, G = 85, B = 85 };
+                titleBar.ButtonForegroundColor = Colors.White;
+                titleBar.BackgroundColor = new Color() { R = 51, G = 51, B = 51};
+                titleBar.ForegroundColor = Colors.White;
+            }
+
             Loaded += (o, e) =>
             {
                 if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))

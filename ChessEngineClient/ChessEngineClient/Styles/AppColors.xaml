@@ -12,8 +12,11 @@
     <Brush x:Key="BackgroundLight">#F2F2F2</Brush>
     <Brush x:Key="BackgroundDark">LightGray</Brush>
 
-    <Brush x:Key="DefaultBorderBrush">Gray</Brush>
+    <Brush x:Key="DefaultBorderBrush">#C1C1C1</Brush>
 
-    <Brush x:Key="AppBackgroundMediumBrush">#4d4d4d</Brush>
+    <Brush x:Key="AppBackgroundHighestBrush">White</Brush>
+    <Brush x:Key="AppBackgroundHighBrush">#F0F0F0</Brush>
+    <Brush x:Key="AppBackgroundMediumHighBrush">#C1C1C1</Brush>
+    <Brush x:Key="AppBackgroundMediumBrush">#444444</Brush>
 
 </ResourceDictionary>

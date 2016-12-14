@@ -61,7 +61,8 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Border         
-        Style="{StaticResource ViewDefaultBorder}" 
+        BorderBrush="{x:Bind BorderBrush, Mode=OneWay}"
+        BorderThickness="{x:Bind BorderThickness, Mode=OneWay}"
         HorizontalAlignment="Center"
         Background="{StaticResource BlackSquareBrush}">
         <Grid>

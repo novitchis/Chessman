@@ -19,11 +19,4 @@
             </Grid>
         </Border>
     </ControlTemplate>
-
-    <Style TargetType="Border" x:Key="ViewDefaultBorder">
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="{StaticResource DefaultBorderBrush}" />
-        <Setter Property="Background" Value="White" />
-    </Style>
-
 </ResourceDictionary>

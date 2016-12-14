@@ -10,7 +10,8 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     
-    <Grid>
+    <Grid BorderBrush="{x:Bind BorderBrush, Mode=OneWay}"
+          BorderThickness="{x:Bind BorderThickness, Mode=OneWay}">
         <i:Interaction.Behaviors>
             <ic:DataTriggerBehavior Binding="{Binding IsActive}" Value="False">
                 <ic:ChangePropertyAction PropertyName="Opacity" Value="0.5" />
@@ -24,10 +25,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border
-            Style="{StaticResource ViewDefaultBorder}"
-            Background="DarkGray" 
-            BorderThickness="1 1 0 1">
+        <Border Background="{StaticResource AppBackgroundMediumHighBrush}">
             <TextBlock 
                 FontSize="16"
                 Style="{StaticResource StrongTextStyle}"
@@ -36,7 +34,7 @@
                 Text="{Binding Evaluation}" />
         </Border>
         <Border 
-            Style="{StaticResource ViewDefaultBorder}"
+            Background="{StaticResource AppBackgroundHighestBrush}"
             Grid.Column="1">
             <TextBox 
                 Margin="0 0 5 0"

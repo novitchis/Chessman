@@ -14,13 +14,14 @@
     SizeChanged="PageSizeChanged">
 
     <Grid x:Name="mainGrid"
-          Background="{StaticResource BackgroundDark}">
+          Background="{StaticResource AppBackgroundHighBrush}">
         <Grid Margin="4" x:Name="contentGrid">
             <RelativePanel>
                 <view:AnalysisView x:Name="analysisView"
-                                   DataContext="{Binding AnalysisViewModel}"
-                                   Height="44" />
-                <view:NotationView x:Name="notationView" 
+                                DataContext="{Binding AnalysisViewModel}"
+                                Height="48" />
+                
+                <view:NotationView x:Name="notationView"
                                    DataContext="{Binding NotationViewModel}" />
                 <view:ChessBoardView x:Name="chessBoard"
                                      HasDragAndDrop="True"
@@ -46,12 +47,15 @@
                         <Setter Target="analysisView.(RelativePanel.RightOf)" Value="chessBoard"/>
                         <Setter Target="analysisView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="analysisView.MinWidth" Value="250"/>
+                        <Setter Target="analysisView.BorderThickness" Value="1 1 1 0"/>
+                        <Setter Target="analysisView.BorderBrush" Value="{StaticResource DefaultBorderBrush}"/>
 
                         <Setter Target="notationView.(RelativePanel.RightOf)" Value="chessBoard"/>
                         <Setter Target="notationView.(RelativePanel.Below)" Value="analysisView"/>
                         <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="notationView.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
-                        <Setter Target="notationView.Margin" Value="0 4 0 0"/>
+                        <Setter Target="notationView.BorderThickness" Value="1"/>
+                        <Setter Target="notationView.BorderBrush" Value="{StaticResource DefaultBorderBrush}"/>
                     </VisualState.Setters>
                 </VisualState>
 
@@ -60,6 +64,8 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter Target="contentGrid.Margin" Value="0"/>
+
                         <Setter Target="analysisView.(RelativePanel.AlignTopWithPanel)" Value="true"/>
                         <Setter Target="analysisView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="analysisView.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
@@ -68,7 +74,6 @@
                         <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.Below)" Value="analysisView"/>
-                        <Setter Target="chessBoard.Margin" Value="0 4"/>
 
                         <Setter Target="notationView.(RelativePanel.Below)" Value="chessBoard"/>
                         <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
@@ -81,7 +86,7 @@
         </VisualStateManager.VisualStateGroups>
     </Grid>
     <Page.BottomAppBar>
-        <CommandBar x:Name="CommandBar" Grid.Row="1">
+        <CommandBar x:Name="CommandBar" Grid.Row="1" Background="{StaticResource AppBackgroundMediumHighBrush}">
             <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
             <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}"/>
             <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}"/>
