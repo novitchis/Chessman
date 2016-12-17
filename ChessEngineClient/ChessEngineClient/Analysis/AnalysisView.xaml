@@ -25,7 +25,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border Background="{StaticResource AppBackgroundMediumHighBrush}">
+        <Border Background="{StaticResource AccentBrush500}">
             <TextBlock 
                 FontSize="16"
                 Style="{StaticResource StrongTextStyle}"
@@ -34,7 +34,7 @@
                 Text="{Binding Evaluation}" />
         </Border>
         <Border 
-            Background="{StaticResource AppBackgroundHighestBrush}"
+            Background="{StaticResource WhiteBrush}"
             Grid.Column="1">
             <TextBox 
                 Margin="0 0 5 0"

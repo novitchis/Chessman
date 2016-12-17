@@ -5,7 +5,7 @@
     <Style x:Key="HeaderTextStyle" TargetType="TextBlock">
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="FontSize" Value="24" />
-        <Setter Property="Foreground" Value="{StaticResource AppBackgroundMediumBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource AccentBrush900}" />
         <Setter Property="FontWeight" Value="Light" />
         <Setter Property="Margin" Value="8 0" />
     </Style>

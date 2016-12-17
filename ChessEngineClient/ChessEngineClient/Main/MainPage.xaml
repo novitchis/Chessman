@@ -14,7 +14,7 @@
     SizeChanged="PageSizeChanged">
 
     <Grid x:Name="mainGrid"
-          Background="{StaticResource AppBackgroundHighBrush}">
+          Background="{StaticResource AccentBrush300}">
         <Grid Margin="4" x:Name="contentGrid">
             <RelativePanel>
                 <view:AnalysisView x:Name="analysisView"
@@ -83,7 +83,7 @@
         </VisualStateManager.VisualStateGroups>
     </Grid>
     <Page.BottomAppBar>
-        <CommandBar x:Name="CommandBar" Grid.Row="1" Background="{StaticResource AppBackgroundMediumHighBrush}">
+        <CommandBar x:Name="CommandBar" Grid.Row="1" Background="{StaticResource AccentBrush500}">
             <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
             <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}"/>
             <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}"/>

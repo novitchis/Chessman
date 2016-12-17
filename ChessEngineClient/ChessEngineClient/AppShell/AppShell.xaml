@@ -28,7 +28,7 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid Background="{StaticResource AppBackgroundMediumBrush}">
+    <Grid>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
@@ -73,7 +73,7 @@
         <SplitView x:Name="rootSplitView"
                    DisplayMode="CompactInline"
                    OpenPaneLength="260"
-                   PaneBackground="{StaticResource AppBackgroundMediumBrush}"
+                   PaneBackground="{StaticResource AccentBrush700}"
                    IsTabStop="False">
             <SplitView.Pane>
                 <Grid Margin="0 48 0 0">

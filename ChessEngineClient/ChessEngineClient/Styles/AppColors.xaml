@@ -13,12 +13,22 @@
 
     <Brush x:Key="DefaultBorderBrush">#C1C1C1</Brush>
 
-    <Brush x:Key="AppBackgroundHighestBrush">White</Brush>
-    <Brush x:Key="AppBackgroundHighBrush">#E5E5E5</Brush>
-    <Brush x:Key="AppBackgroundMediumHighBrush">#C1C1C1</Brush>
-    <Brush x:Key="AppBackgroundMediumBrush">#444444</Brush>
+    <!--google material design palette colors-->
+    <Color x:Key="Accent50">#FAFAFA</Color>
+    <Color x:Key="Accent100">#F5F5F5</Color>
+    <Color x:Key="Accent300">#E0E0E0</Color>
+    <Color x:Key="Accent500">#9E9E9E</Color>
+    <Color x:Key="Accent700">#616161</Color>
+    <Color x:Key="Accent800">#424242</Color>
+    <Color x:Key="Accent900">#212121</Color>
 
-    <Brush x:Key="AppBackgroundMediumLowBrush">#333333</Brush>
-    <Brush x:Key="AppBackgroundLowBrush">#262626</Brush>
+    <Brush x:Key="WhiteBrush">White</Brush>
 
+    <SolidColorBrush x:Key="AccentBrush50" Color="{StaticResource Accent50}"/>
+    <SolidColorBrush x:Key="AccentBrush100" Color="{StaticResource Accent100}"/>
+    <SolidColorBrush x:Key="AccentBrush300" Color="{StaticResource Accent300}"/>
+    <SolidColorBrush x:Key="AccentBrush500" Color="{StaticResource Accent500}"/>
+    <SolidColorBrush x:Key="AccentBrush700" Color="{StaticResource Accent700}"/>
+    <SolidColorBrush x:Key="AccentBrush800" Color="{StaticResource Accent900}"/>
+    <SolidColorBrush x:Key="AccentBrush900" Color="{StaticResource Accent900}"/>
 </ResourceDictionary>

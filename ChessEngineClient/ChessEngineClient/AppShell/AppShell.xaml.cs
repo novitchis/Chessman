@@ -45,9 +45,9 @@ namespace ChessEngineClient
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             if (titleBar != null)
             {
-                titleBar.ButtonBackgroundColor = new Color() { R = 85, G = 85, B = 85 };
+                titleBar.ButtonBackgroundColor = (Color)App.Current.Resources["Accent800"];
                 titleBar.ButtonForegroundColor = Colors.White;
-                titleBar.BackgroundColor = new Color() { R = 51, G = 51, B = 51};
+                titleBar.BackgroundColor = (Color)App.Current.Resources["Accent900"];
                 titleBar.ForegroundColor = Colors.White;
             }
 

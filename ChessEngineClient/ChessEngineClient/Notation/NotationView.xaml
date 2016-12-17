@@ -22,12 +22,12 @@
     <Border 
         BorderBrush="{x:Bind BorderBrush, Mode=OneWay}"
         BorderThickness="{x:Bind BorderThickness, Mode=OneWay}"
-        Background="{StaticResource AppBackgroundHighestBrush}">
+        Background="{StaticResource WhiteBrush}">
         <Grid>
             <ListBox
                 x:Name="notationList"
                 Margin="3"
-                Background="{StaticResource AppBackgroundHighestBrush}"
+                Background="{StaticResource WhiteBrush}"
                 SelectionChanged="OnSelectedMoveChanged"
                 Loaded="OnLoaded"
                 IsSynchronizedWithCurrentItem="False"

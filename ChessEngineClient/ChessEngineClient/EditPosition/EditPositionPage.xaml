@@ -18,7 +18,7 @@
         <my:SideColor x:Key="SideColorValueBlack">Black</my:SideColor>
     </Page.Resources>
 
-    <Grid Background="{StaticResource AppBackgroundHighBrush}">
+    <Grid Background="{StaticResource AccentBrush300}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -42,7 +42,7 @@
             </RelativePanel>
         </Grid>
 
-        <CommandBar x:Name="CommandBar" Grid.Row="1" Background="{StaticResource AppBackgroundMediumHighBrush}">
+        <CommandBar x:Name="CommandBar" Grid.Row="1" Background="{StaticResource AccentBrush500}">
             <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
             <AppBarButton Label="Clear" Icon="Delete" Command="{Binding ClearCommand}"/>
             <AppBarButton Label="Done" Icon="Accept" Foreground="Green">
