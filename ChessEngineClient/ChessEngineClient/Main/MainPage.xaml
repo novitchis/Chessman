@@ -37,25 +37,22 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="contentGrid.Margin" Value="12 4"/>
+                        <Setter Target="contentGrid.Margin" Value="12"/>
 
                         <Setter Target="chessBoard.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
-                        <Setter Target="chessBoard.Margin" Value="0 0 4 0"/>
+                        <Setter Target="chessBoard.Margin" Value="0 0 12 0"/>
 
                         <Setter Target="analysisView.(RelativePanel.RightOf)" Value="chessBoard"/>
                         <Setter Target="analysisView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="analysisView.MinWidth" Value="250"/>
-                        <Setter Target="analysisView.BorderThickness" Value="1 1 1 0"/>
-                        <Setter Target="analysisView.BorderBrush" Value="{StaticResource DefaultBorderBrush}"/>
 
                         <Setter Target="notationView.(RelativePanel.RightOf)" Value="chessBoard"/>
                         <Setter Target="notationView.(RelativePanel.Below)" Value="analysisView"/>
                         <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="notationView.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
-                        <Setter Target="notationView.BorderThickness" Value="1"/>
-                        <Setter Target="notationView.BorderBrush" Value="{StaticResource DefaultBorderBrush}"/>
+                        <Setter Target="notationView.Margin" Value="0 4 0 0"/>
                     </VisualState.Setters>
                 </VisualState>
 

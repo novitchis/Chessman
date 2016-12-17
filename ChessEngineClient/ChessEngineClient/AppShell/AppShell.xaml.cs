@@ -69,11 +69,10 @@ namespace ChessEngineClient
 
         private void ExecuteBackAction()
         {
-            //TODO: this should be revisited
             if (AppFrame.CurrentSourcePageType == typeof(MainPage))
                 ConfirmAndExit();
             else if (AppFrame.CurrentSourcePageType == typeof(EditPositionPage))
-                ViewModelLocator.EditPositionViewModel.ReturnToMainView(); //TODO: change this
+                AppFrame.Navigate(typeof(MainPage));
             else
                 throw new NotImplementedException("The back button is not implemented for this page");
         }

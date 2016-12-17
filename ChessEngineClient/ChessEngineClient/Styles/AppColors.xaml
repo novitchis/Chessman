@@ -2,6 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <Brush x:Key="ForegroundColor">#262626</Brush>
+
     <!-- TODO: here should be added resources for colors that may change based on user selected style -->
     <Brush x:Key="WhiteSquareBrush">#F0D9B5</Brush>
     <Brush x:Key="BlackSquareBrush">#B58863</Brush>
@@ -9,14 +11,14 @@
     <Brush x:Key="SelectedSquareLighterBrush">#58FFD700</Brush>
     <Brush x:Key="HoveredSquareBrush">Khaki</Brush>
 
-    <Brush x:Key="BackgroundLight">#F2F2F2</Brush>
-    <Brush x:Key="BackgroundDark">LightGray</Brush>
-
     <Brush x:Key="DefaultBorderBrush">#C1C1C1</Brush>
 
     <Brush x:Key="AppBackgroundHighestBrush">White</Brush>
-    <Brush x:Key="AppBackgroundHighBrush">#F0F0F0</Brush>
+    <Brush x:Key="AppBackgroundHighBrush">#E5E5E5</Brush>
     <Brush x:Key="AppBackgroundMediumHighBrush">#C1C1C1</Brush>
     <Brush x:Key="AppBackgroundMediumBrush">#444444</Brush>
+
+    <Brush x:Key="AppBackgroundMediumLowBrush">#333333</Brush>
+    <Brush x:Key="AppBackgroundLowBrush">#262626</Brush>
 
 </ResourceDictionary>

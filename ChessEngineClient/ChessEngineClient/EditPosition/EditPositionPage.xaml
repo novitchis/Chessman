@@ -18,18 +18,17 @@
         <my:SideColor x:Key="SideColorValueBlack">Black</my:SideColor>
     </Page.Resources>
 
-    <Grid Background="{StaticResource BackgroundDark}">
+    <Grid Background="{StaticResource AppBackgroundHighBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Margin="4" x:Name="contentGrid">
+        <Grid x:Name="contentGrid">
             <RelativePanel>
-                <Grid x:Name="titlePanel" Background="White" Height="44">
+                <Grid x:Name="titlePanel" Height="48">
                     <TextBlock 
-                        Text="Set-up a position"
-                        FontSize="20"
-                        Style="{StaticResource PlaceHolderTextStyle}" />
+                        Text="Board editor"
+                        Style="{StaticResource HeaderTextStyle}" />
                 </Grid>
                 <view:ChessBoardView x:Name="chessBoard"
                                      VerticalAlignment="Center"
@@ -43,7 +42,7 @@
             </RelativePanel>
         </Grid>
 
-        <CommandBar x:Name="CommandBar" Grid.Row="1">
+        <CommandBar x:Name="CommandBar" Grid.Row="1" Background="{StaticResource AppBackgroundMediumHighBrush}">
             <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
             <AppBarButton Label="Clear" Icon="Delete" Command="{Binding ClearCommand}"/>
             <AppBarButton Label="Done" Icon="Accept" Foreground="Green">
@@ -74,7 +73,6 @@
                     </Flyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <AppBarButton Label="Cancel" Icon="Cancel" Foreground="Red" Command="{Binding CancelCommand}"/>
         </CommandBar>
 
         <VisualStateManager.VisualStateGroups>
@@ -84,12 +82,12 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="contentGrid.Margin" Value="12 4"/>
+                        <Setter Target="contentGrid.Margin" Value="12"/>
 
                         <Setter Target="chessBoard.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
-                        <Setter Target="chessBoard.Margin" Value="0 0 4 0"/>
+                        <Setter Target="chessBoard.Margin" Value="0 0 12 0"/>
 
                         <Setter Target="titlePanel.Visibility" Value="Collapsed"/>
 
@@ -112,7 +110,6 @@
 
                         <Setter Target="chessBoard.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
-                        <Setter Target="chessBoard.Margin" Value="0 4"/>
                         <Setter Target="chessBoard.(RelativePanel.Below)" Value="titlePanel"/>
 
                         <Setter Target="piecesPalette.(RelativePanel.Below)" Value="chessBoard"/>

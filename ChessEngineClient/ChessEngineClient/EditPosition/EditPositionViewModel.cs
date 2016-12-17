@@ -57,11 +57,6 @@ namespace ChessEngineClient.ViewModel
             get { return new RelayCommand(ClearExecuted); }
         }
 
-        public ICommand CancelCommand
-        {
-            get { return new RelayCommand(CancelExecuted); }
-        }
-
         public ICommand SaveCommand
         {
             get { return new RelayCommand(SaveExecuted); }
@@ -98,16 +93,6 @@ namespace ChessEngineClient.ViewModel
             squareVM.Piece = newPiece;
             editorBoardService.SetPiece(squareVM.Coordinate, newPiece);
             IsBoardValid = editorBoardService.AcceptEditedPosition();
-        }
-
-        private void CancelExecuted(object obj)
-        {
-            ReturnToMainView();
-        }
-
-        public void ReturnToMainView()
-        {
-            navigationService.NavigateTo(ViewModelLocator.MainPageNavigationName);
         }
 
         private void ClearExecuted(object obj)
