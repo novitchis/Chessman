@@ -111,7 +111,6 @@
       <DependentUpon>AppShell.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppShell\AppShellViewModel.cs" />
-    <Compile Include="AppShell\NavMenuListView.cs" />
     <Compile Include="AppShell\NavMenuItem.cs" />
     <Compile Include="ChessBoard\AnalysisChessBoardViewModel.cs" />
     <Compile Include="ChessBoard\ChessBoardView.xaml.cs">

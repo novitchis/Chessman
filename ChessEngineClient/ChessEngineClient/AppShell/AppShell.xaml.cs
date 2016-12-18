@@ -102,5 +102,14 @@ namespace ChessEngineClient
             if (result != null && (int)result.Id == 0)
                 Application.Current.Exit();
         }
+
+        private void OnCurrentPageChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (rootSplitView.DisplayMode != SplitViewDisplayMode.Inline &&
+                rootSplitView.DisplayMode != SplitViewDisplayMode.CompactInline)
+            {
+                rootSplitView.IsPaneOpen = false;
+            }
+        }
     }
 }

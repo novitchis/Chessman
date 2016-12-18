@@ -1,6 +1,9 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:view="using:ChessEngineClient.View">
+
+    <view:ChessPieceTemplateSelector x:Key="ChessPieceTemplateSelector"/>
 
     <!--All these geometries were generated using a tool from an svg file-->
     <Brush x:Key="WhitePieceBrush">#FFFFE2</Brush>

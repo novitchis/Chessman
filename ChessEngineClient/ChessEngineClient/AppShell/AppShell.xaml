@@ -75,13 +75,19 @@
                    IsTabStop="False">
             <SplitView.Pane>
                 <Grid Margin="0 48 0 0">
-                    <lc:NavMenuListView
+                    <ListBox
                         ItemsSource="{Binding NavigationItems}"
                         SelectedItem="{Binding CurrentNavItem, Mode=TwoWay}"
-                        ItemContainerStyle="{StaticResource NavMenuItemContainerStyle}"
-                        ItemTemplate="{StaticResource NavButtonTemplate}">
-                        
-                    </lc:NavMenuListView>
+                        ItemTemplate="{StaticResource NavButtonTemplate}"
+                        SelectionChanged="OnCurrentPageChanged"
+                        Background="Transparent">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem" >
+                                <Setter Property="UseSystemFocusVisuals" Value="False" />
+                                <Setter Property="Padding" Value="0" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
                 </Grid>
             </SplitView.Pane>
             <Frame x:Name="frame">

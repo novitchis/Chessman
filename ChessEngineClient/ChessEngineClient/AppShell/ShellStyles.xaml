@@ -108,32 +108,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <Style x:Key="NavMenuItemContainerStyle" TargetType="ListViewItem">
-        <Setter Property="MinWidth" Value="{StaticResource SplitViewCompactPaneThemeLength}"/>
-        <Setter Property="Height" Value="48"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="UseSystemFocusVisuals" Value="True" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ListViewItem">
-                    <ListViewItemPresenter 
-                        ContentTransitions="{TemplateBinding ContentTransitions}"
-                        Control.IsTemplateFocusTarget="True"
-                        SelectionCheckMarkVisualEnabled="False"
-                        PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
-                        SelectedBackground="{ThemeResource SystemControlHighlightAccentBrush}"
-                        SelectedForeground="{ThemeResource SystemControlForegroundAccentBrush}"
-                        SelectedPointerOverBackground="{ThemeResource SystemControlHighlightListAccentHighBrush}"
-                        PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
-                        SelectedPressedBackground="{ThemeResource SystemControlHighlightListAccentLowBrush}"
-                        DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
-                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                        ContentMargin="{TemplateBinding Padding}"/>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
 </ResourceDictionary>

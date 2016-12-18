@@ -15,21 +15,11 @@
 
     <Grid x:Name="mainGrid"
           Background="{StaticResource AccentBrush300}">
-        <Grid Margin="4" x:Name="contentGrid">
-            <RelativePanel>
-                <view:AnalysisView x:Name="analysisView"
-                                DataContext="{Binding AnalysisViewModel}"
-                                Height="48" />
-                
-                <view:NotationView x:Name="notationView"
-                                   DataContext="{Binding NotationViewModel}" />
-                <view:ChessBoardView x:Name="chessBoard"
-                                     HasDragAndDrop="True"
-                                     DataContext="{Binding BoardViewModel}"
-                                     VerticalAlignment="Center"
-                                     HorizontalAlignment="Center" />
-            </RelativePanel>
-        </Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
@@ -81,8 +71,22 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-    </Grid>
-    <Page.BottomAppBar>
+
+        <Grid Margin="4" x:Name="contentGrid">
+            <RelativePanel>
+                <view:AnalysisView x:Name="analysisView"
+                                DataContext="{Binding AnalysisViewModel}"
+                                Height="48" />
+                
+                <view:NotationView x:Name="notationView"
+                                   DataContext="{Binding NotationViewModel}" />
+                <view:ChessBoardView x:Name="chessBoard"
+                                     HasDragAndDrop="True"
+                                     DataContext="{Binding BoardViewModel}"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center" />
+            </RelativePanel>
+        </Grid>
         <CommandBar x:Name="CommandBar" Grid.Row="1" Background="{StaticResource AccentBrush400}">
             <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
             <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}"/>
@@ -93,5 +97,5 @@
                 <AppBarButton Label="Edit position" Command="{Binding EditPositionCommand}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
-    </Page.BottomAppBar>
+    </Grid>
 </Page>
