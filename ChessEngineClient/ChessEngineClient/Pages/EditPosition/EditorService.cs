@@ -45,12 +45,12 @@ namespace ChessEngineClient
 
         public void LoadFromFen(string fenString)
         {
-            chessBoard.LoadFrom(fenString, AnalysisService.FenSerializationType);
+            chessBoard.LoadFrom(fenString, AnalysisBoardService.FenSerializationType);
         }
 
         public string GetFen()
         {
-            return chessBoard.Serialize(AnalysisService.FenSerializationType);
+            return chessBoard.Serialize(AnalysisBoardService.FenSerializationType);
         }
     }
 }

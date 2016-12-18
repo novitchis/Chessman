@@ -14,7 +14,7 @@ namespace ChessEngineClient
     {
         public const string MainPageNavigationName = "MainPage";
         public const string EditPositionPageNavigationName = "EditPositionPage";
-        public const string ComputerExercisePageNavigationName = "ComputerExercisePage";
+        public const string ExercisePageNavigationName = "ExercisePage";
 
         public static UnityContainer IOCContainer = new UnityContainer();
 
@@ -34,11 +34,11 @@ namespace ChessEngineClient
             }
         }
 
-        public static ComputerExerciseViewModel ComputerExerciseViewModel
+        public static ExerciseViewModel ExerciseViewModel
         {
             get
             {
-                return IOCContainer.Resolve<ComputerExerciseViewModel>();
+                return IOCContainer.Resolve<ExerciseViewModel>();
             }
         }
 
@@ -51,8 +51,10 @@ namespace ChessEngineClient
             IOCContainer.RegisterInstance<IAnalysisReceiver>(analysisReceiver);
             IOCContainer.RegisterInstance<IEngineNotification>(analysisReceiver);
 
-            IOCContainer.RegisterType<IBoardService, AnalysisService>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<IBoardService, AnalysisBoardService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IBoardEditorService, EditorService>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<IExerciseBoardService, ExerciseBoardService>(new ContainerControlledLifetimeManager());
+            
         }
     }
 }

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChessEngineClient
 {
-    public interface IExerciseBoardService : IBoardService
+    public class ExerciseBoardService : BoardService, IExerciseBoardService
     {
-
     }
 }

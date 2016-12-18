@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ChessEngineClient.ViewModel
 {
-    public class ComputerExerciseViewModel: ViewModelBase
+    public class ExerciseViewModel: ViewModelBase
     {
         public ChessBoardViewModel BoardViewModel
         {
@@ -22,10 +22,10 @@ namespace ChessEngineClient.ViewModel
         }
 
         //TODO: use playing service
-        public ComputerExerciseViewModel(IBoardService chessBoardService)
+        public ExerciseViewModel(IExerciseBoardService exerciseBoardService)
         {
-            BoardViewModel = new AnalysisChessBoardViewModel(chessBoardService);
-            NotationViewModel = new NotationViewModel(chessBoardService);
+            BoardViewModel = new AnalysisChessBoardViewModel(exerciseBoardService);
+            NotationViewModel = new NotationViewModel(exerciseBoardService);
         }
     }
 }
