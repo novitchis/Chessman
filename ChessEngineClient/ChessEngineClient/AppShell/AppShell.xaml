@@ -66,8 +66,6 @@
                       Canvas.ZIndex="100"
                       TabIndex="1"
                       IsChecked="{Binding IsPaneOpen, ElementName=rootSplitView, Mode=TwoWay}"
-                      Unchecked="TogglePaneButton_Unchecked"
-                      Checked="TogglePaneButton_Checked"
                       AutomationProperties.Name="Navigation"/>
 
         <SplitView x:Name="rootSplitView"

@@ -1,4 +1,5 @@
 ﻿using ChessEngineClient.View;
+using Framework.MVVM;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,7 +20,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
+using Microsoft.Practices.Unity;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace ChessEngineClient
@@ -72,7 +73,10 @@ namespace ChessEngineClient
             if (AppFrame.CurrentSourcePageType == typeof(MainPage))
                 ConfirmAndExit();
             else if (AppFrame.CurrentSourcePageType == typeof(EditPositionPage))
-                AppFrame.Navigate(typeof(MainPage));
+            {
+                INavigationService navigationService = ViewModelLocator.IOCContainer.Resolve<INavigationService>();
+                navigationService.NavigateTo(ViewModelLocator.MainPageNavigationName);
+            }
             else
                 throw new NotImplementedException("The back button is not implemented for this page");
         }
@@ -97,16 +101,6 @@ namespace ChessEngineClient
             exitConfirmationDialog = null;
             if (result != null && (int)result.Id == 0)
                 Application.Current.Exit();
-        }
-
-        private void TogglePaneButton_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void TogglePaneButton_Unchecked(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
