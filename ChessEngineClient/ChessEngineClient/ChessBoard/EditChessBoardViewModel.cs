@@ -8,9 +8,9 @@ namespace ChessEngineClient.ViewModel
 {
     public class EditChessBoardViewModel: ChessBoardViewModel
     {
-        private IEditorBoardService editorBoardService = null;
+        private IBoardEditorService editorBoardService = null;
 
-        public EditChessBoardViewModel(IEditorBoardService editorBoardService)
+        public EditChessBoardViewModel(IBoardEditorService editorBoardService)
             : base(editorBoardService)
         {
             this.editorBoardService = editorBoardService;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ChessEngineClient
 {
-    public interface IEditorBoardService: IChessBoardService
+    public interface IBoardEditorService : IBasicBoardService
     {
         void SetPiece(Coordinate coordinate, ChessPiece piece);
 

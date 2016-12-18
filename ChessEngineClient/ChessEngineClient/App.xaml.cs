@@ -53,6 +53,7 @@ namespace ChessEngineClient
 
             navigationService.Configure(ViewModelLocator.MainPageNavigationName, typeof(MainPage));
             navigationService.Configure(ViewModelLocator.EditPositionPageNavigationName, typeof(EditPositionPage));
+            navigationService.Configure(ViewModelLocator.ComputerExercisePageNavigationName, typeof(ComputerExercisePage));
 
             ViewModelLocator.IOCContainer.RegisterInstance<INavigationService>(navigationService);
         }

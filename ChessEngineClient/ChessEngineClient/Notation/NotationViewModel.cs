@@ -13,7 +13,7 @@ namespace ChessEngineClient.ViewModel
 {
     public class NotationViewModel : ViewModelBase
     {
-        private IAnalysisBoardService analysisBoardService = null;
+        private IBoardService analysisBoardService = null;
         private IList<MoveDataGroup> groupedMoves = new List<MoveDataGroup>();
         private MoveData currentMove = null;
 
@@ -52,7 +52,7 @@ namespace ChessEngineClient.ViewModel
 
         #endregion
 
-        public NotationViewModel(IAnalysisBoardService analysisBoardService)
+        public NotationViewModel(IBoardService analysisBoardService)
         {
             this.analysisBoardService = analysisBoardService;
             Messenger.Default.Register<MessageBase>(this, NotificationMessages.MoveExecuted, OnMoveExecutedMessage);

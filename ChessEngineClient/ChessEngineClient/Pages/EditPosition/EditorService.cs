@@ -7,16 +7,16 @@ using ChessEngine;
 
 namespace ChessEngineClient
 {
-    public class EditorChessBoardService : IEditorBoardService
+    public class EditorService : IBoardEditorService
     {
         private ChessBoard chessBoard = null;
 
-        bool IChessBoardService.IsWhiteTurn
+        public bool IsWhiteTurn
         {
             get { return chessBoard.IsWhiteTurn(); }
         }
 
-        public EditorChessBoardService()
+        public EditorService()
         {
             chessBoard = new ChessBoard();
             chessBoard.Initialize();
@@ -45,12 +45,12 @@ namespace ChessEngineClient
 
         public void LoadFromFen(string fenString)
         {
-            chessBoard.LoadFrom(fenString, ChessBoardService.FenSerializationType);
+            chessBoard.LoadFrom(fenString, AnalysisService.FenSerializationType);
         }
 
         public string GetFen()
         {
-            return chessBoard.Serialize(ChessBoardService.FenSerializationType);
+            return chessBoard.Serialize(AnalysisService.FenSerializationType);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace ChessEngineClient.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private INavigationService navigationService = null;
-        private IAnalysisBoardService analysisBoardService = null;
+        private IBoardService analysisBoardService = null;
 
         public AnalysisChessBoardViewModel BoardViewModel { get; set; }
 
@@ -50,7 +50,7 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        public MainViewModel(INavigationService navigationService, IAnalysisBoardService analysisBoardService)
+        public MainViewModel(INavigationService navigationService, IBoardService analysisBoardService)
         {
             this.navigationService = navigationService;
             this.analysisBoardService = analysisBoardService;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ChessEngineClient
 {
-    public interface IAnalysisBoardService : IChessBoardService
+    public interface IBoardService: IBasicBoardService
     {
         bool WasBlackFirstToMove();
 

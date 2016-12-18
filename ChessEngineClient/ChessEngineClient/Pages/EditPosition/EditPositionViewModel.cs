@@ -14,7 +14,7 @@ namespace ChessEngineClient.ViewModel
     public class EditPositionViewModel : ViewModelBase
     {
         private INavigationService navigationService = null;
-        private IEditorBoardService editorBoardService = null;
+        private IBoardEditorService editorBoardService = null;
         private bool isWhiteToMove = true;
         private bool isBoardValid = true;
 
@@ -64,7 +64,7 @@ namespace ChessEngineClient.ViewModel
 
         #endregion
 
-        public EditPositionViewModel(INavigationService navigationService, IEditorBoardService editorBoardService)
+        public EditPositionViewModel(INavigationService navigationService, IBoardEditorService editorBoardService)
         {
             this.navigationService = navigationService;
             this.editorBoardService = editorBoardService;

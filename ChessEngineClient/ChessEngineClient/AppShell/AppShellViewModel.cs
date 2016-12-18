@@ -39,6 +39,7 @@ namespace ChessEngineClient
             {
                 new NavMenuItem("Analysis", "Home",ViewModelLocator.MainPageNavigationName),
                 new NavMenuItem("Board editor", "Edit", ViewModelLocator.EditPositionPageNavigationName),
+                new NavMenuItem("Computer exercise", "ReportHacked", ViewModelLocator.ComputerExercisePageNavigationName),
             };
 
             CurrentNavItem = NavigationItems[0];

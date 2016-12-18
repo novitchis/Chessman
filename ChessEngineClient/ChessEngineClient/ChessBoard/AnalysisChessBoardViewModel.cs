@@ -10,9 +10,9 @@ namespace ChessEngineClient.ViewModel
 {
     public class AnalysisChessBoardViewModel : ChessBoardViewModel
     {
-        IAnalysisBoardService analysisBoardService = null;
+        IBoardService analysisBoardService = null;
 
-        public AnalysisChessBoardViewModel(IAnalysisBoardService analysisBoardService)
+        public AnalysisChessBoardViewModel(IBoardService analysisBoardService)
             : base(analysisBoardService)
         {
             this.analysisBoardService = analysisBoardService;

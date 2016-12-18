@@ -14,7 +14,7 @@ namespace ChessEngineClient.ViewModel
         public static int[] RankNumbersAsWhite = new[] { 8, 7, 6, 5, 4, 3, 2, 1 };
         public static char[] FieldLettersAsWhite = new[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
 
-        private IChessBoardService chessBoardService = null;
+        private IBasicBoardService basicBoardService = null;
         private List<SquareViewModel> squares = null;
         private SquareViewModel selectedSquare = null;
         private SideColor perspective = SideColor.White;
@@ -83,9 +83,9 @@ namespace ChessEngineClient.ViewModel
 
         #endregion
 
-        public ChessBoardViewModel(IChessBoardService chessBoardService)
+        public ChessBoardViewModel(IBasicBoardService basicBoardService)
         {
-            this.chessBoardService = chessBoardService;
+            this.basicBoardService = basicBoardService;
         }
 
         protected void InitBoard()
@@ -123,7 +123,9 @@ namespace ChessEngineClient.ViewModel
         public void RefreshBoard(SideColor changedPerspective)
         {
             if (perspective == changedPerspective)
+            {
                 RefreshSquares();
+            }
             else
             {
                 perspective = changedPerspective;
@@ -135,7 +137,7 @@ namespace ChessEngineClient.ViewModel
         {
             foreach (SquareViewModel square in Squares)
             {
-                square.Piece = chessBoardService.GetPiece(square.Coordinate);
+                square.Piece = basicBoardService.GetPiece(square.Coordinate);
                 square.IsLastMoveSquare = false;
             }
 

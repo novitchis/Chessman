@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ChessEngineClient
 {
-    public interface IChessBoardService
+    public interface IBasicBoardService
     {
         bool IsWhiteTurn { get; }
 

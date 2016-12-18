@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace ChessEngineClient
 {
-    public class ChessBoardService : IAnalysisBoardService
+    public class AnalysisService : IBoardService
     {
         public const int FenSerializationType = 0;
         private ChessBoard chessBoard = null;
@@ -20,7 +20,7 @@ namespace ChessEngineClient
             get { return chessBoard.IsWhiteTurn(); }
         }
 
-        public ChessBoardService(IEngineNotification engineNotification)
+        public AnalysisService(IEngineNotification engineNotification)
         {
             chessBoard = new ChessBoard();
             chessBoard.Initialize();

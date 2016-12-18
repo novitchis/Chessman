@@ -126,22 +126,26 @@
       <DependentUpon>SquareView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ChessBoard\SquareViewModel.cs" />
+    <Compile Include="Pages\ComputerExercise\ComputerExercisePage.xaml.cs">
+      <DependentUpon>ComputerExercisePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ComputerExercise\ComputerExerciseViewModel.cs" />
     <Compile Include="Controls\UniformGrid.cs" />
     <Compile Include="Controls\WrapPanel.cs" />
-    <Compile Include="EditPosition\EditPositionPage.xaml.cs">
+    <Compile Include="Pages\EditPosition\EditPositionPage.xaml.cs">
       <DependentUpon>EditPositionPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EditPosition\EditPositionViewModel.cs" />
-    <Compile Include="EditPosition\PiecesPaletteView.xaml.cs">
+    <Compile Include="Pages\EditPosition\EditPositionViewModel.cs" />
+    <Compile Include="Pages\EditPosition\PiecesPaletteView.xaml.cs">
       <DependentUpon>PiecesPaletteView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EditPosition\PiecesPaletteViewModel.cs" />
-    <Compile Include="EditPosition\PositionLoadOptions.cs" />
+    <Compile Include="Pages\EditPosition\PiecesPaletteViewModel.cs" />
+    <Compile Include="Pages\EditPosition\PositionLoadOptions.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="Main\MainPage.xaml.cs">
+    <Compile Include="Pages\Main\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Main\MainViewModel.cs" />
+    <Compile Include="Pages\Main\MainViewModel.cs" />
     <Compile Include="Notation\MoveDataGroup.cs" />
     <Compile Include="Notation\NotationView.xaml.cs">
       <DependentUpon>NotationView.xaml</DependentUpon>
@@ -149,14 +153,15 @@
     <Compile Include="Notation\NotationViewModel.cs" />
     <Compile Include="NotificationMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AnalysisEventArgs.cs" />
-    <Compile Include="Services\ChessBoardService.cs" />
-    <Compile Include="Services\AnalysisReceiver.cs" />
-    <Compile Include="Services\EditorChessBoardService.cs" />
-    <Compile Include="Services\IAnalysisBoardService.cs" />
-    <Compile Include="Services\IEditorBoardService.cs" />
-    <Compile Include="Services\IChessBoardService.cs" />
-    <Compile Include="Services\IAnalysisReceiver.cs" />
+    <Compile Include="Pages\Main\AnalysisEventArgs.cs" />
+    <Compile Include="Pages\Main\AnalysisService.cs" />
+    <Compile Include="Pages\Main\AnalysisReceiver.cs" />
+    <Compile Include="Pages\EditPosition\EditorService.cs" />
+    <Compile Include="Services\IBoardService.cs" />
+    <Compile Include="Pages\ComputerExercise\IExerciseBoardService.cs" />
+    <Compile Include="Pages\EditPosition\IBoardEditorService.cs" />
+    <Compile Include="Services\IBasicBoardService.cs" />
+    <Compile Include="Pages\Main\IAnalysisReceiver.cs" />
     <Compile Include="ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -258,15 +263,19 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="EditPosition\EditPositionPage.xaml">
+    <Page Include="Pages\ComputerExercise\ComputerExercisePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditPosition\PiecesPaletteView.xaml">
+    <Page Include="Pages\EditPosition\EditPositionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Main\MainPage.xaml">
+    <Page Include="Pages\EditPosition\PiecesPaletteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Main\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
