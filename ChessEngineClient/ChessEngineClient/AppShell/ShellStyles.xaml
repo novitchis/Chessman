@@ -20,7 +20,7 @@
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Background" Value="{StaticResource AccentBrush700}" />
+        <Setter Property="Background" Value="{StaticResource AccentBrush800}" />
         <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
         <Setter Property="Content">
             <Setter.Value>

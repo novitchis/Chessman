@@ -71,7 +71,7 @@
         <SplitView x:Name="rootSplitView"
                    DisplayMode="CompactInline"
                    OpenPaneLength="260"
-                   PaneBackground="{StaticResource AccentBrush700}"
+                   PaneBackground="{StaticResource AccentBrush800}"
                    IsTabStop="False">
             <SplitView.Pane>
                 <Grid Margin="0 48 0 0">
