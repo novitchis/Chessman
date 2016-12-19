@@ -48,7 +48,7 @@ namespace ChessEngineClient
             {
                 titleBar.ButtonBackgroundColor = (Color)App.Current.Resources["Accent800"];
                 titleBar.ButtonForegroundColor = Colors.White;
-                titleBar.BackgroundColor = (Color)App.Current.Resources["Accent700"];
+                titleBar.BackgroundColor = (Color)App.Current.Resources["Accent800"];
                 titleBar.ForegroundColor = Colors.White;
             }
 
