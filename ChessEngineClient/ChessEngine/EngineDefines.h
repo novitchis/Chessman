@@ -257,7 +257,13 @@ namespace ChessEngine
 	{
 		std::list<MoveImpl>			listAnalysis;
 		float						fScore;
+		bool						isBestMove;
 		
+		AnalysisDataImpl()
+		{
+			isBestMove = false;
+		}
+
 		bool operator > (const AnalysisDataImpl& rhs)
 		{
 			return listAnalysis.size() > rhs.listAnalysis.size();

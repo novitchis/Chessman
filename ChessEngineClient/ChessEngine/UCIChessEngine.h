@@ -39,6 +39,7 @@ namespace ChessEngine
 		virtual bool Start();
 		virtual bool Stop();
 		virtual bool Analyze( ChessBoardImpl& board );
+		virtual bool StopAnalyzing();
 		virtual void SetOptions( const ChessEngineOptions& options );
 		virtual void EnableMoveDelay();
 

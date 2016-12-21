@@ -190,5 +190,8 @@
     <ClInclude Include="MoveData.h">
       <Filter>Managed</Filter>
     </ClInclude>
+    <ClInclude Include="IEngine.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -126,13 +126,13 @@
       <DependentUpon>SquareView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ChessBoard\SquareViewModel.cs" />
-    <Compile Include="Pages\ComputerExercise\ExercisePage.xaml.cs">
+    <Compile Include="Pages\ComputerPractice\ExercisePage.xaml.cs">
       <DependentUpon>ExercisePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ComputerExercise\ExerciseViewModel.cs" />
+    <Compile Include="Pages\ComputerPractice\ExerciseViewModel.cs" />
     <Compile Include="Controls\UniformGrid.cs" />
     <Compile Include="Controls\WrapPanel.cs" />
-    <Compile Include="Pages\ComputerExercise\ExerciseBoardService.cs" />
+    <Compile Include="Pages\ComputerPractice\ExerciseBoardService.cs" />
     <Compile Include="Pages\EditPosition\EditPositionPage.xaml.cs">
       <DependentUpon>EditPositionPage.xaml</DependentUpon>
     </Compile>
@@ -143,6 +143,7 @@
     <Compile Include="Pages\EditPosition\PiecesPaletteViewModel.cs" />
     <Compile Include="Pages\EditPosition\PositionLoadOptions.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Pages\Main\IAnalysisBoardService.cs" />
     <Compile Include="Pages\Main\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -158,12 +159,14 @@
     <Compile Include="Pages\Main\AnalysisBoardService.cs" />
     <Compile Include="Pages\Main\AnalysisReceiver.cs" />
     <Compile Include="Pages\EditPosition\EditorService.cs" />
+    <Compile Include="Services\EngineBoardService.cs" />
     <Compile Include="Services\BoardService.cs" />
     <Compile Include="Services\IBoardService.cs" />
-    <Compile Include="Pages\ComputerExercise\IExerciseBoardService.cs" />
+    <Compile Include="Pages\ComputerPractice\IExerciseBoardService.cs" />
     <Compile Include="Pages\EditPosition\IBoardEditorService.cs" />
     <Compile Include="Services\IBasicBoardService.cs" />
     <Compile Include="Pages\Main\IAnalysisReceiver.cs" />
+    <Compile Include="Services\IChessEngine.cs" />
     <Compile Include="ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -265,7 +268,7 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="Pages\ComputerExercise\ExercisePage.xaml">
+    <Page Include="Pages\ComputerPractice\ExercisePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

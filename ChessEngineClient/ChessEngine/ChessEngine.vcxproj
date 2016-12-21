@@ -233,6 +233,7 @@
     <ClInclude Include="EngineNotificationAdaptor.h" />
     <ClInclude Include="IChessEngine.h" />
     <ClInclude Include="IChessEngineNotifications.h" />
+    <ClInclude Include="IEngine.h" />
     <ClInclude Include="IEngineCommThread.h" />
     <ClInclude Include="IEngineNotification.h" />
     <ClInclude Include="InProcEngineCommThread.h" />

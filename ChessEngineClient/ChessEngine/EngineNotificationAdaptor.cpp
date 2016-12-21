@@ -21,6 +21,8 @@ void EngineNotificationAdaptor::OnEngineMoveFinished(const MoveImpl& move, const
 	}
 	analysisData->Analysis = arrayAnalysis;
 	analysisData->Score = analysis.fScore;
+	analysisData->IsBestMove = analysis.isBestMove;
+
 	m_pManagedNotification->OnEngineMoveFinished(ManagedConverter::ConvertNativeMove(move), analysisData);
 }
 

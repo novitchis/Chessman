@@ -68,3 +68,15 @@ bool Engine::Analyze(ChessBoard^ board)
 		throw ref new Exception(2, ref new String(L"Failed to analyze the current board."));
 	}
 }
+
+bool Engine::StopAnalyzing()
+{
+	try
+	{
+		return m_pEngineImpl->StopAnalyzing();
+	}
+	catch (...)
+	{
+		throw ref new Exception(2, ref new String(L"Failed to stop analyzing."));
+	}
+}

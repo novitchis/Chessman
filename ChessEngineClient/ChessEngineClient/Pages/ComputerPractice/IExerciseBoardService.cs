@@ -8,6 +8,6 @@ namespace ChessEngineClient
 {
     public interface IExerciseBoardService : IBoardService
     {
-
+        SideColor UserPerspective { get; set; }
     }
 }

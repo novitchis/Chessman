@@ -11,7 +11,7 @@ namespace ChessEngineClient.ViewModel
 {
     public class AnalysisViewModel : ViewModelBase
     {
-        private IBoardService analysisBoardService = null;
+        private IAnalysisBoardService analysisBoardService = null;
         private IAnalysisReceiver analysisReceiver = null;
         private string moves = String.Empty;
         private SynchronizationContext uiSynchronizationContext = null;
@@ -61,7 +61,7 @@ namespace ChessEngineClient.ViewModel
 
         #endregion
 
-        public AnalysisViewModel(IBoardService analysisBoardService, IAnalysisReceiver analysisReceiver)
+        public AnalysisViewModel(IAnalysisBoardService analysisBoardService, IAnalysisReceiver analysisReceiver)
         {
             this.analysisBoardService = analysisBoardService;
             this.analysisReceiver = analysisReceiver;

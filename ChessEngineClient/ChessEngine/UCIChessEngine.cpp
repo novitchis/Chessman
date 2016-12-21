@@ -138,6 +138,18 @@ bool UCIChessEngine::Analyze( ChessBoardImpl& board )
 	return true;
 }
 
+bool UCIChessEngine::StopAnalyzing()
+{
+	if (m_state == UC_Go)
+	{
+		EnterState(UC_Stop);
+		m_pCommThread->QueueCommand("stop\n");
+		return true;
+	}
+
+	return false;
+}
+
 void UCIChessEngine::SetOptions( const ChessEngineOptions& options )
 {
 	// set level //
@@ -254,8 +266,19 @@ void UCIChessEngine::ResetState()
 bool UCIChessEngine::ProcessGoResponseBestMove(const std::string& strResponse)
 {
 	// parse bestmove //
-	std::string strBestMove = "bestmove";
-	return strResponse.find(strBestMove) != -1;
+	auto vecLines = split<std::string>(strResponse, " ");
+	bool isBestMove = vecLines[0] == "bestmove";
+
+	if (isBestMove)
+	{
+		AnalysisDataImpl analysisData;
+		analysisData.isBestMove = true;
+		analysisData.listAnalysis.push_back(MoveImpl::FromString(vecLines[1]));
+		
+		m_pNotification->OnEngineMoveFinished(analysisData.listAnalysis.front(), analysisData);
+	}
+
+	return isBestMove;
 }
 
 bool UCIChessEngine::ProcessGoResponse( const std::string& strResponse)

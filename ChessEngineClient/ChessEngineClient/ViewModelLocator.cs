@@ -47,14 +47,16 @@ namespace ChessEngineClient
             IOCContainer.RegisterType<MainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<EditPositionViewModel, EditPositionViewModel>(new ContainerControlledLifetimeManager());
 
-            AnalysisReceiver analysisReceiver = new AnalysisReceiver();
-            IOCContainer.RegisterInstance<IAnalysisReceiver>(analysisReceiver);
-            IOCContainer.RegisterInstance<IEngineNotification>(analysisReceiver);
+            IOCContainer.RegisterType<IAnalysisReceiver, AnalysisReceiver>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<IEngineNotification, AnalysisReceiver>(new ContainerControlledLifetimeManager());
 
-            IOCContainer.RegisterType<IBoardService, AnalysisBoardService>(new ContainerControlledLifetimeManager());
+            Engine engine = IOCContainer.Resolve<Engine>();
+            engine.Start();
+            IOCContainer.RegisterInstance<IEngine>(engine);
+
+            IOCContainer.RegisterType<IAnalysisBoardService, AnalysisBoardService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IBoardEditorService, EditorService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IExerciseBoardService, ExerciseBoardService>(new ContainerControlledLifetimeManager());
-            
         }
     }
 }

@@ -8,5 +8,6 @@ namespace ChessEngine
 	public:
 		property Platform::Array<Move^>^	Analysis;
 		property float						Score;
+		property bool						IsBestMove;
 	};
 }

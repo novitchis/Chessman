@@ -64,11 +64,14 @@ namespace ChessEngineClient.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            PositionLoadOptions positionLoadOptions = e.Parameter as PositionLoadOptions;
-            if (positionLoadOptions != null)
-                ((MainViewModel)DataContext).OnPageNavigatedTo(positionLoadOptions);
-
+            ((MainViewModel)DataContext).OnPageNavigatedTo(e.Parameter as PositionLoadOptions);
             base.OnNavigatedTo(e);
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            ((MainViewModel)DataContext).OnPageNavigatedFrom();
+            base.OnNavigatedFrom(e);
         }
     }
 }

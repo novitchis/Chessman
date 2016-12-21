@@ -30,7 +30,7 @@
             </RelativePanel>
         </Grid>
         <CommandBar x:Name="CommandBar" Grid.Row="1" Background="{StaticResource AccentBrush400}">
-            <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
+            <!--<AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>-->
         </CommandBar>
 
         <VisualStateManager.VisualStateGroups>

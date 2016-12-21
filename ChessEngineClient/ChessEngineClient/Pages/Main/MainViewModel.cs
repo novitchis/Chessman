@@ -13,7 +13,7 @@ namespace ChessEngineClient.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private INavigationService navigationService = null;
-        private IBoardService analysisBoardService = null;
+        private IAnalysisBoardService analysisBoardService = null;
 
         public AnalysisChessBoardViewModel BoardViewModel { get; set; }
 
@@ -50,19 +50,30 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        public MainViewModel(INavigationService navigationService, IBoardService analysisBoardService)
+        public MainViewModel(INavigationService navigationService, IAnalysisBoardService analysisBoardService)
         {
             this.navigationService = navigationService;
             this.analysisBoardService = analysisBoardService;
+
             BoardViewModel = new AnalysisChessBoardViewModel(analysisBoardService);
             AnalysisViewModel = ViewModelLocator.IOCContainer.Resolve<AnalysisViewModel>();
-            NotationViewModel = ViewModelLocator.IOCContainer.Resolve<NotationViewModel>();
+            NotationViewModel = new NotationViewModel(analysisBoardService);
         }
 
         public void OnPageNavigatedTo(PositionLoadOptions positionLoadOptions)
         {
-            analysisBoardService.LoadFromFen(positionLoadOptions.Fen);
-            ReloadBoard(positionLoadOptions.Perspective);
+            if (positionLoadOptions != null)
+            {
+                analysisBoardService.LoadFromFen(positionLoadOptions.Fen);
+                ReloadBoard(positionLoadOptions.Perspective);
+            }
+
+            analysisBoardService.StartAnalysis();
+        }
+
+        public void OnPageNavigatedFrom()
+        {
+            analysisBoardService.StopAnalysis();
         }
 
         public void ReloadBoard(SideColor changedPerspectiveColor)
