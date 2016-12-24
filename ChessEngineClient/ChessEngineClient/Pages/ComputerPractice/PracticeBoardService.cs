@@ -52,20 +52,18 @@ namespace ChessEngineClient
             return true;
         }
 
-        private async void RequestComputerMoveAsync()
+        private void RequestComputerMoveAsync()
         {
             if (ChessBoard.IsStalemate() || ChessBoard.IsCheckmate())
                 return;
 
-            //TODO: change this to a proper time setting
             engine.Analyze(ChessBoard);
-            await Task.Delay(2000);
-            engine.StopAnalyzing();
         }
 
         public void Start()
         {
             analysisReceiver.AnalysisReceived += OnAnalysisReceived;
+            engine.SetAnalysisDepth(5);
 
             if (!GetIsComputerTurn())
                 return;

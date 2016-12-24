@@ -14,7 +14,7 @@ namespace ChessEngine
 		bool Start ();
 		bool Stop ();
 		bool Analyze( ChessBoardImpl& board );
-		void SetOptions( const ChessEngineOptions& options );
+		void SetOptions( const EngineOptionsImpl& options );
 		void EnableMoveDelay();
 
 	private:

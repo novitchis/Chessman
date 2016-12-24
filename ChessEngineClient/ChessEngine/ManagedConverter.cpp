@@ -56,7 +56,13 @@ Coordinate^ ManagedConverter::ConvertNativeCoord(CoordinateImpl coord)
 	return ref new Coordinate(coord.nColumn, coord.nRank);
 }
 
+EngineOptionsImpl ManagedConverter::ConvertManagedOptions(EngineOptions^ options)
+{
+	EngineOptionsImpl result;
+	result.level = (EngineLevelImpl)options->Level;
 
+	return result;
+}
 
 //void ManagedConverter::ConvertServerInfo( ServerInfo^ managedServerInfo, NativeImpl::ServerInfo& ServerInfo )
 //{

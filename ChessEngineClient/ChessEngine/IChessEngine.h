@@ -11,8 +11,9 @@ namespace ChessEngine
 		virtual bool Start() = 0;
 		virtual bool Stop() = 0;
 		virtual bool Analyze(ChessBoardImpl& board) = 0;
+		virtual void SetAnalysisDepth(int searchDepth) = 0;
 		virtual bool StopAnalyzing() = 0;
-		virtual void SetOptions( const ChessEngineOptions& options ) = 0;
+		virtual void SetOptions( const EngineOptionsImpl& options ) = 0;
 		virtual void EnableMoveDelay() = 0;
 
 		virtual void OnEngineResponse( const std::string& strResponse ) = 0;

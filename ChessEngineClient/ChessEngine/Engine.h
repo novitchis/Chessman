@@ -4,6 +4,7 @@
 #include "ChessBoard.h"
 #include "EngineNotificationAdaptor.h"
 #include "IEngine.h"
+#include "EngineOptions.h"
 
 namespace ChessEngine
 {
@@ -17,7 +18,10 @@ namespace ChessEngine
 		virtual bool Start();
 		virtual bool Stop();
 		virtual bool Analyze(ChessBoard^ board);
+		virtual void SetAnalysisDepth(int searchDepth);
+
 		virtual bool StopAnalyzing();
+		virtual void SetOptions(EngineOptions^ options);
 
 	private:
 		std::shared_ptr<IChessEngine>		m_pEngineImpl;

@@ -108,6 +108,9 @@ namespace ChessEngineClient.ViewModel
         {
             try
             {
+                if (e.Data.IsBestMove)
+                    return;
+
                 string newEvalutation = e.Data.Score > 0 ? $"+{e.Data.Score}" : e.Data.Score.ToString();
                 string newMoves = GetEvaluationVariationString(e.Data);
                 if (newMoves.TrimEnd().EndsWith("#"))

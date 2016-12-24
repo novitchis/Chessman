@@ -4,6 +4,7 @@
 #include "EngineDefines.h"
 #include "Move.h"
 #include "Coordinate.h"
+#include "EngineOptions.h"
 
 using namespace std;
 using namespace Platform;
@@ -21,6 +22,8 @@ namespace ChessEngine
 		static Move^				ConvertNativeMove(MoveImpl move);
 		static CoordinateImpl		ConvertManagedCoord(Coordinate^ coord);
 		static Coordinate^			ConvertNativeCoord(CoordinateImpl coord);
+		static EngineOptionsImpl	ConvertManagedOptions(EngineOptions^ options);
+
 		//static void					ConvertServerInfo( ServerInfo^ managedServerInfo, NativeImpl::ServerInfo& ServerInfo );
 		//static ItemInfo^			ConvertItemInfo( const NativeImpl::ItemInfo& NativeItemInfo );
 		//static Date^				ConvertDate ( const NativeImpl::Date& Date );

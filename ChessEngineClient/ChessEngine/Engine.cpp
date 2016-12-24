@@ -69,6 +69,23 @@ bool Engine::Analyze(ChessBoard^ board)
 	}
 }
 
+void Engine::SetAnalysisDepth(int searchDepth)
+{
+	m_pEngineImpl->SetAnalysisDepth(searchDepth);
+}
+
+void Engine::SetOptions(EngineOptions^ options)
+{
+	try
+	{
+		m_pEngineImpl->SetOptions(ManagedConverter::ConvertManagedOptions(options));
+	}
+	catch (...)
+	{
+		throw ref new Exception(2, ref new String(L"Failed to set options."));
+	}
+}
+
 bool Engine::StopAnalyzing()
 {
 	try

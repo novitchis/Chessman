@@ -10,6 +10,8 @@ namespace ChessEngineClient
 {
     public class AnalysisBoardService : BoardService, IAnalysisBoardService
     {
+        private const int InfiniteAnalysisDepth = -1;
+
         private IEngine engine = null;
         private IEngineNotification engineNotification = null;
 
@@ -17,33 +19,25 @@ namespace ChessEngineClient
         {
             this.engineNotification = engineNotification;
             this.engine = engine;
-
-            //SynchronizationContext mainSynchronizationContext = SynchronizationContext.Current;
-            // this is a quick test to identify whether our crashes occur on initial engine start 
-            //Task.Run(async () =>
-            //{
-            //    await Task.Delay(1500).ConfigureAwait(true);
-            //    mainSynchronizationContext.Post(o => { Analyse(); }, null);
-            //});
         }
 
         public override void ResetBoard()
         {
             base.ResetBoard();
-            StartAnalysis();
+            AnalyseCurrentPosition();
         }
 
         public override void LoadFromFen(string fenString)
         {
             base.LoadFromFen(fenString);
-            StartAnalysis();
+            AnalyseCurrentPosition();
         }
 
         public override bool SubmitMove(Coordinate from, Coordinate to)
         {
             bool result = base.SubmitMove(from, to);
             if (result)
-                StartAnalysis();
+                AnalyseCurrentPosition();
 
             return result;
         }
@@ -52,12 +46,18 @@ namespace ChessEngineClient
         {
             bool result = base.GoToMove(moveIndex);
             if (result)
-                StartAnalysis();
+                AnalyseCurrentPosition();
 
             return result;
         }
 
         public void StartAnalysis()
+        {
+            engine.SetAnalysisDepth(InfiniteAnalysisDepth);
+            AnalyseCurrentPosition();
+        }
+
+        private void AnalyseCurrentPosition()
         {
             if (!ChessBoard.IsStalemate() && !ChessBoard.IsCheckmate())
             {
