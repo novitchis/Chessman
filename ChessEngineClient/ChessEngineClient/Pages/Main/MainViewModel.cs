@@ -10,10 +10,12 @@ using System.Windows.Input;
 
 namespace ChessEngineClient.ViewModel
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, INavigationAware
     {
         private INavigationService navigationService = null;
         private IAnalysisBoardService analysisBoardService = null;
+
+        #region "Properties"
 
         public AnalysisChessBoardViewModel BoardViewModel { get; set; }
 
@@ -50,6 +52,8 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
+        #endregion
+
         public MainViewModel(INavigationService navigationService, IAnalysisBoardService analysisBoardService)
         {
             this.navigationService = navigationService;
@@ -60,20 +64,23 @@ namespace ChessEngineClient.ViewModel
             NotationViewModel = new NotationViewModel(analysisBoardService);
         }
 
-        public void OnPageNavigatedTo(PositionLoadOptions positionLoadOptions)
+        public void OnNavigatedTo(object parameter)
         {
+            PositionLoadOptions positionLoadOptions = parameter as PositionLoadOptions;
             if (positionLoadOptions != null)
             {
                 analysisBoardService.LoadFromFen(positionLoadOptions.Fen);
                 ReloadBoard(positionLoadOptions.Perspective);
             }
 
+            AnalysisViewModel.SubscribeToAnalysis();
             analysisBoardService.StartAnalysis();
         }
 
-        public void OnPageNavigatedFrom()
+        public void OnNavigatingFrom()
         {
             analysisBoardService.StopAnalysis();
+            AnalysisViewModel.UnsubscribeToAnalysis();
         }
 
         public void ReloadBoard(SideColor changedPerspectiveColor)

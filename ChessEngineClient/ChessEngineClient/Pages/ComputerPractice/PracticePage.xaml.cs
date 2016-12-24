@@ -20,9 +20,9 @@ namespace ChessEngineClient
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ExercisePage : Page
+    public sealed partial class PracticePage : Page
     {
-        public ExercisePage()
+        public PracticePage()
         {
             this.InitializeComponent();
             Loaded += OnLoaded;

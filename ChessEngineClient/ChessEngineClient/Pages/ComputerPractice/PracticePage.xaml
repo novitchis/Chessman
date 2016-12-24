@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="ChessEngineClient.ExercisePage"
+    x:Class="ChessEngineClient.PracticePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ChessEngineClient"
@@ -17,7 +17,7 @@
             <RelativePanel>
                 <Grid x:Name="titlePanel" Height="48">
                     <TextBlock 
-                        Text="Computer exercise"
+                        Text="Computer practice"
                         Style="{StaticResource HeaderTextStyle}" />
                 </Grid>
                 <view:ChessBoardView x:Name="chessBoard"

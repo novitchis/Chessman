@@ -126,13 +126,13 @@
       <DependentUpon>SquareView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ChessBoard\SquareViewModel.cs" />
-    <Compile Include="Pages\ComputerPractice\ExercisePage.xaml.cs">
-      <DependentUpon>ExercisePage.xaml</DependentUpon>
+    <Compile Include="Pages\ComputerPractice\PracticePage.xaml.cs">
+      <DependentUpon>PracticePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ComputerPractice\ExerciseViewModel.cs" />
+    <Compile Include="Pages\ComputerPractice\PracticeViewModel.cs" />
     <Compile Include="Controls\UniformGrid.cs" />
     <Compile Include="Controls\WrapPanel.cs" />
-    <Compile Include="Pages\ComputerPractice\ExerciseBoardService.cs" />
+    <Compile Include="Pages\ComputerPractice\PracticeBoardService.cs" />
     <Compile Include="Pages\EditPosition\EditPositionPage.xaml.cs">
       <DependentUpon>EditPositionPage.xaml</DependentUpon>
     </Compile>
@@ -162,7 +162,7 @@
     <Compile Include="Services\EngineBoardService.cs" />
     <Compile Include="Services\BoardService.cs" />
     <Compile Include="Services\IBoardService.cs" />
-    <Compile Include="Pages\ComputerPractice\IExerciseBoardService.cs" />
+    <Compile Include="Pages\ComputerPractice\IPracticeBoardService.cs" />
     <Compile Include="Pages\EditPosition\IBoardEditorService.cs" />
     <Compile Include="Services\IBasicBoardService.cs" />
     <Compile Include="Pages\Main\IAnalysisReceiver.cs" />
@@ -268,7 +268,7 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="Pages\ComputerPractice\ExercisePage.xaml">
+    <Page Include="Pages\ComputerPractice\PracticePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -65,10 +65,20 @@ namespace ChessEngineClient.ViewModel
         {
             this.analysisBoardService = analysisBoardService;
             this.analysisReceiver = analysisReceiver;
-            this.analysisReceiver.AnalysisReceived += OnAnalysisReceived;
-            this.analysisReceiver.AnalysisStateChanged += OnAnalysisStateChanged;
-
+           
             uiSynchronizationContext = SynchronizationContext.Current;
+        }
+
+        public void SubscribeToAnalysis()
+        {
+            analysisReceiver.AnalysisReceived += OnAnalysisReceived;
+            analysisReceiver.AnalysisStateChanged += OnAnalysisStateChanged;
+        }
+
+        public void UnsubscribeToAnalysis()
+        {
+            analysisReceiver.AnalysisReceived -= OnAnalysisReceived;
+            analysisReceiver.AnalysisStateChanged -= OnAnalysisStateChanged;
         }
 
         private void OnAnalysisStateChanged(object sender, AnalysisStateEventArgs e)

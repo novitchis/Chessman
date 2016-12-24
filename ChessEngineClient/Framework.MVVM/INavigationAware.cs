@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Framework.MVVM
 {
-    interface INavigationAware
+    public interface INavigationAware
     {
         void OnNavigatingFrom();
+
+        void OnNavigatedTo(object parameter);
     }
 }

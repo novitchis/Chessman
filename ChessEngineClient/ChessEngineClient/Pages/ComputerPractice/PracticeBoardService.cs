@@ -9,21 +9,22 @@ using System.Threading.Tasks;
 
 namespace ChessEngineClient
 {
-    //TODO: rename to practice
-    public class ExerciseBoardService : BoardService, IExerciseBoardService
+    public class PracticeBoardService : BoardService, IPracticeBoardService
     {
         private SynchronizationContext mainSynchronizationContext = null;
         private IEngine engine = null;
+        private IAnalysisReceiver analysisReceiver = null;
 
         public SideColor UserPerspective
         {
             get; set;
         }
 
-        public ExerciseBoardService(IEngine engine)
+        public PracticeBoardService(IEngine engine, IAnalysisReceiver analysisReceiver)
         {
             UserPerspective = SideColor.White;
             this.engine = engine;
+            this.analysisReceiver = analysisReceiver;
 
             mainSynchronizationContext = SynchronizationContext.Current;
         }
@@ -53,21 +54,42 @@ namespace ChessEngineClient
 
         private async void RequestComputerMoveAsync()
         {
+            if (ChessBoard.IsStalemate() || ChessBoard.IsCheckmate())
+                return;
+
+            //TODO: change this to a proper time setting
             engine.Analyze(ChessBoard);
             await Task.Delay(2000);
             engine.StopAnalyzing();
         }
 
-        //public void OnEngineMoveFinished(Move move, AnalysisData analysis)
-        //{
-        //    if (analysis.IsBestMove)
-        //    {
-        //        base.SubmitMove(move.GetFrom(), move.GetTo());
-        //        mainSynchronizationContext.Post(o => 
-        //        {
-        //           Messenger.Default.Send<MessageBase>(new MessageBase(), NotificationMessages.MoveExecuted);
-        //        }, null);
-        //    }
-        //}
+        public void Start()
+        {
+            analysisReceiver.AnalysisReceived += OnAnalysisReceived;
+
+            if (!GetIsComputerTurn())
+                return;
+
+            RequestComputerMoveAsync();
+        }
+
+        private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
+        {
+            if (e.Data.IsBestMove)
+            {
+                base.SubmitMove(e.Data.Analysis[0].GetFrom(), e.Data.Analysis[0].GetTo());
+                mainSynchronizationContext.Post(o =>
+                {
+                    // TODO: this should be done differently
+                    Messenger.Default.Send<MessageBase>(new MessageBase(), NotificationMessages.MoveExecuted);
+                }, null);
+            }
+        }
+
+        public void Stop()
+        {
+            analysisReceiver.AnalysisReceived -= OnAnalysisReceived;
+            engine.StopAnalyzing();
+        }
     }
 }

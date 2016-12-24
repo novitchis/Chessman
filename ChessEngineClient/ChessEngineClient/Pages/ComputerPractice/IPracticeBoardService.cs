@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace ChessEngineClient
 {
-    public interface IExerciseBoardService : IBoardService
+    public interface IPracticeBoardService : IBoardService
     {
         SideColor UserPerspective { get; set; }
+
+        void Start();
+
+        void Stop();
     }
 }

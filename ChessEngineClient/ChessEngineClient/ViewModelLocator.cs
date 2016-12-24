@@ -34,11 +34,11 @@ namespace ChessEngineClient
             }
         }
 
-        public static ExerciseViewModel ExerciseViewModel
+        public static PracticeViewModel ExerciseViewModel
         {
             get
             {
-                return IOCContainer.Resolve<ExerciseViewModel>();
+                return IOCContainer.Resolve<PracticeViewModel>();
             }
         }
 
@@ -46,6 +46,7 @@ namespace ChessEngineClient
         {
             IOCContainer.RegisterType<MainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<EditPositionViewModel, EditPositionViewModel>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<PracticeViewModel, PracticeViewModel>(new ContainerControlledLifetimeManager());
 
             IOCContainer.RegisterType<IAnalysisReceiver, AnalysisReceiver>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IEngineNotification, AnalysisReceiver>(new ContainerControlledLifetimeManager());
@@ -56,7 +57,7 @@ namespace ChessEngineClient
 
             IOCContainer.RegisterType<IAnalysisBoardService, AnalysisBoardService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IBoardEditorService, EditorService>(new ContainerControlledLifetimeManager());
-            IOCContainer.RegisterType<IExerciseBoardService, ExerciseBoardService>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<IPracticeBoardService, PracticeBoardService>(new ContainerControlledLifetimeManager());
         }
     }
 }
