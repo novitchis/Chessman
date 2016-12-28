@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace ChessEngineClient
 {
-    public class AnalysisBoardService : BoardService, IAnalysisBoardService
+    public class AnalysisBoardService : BoardService, IEngineBoardService
     {
         private const int InfiniteAnalysisDepth = -1;
 
@@ -51,7 +51,7 @@ namespace ChessEngineClient
             return result;
         }
 
-        public void StartAnalysis()
+        public void Start()
         {
             engine.SetAnalysisDepth(InfiniteAnalysisDepth);
             AnalyseCurrentPosition();
@@ -70,7 +70,7 @@ namespace ChessEngineClient
             }
         }
 
-        public void StopAnalysis()
+        public void Stop()
         {
             engine.StopAnalyzing();
         }

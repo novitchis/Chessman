@@ -30,7 +30,14 @@
             </RelativePanel>
         </Grid>
         <CommandBar x:Name="CommandBar" Grid.Row="1" Background="{StaticResource AccentBrush400}">
-            <!--<AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>-->
+            <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
+            <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}"/>
+            <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}"/>
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="New game" Command="{Binding NewGameCommand}" />
+                <AppBarButton Label="Edit position" Command="{Binding EditPositionCommand}" />
+            </CommandBar.SecondaryCommands>
         </CommandBar>
 
         <VisualStateManager.VisualStateGroups>

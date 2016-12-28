@@ -35,7 +35,7 @@ namespace ChessEngineClient
 
         public void OnGameEnded(bool bWhiteWins)
         {
-            //throw new NotImplementedException();
+            //throw new Exception("Game ended: " + (bWhiteWins ? "white wins" : "black wins"));
         }
 
         public void OnStateChanged(EngineState state)

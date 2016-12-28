@@ -143,10 +143,11 @@
     <Compile Include="Pages\EditPosition\PiecesPaletteViewModel.cs" />
     <Compile Include="Pages\EditPosition\PositionLoadOptions.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="Pages\Main\IAnalysisBoardService.cs" />
+    <Compile Include="Pages\Main\IEngineBoardService.cs" />
     <Compile Include="Pages\Main\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Main\BoardPageViewModel.cs" />
     <Compile Include="Pages\Main\MainViewModel.cs" />
     <Compile Include="Notation\MoveDataGroup.cs" />
     <Compile Include="Notation\NotationView.xaml.cs">
