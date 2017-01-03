@@ -20,13 +20,13 @@
                         Text="Computer practice"
                         Style="{StaticResource HeaderTextStyle}" />
                 </Grid>
+                <view:NotationView x:Name="notationView"
+                                   DataContext="{Binding NotationViewModel}" />
                 <view:ChessBoardView x:Name="chessBoard"
                                      HasDragAndDrop="True"
                                      VerticalAlignment="Center"
                                      HorizontalAlignment="Center"
                                      DataContext="{Binding BoardViewModel}" />
-                <view:NotationView x:Name="notationView"
-                                   DataContext="{Binding NotationViewModel}" />
             </RelativePanel>
         </Grid>
         <CommandBar x:Name="CommandBar" Grid.Row="1" Background="{StaticResource AccentBrush400}">

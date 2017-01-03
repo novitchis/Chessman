@@ -57,7 +57,6 @@ namespace ChessEngineClient.ViewModel
             this.navigationService = navigationService;
             this.boardService = boardService;
 
-            BoardViewModel = new AnalysisChessBoardViewModel(boardService);
             NotationViewModel = new NotationViewModel(boardService);
         }
 
@@ -92,7 +91,7 @@ namespace ChessEngineClient.ViewModel
                 moveIndex = currentMove.Index + 1;
 
             if (boardService.GoToMove(moveIndex))
-                Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
+                Messenger.Default.Send(new MessageBase(this, boardService), NotificationMessages.MoveExecuted);
         }
 
         private void OnGoBackCommand(object obj)
@@ -101,7 +100,7 @@ namespace ChessEngineClient.ViewModel
             if (currentMove != null)
             {
                 if (boardService.GoToMove(currentMove.Index - 1))
-                    Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
+                    Messenger.Default.Send(new MessageBase(this, boardService), NotificationMessages.MoveExecuted);
             }
         }
 

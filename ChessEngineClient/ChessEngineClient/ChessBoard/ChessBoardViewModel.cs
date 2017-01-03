@@ -2,6 +2,7 @@
 using Framework.MVVM;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -144,8 +145,9 @@ namespace ChessEngineClient.ViewModel
             SelectedSquare = null;
         }
 
-        protected virtual void OnSelectionChanged(SquareViewModel selectedSquare, SquareViewModel value)
+        protected virtual bool OnSelectionChanged(SquareViewModel selectedSquare, SquareViewModel value)
         {
+            return true;
         }
 
         private void TogglePerspectiveExecuted(object obj)

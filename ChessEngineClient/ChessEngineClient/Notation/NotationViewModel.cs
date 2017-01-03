@@ -3,6 +3,7 @@ using Framework.MVVM;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -60,7 +61,9 @@ namespace ChessEngineClient.ViewModel
 
         private void OnMoveExecutedMessage(MessageBase message)
         {
-            ReloadMoves();
+            // check if message is intended for current board service
+            if (message.Target == analysisBoardService)
+                ReloadMoves();
         }
 
         public void ReloadMoves()
@@ -68,6 +71,7 @@ namespace ChessEngineClient.ViewModel
             int groupIndex = 1;
             List<MoveDataGroup> newGroupedMoves = new List<MoveDataGroup>();
             var moves = analysisBoardService.GetMoves(false);
+
             bool startedAsBlack = analysisBoardService.WasBlackFirstToMove();
 
             using (var movesEnumerator = moves.GetEnumerator())
@@ -90,14 +94,12 @@ namespace ChessEngineClient.ViewModel
 
             GroupedMoves = newGroupedMoves;
 
-            MoveData currentMove = analysisBoardService.GetCurrentMove();
-            // in order for the selected item to work CurrentMove needs to be an object from the 'moves' list
+            MoveData currentMove = moves.FirstOrDefault(m => m.IsCurrent);
             if (currentMove != null)
-                CurrentMove = moves[currentMove.Index];
+                CurrentMove = currentMove;
             // select the first ... item by default
             else if (startedAsBlack && GroupedMoves.Count > 0)
                 CurrentMove = GroupedMoves[0].WhiteMove;
         }
-
     }
 }

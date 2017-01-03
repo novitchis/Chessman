@@ -126,6 +126,7 @@
       <DependentUpon>SquareView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ChessBoard\SquareViewModel.cs" />
+    <Compile Include="Pages\ComputerPractice\PracticeBoardViewModel.cs" />
     <Compile Include="Pages\ComputerPractice\PracticePage.xaml.cs">
       <DependentUpon>PracticePage.xaml</DependentUpon>
     </Compile>

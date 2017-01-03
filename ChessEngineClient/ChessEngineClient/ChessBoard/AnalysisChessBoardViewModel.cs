@@ -2,6 +2,7 @@
 using Framework.MVVM;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,15 +27,16 @@ namespace ChessEngineClient.ViewModel
             RefreshSquares();
         }
 
-        protected override void OnSelectionChanged(SquareViewModel oldSquare, SquareViewModel newSquare)
+        protected override bool OnSelectionChanged(SquareViewModel oldSquare, SquareViewModel newSquare)
         {
-            base.OnSelectionChanged(oldSquare, newSquare);
-
             if (oldSquare == null || newSquare == null)
-                return;
+                return false;
 
-            if (analysisBoardService.SubmitMove(oldSquare.Coordinate, newSquare.Coordinate))
-                Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
+            bool result = analysisBoardService.SubmitMove(oldSquare.Coordinate, newSquare.Coordinate);
+            if (result)
+                Messenger.Default.Send(new MessageBase(this, analysisBoardService), NotificationMessages.MoveExecuted);
+
+            return result;
         }
 
         public override void RefreshSquares()

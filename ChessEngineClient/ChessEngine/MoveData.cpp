@@ -4,11 +4,12 @@
 using namespace ChessEngine;
 
 MoveData::MoveData()
+	: m_isCurrent(false)
 {
 }
 
 MoveData::MoveData(MoveDataImpl moveData)
-	: m_moveData(moveData)
+	: m_moveData(moveData), m_isCurrent(false)
 {
 }
 

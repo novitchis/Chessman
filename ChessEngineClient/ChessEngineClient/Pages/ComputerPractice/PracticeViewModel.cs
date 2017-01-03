@@ -10,12 +10,10 @@ namespace ChessEngineClient.ViewModel
 {
     public class PracticeViewModel: BoardPageViewModel, INavigationAware
     {
-        private IPracticeBoardService exerciseBoardService = null;
-
         public PracticeViewModel(INavigationService navigationService, IPracticeBoardService exerciseBoardService)
             : base(navigationService, exerciseBoardService)
         {
-            this.exerciseBoardService = exerciseBoardService;
+            BoardViewModel = new PracticeBoardViewModel(exerciseBoardService);
         }
     }
 }

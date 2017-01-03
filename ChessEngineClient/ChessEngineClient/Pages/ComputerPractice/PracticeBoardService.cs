@@ -2,6 +2,7 @@
 using Framework.MVVM;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -29,21 +30,7 @@ namespace ChessEngineClient
             mainSynchronizationContext = SynchronizationContext.Current;
         }
 
-        public override bool SubmitMove(Coordinate from, Coordinate to)
-        {
-            if (GetIsComputerTurn())
-                return false;
-
-            if (base.SubmitMove(from, to))
-            {
-                RequestComputerMoveAsync();
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool GetIsComputerTurn()
+        public bool GetIsComputerTurn()
         {
             SideColor sideToMove = IsWhiteTurn ? SideColor.White : SideColor.Black;
             if (sideToMove == UserPerspective)
@@ -52,7 +39,7 @@ namespace ChessEngineClient
             return true;
         }
 
-        private void RequestComputerMoveAsync()
+        public void RequestComputerMove()
         {
             if (ChessBoard.IsStalemate() || ChessBoard.IsCheckmate())
                 return;
@@ -63,12 +50,13 @@ namespace ChessEngineClient
         public void Start()
         {
             analysisReceiver.AnalysisReceived += OnAnalysisReceived;
-            engine.SetAnalysisDepth(5);
+            // TODO: set in a different way the engine strength
+            engine.SetAnalysisDepth(4);
 
             if (!GetIsComputerTurn())
                 return;
 
-            RequestComputerMoveAsync();
+            RequestComputerMove();
         }
 
         private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
@@ -79,7 +67,7 @@ namespace ChessEngineClient
                 mainSynchronizationContext.Post(o =>
                 {
                     // TODO: this should be done differently
-                    Messenger.Default.Send<MessageBase>(new MessageBase(), NotificationMessages.MoveExecuted);
+                    Messenger.Default.Send(new MessageBase(this, this), NotificationMessages.MoveExecuted);
                 }, null);
             }
         }

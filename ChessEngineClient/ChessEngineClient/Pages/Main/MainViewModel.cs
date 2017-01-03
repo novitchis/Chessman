@@ -18,6 +18,7 @@ namespace ChessEngineClient.ViewModel
             : base(navigationService, analysisBoardService)
         {
             AnalysisViewModel = ViewModelLocator.IOCContainer.Resolve<AnalysisViewModel>();
+            BoardViewModel = new AnalysisChessBoardViewModel(analysisBoardService);
         }
 
         public override void OnNavigatedTo(object parameter)

@@ -26,6 +26,12 @@ namespace ChessEngine
 			int get() { return m_moveData.moveIndex; }
 		}
 
+		property bool IsCurrent
+		{
+			bool get() { return m_isCurrent; }
+			void set(bool value) { m_isCurrent = value; }
+		}
+
 		property ChessEngine::Move^ Move
 		{
 			ChessEngine::Move^ get()
@@ -42,5 +48,6 @@ namespace ChessEngine
 	private:
 		MoveDataImpl m_moveData;
 		ChessEngine::Move^ m_move;
+		bool m_isCurrent;
 	};
 }
