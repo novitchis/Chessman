@@ -8,7 +8,9 @@ namespace ChessEngineClient
 {
     public interface IPracticeBoardService : IEngineBoardService
     {
-        SideColor UserPerspective { get; set; }
+        SideColor UserColor { get; }
+
+        void SwitchUserColor();
 
         void RequestComputerMove();
 

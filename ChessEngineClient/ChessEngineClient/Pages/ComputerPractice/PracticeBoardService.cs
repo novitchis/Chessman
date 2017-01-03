@@ -16,24 +16,31 @@ namespace ChessEngineClient
         private IEngine engine = null;
         private IAnalysisReceiver analysisReceiver = null;
 
-        public SideColor UserPerspective
+        public SideColor UserColor
         {
-            get; set;
+            get; private set;
         }
 
         public PracticeBoardService(IEngine engine, IAnalysisReceiver analysisReceiver)
         {
-            UserPerspective = SideColor.White;
+            UserColor = SideColor.White;
             this.engine = engine;
             this.analysisReceiver = analysisReceiver;
 
             mainSynchronizationContext = SynchronizationContext.Current;
         }
 
+        public void SwitchUserColor()
+        {
+            Stop();
+            UserColor = UserColor == SideColor.Black ? SideColor.White : SideColor.Black;
+            Start();
+        }
+
         public bool GetIsComputerTurn()
         {
             SideColor sideToMove = IsWhiteTurn ? SideColor.White : SideColor.Black;
-            if (sideToMove == UserPerspective)
+            if (sideToMove == UserColor)
                 return false;
 
             return true;
@@ -76,6 +83,6 @@ namespace ChessEngineClient
         {
             analysisReceiver.AnalysisReceived -= OnAnalysisReceived;
             engine.StopAnalyzing();
-        }
+        }      
     }
 }

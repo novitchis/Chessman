@@ -106,6 +106,11 @@ namespace ChessEngineClient.ViewModel
 
         private void OnNewGameCommand(object obj)
         {
+            NewGame();
+        }
+
+        protected virtual void NewGame()
+        {
             boardService.ResetBoard();
             ReloadBoard(BoardViewModel.Perspective);
         }
