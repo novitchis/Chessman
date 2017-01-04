@@ -46,13 +46,13 @@ namespace ChessEngineClient.View
         {
             // for now there is no other way to enforce a min width on the right column
             // for pc layout that can be honored by the parent pannel
-            if (piecesPalette.MinWidth > 0)
-                chessBoard.MaxWidth = newSize.Width - piecesPalette.MinWidth - 50;
+            if (optionsPanel.MinWidth > 0)
+                chessBoard.MaxWidth = newSize.Width - optionsPanel.MinWidth - 100;
             else
                 chessBoard.MaxWidth = Double.PositiveInfinity;
 
-            if (piecesPalette.MinHeight > 0)
-                chessBoard.MaxHeight = newSize.Height - piecesPalette.MinHeight - 130;
+            if (optionsPanel.MinHeight > 0)
+                chessBoard.MaxHeight = newSize.Height - optionsPanel.MinHeight - 96;
             else
                 chessBoard.MaxHeight = Double.PositiveInfinity;
         }

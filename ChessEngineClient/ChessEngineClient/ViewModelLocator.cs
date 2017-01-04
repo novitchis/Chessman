@@ -18,7 +18,7 @@ namespace ChessEngineClient
 
         public const string MainPageNavigationName = "MainPage";
         public const string EditPositionPageNavigationName = "EditPositionPage";
-        public const string ExercisePageNavigationName = "ExercisePage";
+        public const string PracticePageNavigationName = "PracticePage";
 
         public static UnityContainer IOCContainer = new UnityContainer();
 

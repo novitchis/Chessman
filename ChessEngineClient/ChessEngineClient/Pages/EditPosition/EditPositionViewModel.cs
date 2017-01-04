@@ -57,9 +57,14 @@ namespace ChessEngineClient.ViewModel
             get { return new RelayCommand(ClearExecuted); }
         }
 
-        public ICommand SaveCommand
+        public ICommand AnalyseCommand
         {
-            get { return new RelayCommand(SaveExecuted); }
+            get { return new RelayCommand(AnalyseExecuted); }
+        }
+
+        public ICommand PracticeCommand
+        {
+            get { return new RelayCommand(PracticeExecuted); }
         }
 
         #endregion
@@ -106,15 +111,23 @@ namespace ChessEngineClient.ViewModel
             IsBoardValid = false;
         }
 
-        private void SaveExecuted(object obj)
+        private void AnalyseExecuted(object obj)
         {
-            PositionLoadOptions positionLoadOptions = new PositionLoadOptions()
+            navigationService.NavigateTo(ViewModelLocator.MainPageNavigationName, GetPositionLoadOptions());
+        }
+
+        private void PracticeExecuted(object obj)
+        {
+            navigationService.NavigateTo(ViewModelLocator.PracticePageNavigationName, GetPositionLoadOptions());
+        }
+
+        private PositionLoadOptions GetPositionLoadOptions()
+        {
+            return new PositionLoadOptions()
             {
                 Fen = editorBoardService.GetFen(),
                 Perspective = BoardViewModel.Perspective,
             };
-
-            navigationService.NavigateTo(ViewModelLocator.MainPageNavigationName, positionLoadOptions);
         }
     }
 }

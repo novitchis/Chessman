@@ -35,6 +35,13 @@ namespace ChessEngineClient.ViewModel
             int engineStrength = (int)propertiesSet[AppSettingsKeys.ComputerStrengthKey];
             practiceBoardService.SetEngineStrength(engineStrength);
 
+            PositionLoadOptions positionLoadOptions = parameter as PositionLoadOptions;
+            if (positionLoadOptions != null)
+            {
+                if (practiceBoardService.UserColor != positionLoadOptions.Perspective)
+                    practiceBoardService.SwitchUserColor();
+            }
+
             base.OnNavigatedTo(parameter);
         }
 

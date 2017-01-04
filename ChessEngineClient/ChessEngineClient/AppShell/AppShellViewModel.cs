@@ -64,7 +64,7 @@ namespace ChessEngineClient
             {
                 new NavMenuItem("Analysis", "Home",ViewModelLocator.MainPageNavigationName),
                 new NavMenuItem("Board editor", "Edit", ViewModelLocator.EditPositionPageNavigationName),
-                new NavMenuItem("Computer practice", "ReportHacked", ViewModelLocator.ExercisePageNavigationName),
+                new NavMenuItem("Computer practice", "ReportHacked", ViewModelLocator.PracticePageNavigationName),
             };
 
             SecondaryNavigationItems = new List<NavMenuItem>

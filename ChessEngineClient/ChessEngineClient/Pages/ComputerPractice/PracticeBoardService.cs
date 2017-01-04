@@ -15,7 +15,8 @@ namespace ChessEngineClient
         private SynchronizationContext mainSynchronizationContext = null;
         private IEngine engine = null;
         private IAnalysisReceiver analysisReceiver = null;
-        private int secondsLeft = -1; 
+        private int secondsLeft = -1;
+        private bool isStarted = false;
 
         public SideColor UserColor
         {
@@ -33,9 +34,14 @@ namespace ChessEngineClient
 
         public void SwitchUserColor()
         {
-            Stop();
+            bool wasStarted = isStarted;
+            if (wasStarted)
+                Stop();
+
             UserColor = UserColor == SideColor.Black ? SideColor.White : SideColor.Black;
-            Start();
+
+            if (wasStarted)
+                Start();
         }
 
         public bool GetIsComputerTurn()
@@ -58,12 +64,12 @@ namespace ChessEngineClient
         public void Start()
         {
             analysisReceiver.AnalysisReceived += OnAnalysisReceived;
-            // TODO: set in a different way the engine strength
 
             if (!GetIsComputerTurn())
                 return;
 
             RequestComputerMove();
+            isStarted = true;
         }
 
         private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
@@ -83,6 +89,7 @@ namespace ChessEngineClient
         {
             analysisReceiver.AnalysisReceived -= OnAnalysisReceived;
             engine.StopAnalyzing();
+            isStarted = false;
         }
 
         public void SetEngineStrength(int strengthValue)
