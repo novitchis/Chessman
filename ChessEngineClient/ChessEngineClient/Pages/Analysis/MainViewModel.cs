@@ -14,6 +14,11 @@ namespace ChessEngineClient.ViewModel
     {
         public AnalysisViewModel AnalysisViewModel { get; set; }
 
+        public ICommand PracticePositionCommand
+        {
+            get { return new RelayCommand(PracticePositionExecuted); }
+        }
+
         public MainViewModel(INavigationService navigationService, IEngineBoardService analysisBoardService)
             : base(navigationService, analysisBoardService)
         {
@@ -31,6 +36,11 @@ namespace ChessEngineClient.ViewModel
         {
             base.OnNavigatingFrom();
             AnalysisViewModel.UnsubscribeToAnalysis();
+        }
+
+        private void PracticePositionExecuted(object obj)
+        {
+            NavigationService.NavigateTo(ViewModelLocator.PracticePageNavigationName, GetPositionLoadOptions());
         }
     }
 }

@@ -21,6 +21,11 @@ namespace ChessEngineClient.ViewModel
 
         public NotationViewModel NotationViewModel { get; set; }
 
+        protected INavigationService NavigationService
+        {
+            get { return navigationService; }
+        }
+
         public ICommand EditPositionCommand
         {
             get { return new RelayCommand(EditPositionExecuted); }
@@ -117,13 +122,16 @@ namespace ChessEngineClient.ViewModel
 
         private void EditPositionExecuted(object obj)
         {
-            PositionLoadOptions positionLoadOptions = new PositionLoadOptions()
+            navigationService.NavigateTo(ViewModelLocator.EditPositionPageNavigationName, GetPositionLoadOptions());
+        }
+
+        protected PositionLoadOptions GetPositionLoadOptions()
+        {
+            return new PositionLoadOptions()
             {
                 Fen = boardService.GetFen(),
                 Perspective = BoardViewModel.Perspective,
             };
-
-            navigationService.NavigateTo(ViewModelLocator.EditPositionPageNavigationName, positionLoadOptions);
         }
     }
 }

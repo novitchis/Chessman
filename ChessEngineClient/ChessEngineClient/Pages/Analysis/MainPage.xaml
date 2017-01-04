@@ -49,6 +49,7 @@
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="New game" Command="{Binding NewGameCommand}" />
                 <AppBarButton Label="Edit position" Command="{Binding EditPositionCommand}" />
+                <AppBarButton Label="Continue with computer" Command="{Binding PracticePositionCommand}" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
         <VisualStateManager.VisualStateGroups>

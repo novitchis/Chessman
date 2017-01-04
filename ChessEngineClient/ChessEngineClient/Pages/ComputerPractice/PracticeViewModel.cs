@@ -19,6 +19,11 @@ namespace ChessEngineClient.ViewModel
             get { return new RelayCommand(SwitchColorExecuted); }
         }
 
+        public ICommand AnalyseGameCommand
+        {
+            get { return new RelayCommand(AnalyseGameExecuted); }
+        }
+
         public PracticeViewModel(
             INavigationService navigationService, 
             IPracticeBoardService practiceBoardService,
@@ -57,6 +62,11 @@ namespace ChessEngineClient.ViewModel
             practiceBoardService.Stop();
             base.NewGame();
             practiceBoardService.Start();
+        }
+
+        private void AnalyseGameExecuted(object obj)
+        {
+            NavigationService.NavigateTo(ViewModelLocator.MainPageNavigationName, GetPositionLoadOptions());
         }
     }
 }
