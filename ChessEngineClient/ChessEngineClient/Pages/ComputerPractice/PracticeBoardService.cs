@@ -32,6 +32,14 @@ namespace ChessEngineClient
             mainSynchronizationContext = SynchronizationContext.Current;
         }
 
+        public override bool SubmitMove(Coordinate from, Coordinate to)
+        {
+            if (GetIsComputerTurn())
+                return false;
+
+            return base.SubmitMove(from, to);
+        }
+
         public void SwitchUserColor()
         {
             bool wasStarted = isStarted;
