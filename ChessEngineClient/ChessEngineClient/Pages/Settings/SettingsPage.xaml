@@ -14,12 +14,12 @@
         </Grid.RowDefinitions>
         <Grid x:Name="contentGrid">
             <StackPanel>
-                <Grid x:Name="titlePanel" Height="48">
+                <Grid x:Name="titlePanel" Style="{StaticResource PageTitlePanelStyle}">
                     <TextBlock 
                         Text="Settings"
                         Style="{StaticResource HeaderTextStyle}" />
                 </Grid>
-                <Grid Margin="8">
+                <Grid Margin="12 8 12 12">
                     <StackPanel>
                         <TextBlock 
                             Text="Computer strength"

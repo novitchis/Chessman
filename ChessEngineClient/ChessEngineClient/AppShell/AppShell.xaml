@@ -94,7 +94,7 @@
                         Background="Transparent"
                         ItemContainerStyle="{StaticResource SplitPaneMenuItem}"/>
                     <StackPanel Grid.Row="1">
-                        <Rectangle Fill="White" Height="1" Margin="5"/>
+                        <Rectangle Fill="{StaticResource DefaultBorderBrush}" Height="1" Margin="5"/>
                         <ListBox
                             ItemsSource="{Binding SecondaryNavigationItems}"
                             SelectedItem="{Binding CurrentSecondaryNavItem, Mode=TwoWay}"

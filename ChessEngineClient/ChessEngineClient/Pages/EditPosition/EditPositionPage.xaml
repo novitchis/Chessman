@@ -20,16 +20,17 @@
 
     <Grid Background="{StaticResource AccentBrush300}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid x:Name="contentGrid">
+        <Grid x:Name="titlePanel" Style="{StaticResource PageTitlePanelStyle}">
+            <TextBlock 
+                Text="Board editor"
+                Style="{StaticResource HeaderTextStyle}" />
+        </Grid>
+        <Grid x:Name="contentGrid" Grid.Row="1">
             <RelativePanel>
-                <Grid x:Name="titlePanel" Height="48">
-                    <TextBlock 
-                        Text="Board editor"
-                        Style="{StaticResource HeaderTextStyle}" />
-                </Grid>
                 <view:ChessBoardView x:Name="chessBoard"
                                      VerticalAlignment="Center"
                                      HorizontalAlignment="Center"
@@ -42,7 +43,7 @@
             </RelativePanel>
         </Grid>
 
-        <CommandBar x:Name="CommandBar" Grid.Row="1" Background="{StaticResource AccentBrush400}">
+        <CommandBar x:Name="CommandBar" Grid.Row="2" Background="{StaticResource AccentBrush400}">
             <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
             <AppBarButton Label="Clear" Icon="Delete" Command="{Binding ClearCommand}"/>
             <AppBarButton Label="Done" Icon="Accept" Foreground="Green">
@@ -82,14 +83,12 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="contentGrid.Margin" Value="12"/>
+                        <Setter Target="contentGrid.Margin" Value="12 8 12 12"/>
 
                         <Setter Target="chessBoard.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.Margin" Value="0 0 12 0"/>
-
-                        <Setter Target="titlePanel.Visibility" Value="Collapsed"/>
 
                         <Setter Target="piecesPalette.(RelativePanel.RightOf)" Value="chessBoard"/>
                         <Setter Target="piecesPalette.(RelativePanel.AlignTopWithPanel)" Value="true"/>
@@ -103,14 +102,11 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="titlePanel.(RelativePanel.AlignTopWithPanel)" Value="true"/>
-                        <Setter Target="titlePanel.(RelativePanel.AlignRightWithPanel)" Value="true"/>
-                        <Setter Target="titlePanel.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
                         <Setter Target="titlePanel.Margin" Value="48 0 0 0"/>
 
+                        <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
-                        <Setter Target="chessBoard.(RelativePanel.Below)" Value="titlePanel"/>
 
                         <Setter Target="piecesPalette.(RelativePanel.Below)" Value="chessBoard"/>
                         <Setter Target="piecesPalette.(RelativePanel.AlignRightWithPanel)" Value="true"/>

@@ -14,7 +14,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid x:Name="titlePanel" Height="48">
+        <Grid x:Name="titlePanel" Style="{StaticResource PageTitlePanelStyle}">
             <TextBlock 
                 Text="Computer practice"
                 Style="{StaticResource HeaderTextStyle}" />
@@ -49,7 +49,7 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="contentGrid.Margin" Value="12 0 12 12"/>
+                        <Setter Target="contentGrid.Margin" Value="12 8 12 12"/>
 
                         <Setter Target="chessBoard.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
@@ -72,6 +72,7 @@
                         
                         <Setter Target="titlePanel.Margin" Value="48 0 0 0"/>
 
+                        <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
 
