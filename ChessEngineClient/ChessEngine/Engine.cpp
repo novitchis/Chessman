@@ -57,21 +57,16 @@ bool Engine::Stop()
 	}
 }
 
-bool Engine::Analyze(ChessBoard^ board)
+bool Engine::Analyze(ChessBoard^ board, int secondsLeft)
 {
 	try
 	{
-		return m_pEngineImpl->Analyze(board->m_ChessBoardImpl);
+		return m_pEngineImpl->Analyze(board->m_ChessBoardImpl, secondsLeft);
 	}
 	catch (...)
 	{
 		throw ref new Exception(2, ref new String(L"Failed to analyze the current board."));
 	}
-}
-
-void Engine::SetAnalysisDepth(int searchDepth)
-{
-	m_pEngineImpl->SetAnalysisDepth(searchDepth);
 }
 
 void Engine::SetOptions(EngineOptions^ options)

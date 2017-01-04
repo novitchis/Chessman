@@ -26,7 +26,14 @@
                            Text="{x:Bind Name}" />
             </Grid>
         </DataTemplate>
+
+        <Style TargetType="ListBoxItem" x:Key="SplitPaneMenuItem">
+            <Setter Property="UseSystemFocusVisuals" Value="False" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+
     </Page.Resources>
+
 
     <Grid>
         <VisualStateManager.VisualStateGroups>
@@ -75,19 +82,27 @@
                    IsTabStop="False">
             <SplitView.Pane>
                 <Grid Margin="0 48 0 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
                     <ListBox
                         ItemsSource="{Binding NavigationItems}"
                         SelectedItem="{Binding CurrentNavItem, Mode=TwoWay}"
                         ItemTemplate="{StaticResource NavButtonTemplate}"
                         SelectionChanged="OnCurrentPageChanged"
-                        Background="Transparent">
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem" >
-                                <Setter Property="UseSystemFocusVisuals" Value="False" />
-                                <Setter Property="Padding" Value="0" />
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                    </ListBox>
+                        Background="Transparent"
+                        ItemContainerStyle="{StaticResource SplitPaneMenuItem}"/>
+                    <StackPanel Grid.Row="1">
+                        <Rectangle Fill="White" Height="1" Margin="5"/>
+                        <ListBox
+                            ItemsSource="{Binding SecondaryNavigationItems}"
+                            SelectedItem="{Binding CurrentSecondaryNavItem, Mode=TwoWay}"
+                            ItemTemplate="{StaticResource NavButtonTemplate}"
+                            SelectionChanged="OnCurrentPageChanged"
+                            Background="Transparent"
+                            ItemContainerStyle="{StaticResource SplitPaneMenuItem}"/>
+                    </StackPanel>
                 </Grid>
             </SplitView.Pane>
             <Frame x:Name="frame">

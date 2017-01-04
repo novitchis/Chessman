@@ -5,23 +5,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Foundation.Collections;
 
 namespace ChessEngineClient.ViewModel
 {
     public class PracticeViewModel : BoardPageViewModel, INavigationAware
     {
         private IPracticeBoardService practiceBoardService = null;
+        private IPropertySet propertiesSet = null;
 
         public ICommand SwitchColor
         {
             get { return new RelayCommand(SwitchColorExecuted); }
         }
 
-        public PracticeViewModel(INavigationService navigationService, IPracticeBoardService practiceBoardService)
+        public PracticeViewModel(
+            INavigationService navigationService, 
+            IPracticeBoardService practiceBoardService,
+            IPropertySet propertiesSet)
             : base(navigationService, practiceBoardService)
         {
             this.practiceBoardService = practiceBoardService;
+            this.propertiesSet = propertiesSet;
             BoardViewModel = new PracticeBoardViewModel(practiceBoardService);
+        }
+
+        public override void OnNavigatedTo(object parameter)
+        {
+            int engineStrength = (int)propertiesSet[AppSettingsKeys.ComputerStrengthKey];
+            practiceBoardService.SetEngineStrength(engineStrength);
+
+            base.OnNavigatedTo(parameter);
         }
 
         private void SwitchColorExecuted(object obj)

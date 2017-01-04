@@ -59,7 +59,7 @@ Coordinate^ ManagedConverter::ConvertNativeCoord(CoordinateImpl coord)
 EngineOptionsImpl ManagedConverter::ConvertManagedOptions(EngineOptions^ options)
 {
 	EngineOptionsImpl result;
-	result.level = (EngineLevelImpl)options->Level;
+	result.level = options->SkillLevel;
 
 	return result;
 }

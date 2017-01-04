@@ -15,5 +15,7 @@ namespace ChessEngineClient
         void RequestComputerMove();
 
         bool GetIsComputerTurn();
+
+        void SetEngineStrength(int strengthValue);
     }
 }

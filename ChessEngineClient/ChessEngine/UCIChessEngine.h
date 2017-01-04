@@ -38,8 +38,7 @@ namespace ChessEngine
 		virtual bool ConnectTo( const std::wstring& strEnginePath );
 		virtual bool Start();
 		virtual bool Stop();
-		virtual bool Analyze(ChessBoardImpl& board);
-		virtual void SetAnalysisDepth( int halfMovesCount);
+		virtual bool Analyze(ChessBoardImpl& board, int secondsLeft = -1);
 		virtual bool StopAnalyzing();
 		virtual void SetOptions( const EngineOptionsImpl& options );
 		virtual void EnableMoveDelay();
@@ -71,6 +70,5 @@ namespace ChessEngine
 		bool									m_bDelayResponse;
 		std::string								m_strCumul;
 		Core::CriticalSection					m_lock;
-		int										m_analysisDepth;
 	};
 }

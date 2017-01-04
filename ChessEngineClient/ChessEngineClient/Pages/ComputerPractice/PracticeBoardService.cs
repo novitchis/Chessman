@@ -15,6 +15,7 @@ namespace ChessEngineClient
         private SynchronizationContext mainSynchronizationContext = null;
         private IEngine engine = null;
         private IAnalysisReceiver analysisReceiver = null;
+        private int secondsLeft = -1; 
 
         public SideColor UserColor
         {
@@ -51,14 +52,13 @@ namespace ChessEngineClient
             if (ChessBoard.IsStalemate() || ChessBoard.IsCheckmate())
                 return;
 
-            engine.Analyze(ChessBoard);
+            engine.Analyze(ChessBoard, secondsLeft);
         }
 
         public void Start()
         {
             analysisReceiver.AnalysisReceived += OnAnalysisReceived;
             // TODO: set in a different way the engine strength
-            engine.SetAnalysisDepth(4);
 
             if (!GetIsComputerTurn())
                 return;
@@ -83,6 +83,14 @@ namespace ChessEngineClient
         {
             analysisReceiver.AnalysisReceived -= OnAnalysisReceived;
             engine.StopAnalyzing();
-        }      
+        }
+
+        public void SetEngineStrength(int strengthValue)
+        {
+            // skill level : 0..20
+            engine.SetOptions(new EngineOptions() { SkillLevel = strengthValue * 2});
+            // this can be further adjusted
+            secondsLeft = strengthValue * 20;
+        }
     }
 }

@@ -10,8 +10,6 @@ namespace ChessEngineClient
 {
     public class AnalysisBoardService : BoardService, IEngineBoardService
     {
-        private const int InfiniteAnalysisDepth = -1;
-
         private IEngine engine = null;
         private IEngineNotification engineNotification = null;
 
@@ -53,7 +51,6 @@ namespace ChessEngineClient
 
         public void Start()
         {
-            engine.SetAnalysisDepth(InfiniteAnalysisDepth);
             AnalyseCurrentPosition();
         }
 
@@ -62,7 +59,7 @@ namespace ChessEngineClient
             if (!ChessBoard.IsStalemate() && !ChessBoard.IsCheckmate())
             {
                 engineNotification.OnStateChanged(EngineState.Analyze);
-                engine.Analyze(ChessBoard);
+                engine.Analyze(ChessBoard, -1);
             }
             else
             {

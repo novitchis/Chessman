@@ -286,17 +286,8 @@ namespace ChessEngine
 		ChessPieceImpl  PromotionPiece;
 	};
 
-	enum EngineLevelImpl
-	{
-		EL_Begginer = 0,
-		EL_Middle = 5,
-        EL_Hard = 7, 
-		EL_Advanced = 10, 
-		EL_Impossible = 15
-	};
-
 	struct EngineOptionsImpl
 	{
-		EngineLevelImpl level;
+		int level;
 	};
 }

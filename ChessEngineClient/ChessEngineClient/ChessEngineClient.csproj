@@ -156,6 +156,11 @@
     </Compile>
     <Compile Include="Notation\NotationViewModel.cs" />
     <Compile Include="NotificationMessages.cs" />
+    <Compile Include="Pages\Settings\AppSettingsKeys.cs" />
+    <Compile Include="Pages\Settings\SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Settings\SettingsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pages\Main\AnalysisEventArgs.cs" />
     <Compile Include="Pages\Main\AnalysisBoardService.cs" />
@@ -287,6 +292,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Notation\NotationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Settings\SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
