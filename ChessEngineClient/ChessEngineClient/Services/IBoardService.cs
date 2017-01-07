@@ -22,5 +22,11 @@ namespace ChessEngineClient
         bool GoToMove(int moveIndex);
 
         void ResetBoard();
+
+        bool GetIsInCheck();
+
+        bool GetIsStalemate();
+
+        bool GetIsMate();
     }
 }

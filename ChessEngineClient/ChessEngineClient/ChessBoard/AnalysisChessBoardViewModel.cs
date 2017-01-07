@@ -42,12 +42,30 @@ namespace ChessEngineClient.ViewModel
         public override void RefreshSquares()
         {
             base.RefreshSquares();
+            RefreshPositionStateMarkers();            
+        }
 
+        private void RefreshPositionStateMarkers()
+        {
             MoveData lastMove = analysisBoardService.GetCurrentMove();
             if (lastMove != null)
             {
                 Squares[GetSquareIndex(lastMove.Move.GetFrom())].IsLastMoveSquare = true;
                 Squares[GetSquareIndex(lastMove.Move.GetTo())].IsLastMoveSquare = true;
+            }
+
+            bool shouldHighlightWhiteKing = analysisBoardService.GetIsStalemate() || (analysisBoardService.IsWhiteTurn && analysisBoardService.GetIsInCheck());
+            bool shouldHighlightBlackKing = analysisBoardService.GetIsStalemate() || (!analysisBoardService.IsWhiteTurn && analysisBoardService.GetIsInCheck());
+
+            foreach (SquareViewModel square in Squares)
+            {
+                if (square.PieceViewModel != null && square.PieceViewModel.Piece.Type == PieceType.King)
+                {
+                    if (square.PieceViewModel.Piece.Color == PieceColor.White)
+                        square.PieceViewModel.IsHighlighted = shouldHighlightWhiteKing;
+                    else
+                        square.PieceViewModel.IsHighlighted = shouldHighlightBlackKing;
+                }
             }
         }
 

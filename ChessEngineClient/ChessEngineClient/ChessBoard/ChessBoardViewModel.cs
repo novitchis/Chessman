@@ -138,7 +138,8 @@ namespace ChessEngineClient.ViewModel
         {
             foreach (SquareViewModel square in Squares)
             {
-                square.Piece = basicBoardService.GetPiece(square.Coordinate);
+                ChessPiece piece = basicBoardService.GetPiece(square.Coordinate);
+                square.PieceViewModel = piece != null ? new ChessPieceViewModel(piece) : null;
                 square.IsLastMoveSquare = false;
             }
 

@@ -94,9 +94,17 @@ namespace ChessEngineClient.ViewModel
             if (BoardViewModel.Squares.IndexOf(squareVM) == -1)
                 return;
 
-            ChessPiece newPiece = squareVM.Piece != null ? null : PiecesPaletteViewModel.SelectedPiece;
-            squareVM.Piece = newPiece;
-            editorBoardService.SetPiece(squareVM.Coordinate, newPiece);
+            if (squareVM.PieceViewModel != null || PiecesPaletteViewModel.SelectedPiece == null)
+            {
+                squareVM.PieceViewModel = null;
+                editorBoardService.SetPiece(squareVM.Coordinate, null);
+            }
+            else
+            {
+                squareVM.PieceViewModel = new ChessPieceViewModel(PiecesPaletteViewModel.SelectedPiece.Piece);
+                editorBoardService.SetPiece(squareVM.Coordinate, PiecesPaletteViewModel.SelectedPiece.Piece);
+            }
+
             IsBoardValid = editorBoardService.AcceptEditedPosition();
         }
 
@@ -104,7 +112,7 @@ namespace ChessEngineClient.ViewModel
         {
             BoardViewModel.Squares.ForEach(s =>
             {
-                s.Piece = null;
+                s.PieceViewModel = null;
                 editorBoardService.SetPiece(s.Coordinate, null);
             });
 

@@ -51,7 +51,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center">
                         <TextBlock Text="To move" Style="{StaticResource LabelTextStyle}"/>
-                        <StackPanel Orientation="Horizontal" Margin="0 4 0 4">
+                        <StackPanel Orientation="Horizontal" Margin="0 4 0 8">
                             <RadioButton Content="White" IsChecked="{Binding IsWhiteToMove, Mode=TwoWay}"/>
                             <RadioButton Content="Black" IsChecked="{Binding IsWhiteToMove, Mode=TwoWay, Converter={StaticResource BoolInverterConverter}}"/>
                         </StackPanel>

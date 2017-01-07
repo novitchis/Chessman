@@ -245,6 +245,17 @@ bool ChessBoard::IsCheckmate()
 	}
 }
 
+bool ChessBoard::IsCheck()
+{
+	try
+	{
+		return m_ChessBoardImpl.InCheck();
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to get is in check."));
+	}
+}
 
 SerializationType ChessBoard::GetSerializationType(int type)
 {

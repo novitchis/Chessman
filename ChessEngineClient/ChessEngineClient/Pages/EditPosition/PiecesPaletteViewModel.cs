@@ -10,11 +10,11 @@ namespace ChessEngineClient.ViewModel
 {
     public class PiecesPaletteViewModel : ViewModelBase
     {
-        private ChessPiece selectedPiece = null;
+        private ChessPieceViewModel selectedPiece = null;
 
-        public List<ChessPiece> Pieces { get; set; }
+        public List<ChessPieceViewModel> Pieces { get; set; }
 
-        public ChessPiece SelectedPiece
+        public ChessPieceViewModel SelectedPiece
         {
             get { return selectedPiece; }
             set
@@ -47,7 +47,7 @@ namespace ChessEngineClient.ViewModel
                 new ChessPiece(PieceType.Rook, black),
                 new ChessPiece(PieceType.Queen, black),
                 new ChessPiece(PieceType.King, black),
-            };
+            }.Select(p => new ChessPieceViewModel(p)).ToList();
         }
     }
 }

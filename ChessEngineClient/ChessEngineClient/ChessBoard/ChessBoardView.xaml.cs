@@ -100,18 +100,18 @@ namespace ChessEngineClient.View
             if (!isDragStarted && pointerPressSquare != null && e.Pointer.IsInContact)
             {
                 SquareViewModel squareVM = (SquareViewModel)pointerPressSquare.DataContext;
-                if (squareVM.Piece != null)
+                if (squareVM.PieceViewModel != null)
                 {
                     PointerPoint pointerPoint = e.GetCurrentPoint(board);
                     if (!HasPointerMovedEnaugh(pointerPoint.Position))
                         return;
 
-                    StartDragMove(e.Pointer, pointerPoint, squareVM.Piece);
+                    StartDragMove(e.Pointer, pointerPoint, squareVM.PieceViewModel);
                 }
             }
         }
 
-        private void StartDragMove(Pointer pointer, PointerPoint pointerPoint, ChessPiece piece)
+        private void StartDragMove(Pointer pointer, PointerPoint pointerPoint, ChessPieceViewModel pieceViewModel)
         {
             double optimalPieceSize = pointer.PointerDeviceType == PointerDeviceType.Touch ?
                     Math.Max(pointerPressSquare.ActualWidth * 1.5, MinPieceSize) : pointerPressSquare.ActualWidth;
@@ -120,7 +120,7 @@ namespace ChessEngineClient.View
             {
                 Width = optimalPieceSize,
                 Height = optimalPieceSize,
-                DataContext = piece,
+                DataContext = pieceViewModel,
                 IsHitTestVisible = false
             };
 

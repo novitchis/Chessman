@@ -80,5 +80,20 @@ namespace ChessEngineClient
         {
             return chessBoard.GetVariationMoveData(moves);
         }
+
+        public bool GetIsInCheck()
+        {
+            return chessBoard.IsCheck();
+        }
+
+        public bool GetIsStalemate()
+        {
+            return chessBoard.IsStalemate();
+        }
+
+        public bool GetIsMate()
+        {
+            return chessBoard.IsCheckmate();
+        }
     }
 }

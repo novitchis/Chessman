@@ -1,4 +1,5 @@
 ﻿using ChessEngine;
+using ChessEngineClient.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace ChessEngineClient.View
             if (item == null)
                 return null;
 
-            ChessPiece chessPiece = (ChessPiece)item;
+            ChessPiece chessPiece = ((ChessPieceViewModel)item).Piece;
 
             // the template names are ColorTypeTemplate
             string dataTemplateKey = String.Format("{0}{1}Template", chessPiece.Color, chessPiece.Type);

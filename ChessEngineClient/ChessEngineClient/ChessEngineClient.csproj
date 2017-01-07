@@ -11,7 +11,7 @@
     <AssemblyName>ChessEngineClient</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -121,11 +121,15 @@
     <Compile Include="ChessBoard\ChessPieceView.xaml.cs">
       <DependentUpon>ChessPieceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ChessBoard\ChessPieceViewModel.cs" />
     <Compile Include="ChessBoard\EditChessBoardViewModel.cs" />
     <Compile Include="ChessBoard\SquareView.xaml.cs">
       <DependentUpon>SquareView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ChessBoard\SquareViewModel.cs" />
+    <Compile Include="Controls\CompositionShadow.xaml.cs">
+      <DependentUpon>CompositionShadow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ComputerPractice\PracticeBoardViewModel.cs" />
     <Compile Include="Pages\ComputerPractice\PracticePage.xaml.cs">
       <DependentUpon>PracticePage.xaml</DependentUpon>
@@ -166,7 +170,6 @@
     <Compile Include="Pages\Analysis\AnalysisBoardService.cs" />
     <Compile Include="Pages\Analysis\AnalysisReceiver.cs" />
     <Compile Include="Pages\EditPosition\EditorService.cs" />
-    <Compile Include="Services\EngineBoardService.cs" />
     <Compile Include="Services\BoardService.cs" />
     <Compile Include="Services\IBoardService.cs" />
     <Compile Include="Pages\ComputerPractice\IPracticeBoardService.cs" />
@@ -275,6 +278,10 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
+    <Page Include="Controls\CompositionShadow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\ComputerPractice\PracticePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -328,7 +335,7 @@
     <SDKReference Include="Microsoft.VCLibs, Version=14.0">
       <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
     </SDKReference>
-    <SDKReference Include="WindowsMobile, Version=10.0.10586.0">
+    <SDKReference Include="WindowsMobile, Version=10.0.14393.0">
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
