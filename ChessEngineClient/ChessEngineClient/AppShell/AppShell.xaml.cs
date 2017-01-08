@@ -52,6 +52,11 @@ namespace ChessEngineClient
                 titleBar.ForegroundColor = Colors.White;
             }
 
+            if (Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.IsSupported())
+            {
+                this.feedbackButton.Visibility = Visibility.Visible;
+            }
+
             Loaded += (o, e) =>
             {
                 if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
@@ -108,6 +113,12 @@ namespace ChessEngineClient
             {
                 rootSplitView.IsPaneOpen = false;                
             }
+        }
+
+        private async void OnFeedbackButtonClick(object sender, RoutedEventArgs e)
+        {
+            var launcher = Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.GetDefault();
+            await launcher.LaunchAsync();
         }
     }
 }

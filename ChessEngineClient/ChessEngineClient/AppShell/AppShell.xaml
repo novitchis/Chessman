@@ -27,11 +27,6 @@
             </Grid>
         </DataTemplate>
 
-        <Style TargetType="ListBoxItem" x:Key="SplitPaneMenuItem">
-            <Setter Property="UseSystemFocusVisuals" Value="False" />
-            <Setter Property="Padding" Value="0" />
-        </Style>
-
     </Page.Resources>
 
 
@@ -102,6 +97,15 @@
                             SelectionChanged="OnCurrentPageChanged"
                             Background="Transparent"
                             ItemContainerStyle="{StaticResource SplitPaneMenuItem}"/>
+                        <Button 
+                            x:Name="feedbackButton"
+                            Visibility="Collapsed"
+                            Click="OnFeedbackButtonClick"
+                            Style="{StaticResource SplitPaneButton}"
+                            ContentTemplate="{StaticResource NavButtonTemplate}">
+                            <local:NavMenuItem Name="Feedback" SymbolIconName="Emoji2" />
+                        </Button>
+                        
                     </StackPanel>
                 </Grid>
             </SplitView.Pane>
