@@ -108,10 +108,12 @@ namespace ChessEngineClient.ViewModel
         {
             try
             {
+                // ignore best move since it does not have the entire line moves
                 if (e.Data.IsBestMove)
                     return;
 
-                string newEvalutation = e.Data.Score > 0 ? $"+{e.Data.Score}" : e.Data.Score.ToString();
+                float whiteScoreEvaluation = analysisBoardService.IsWhiteTurn ? e.Data.Score : e.Data.Score * -1;
+                string newEvalutation = whiteScoreEvaluation > 0 ? $"+{whiteScoreEvaluation}" : whiteScoreEvaluation.ToString();
                 string newMoves = GetEvaluationVariationString(e.Data);
                 if (newMoves.TrimEnd().EndsWith("#"))
                     newEvalutation = GetMateEvaluation(e.Data);
@@ -133,10 +135,13 @@ namespace ChessEngineClient.ViewModel
 
         private string GetMateEvaluation(AnalysisData data)
         {
-            string sign = "+";
+            string sign = "-";
 
-            if (data.Analysis.Length % 2 == 0)
-                sign = "-";
+            if ((data.Analysis.Length % 2 != 0 && analysisBoardService.IsWhiteTurn) ||
+                (data.Analysis.Length % 2 == 0 && !analysisBoardService.IsWhiteTurn))
+            {
+                sign = "+";
+            }
 
             return sign + "M" + Math.Ceiling(((float)data.Analysis.Length) / 2).ToString();
         }
