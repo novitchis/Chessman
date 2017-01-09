@@ -27,6 +27,8 @@ namespace ChessEngineClient.Controls
     /// <summary>
     /// The <see cref="CompositionShadow"/> control allows the creation of a DropShadow for any Xaml FrameworkElement in markup
     /// making it easier to add shadows to Xaml without having to directly drop down to Windows.UI.Composition APIs.
+    /// NOTE: available since Windows 10 aniversary edition, build 14393
+    /// Use AdaptiveCompositionShadow control until the min target is te above one
     /// </summary>
     [ContentProperty(Name = nameof(CastingElement))]
     public sealed partial class CompositionShadow : UserControl
