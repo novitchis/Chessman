@@ -90,13 +90,6 @@
                         ItemContainerStyle="{StaticResource SplitPaneMenuItem}"/>
                     <StackPanel Grid.Row="1">
                         <Rectangle Fill="{StaticResource DefaultBorderBrush}" Height="1" Margin="5"/>
-                        <ListBox
-                            ItemsSource="{Binding SecondaryNavigationItems}"
-                            SelectedItem="{Binding CurrentSecondaryNavItem, Mode=TwoWay}"
-                            ItemTemplate="{StaticResource NavButtonTemplate}"
-                            SelectionChanged="OnCurrentPageChanged"
-                            Background="Transparent"
-                            ItemContainerStyle="{StaticResource SplitPaneMenuItem}"/>
                         <Button 
                             x:Name="feedbackButton"
                             Visibility="Collapsed"
@@ -105,7 +98,13 @@
                             ContentTemplate="{StaticResource NavButtonTemplate}">
                             <local:NavMenuItem Name="Feedback" SymbolIconName="Emoji2" />
                         </Button>
-                        
+                        <ListBox
+                            ItemsSource="{Binding SecondaryNavigationItems}"
+                            SelectedItem="{Binding CurrentSecondaryNavItem, Mode=TwoWay}"
+                            ItemTemplate="{StaticResource NavButtonTemplate}"
+                            SelectionChanged="OnCurrentPageChanged"
+                            Background="Transparent"
+                            ItemContainerStyle="{StaticResource SplitPaneMenuItem}"/>
                     </StackPanel>
                 </Grid>
             </SplitView.Pane>
