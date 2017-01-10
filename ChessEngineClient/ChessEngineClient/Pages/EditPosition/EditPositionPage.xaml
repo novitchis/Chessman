@@ -71,8 +71,18 @@
                             <StackPanel 
                                 Orientation="Horizontal"
                                 Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <AppBarButton Label="Analyse" Icon="Home" Command="{Binding AnalyseCommand}"/>
-                                <AppBarButton Label="Practice" Icon="ReportHacked" Command="{Binding PracticeCommand}"/>
+                                <Button Style="{StaticResource SymbolIconButton}" Command="{Binding AnalyseCommand}">
+                                    <StackPanel>
+                                        <SymbolIcon Symbol="Home" />
+                                        <TextBlock Text="Analyze" Style="{StaticResource SymbolIconButtonLabel}"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource SymbolIconButton}" Command="{Binding PracticeCommand}">
+                                    <StackPanel>
+                                        <SymbolIcon Symbol="ReportHacked" />
+                                        <TextBlock Text="Practice" Style="{StaticResource SymbolIconButtonLabel}"/>
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
 
                             <TextBlock 
