@@ -28,7 +28,6 @@ namespace ChessEngineClient
         public override void LoadFromFen(string fenString)
         {
             base.LoadFromFen(fenString);
-            AnalyseCurrentPosition();
         }
 
         public override bool SubmitMove(Coordinate from, Coordinate to)
@@ -51,6 +50,9 @@ namespace ChessEngineClient
 
         public void Start()
         {
+            // if is not maximum the analyze infinite command has some issues
+            engine.SetOptions(new EngineOptions() { SkillLevel = 20 });
+
             AnalyseCurrentPosition();
         }
 
