@@ -82,7 +82,10 @@ namespace ChessEngineClient.ViewModel
 
         public void OnPageNavigatedTo(PositionLoadOptions loadOptions)
         {
-            editorBoardService.LoadFromFen(loadOptions.Fen);
+            if (loadOptions.SerializationType != BoardSerializationType.FEN)
+                throw new ArgumentException("Use FEN serialization for edit board loading.");
+
+            editorBoardService.LoadFrom(loadOptions.SerializedBoard, loadOptions.SerializationType);
             BoardViewModel.RefreshBoard(loadOptions.Perspective);
             IsWhiteToMove = editorBoardService.IsWhiteTurn;
             IsBoardValid = editorBoardService.AcceptEditedPosition();
@@ -133,7 +136,7 @@ namespace ChessEngineClient.ViewModel
         {
             return new PositionLoadOptions()
             {
-                Fen = editorBoardService.GetFen(),
+                SerializedBoard = editorBoardService.Serialize(BoardSerializationType.FEN),
                 Perspective = BoardViewModel.Perspective,
             };
         }

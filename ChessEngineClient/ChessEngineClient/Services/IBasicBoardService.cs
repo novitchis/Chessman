@@ -11,10 +11,16 @@ namespace ChessEngineClient
     {
         bool IsWhiteTurn { get; }
 
-        void LoadFromFen(string fenString);
-
-        string GetFen();
-
         ChessPiece GetPiece(Coordinate coordinate);
+
+        void LoadFrom(string value, BoardSerializationType type);
+
+        string Serialize(BoardSerializationType type);
+    }
+
+    public enum BoardSerializationType
+    {
+        FEN,
+        PGN
     }
 }

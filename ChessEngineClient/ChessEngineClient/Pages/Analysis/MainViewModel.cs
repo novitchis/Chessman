@@ -40,7 +40,7 @@ namespace ChessEngineClient.ViewModel
 
         private void PracticePositionExecuted(object obj)
         {
-            NavigationService.NavigateTo(ViewModelLocator.PracticePageNavigationName, GetPositionLoadOptions());
+            NavigationService.NavigateTo(ViewModelLocator.PracticePageNavigationName, GetPositionLoadOptions(BoardSerializationType.PGN));
         }
     }
 }

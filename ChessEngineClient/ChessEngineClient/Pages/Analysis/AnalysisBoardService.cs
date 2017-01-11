@@ -25,11 +25,6 @@ namespace ChessEngineClient
             AnalyseCurrentPosition();
         }
 
-        public override void LoadFromFen(string fenString)
-        {
-            base.LoadFromFen(fenString);
-        }
-
         public override bool SubmitMove(Coordinate from, Coordinate to)
         {
             bool result = base.SubmitMove(from, to);

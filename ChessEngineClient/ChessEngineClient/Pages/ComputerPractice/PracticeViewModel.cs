@@ -66,7 +66,7 @@ namespace ChessEngineClient.ViewModel
 
         private void AnalyseGameExecuted(object obj)
         {
-            NavigationService.NavigateTo(ViewModelLocator.MainPageNavigationName, GetPositionLoadOptions());
+            NavigationService.NavigateTo(ViewModelLocator.MainPageNavigationName, GetPositionLoadOptions(BoardSerializationType.PGN));
         }
     }
 }

@@ -8,7 +8,9 @@ namespace ChessEngineClient
 {
     public class PositionLoadOptions
     {
-        public string Fen { get; set; }
+        public string SerializedBoard { get; set; }
+
+        public BoardSerializationType SerializationType { get; set; }
 
         public SideColor Perspective { get; set; }
     }
