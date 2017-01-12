@@ -72,12 +72,12 @@ namespace ChessEngineClient
         public void Start()
         {
             analysisReceiver.AnalysisReceived += OnAnalysisReceived;
+            isStarted = true;
 
             if (!GetIsComputerTurn())
                 return;
 
             RequestComputerMove();
-            isStarted = true;
         }
 
         private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
