@@ -51,4 +51,20 @@
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Margin" Value="0 5 0 0"/>
     </Style>
+
+    <Style TargetType="PathIcon" x:Key="ComputerIconStyle">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Data">
+            <Setter.Value>
+                <GeometryGroup>
+                    <RectangleGeometry Rect="0 0 25 15" />
+                    <RectangleGeometry Rect="1 1 23 13" />
+                    <RectangleGeometry Rect="10 16 5 1" />
+                    <RectangleGeometry Rect="8 17 9 1" />
+                </GeometryGroup>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

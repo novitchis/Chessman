@@ -73,13 +73,13 @@
                                 Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <Button Style="{StaticResource SymbolIconButton}" Command="{Binding AnalyseCommand}">
                                     <StackPanel>
-                                        <SymbolIcon Symbol="Home" />
+                                        <SymbolIcon Symbol="Find" />
                                         <TextBlock Text="Analyze" Style="{StaticResource SymbolIconButtonLabel}"/>
                                     </StackPanel>
                                 </Button>
                                 <Button Style="{StaticResource SymbolIconButton}" Command="{Binding PracticeCommand}">
                                     <StackPanel>
-                                        <SymbolIcon Symbol="ReportHacked" />
+                                        <PathIcon Style="{StaticResource ComputerIconStyle}"/>
                                         <TextBlock Text="Practice" Style="{StaticResource SymbolIconButtonLabel}"/>
                                     </StackPanel>
                                 </Button>
