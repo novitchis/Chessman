@@ -10,4 +10,5 @@
     <co:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     <co:StringFormatter x:Key="StringFormatter" />
     <co:BoolInverterConverter x:Key="BoolInverterConverter" />
+    <co:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
 </ResourceDictionary>

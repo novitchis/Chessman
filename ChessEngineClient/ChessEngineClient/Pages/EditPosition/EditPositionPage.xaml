@@ -79,7 +79,7 @@
                                 </Button>
                                 <Button Style="{StaticResource SymbolIconButton}" Command="{Binding PracticeCommand}">
                                     <StackPanel>
-                                        <PathIcon Style="{StaticResource ComputerIconStyle}"/>
+                                        <ContentControl Template="{StaticResource ComputerIconTemplate}" />
                                         <TextBlock Text="Practice" Style="{StaticResource SymbolIconButtonLabel}"/>
                                     </StackPanel>
                                 </Button>

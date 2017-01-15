@@ -24,6 +24,19 @@ namespace ChessEngineClient.ViewModel
             get { return new RelayCommand(AnalyseGameExecuted); }
         }
 
+        public SideColor UserColor
+        {
+            get { return practiceBoardService.UserColor; }
+            set
+            {
+                if (UserColor != value)
+                {
+                    practiceBoardService.SwitchUserColor();
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         public PracticeViewModel(
             INavigationService navigationService, 
             IPracticeBoardService practiceBoardService,
@@ -43,8 +56,7 @@ namespace ChessEngineClient.ViewModel
             PositionLoadOptions positionLoadOptions = parameter as PositionLoadOptions;
             if (positionLoadOptions != null)
             {
-                if (practiceBoardService.UserColor != positionLoadOptions.Perspective)
-                    practiceBoardService.SwitchUserColor();
+                UserColor = positionLoadOptions.Perspective;
             }
 
             base.OnNavigatedTo(parameter);
@@ -52,7 +64,7 @@ namespace ChessEngineClient.ViewModel
 
         private void SwitchColorExecuted(object obj)
         {
-            practiceBoardService.SwitchUserColor();
+            UserColor = UserColor == SideColor.Black ? SideColor.White : SideColor.Black;
             if (practiceBoardService.UserColor != BoardViewModel.Perspective)
                 BoardViewModel.TogglePerspectiveCommand.Execute(null);
         }

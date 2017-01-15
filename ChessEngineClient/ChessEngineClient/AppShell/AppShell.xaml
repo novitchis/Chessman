@@ -21,7 +21,7 @@
                     Foreground="White"
                     Margin="12"
                     Symbol="{x:Bind SymbolIconName}"/>
-                <PathIcon x:Name="pathIcon" 
+                <ContentControl x:Name="customIconControl" 
                           Visibility="Collapsed"
                           Margin="12"
                           Foreground="White" />
@@ -30,13 +30,13 @@
                            FontSize="16"
                            Foreground="White"
                            Text="{x:Bind Name}" />
-                <!--<i:Interaction.Behaviors>
+                <i:Interaction.Behaviors>
                     <ic:DataTriggerBehavior Binding="{x:Bind Name}" Value="Computer practice">
                         <ic:ChangePropertyAction TargetObject="{Binding ElementName=symbolIcon}" PropertyName="Visibility" Value="Collapsed" />
-                        <ic:ChangePropertyAction TargetObject="{Binding ElementName=pathIcon}" PropertyName="Visibility" Value="Visible" />
-                        --><!--<ic:ChangePropertyAction TargetObject="{Binding ElementName=pathIcon}" PropertyName="Style" Value="{StaticResource ComputerIconStyle}" />--><!--
+                        <ic:ChangePropertyAction TargetObject="{Binding ElementName=customIconControl}" PropertyName="Visibility" Value="Visible" />
+                        <ic:ChangePropertyAction TargetObject="{Binding ElementName=customIconControl}" PropertyName="Template" Value="{StaticResource ComputerIconTemplate}" />
                     </ic:DataTriggerBehavior>
-                </i:Interaction.Behaviors>-->
+                </i:Interaction.Behaviors>
             </Grid>
         </DataTemplate>
 

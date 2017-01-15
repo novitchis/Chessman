@@ -30,9 +30,25 @@
                                      DataContext="{Binding BoardViewModel}" />
             </RelativePanel>
         </Grid>
-        <CommandBar x:Name="CommandBar" Grid.Row="2" Background="{StaticResource AccentBrush400}">
-            <AppBarButton Label="Switch color" Icon="ReShare" Command="{Binding SwitchColor}"/>
-            <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
+        <CommandBar x:Name="CommandBar" 
+                    Grid.Row="2" 
+                    Background="{StaticResource AccentBrush400}">
+            <AppBarButton 
+                Label="Switch color" 
+                Command="{Binding SwitchColor}"
+                Visibility="{Binding UserColor, Mode=OneWay, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='White'}">
+                <AppBarButton.Icon>
+                    <PathIcon VerticalAlignment="Center" HorizontalAlignment="Center" Data="{StaticResource SwitchSideToBlackButtonData}"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton 
+                Label="Switch color" 
+                Command="{Binding SwitchColor}"
+                Visibility="{Binding UserColor, Mode=OneWay, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='Black'}">
+                <AppBarButton.Icon>
+                    <PathIcon VerticalAlignment="Center" HorizontalAlignment="Center" Data="{StaticResource SwitchSideToWhiteButtonData}"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
             <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}"/>
             <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}"/>
 
