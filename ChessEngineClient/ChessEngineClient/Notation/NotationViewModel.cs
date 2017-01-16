@@ -15,12 +15,12 @@ namespace ChessEngineClient.ViewModel
     public class NotationViewModel : ViewModelBase
     {
         private IBoardService analysisBoardService = null;
-        private IList<MoveDataGroup> groupedMoves = new List<MoveDataGroup>();
+        private ObservableCollection<MoveDataGroup> groupedMoves = new ObservableCollection<MoveDataGroup>();
         private MoveData currentMove = null;
 
         #region Properties
 
-        public IList<MoveDataGroup> GroupedMoves
+        public ObservableCollection<MoveDataGroup> GroupedMoves
         {
             get { return groupedMoves; }
             set
@@ -63,7 +63,51 @@ namespace ChessEngineClient.ViewModel
         {
             // check if message is intended for current board service
             if (message.Target == analysisBoardService)
-                ReloadMoves();
+                LoadExecutedMove();
+        }
+
+        private void LoadExecutedMove()
+        {
+            var currentMoveData = analysisBoardService.GetCurrentMove();
+            int groupIndex = currentMoveData.Index / 2;
+            bool isWhiteMove = currentMoveData.Index % 2 == 0;
+
+            if (GroupedMoves.Count == groupIndex)
+            {
+                GroupedMoves.Add(new MoveDataGroup(groupIndex + 1) { WhiteMove = currentMoveData });
+            }
+            else
+            {
+                bool isSameAsDisplayedMove = isWhiteMove ? 
+                    GroupedMoves[groupIndex].WhiteMove.PgnMove == currentMoveData.PgnMove :
+                    GroupedMoves[groupIndex].BlackMove?.PgnMove == currentMoveData.PgnMove;
+
+                if (!isSameAsDisplayedMove)
+                {
+                    //remove the entire group since ethe group moves collection is not observable
+                    var overridingGroup = GroupedMoves[groupIndex];
+
+                    //white move can never be null in a group
+                    if (isWhiteMove)
+                    {
+                        overridingGroup.WhiteMove = currentMoveData;
+                        overridingGroup.BlackMove = null;
+                    }
+                    else
+                    {
+                        overridingGroup.BlackMove = currentMoveData;
+                    }
+
+                    GroupedMoves[groupIndex] = overridingGroup;
+
+                    // remove all other moves
+                    while (groupIndex + 1 < GroupedMoves.Count)
+                        GroupedMoves.RemoveAt(GroupedMoves.Count - 1);
+                }
+            }
+
+            CurrentMove = isWhiteMove ? GroupedMoves[groupIndex].WhiteMove : 
+                GroupedMoves[groupIndex].BlackMove;
         }
 
         public void ReloadMoves()
@@ -92,7 +136,8 @@ namespace ChessEngineClient.ViewModel
                 }
             }
 
-            GroupedMoves = newGroupedMoves;
+            GroupedMoves.Clear();
+            newGroupedMoves.ForEach(GroupedMoves.Add);
 
             MoveData currentMove = moves.FirstOrDefault(m => m.IsCurrent);
             if (currentMove != null)

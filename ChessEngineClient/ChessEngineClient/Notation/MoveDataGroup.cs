@@ -1,4 +1,5 @@
 ﻿using ChessEngine;
+using System;
 using System.Collections.Generic;
 
 namespace ChessEngineClient.ViewModel
@@ -26,6 +27,11 @@ namespace ChessEngineClient.ViewModel
         public MoveDataGroup(int moveNumber)
         {
             MoveNumber = moveNumber;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("{0}. {1} {2}", MoveNumber, WhiteMove.ToString(), BlackMove?.ToString());
         }
     }
 }

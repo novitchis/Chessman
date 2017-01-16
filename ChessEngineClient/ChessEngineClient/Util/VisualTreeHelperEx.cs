@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
 namespace ChessEngineClient.Util
@@ -35,7 +37,13 @@ namespace ChessEngineClient.Util
         /// <returns>The first parent item that matches the submitted type parameter. 
         /// If not matching item can be found, 
         /// a null parent is being returned.</returns>
-        public static T FindChild<T>(DependencyObject parent, string childName)
+        public static T FindChildByName<T>(DependencyObject parent, string childName)
+            where T : FrameworkElement
+        {
+            return FindChild<T>(parent, (f) => f.Name == childName);
+        }
+
+        public static T FindChild<T>(DependencyObject parent, Predicate<T> discriminator = null)
            where T : DependencyObject
         {
             // Confirm parent and childName are valid. 
@@ -52,24 +60,24 @@ namespace ChessEngineClient.Util
                 if (childType == null)
                 {
                     // recursively drill down the tree
-                    foundChild = FindChild<T>(child, childName);
+                    foundChild = FindChild<T>(child, discriminator);
 
                     // If the child is found, break so we do not overwrite the found child. 
                     if (foundChild != null) break;
                 }
-                else if (!string.IsNullOrEmpty(childName))
+                else if (discriminator != null)
                 {
-                    var frameworkElement = child as FrameworkElement;
+                    var castElement = child as T;
                     // If the child's name is set for search
-                    if (frameworkElement != null && frameworkElement.Name == childName)
+                    if (castElement != null && discriminator(castElement))
                     {
                         // if the child's name is of the request name
-                        foundChild = (T)child;
+                        foundChild = castElement;
                         break;
                     }
                     else
                     {
-                        foundChild = FindChild<T>(child, childName);
+                        foundChild = FindChild<T>(child, discriminator);
 
                         // If the child is found, break so we do not overwrite the found child. 
                         if (foundChild != null) break;
@@ -86,5 +94,20 @@ namespace ChessEngineClient.Util
             return foundChild;
         }
 
+        public static void ScrollToElement(this ScrollViewer scrollViewer, UIElement element,
+            bool isVerticalScrolling = true, bool smoothScrolling = true, float? zoomFactor = null)
+        {
+            var transform = element.TransformToVisual((UIElement)scrollViewer.Content);
+            var position = transform.TransformPoint(new Point(0, 0));
+
+            if (isVerticalScrolling)
+            {
+                scrollViewer.ChangeView(null, position.Y, zoomFactor, !smoothScrolling);
+            }
+            else
+            {
+                scrollViewer.ChangeView(position.X, null, zoomFactor, !smoothScrolling);
+            }
+        }
     }
 }
