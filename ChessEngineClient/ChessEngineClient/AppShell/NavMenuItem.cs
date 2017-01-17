@@ -14,6 +14,10 @@ namespace ChessEngineClient
 
         public string PageNavigationName { get; set; }
 
+        public NavMenuItem()
+        {
+        }
+
         public NavMenuItem(string name, string symbolIconName, string pageNavigationName)
         {
             Name = name;

@@ -135,14 +135,18 @@ IVector<MoveData^>^ ChessBoard::GetMoves(bool stopOnCurrent)
 		std::list<MoveDataImpl> listMoves = m_ChessBoardImpl.GetMoves();
 
 		int count = 0;
+		int currentMoveIndex = m_ChessBoardImpl.GetCurrentMoveIndex();
+
 		for (auto it = listMoves.begin(); it != listMoves.end(); ++it, ++count) {
-			if (stopOnCurrent && count > m_ChessBoardImpl.GetCurrentMoveIndex())
+			if (stopOnCurrent && count > currentMoveIndex)
 				break;
 			if (it->move == NULL) {
 				result->Append(nullptr);
 			}
 			else {
-				result->Append(ref new MoveData(*it));
+				MoveData^ move = ref new MoveData(*it);
+				move->IsCurrent = count == currentMoveIndex;
+				result->Append(move);
 			}
 		}
 
@@ -241,6 +245,17 @@ bool ChessBoard::IsCheckmate()
 	}
 }
 
+bool ChessBoard::IsCheck()
+{
+	try
+	{
+		return m_ChessBoardImpl.InCheck();
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to get is in check."));
+	}
+}
 
 SerializationType ChessBoard::GetSerializationType(int type)
 {

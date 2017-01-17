@@ -17,9 +17,41 @@
           Background="{StaticResource AccentBrush300}">
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <Grid x:Name="titlePanel" Style="{StaticResource PageTitlePanelStyle}">
+            <TextBlock 
+                Text="Analysis"
+                Style="{StaticResource HeaderTextStyle}" />
+        </Grid>
+        <Grid Margin="4" Grid.Row="1" x:Name="contentGrid">
+            <RelativePanel>
+                <view:AnalysisView x:Name="analysisView"
+                                DataContext="{Binding AnalysisViewModel}"
+                                Height="48" />
+                
+                <view:NotationView x:Name="notationView"
+                                   DataContext="{Binding NotationViewModel}" />
+                <view:ChessBoardView x:Name="chessBoard"
+                                     HasDragAndDrop="True"
+                                     DataContext="{Binding BoardViewModel}"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center" />
+            </RelativePanel>
+        </Grid>
+        <CommandBar x:Name="CommandBar" Grid.Row="2" Background="{StaticResource AccentBrush400}">
+            <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
+            <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}"/>
+            <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}"/>
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="New game" Command="{Binding NewGameCommand}" />
+                <AppBarButton Label="Edit position" Command="{Binding EditPositionCommand}" />
+                <AppBarButton Label="Continue vs computer" Command="{Binding PracticePositionCommand}" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
@@ -27,7 +59,7 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="contentGrid.Margin" Value="12"/>
+                        <Setter Target="contentGrid.Margin" Value="12 8 12 12"/>
 
                         <Setter Target="chessBoard.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
@@ -52,6 +84,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="contentGrid.Margin" Value="0"/>
+                        <Setter Target="titlePanel.Visibility" Value="Collapsed"/>
 
                         <Setter Target="analysisView.(RelativePanel.AlignTopWithPanel)" Value="true"/>
                         <Setter Target="analysisView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
@@ -72,30 +105,5 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <Grid Margin="4" x:Name="contentGrid">
-            <RelativePanel>
-                <view:AnalysisView x:Name="analysisView"
-                                DataContext="{Binding AnalysisViewModel}"
-                                Height="48" />
-                
-                <view:NotationView x:Name="notationView"
-                                   DataContext="{Binding NotationViewModel}" />
-                <view:ChessBoardView x:Name="chessBoard"
-                                     HasDragAndDrop="True"
-                                     DataContext="{Binding BoardViewModel}"
-                                     VerticalAlignment="Center"
-                                     HorizontalAlignment="Center" />
-            </RelativePanel>
-        </Grid>
-        <CommandBar x:Name="CommandBar" Grid.Row="1" Background="{StaticResource AccentBrush400}">
-            <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
-            <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}"/>
-            <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}"/>
-
-            <CommandBar.SecondaryCommands>
-                <AppBarButton Label="New game" Command="{Binding NewGameCommand}" />
-                <AppBarButton Label="Edit position" Command="{Binding EditPositionCommand}" />
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
     </Grid>
 </Page>

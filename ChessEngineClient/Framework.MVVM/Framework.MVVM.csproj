@@ -110,6 +110,7 @@
     <Compile Include="Converters.cs" />
     <Compile Include="Helpers\WeakAction.cs" />
     <Compile Include="Helpers\WeakActionGeneric.cs" />
+    <Compile Include="INavigationAware.cs" />
     <Compile Include="INavigationService.cs" />
     <Compile Include="Helpers\IExecuteWithObject.cs" />
     <Compile Include="Messaging\GenericMessage.cs" />

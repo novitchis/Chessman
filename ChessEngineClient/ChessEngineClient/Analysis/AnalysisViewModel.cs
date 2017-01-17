@@ -11,7 +11,7 @@ namespace ChessEngineClient.ViewModel
 {
     public class AnalysisViewModel : ViewModelBase
     {
-        private IBoardService analysisBoardService = null;
+        private IEngineBoardService analysisBoardService = null;
         private IAnalysisReceiver analysisReceiver = null;
         private string moves = String.Empty;
         private SynchronizationContext uiSynchronizationContext = null;
@@ -61,14 +61,24 @@ namespace ChessEngineClient.ViewModel
 
         #endregion
 
-        public AnalysisViewModel(IBoardService analysisBoardService, IAnalysisReceiver analysisReceiver)
+        public AnalysisViewModel(IEngineBoardService analysisBoardService, IAnalysisReceiver analysisReceiver)
         {
             this.analysisBoardService = analysisBoardService;
             this.analysisReceiver = analysisReceiver;
-            this.analysisReceiver.AnalysisReceived += OnAnalysisReceived;
-            this.analysisReceiver.AnalysisStateChanged += OnAnalysisStateChanged;
-
+           
             uiSynchronizationContext = SynchronizationContext.Current;
+        }
+
+        public void SubscribeToAnalysis()
+        {
+            analysisReceiver.AnalysisReceived += OnAnalysisReceived;
+            analysisReceiver.AnalysisStateChanged += OnAnalysisStateChanged;
+        }
+
+        public void UnsubscribeToAnalysis()
+        {
+            analysisReceiver.AnalysisReceived -= OnAnalysisReceived;
+            analysisReceiver.AnalysisStateChanged -= OnAnalysisStateChanged;
         }
 
         private void OnAnalysisStateChanged(object sender, AnalysisStateEventArgs e)
@@ -98,7 +108,12 @@ namespace ChessEngineClient.ViewModel
         {
             try
             {
-                string newEvalutation = e.Data.Score > 0 ? $"+{e.Data.Score}" : e.Data.Score.ToString();
+                // ignore best move since it does not have the entire line moves
+                if (e.Data.IsBestMove)
+                    return;
+
+                float whiteScoreEvaluation = analysisBoardService.IsWhiteTurn ? e.Data.Score : e.Data.Score * -1;
+                string newEvalutation = whiteScoreEvaluation > 0 ? $"+{whiteScoreEvaluation}" : whiteScoreEvaluation.ToString();
                 string newMoves = GetEvaluationVariationString(e.Data);
                 if (newMoves.TrimEnd().EndsWith("#"))
                     newEvalutation = GetMateEvaluation(e.Data);
@@ -120,10 +135,13 @@ namespace ChessEngineClient.ViewModel
 
         private string GetMateEvaluation(AnalysisData data)
         {
-            string sign = "+";
+            string sign = "-";
 
-            if (data.Analysis.Length % 2 == 0)
-                sign = "-";
+            if ((data.Analysis.Length % 2 != 0 && analysisBoardService.IsWhiteTurn) ||
+                (data.Analysis.Length % 2 == 0 && !analysisBoardService.IsWhiteTurn))
+            {
+                sign = "+";
+            }
 
             return sign + "M" + Math.Ceiling(((float)data.Analysis.Length) / 2).ToString();
         }

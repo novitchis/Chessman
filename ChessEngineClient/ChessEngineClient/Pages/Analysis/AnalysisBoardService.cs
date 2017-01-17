@@ -8,44 +8,28 @@ using System.Threading;
 
 namespace ChessEngineClient
 {
-    public class AnalysisBoardService : BoardService
+    public class AnalysisBoardService : BoardService, IEngineBoardService
     {
-        private Engine engine = null;
+        private IEngine engine = null;
         private IEngineNotification engineNotification = null;
 
-        public AnalysisBoardService(IEngineNotification engineNotification)
+        public AnalysisBoardService(IEngineNotification engineNotification, IEngine engine)
         {
             this.engineNotification = engineNotification;
-            engine = new Engine(engineNotification);
-            engine.Start();
-
-            SynchronizationContext mainSynchronizationContext = SynchronizationContext.Current;
-
-            // this is a quick test to identify whether our crashes occur on initial engine start 
-            Task.Run(async () =>
-            {
-                await Task.Delay(1500).ConfigureAwait(true);
-                mainSynchronizationContext.Post(o => { RefreshAnalysis(); }, null);
-            });
+            this.engine = engine;
         }
 
         public override void ResetBoard()
         {
             base.ResetBoard();
-            RefreshAnalysis();
-        }
-
-        public override void LoadFromFen(string fenString)
-        {
-            base.LoadFromFen(fenString);
-            RefreshAnalysis();
+            AnalyseCurrentPosition();
         }
 
         public override bool SubmitMove(Coordinate from, Coordinate to)
         {
             bool result = base.SubmitMove(from, to);
             if (result)
-                RefreshAnalysis();
+                AnalyseCurrentPosition();
 
             return result;
         }
@@ -54,22 +38,32 @@ namespace ChessEngineClient
         {
             bool result = base.GoToMove(moveIndex);
             if (result)
-                RefreshAnalysis();
+                AnalyseCurrentPosition();
 
             return result;
         }
 
-        private void RefreshAnalysis()
+        public void Start()
+        {
+            AnalyseCurrentPosition();
+        }
+
+        private void AnalyseCurrentPosition()
         {
             if (!ChessBoard.IsStalemate() && !ChessBoard.IsCheckmate())
             {
                 engineNotification.OnStateChanged(EngineState.Analyze);
-                engine.Analyze(ChessBoard);
+                engine.Analyze(ChessBoard, -1);
             }
             else
             {
                 engineNotification.OnStateChanged(EngineState.Stop);
             }
+        }
+
+        public void Stop()
+        {
+            engine.StopAnalyzing();
         }
     }
 }

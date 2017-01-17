@@ -3,18 +3,24 @@
 #include "IEngineNotification.h"
 #include "ChessBoard.h"
 #include "EngineNotificationAdaptor.h"
+#include "IEngine.h"
+#include "EngineOptions.h"
 
 namespace ChessEngine
 {
-    public ref class Engine sealed
+	public ref class Engine sealed : IEngine
     {
     public:
         Engine(IEngineNotification^ pNotifications);
     
 		bool Connect();
-		bool Start();
-		bool Stop();
-		bool Analyze(ChessBoard^ board);
+
+		virtual bool Start();
+		virtual bool Stop();
+		virtual bool Analyze(ChessBoard^ board, int secondsLeft);
+
+		virtual bool StopAnalyzing();
+		virtual void SetOptions(EngineOptions^ options);
 
 	private:
 		std::shared_ptr<IChessEngine>		m_pEngineImpl;

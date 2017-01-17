@@ -20,6 +20,8 @@
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="UseSystemFocusVisuals" Value="False" />
+        <Setter Property="FocusVisualPrimaryThickness" Value="0" />
         <Setter Property="Background" Value="{StaticResource AccentBrush700}" />
         <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
         <Setter Property="Content">
@@ -108,4 +110,19 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="SplitPaneButton" TargetType="Button">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="UseSystemFocusVisuals" Value="False" />
+        <Setter Property="FocusVisualPrimaryThickness" Value="0" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style TargetType="ListBoxItem" x:Key="SplitPaneMenuItem">
+        <Setter Property="UseSystemFocusVisuals" Value="False" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
 </ResourceDictionary>

@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="using:ChessEngineClient.View"
+    xmlns:controls="using:ChessEngineClient.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -31,6 +32,7 @@
             <!--This is a hack to take up space-->
             <Border Width="20" Height="20"/>
         </Viewbox>
-        <view:ChessPieceView x:Name="pieceView" DataContext="{Binding Piece}" />
+
+            <view:ChessPieceView x:Name="pieceView" DataContext="{Binding PieceViewModel}" />
     </Grid>
 </UserControl>

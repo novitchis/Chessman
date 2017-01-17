@@ -36,7 +36,7 @@ namespace ChessEngine
 		bool				AcceptEditedPosition();
 		bool				IsStalemate();
 		bool				IsCheckmate();
-
+		bool				IsCheck();
 
 	private:
 		SerializationType GetSerializationType(int type);

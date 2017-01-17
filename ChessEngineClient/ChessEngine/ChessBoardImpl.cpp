@@ -966,6 +966,8 @@ bool ChessBoardImpl::LoadFromFEN( const std::string& strData )
 
 bool ChessBoardImpl::LoadFromPGN( const std::string& strData )
 {
+	Initialize();
+
 	std::string strToken;
 	std::istringstream stm( strData );
 	std::string delims = " \n\t";

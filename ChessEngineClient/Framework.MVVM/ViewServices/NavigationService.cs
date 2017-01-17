@@ -56,10 +56,36 @@ namespace Framework.MVVM
         {
             if (frame.CanGoBack)
             {
+                NotifyOnNavigatingFrom();
+                
                 frame.GoBack();
                 lock (_pagesByKey)
                     CurrentPageKey = _pagesByKey.FirstOrDefault(k => k.Value == frame.Content.GetType()).Key;
+
+                NotifyOnNavigatedTo(null);
             }
+        }
+
+        private void NotifyOnNavigatingFrom()
+        {
+            FrameworkElement contentElement = frame.Content as FrameworkElement;
+            if (contentElement == null)
+                return;
+
+            INavigationAware navigationAwareContext = contentElement.DataContext as INavigationAware;
+            if (navigationAwareContext != null)
+                navigationAwareContext.OnNavigatingFrom();
+        }
+
+        private void NotifyOnNavigatedTo(object parameter)
+        {
+            FrameworkElement contentElement = frame.Content as FrameworkElement;
+            if (contentElement == null)
+                return;
+
+            INavigationAware navigationAwareContext = contentElement.DataContext as INavigationAware;
+            if (navigationAwareContext != null)
+                navigationAwareContext.OnNavigatedTo(parameter);
         }
 
         /// <summary>
@@ -101,8 +127,12 @@ namespace Framework.MVVM
                         "pageKey");
                 }
 
+                NotifyOnNavigatingFrom();
+
                 frame.Navigate(_pagesByKey[pageKey], parameter);
                 CurrentPageKey = pageKey;
+
+                NotifyOnNavigatedTo(parameter);
             }
         }
 

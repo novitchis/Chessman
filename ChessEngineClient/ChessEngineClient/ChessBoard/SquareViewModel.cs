@@ -10,21 +10,21 @@ namespace ChessEngineClient.ViewModel
 {
     public class SquareViewModel : ViewModelBase
     {
-        private ChessPiece piece = null;
+        private ChessPieceViewModel pieceViewModel = null;
         private bool isLastMoveSquare = false;
 
         #region "Properties"
 
         public Coordinate Coordinate { get; private set; }
 
-        public ChessPiece Piece
+        public ChessPieceViewModel PieceViewModel
         {
-            get { return piece; }
+            get { return pieceViewModel; }
             set
             {
-                if (piece != value)
+                if (pieceViewModel != value)
                 {
-                    piece = value;
+                    pieceViewModel = value;
                     NotifyPropertyChanged();
                 }
             }

@@ -52,13 +52,17 @@ namespace ChessEngineClient
                 titleBar.ForegroundColor = Colors.White;
             }
 
+            if (Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.IsSupported())
+            {
+                this.feedbackButton.Visibility = Visibility.Visible;
+            }
+
             Loaded += (o, e) =>
             {
                 if (ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
                     HardwareButtons.BackPressed += HardwareButtons_BackPressed;
 
                 SystemNavigationManager.GetForCurrentView().BackRequested += SystemNavigationManager_BackRequested;
-                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             };
         }
 
@@ -70,15 +74,11 @@ namespace ChessEngineClient
 
         private void ExecuteBackAction()
         {
-            if (AppFrame.CurrentSourcePageType == typeof(MainPage))
-                ConfirmAndExit();
-            else if (AppFrame.CurrentSourcePageType == typeof(EditPositionPage))
-            {
-                INavigationService navigationService = ViewModelLocator.IOCContainer.Resolve<INavigationService>();
-                navigationService.NavigateTo(ViewModelLocator.MainPageNavigationName);
-            }
+            INavigationService navigationService = ViewModelLocator.IOCContainer.Resolve<INavigationService>();
+            if (AppFrame.CanGoBack)
+                navigationService.GoBack();
             else
-                throw new NotImplementedException("The back button is not implemented for this page");
+                ConfirmAndExit();
         }
 
         private void SystemNavigationManager_BackRequested(object sender, BackRequestedEventArgs e)
@@ -105,11 +105,20 @@ namespace ChessEngineClient
 
         private void OnCurrentPageChanged(object sender, SelectionChangedEventArgs e)
         {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppFrame.CanGoBack ?
+                    AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
+
             if (rootSplitView.DisplayMode != SplitViewDisplayMode.Inline &&
                 rootSplitView.DisplayMode != SplitViewDisplayMode.CompactInline)
             {
-                rootSplitView.IsPaneOpen = false;
+                rootSplitView.IsPaneOpen = false;                
             }
+        }
+
+        private async void OnFeedbackButtonClick(object sender, RoutedEventArgs e)
+        {
+            var launcher = Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.GetDefault();
+            await launcher.LaunchAsync();
         }
     }
 }

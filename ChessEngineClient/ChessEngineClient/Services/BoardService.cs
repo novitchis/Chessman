@@ -11,6 +11,7 @@ namespace ChessEngineClient
     public class BoardService : IBoardService
     {
         public const int FenSerializationType = 0;
+
         private ChessBoard chessBoard = null;
 
         public bool IsWhiteTurn
@@ -30,16 +31,6 @@ namespace ChessEngineClient
         public virtual void ResetBoard()
         {
             chessBoard.Initialize();
-        }
-
-        public virtual void LoadFromFen(string fenString)
-        {
-            chessBoard.LoadFrom(fenString, FenSerializationType);
-        }
-
-        public string GetFen()
-        {
-            return chessBoard.Serialize(FenSerializationType);
         }
 
         public ChessPiece GetPiece(Coordinate coordinate)
@@ -79,6 +70,31 @@ namespace ChessEngineClient
         public IList<MoveData> GetVariationMoveData(IList<Move> moves)
         {
             return chessBoard.GetVariationMoveData(moves);
+        }
+
+        public bool GetIsInCheck()
+        {
+            return chessBoard.IsCheck();
+        }
+
+        public bool GetIsStalemate()
+        {
+            return chessBoard.IsStalemate();
+        }
+
+        public bool GetIsMate()
+        {
+            return chessBoard.IsCheckmate();
+        }
+
+        public string Serialize(BoardSerializationType type)
+        {
+            return chessBoard.Serialize((int)type);
+        }
+
+        public void LoadFrom(string serializedValue, BoardSerializationType type)
+        {
+            chessBoard.LoadFrom(serializedValue, (int)type);
         }
     }
 }

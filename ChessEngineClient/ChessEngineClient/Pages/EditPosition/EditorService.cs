@@ -43,14 +43,14 @@ namespace ChessEngineClient
             return chessBoard.AcceptEditedPosition();
         }
 
-        public void LoadFromFen(string fenString)
+        public string Serialize(BoardSerializationType type)
         {
-            chessBoard.LoadFrom(fenString, AnalysisBoardService.FenSerializationType);
+            return chessBoard.Serialize((int)type);
         }
 
-        public string GetFen()
+        public void LoadFrom(string serializedValue, BoardSerializationType type)
         {
-            return chessBoard.Serialize(AnalysisBoardService.FenSerializationType);
+            chessBoard.LoadFrom(serializedValue, (int)type);
         }
     }
 }

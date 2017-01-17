@@ -257,7 +257,13 @@ namespace ChessEngine
 	{
 		std::list<MoveImpl>			listAnalysis;
 		float						fScore;
+		bool						isBestMove;
 		
+		AnalysisDataImpl()
+		{
+			isBestMove = false;
+		}
+
 		bool operator > (const AnalysisDataImpl& rhs)
 		{
 			return listAnalysis.size() > rhs.listAnalysis.size();
@@ -280,17 +286,8 @@ namespace ChessEngine
 		ChessPieceImpl  PromotionPiece;
 	};
 
-	enum EngineLevel
+	struct EngineOptionsImpl
 	{
-		EL_Begginer = 0,
-		EL_Middle = 5,
-        EL_Hard = 7, 
-		EL_Advanced = 10, 
-		EL_Impossible = 15
-	};
-
-	struct ChessEngineOptions
-	{
-		EngineLevel level;
+		int level;
 	};
 }

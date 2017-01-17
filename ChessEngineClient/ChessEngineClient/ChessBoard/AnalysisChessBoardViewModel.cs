@@ -2,6 +2,7 @@
 using Framework.MVVM;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,26 +27,45 @@ namespace ChessEngineClient.ViewModel
             RefreshSquares();
         }
 
-        protected override void OnSelectionChanged(SquareViewModel oldSquare, SquareViewModel newSquare)
+        protected override bool OnSelectionChanged(SquareViewModel oldSquare, SquareViewModel newSquare)
         {
-            base.OnSelectionChanged(oldSquare, newSquare);
-
             if (oldSquare == null || newSquare == null)
-                return;
+                return false;
 
-            if (analysisBoardService.SubmitMove(oldSquare.Coordinate, newSquare.Coordinate))
-                Messenger.Default.Send(new MessageBase(), NotificationMessages.MoveExecuted);
+            bool result = analysisBoardService.SubmitMove(oldSquare.Coordinate, newSquare.Coordinate);
+            if (result)
+                Messenger.Default.Send(new MessageBase(this, analysisBoardService), NotificationMessages.MoveExecuted);
+
+            return result;
         }
 
         public override void RefreshSquares()
         {
             base.RefreshSquares();
+            RefreshPositionStateMarkers();            
+        }
 
+        private void RefreshPositionStateMarkers()
+        {
             MoveData lastMove = analysisBoardService.GetCurrentMove();
             if (lastMove != null)
             {
                 Squares[GetSquareIndex(lastMove.Move.GetFrom())].IsLastMoveSquare = true;
                 Squares[GetSquareIndex(lastMove.Move.GetTo())].IsLastMoveSquare = true;
+            }
+
+            bool shouldHighlightWhiteKing = analysisBoardService.GetIsStalemate() || (analysisBoardService.IsWhiteTurn && analysisBoardService.GetIsInCheck());
+            bool shouldHighlightBlackKing = analysisBoardService.GetIsStalemate() || (!analysisBoardService.IsWhiteTurn && analysisBoardService.GetIsInCheck());
+
+            foreach (SquareViewModel square in Squares)
+            {
+                if (square.PieceViewModel != null && square.PieceViewModel.Piece.Type == PieceType.King)
+                {
+                    if (square.PieceViewModel.Piece.Color == PieceColor.White)
+                        square.PieceViewModel.IsHighlighted = shouldHighlightWhiteKing;
+                    else
+                        square.PieceViewModel.IsHighlighted = shouldHighlightBlackKing;
+                }
             }
         }
 

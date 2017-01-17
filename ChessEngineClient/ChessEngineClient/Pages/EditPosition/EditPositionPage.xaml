@@ -20,56 +20,79 @@
 
     <Grid Background="{StaticResource AccentBrush300}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid x:Name="contentGrid">
+        <Grid x:Name="titlePanel" Style="{StaticResource PageTitlePanelStyle}">
+            <TextBlock 
+                Text="Board editor"
+                Style="{StaticResource HeaderTextStyle}" />
+        </Grid>
+        <Grid x:Name="contentGrid" Grid.Row="1">
             <RelativePanel>
-                <Grid x:Name="titlePanel" Height="48">
-                    <TextBlock 
-                        Text="Board editor"
-                        Style="{StaticResource HeaderTextStyle}" />
-                </Grid>
                 <view:ChessBoardView x:Name="chessBoard"
                                      VerticalAlignment="Center"
                                      HorizontalAlignment="Center"
                                      DataContext="{Binding BoardViewModel}" />
-                <view:PiecesPaletteView x:Name="piecesPalette"
-                                        Background="Red"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        DataContext="{Binding PiecesPaletteViewModel}" />
+                <Grid x:Name="optionsPanel" 
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <view:PiecesPaletteView x:Name="piecesPalette"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Left"
+                                            DataContext="{Binding PiecesPaletteViewModel}" />
+                    <StackPanel x:Name="detailsPanel" 
+                                Grid.Row="1"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="To move" Style="{StaticResource LabelTextStyle}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0 4 0 8">
+                            <RadioButton Content="White" IsChecked="{Binding IsWhiteToMove, Mode=TwoWay}"/>
+                            <RadioButton Content="Black" IsChecked="{Binding IsWhiteToMove, Mode=TwoWay, Converter={StaticResource BoolInverterConverter}}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
             </RelativePanel>
         </Grid>
 
-        <CommandBar x:Name="CommandBar" Grid.Row="1" Background="{StaticResource AccentBrush400}">
+        <CommandBar x:Name="CommandBar" Grid.Row="2" Background="{StaticResource AccentBrush400}">
             <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
             <AppBarButton Label="Clear" Icon="Delete" Command="{Binding ClearCommand}"/>
             <AppBarButton Label="Done" Icon="Accept" Foreground="Green">
                 <AppBarButton.Flyout>
                     <Flyout Placement="Top">
-                        <StackPanel>
-                            <StackPanel>
-                                <TextBlock Text="To move:"/>
-                                <StackPanel Orientation="Horizontal" Margin="0 10 0 20">
-                                    <RadioButton Content="White" IsChecked="{Binding IsWhiteToMove, Mode=TwoWay}"/>
-                                    <RadioButton Content="Black" IsChecked="{Binding IsWhiteToMove, Mode=TwoWay, Converter={StaticResource BoolInverterConverter}}"/>
-                                </StackPanel>
-                                <Button
-                                    HorizontalAlignment="Center"
-                                    Command="{Binding SaveCommand}"
-                                    Padding="10 8"
-                                    Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}}"
-                                    Content="Save"/>
-                                <TextBlock 
-                                    Foreground="Red"
-                                    HorizontalAlignment="Center"
-                                    Padding="10 8"
-                                    Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource InvertedConversionType}}" >
-                                    The position is invalid.
-                                </TextBlock>
+
+                        <Grid>
+                            <StackPanel 
+                                Orientation="Horizontal"
+                                Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Button Style="{StaticResource SymbolIconButton}" Command="{Binding AnalyseCommand}">
+                                    <StackPanel>
+                                        <SymbolIcon Symbol="Find" />
+                                        <TextBlock Text="Analyze" Style="{StaticResource SymbolIconButtonLabel}"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource SymbolIconButton}" Command="{Binding PracticeCommand}">
+                                    <StackPanel>
+                                        <ContentControl Template="{StaticResource ComputerIconTemplate}" />
+                                        <TextBlock Text="Practice" Style="{StaticResource SymbolIconButtonLabel}"/>
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
-                        </StackPanel>
+
+                            <TextBlock 
+                                Foreground="Red"
+                                HorizontalAlignment="Center"
+                                Padding="10 8"
+                                Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource InvertedConversionType}}" >
+                                The position is invalid.
+                            </TextBlock>
+                        </Grid>
                     </Flyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -82,20 +105,21 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="contentGrid.Margin" Value="12"/>
+                        <Setter Target="contentGrid.Margin" Value="12 8 12 12"/>
 
                         <Setter Target="chessBoard.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
-                        <Setter Target="chessBoard.Margin" Value="0 0 12 0"/>
+                        <Setter Target="chessBoard.Margin" Value="0 0 24 0"/>
 
-                        <Setter Target="titlePanel.Visibility" Value="Collapsed"/>
+                        <Setter Target="optionsPanel.(RelativePanel.AlignTopWithPanel)" Value="true"/>
+                        <Setter Target="optionsPanel.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="optionsPanel.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
+                        <Setter Target="optionsPanel.(RelativePanel.RightOf)" Value="chessBoard"/>
+                        <Setter Target="optionsPanel.MinWidth" Value="150"/>
 
-                        <Setter Target="piecesPalette.(RelativePanel.RightOf)" Value="chessBoard"/>
-                        <Setter Target="piecesPalette.(RelativePanel.AlignTopWithPanel)" Value="true"/>
-                        <Setter Target="piecesPalette.(RelativePanel.AlignRightWithPanel)" Value="true"/>
-                        <Setter Target="piecesPalette.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
-                        <Setter Target="piecesPalette.MinWidth" Value="150"/>
+                        <Setter Target="detailsPanel.Margin" Value="0 12 0 0"/>
+
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -103,21 +127,20 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="titlePanel.(RelativePanel.AlignTopWithPanel)" Value="true"/>
-                        <Setter Target="titlePanel.(RelativePanel.AlignRightWithPanel)" Value="true"/>
-                        <Setter Target="titlePanel.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
                         <Setter Target="titlePanel.Margin" Value="48 0 0 0"/>
 
+                        <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
-                        <Setter Target="chessBoard.(RelativePanel.Below)" Value="titlePanel"/>
 
-                        <Setter Target="piecesPalette.(RelativePanel.Below)" Value="chessBoard"/>
-                        <Setter Target="piecesPalette.(RelativePanel.AlignRightWithPanel)" Value="true"/>
-                        <Setter Target="piecesPalette.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+                        <Setter Target="optionsPanel.(RelativePanel.Below)" Value="chessBoard"/>
+                        <Setter Target="optionsPanel.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="optionsPanel.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
                         <Setter Target="piecesPalette.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
                         <Setter Target="piecesPalette.Orientation" Value="Horizontal"/>
-                        <Setter Target="piecesPalette.MinHeight" Value="100"/>
+                        <Setter Target="optionsPanel.MinHeight" Value="180"/>
+
+                        <Setter Target="detailsPanel.Margin" Value="4"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

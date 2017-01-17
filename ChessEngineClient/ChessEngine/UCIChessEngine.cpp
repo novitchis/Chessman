@@ -108,7 +108,8 @@ bool UCIChessEngine::Stop()
 }
 
 
-bool UCIChessEngine::Analyze( ChessBoardImpl& board )
+
+bool UCIChessEngine::Analyze( ChessBoardImpl& board, int secondsLeft)
 {
 	if (board.IsMate() || board.IsStaleMate())
 		return false;
@@ -116,14 +117,27 @@ bool UCIChessEngine::Analyze( ChessBoardImpl& board )
 	std::string strCommand = "position fen ";
 	strCommand += board.Serialize( ST_FEN );
 	strCommand += "\n";
+	std::ostringstream commandStringStream;
+	if (secondsLeft == -1)
+	{
+		commandStringStream << "go infinite";
+	}
+	else
+	{
+		int mSecondsLeft = secondsLeft * 1000;
+		commandStringStream << "go wtime " << mSecondsLeft << " btime " << mSecondsLeft;
+	}
 	
+	// TODO: what is this?
 	Core::AutoLock MLock(&m_lock);
+	
 	if (m_state == UC_Go)
 	{
 		EnterState(UC_Stop);
 		m_pCommThread->QueueCommand("stop\n");
 		m_queueCommands.push(EngineCommand(UC_IsReady, "isready\n"));
 		m_queueCommands.push(EngineCommand(UC_Position, strCommand));
+		m_queueCommands.push(EngineCommand(UC_Go, commandStringStream.str()));
 	}
 	else
 	{
@@ -133,36 +147,31 @@ bool UCIChessEngine::Analyze( ChessBoardImpl& board )
 			m_queueCommands.push(EngineCommand(UC_IsReady, "isready\n"));
 
 		m_queueCommands.push(EngineCommand(UC_Position, strCommand));
+		m_queueCommands.push(EngineCommand(UC_Go, commandStringStream.str()));
 	}
 
 	return true;
 }
 
-void UCIChessEngine::SetOptions( const ChessEngineOptions& options )
+bool UCIChessEngine::StopAnalyzing()
 {
-	// set level //
-	int nLevel = options.level;
-	//switch ( options.level )
-	//{
-	//case EL_Begginer:
-	//	nLevel = 0;
-	//	break;
-	//case EL_Middle:
-	//	nLevel = 5;
-	//	break;
-	//case EL_Advanced:
-	//	nLevel = 10;
-	//	break;
-	//case EL_Impossible:
-	//	nLevel = 15;
-	//	break;
-	//default:
-	//	break;
-	//}
-	EnterState( UC_SetOption );
+	if (m_state == UC_Go)
+	{
+		EnterState(UC_Stop);
+		m_pCommThread->QueueCommand("stop\n");
+		return true;
+	}
+
+	return false;
+}
+
+void UCIChessEngine::SetOptions( const EngineOptionsImpl& options )
+{
+	EnterState( UC_SetOption);
 	std::stringstream stm;
-	stm << "setoption name Skill Level value " << nLevel << "\n";
+	stm << "setoption name Skill Level value " << options.level << "\n";
 	m_pCommThread->QueueCommand( stm.str() );
+	SendKeepAliveMessage();
 }
 
 
@@ -190,14 +199,18 @@ void UCIChessEngine::OnEngineResponse( const std::string& strResponse )
 		m_pCommThread->QueueCommand("");
 		break;
 	case ChessEngine::UC_Position:
-		newState = UC_Go;
-		m_pCommThread->QueueCommand( "go infinite\n" );
+		newState = UC_None;
 		break;
 	case ChessEngine::UC_Go:
 		if (ProcessGoResponse(strResponse))
 		{
 			newState = UC_Go; // remain in this state //
 			m_pCommThread->QueueCommand("");
+		}
+		else
+		{
+			// go finished
+			newState = UC_None;
 		}
 		break;
 	case ChessEngine::UC_Stop:
@@ -254,17 +267,31 @@ void UCIChessEngine::ResetState()
 bool UCIChessEngine::ProcessGoResponseBestMove(const std::string& strResponse)
 {
 	// parse bestmove //
-	std::string strBestMove = "bestmove";
-	return strResponse.find(strBestMove) != -1;
+	auto vecLines = split<std::string>(strResponse, " ");
+	bool isBestMove = vecLines[0] == "bestmove";
+
+	if (isBestMove)
+	{
+		AnalysisDataImpl analysisData;
+		analysisData.isBestMove = true;
+		analysisData.listAnalysis.push_back(MoveImpl::FromString(vecLines[1]));
+		
+		m_pNotification->OnEngineMoveFinished(analysisData.listAnalysis.front(), analysisData);
+	}
+
+	return isBestMove;
 }
 
 bool UCIChessEngine::ProcessGoResponse( const std::string& strResponse)
 {	
 	//// parse bestmove //
-	//std::string strBestMove = "bestmove";
-	//auto nPos = strResponse.find( strBestMove );
-	//if ( nPos != -1 ) 
-	//	return false;
+	std::string strBestMove = "bestmove";
+	auto nPos = strResponse.find( strBestMove );
+	if (nPos != -1)
+	{
+		EnterState(UC_Stop);
+		return !ProcessGoResponseBestMove(strResponse);
+	}
 
 	//m_strCumul += strResponse;
 	auto vecLines = split<std::string>(strResponse, "\n");

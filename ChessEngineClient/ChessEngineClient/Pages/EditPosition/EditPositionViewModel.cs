@@ -57,9 +57,14 @@ namespace ChessEngineClient.ViewModel
             get { return new RelayCommand(ClearExecuted); }
         }
 
-        public ICommand SaveCommand
+        public ICommand AnalyseCommand
         {
-            get { return new RelayCommand(SaveExecuted); }
+            get { return new RelayCommand(AnalyseExecuted); }
+        }
+
+        public ICommand PracticeCommand
+        {
+            get { return new RelayCommand(PracticeExecuted); }
         }
 
         #endregion
@@ -77,7 +82,10 @@ namespace ChessEngineClient.ViewModel
 
         public void OnPageNavigatedTo(PositionLoadOptions loadOptions)
         {
-            editorBoardService.LoadFromFen(loadOptions.Fen);
+            if (loadOptions.SerializationType != BoardSerializationType.FEN)
+                throw new ArgumentException("Use FEN serialization for edit board loading.");
+
+            editorBoardService.LoadFrom(loadOptions.SerializedBoard, loadOptions.SerializationType);
             BoardViewModel.RefreshBoard(loadOptions.Perspective);
             IsWhiteToMove = editorBoardService.IsWhiteTurn;
             IsBoardValid = editorBoardService.AcceptEditedPosition();
@@ -89,9 +97,17 @@ namespace ChessEngineClient.ViewModel
             if (BoardViewModel.Squares.IndexOf(squareVM) == -1)
                 return;
 
-            ChessPiece newPiece = squareVM.Piece != null ? null : PiecesPaletteViewModel.SelectedPiece;
-            squareVM.Piece = newPiece;
-            editorBoardService.SetPiece(squareVM.Coordinate, newPiece);
+            if (squareVM.PieceViewModel != null || PiecesPaletteViewModel.SelectedPiece == null)
+            {
+                squareVM.PieceViewModel = null;
+                editorBoardService.SetPiece(squareVM.Coordinate, null);
+            }
+            else
+            {
+                squareVM.PieceViewModel = new ChessPieceViewModel(PiecesPaletteViewModel.SelectedPiece.Piece);
+                editorBoardService.SetPiece(squareVM.Coordinate, PiecesPaletteViewModel.SelectedPiece.Piece);
+            }
+
             IsBoardValid = editorBoardService.AcceptEditedPosition();
         }
 
@@ -99,22 +115,30 @@ namespace ChessEngineClient.ViewModel
         {
             BoardViewModel.Squares.ForEach(s =>
             {
-                s.Piece = null;
+                s.PieceViewModel = null;
                 editorBoardService.SetPiece(s.Coordinate, null);
             });
 
             IsBoardValid = false;
         }
 
-        private void SaveExecuted(object obj)
+        private void AnalyseExecuted(object obj)
         {
-            PositionLoadOptions positionLoadOptions = new PositionLoadOptions()
+            navigationService.NavigateTo(ViewModelLocator.MainPageNavigationName, GetPositionLoadOptions());
+        }
+
+        private void PracticeExecuted(object obj)
+        {
+            navigationService.NavigateTo(ViewModelLocator.PracticePageNavigationName, GetPositionLoadOptions());
+        }
+
+        private PositionLoadOptions GetPositionLoadOptions()
+        {
+            return new PositionLoadOptions()
             {
-                Fen = editorBoardService.GetFen(),
+                SerializedBoard = editorBoardService.Serialize(BoardSerializationType.FEN),
                 Perspective = BoardViewModel.Perspective,
             };
-
-            navigationService.NavigateTo(ViewModelLocator.MainPageNavigationName, positionLoadOptions);
         }
     }
 }

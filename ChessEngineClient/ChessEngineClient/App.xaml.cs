@@ -53,7 +53,8 @@ namespace ChessEngineClient
 
             navigationService.Configure(ViewModelLocator.MainPageNavigationName, typeof(MainPage));
             navigationService.Configure(ViewModelLocator.EditPositionPageNavigationName, typeof(EditPositionPage));
-            navigationService.Configure(ViewModelLocator.ExercisePageNavigationName, typeof(ExercisePage));
+            navigationService.Configure(ViewModelLocator.PracticePageNavigationName, typeof(PracticePage));
+            navigationService.Configure(ViewModelLocator.SettingsPageNavigationName, typeof(SettingsPage));
 
             ViewModelLocator.IOCContainer.RegisterInstance<INavigationService>(navigationService);
         }
@@ -79,6 +80,7 @@ namespace ChessEngineClient
             // just ensure that the window is active
             if (appShell == null)
             {
+                AppSettingsKeys.InitializeDefaultSettings(ViewModelLocator.IOCContainer.Resolve<IPropertySet>());
                 // Create a Frame to act as the navigation context and navigate to the first page
                 appShell = new AppShell();
                 BootstrapNavigationService(appShell.AppFrame);

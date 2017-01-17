@@ -61,14 +61,5 @@ namespace ChessEngineClient.View
             else
                 chessBoard.MaxHeight = Double.PositiveInfinity;
         }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            PositionLoadOptions positionLoadOptions = e.Parameter as PositionLoadOptions;
-            if (positionLoadOptions != null)
-                ((MainViewModel)DataContext).OnPageNavigatedTo(positionLoadOptions);
-
-            base.OnNavigatedTo(e);
-        }
     }
 }

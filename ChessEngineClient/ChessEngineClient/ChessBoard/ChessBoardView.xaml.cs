@@ -1,4 +1,5 @@
 ﻿using ChessEngine;
+using ChessEngineClient.Util;
 using ChessEngineClient.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -100,18 +101,18 @@ namespace ChessEngineClient.View
             if (!isDragStarted && pointerPressSquare != null && e.Pointer.IsInContact)
             {
                 SquareViewModel squareVM = (SquareViewModel)pointerPressSquare.DataContext;
-                if (squareVM.Piece != null)
+                if (squareVM.PieceViewModel != null)
                 {
                     PointerPoint pointerPoint = e.GetCurrentPoint(board);
                     if (!HasPointerMovedEnaugh(pointerPoint.Position))
                         return;
 
-                    StartDragMove(e.Pointer, pointerPoint, squareVM.Piece);
+                    StartDragMove(e.Pointer, pointerPoint, squareVM.PieceViewModel);
                 }
             }
         }
 
-        private void StartDragMove(Pointer pointer, PointerPoint pointerPoint, ChessPiece piece)
+        private void StartDragMove(Pointer pointer, PointerPoint pointerPoint, ChessPieceViewModel pieceViewModel)
         {
             double optimalPieceSize = pointer.PointerDeviceType == PointerDeviceType.Touch ?
                     Math.Max(pointerPressSquare.ActualWidth * 1.5, MinPieceSize) : pointerPressSquare.ActualWidth;
@@ -120,7 +121,7 @@ namespace ChessEngineClient.View
             {
                 Width = optimalPieceSize,
                 Height = optimalPieceSize,
-                DataContext = piece,
+                DataContext = pieceViewModel,
                 IsHitTestVisible = false
             };
 
@@ -174,26 +175,10 @@ namespace ChessEngineClient.View
 
                 // if enterd fast enaugh this can cause the square 
                 // not to receive mouse enter events
-                SquareView squareView = FindParent<SquareView>(e.OriginalSource as DependencyObject);
+                SquareView squareView = VisualTreeHelperEx.FindParent<SquareView>(e.OriginalSource as DependencyObject);
                 if (squareView != null)
                     squareView.IsDropTarget = true;
             }
-        }
-
-        public static T FindParent<T>(DependencyObject child) where T : DependencyObject
-        {
-            //get parent item
-            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
-
-            //we've reached the end of the tree
-            if (parentObject == null) return null;
-
-            //check if the parent matches the type we're looking for
-            T parent = parentObject as T;
-            if (parent != null)
-                return parent;
-            else
-                return FindParent<T>(parentObject);
         }
     }
 }

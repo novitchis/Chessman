@@ -7,14 +7,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation.Collections;
+using Windows.Storage;
 
 namespace ChessEngineClient
 {
     public class ViewModelLocator
     {
+        public const string SettingsPageNavigationName = "SettingsPage";
+
         public const string MainPageNavigationName = "MainPage";
         public const string EditPositionPageNavigationName = "EditPositionPage";
-        public const string ExercisePageNavigationName = "ExercisePage";
+        public const string PracticePageNavigationName = "PracticePage";
 
         public static UnityContainer IOCContainer = new UnityContainer();
 
@@ -34,11 +38,19 @@ namespace ChessEngineClient
             }
         }
 
-        public static ExerciseViewModel ExerciseViewModel
+        public static PracticeViewModel ExerciseViewModel
         {
             get
             {
-                return IOCContainer.Resolve<ExerciseViewModel>();
+                return IOCContainer.Resolve<PracticeViewModel>();
+            }
+        }
+
+        public static SettingsViewModel SettingsViewModel
+        {
+            get
+            {
+                return IOCContainer.Resolve<SettingsViewModel>();
             }
         }
 
@@ -46,15 +58,21 @@ namespace ChessEngineClient
         {
             IOCContainer.RegisterType<MainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<EditPositionViewModel, EditPositionViewModel>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<PracticeViewModel, PracticeViewModel>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<SettingsViewModel, SettingsViewModel>(new ContainerControlledLifetimeManager());
 
-            AnalysisReceiver analysisReceiver = new AnalysisReceiver();
-            IOCContainer.RegisterInstance<IAnalysisReceiver>(analysisReceiver);
-            IOCContainer.RegisterInstance<IEngineNotification>(analysisReceiver);
+            IOCContainer.RegisterInstance<IPropertySet>(ApplicationData.Current.LocalSettings.Values);
 
-            IOCContainer.RegisterType<IBoardService, AnalysisBoardService>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<IAnalysisReceiver, AnalysisReceiver>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<IEngineNotification, AnalysisReceiver>(new ContainerControlledLifetimeManager());
+
+            Engine engine = IOCContainer.Resolve<Engine>();
+            engine.Start();
+            IOCContainer.RegisterInstance<IEngine>(engine);
+
+            IOCContainer.RegisterType<IEngineBoardService, AnalysisBoardService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IBoardEditorService, EditorService>(new ContainerControlledLifetimeManager());
-            IOCContainer.RegisterType<IExerciseBoardService, ExerciseBoardService>(new ContainerControlledLifetimeManager());
-            
+            IOCContainer.RegisterType<IPracticeBoardService, PracticeBoardService>(new ContainerControlledLifetimeManager());
         }
     }
 }

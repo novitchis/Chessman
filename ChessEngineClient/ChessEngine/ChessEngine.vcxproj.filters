@@ -87,6 +87,9 @@
     <ClCompile Include="MoveData.cpp">
       <Filter>Managed</Filter>
     </ClCompile>
+    <ClCompile Include="EngineOptions.cpp">
+      <Filter>Managed</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -188,6 +191,12 @@
       <Filter>Managed</Filter>
     </ClInclude>
     <ClInclude Include="MoveData.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="IEngine.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineOptions.h">
       <Filter>Managed</Filter>
     </ClInclude>
   </ItemGroup>

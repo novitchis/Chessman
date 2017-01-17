@@ -36,7 +36,7 @@ bool ChessEngineImpl::Analyze( ChessBoardImpl& board )
 }
 
 
-void ChessEngineImpl::SetOptions( const ChessEngineOptions& options )
+void ChessEngineImpl::SetOptions( const EngineOptionsImpl& options )
 {
 	m_pEngineImpl->SetOptions( options );
 }

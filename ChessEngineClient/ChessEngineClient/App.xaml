@@ -9,6 +9,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/AppColors.xaml"/>
                 <ResourceDictionary Source="Styles/ControlsStyles.xaml"/>
+                <ResourceDictionary Source="Styles/CustomGraphics.xaml"/>
                 <ResourceDictionary Source="ChessBoard/ChessPiecesGraphics.xaml"/>
                 <ResourceDictionary Source="CommonConverters.xaml"/>
                 <ResourceDictionary Source="AppShell/ShellStyles.xaml"/>
