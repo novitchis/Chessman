@@ -42,11 +42,10 @@ namespace ChessEngineClient.ViewModel
                 {
                     currentMove = value;
                     if (currentMove != null)
-                    {
                         analysisBoardService.GoToMove(currentMove.Index);
-                        NotifyPropertyChanged();
-                    }
+
                     Messenger.Default.Send(new GenericMessage<MoveData>(currentMove), NotificationMessages.CurrentMoveChanged);
+                    NotifyPropertyChanged();
                 }
             }
         }
@@ -69,6 +68,12 @@ namespace ChessEngineClient.ViewModel
         private void LoadExecutedMove()
         {
             var currentMoveData = analysisBoardService.GetCurrentMove();
+            if (currentMoveData == null)
+            {
+                CurrentMove = null;
+                return;
+            }
+
             int groupIndex = currentMoveData.Index / 2;
             bool isWhiteMove = currentMoveData.Index % 2 == 0;
 
