@@ -267,14 +267,16 @@ void UCIChessEngine::ResetState()
 bool UCIChessEngine::ProcessGoResponseBestMove(const std::string& strResponse)
 {
 	// parse bestmove //
-	auto vecLines = split<std::string>(strResponse, " ");
-	bool isBestMove = vecLines[0] == "bestmove";
+	// best move can come as the las move with other info lines before it
+	auto vecLines = split<std::string>(strResponse, "\n\r");
+	auto lastLienTokens = split<std::string>(vecLines[vecLines.size() - 1], " ");
+	bool isBestMove = lastLienTokens[0] == "bestmove";
 
 	if (isBestMove)
 	{
 		AnalysisDataImpl analysisData;
 		analysisData.isBestMove = true;
-		analysisData.listAnalysis.push_back(MoveImpl::FromString(vecLines[1]));
+		analysisData.listAnalysis.push_back(MoveImpl::FromString(lastLienTokens[1]));
 		
 		m_pNotification->OnEngineMoveFinished(analysisData.listAnalysis.front(), analysisData);
 	}
