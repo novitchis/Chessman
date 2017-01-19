@@ -30,7 +30,7 @@
             </Setter.Value>
         </Setter>
         <Setter Property="AutomationProperties.Name" Value="Navigation" />
-        <Setter Property="UseSystemFocusVisuals" Value="True" />
+        <Setter Property="UseSystemFocusVisuals" Value="False" />
         <!--<Setter Property="FocusVisualMargin" Value="0" />-->
         <Setter Property="Template">
             <Setter.Value>
@@ -96,6 +96,12 @@
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused" />
+                                <VisualState x:Name="Unfocused"/>
+                                <VisualState x:Name="PointerFocused"/>
+                            </VisualStateGroup>
+
                         </VisualStateManager.VisualStateGroups>
                         <Grid x:Name="backgroundPanel"></Grid>
 

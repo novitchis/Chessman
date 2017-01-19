@@ -102,7 +102,7 @@
                         Background="Transparent"
                         ItemContainerStyle="{StaticResource SplitPaneMenuItem}"/>
                     <StackPanel Grid.Row="1">
-                        <Rectangle Fill="{StaticResource DefaultBorderBrush}" Height="1" Margin="5"/>
+                        <Rectangle Fill="{StaticResource DefaultBorderBrush}" Height="1" Margin="0 5"/>
                         <Button 
                             x:Name="feedbackButton"
                             Visibility="Collapsed"

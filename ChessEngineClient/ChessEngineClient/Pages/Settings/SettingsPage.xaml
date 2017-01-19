@@ -22,7 +22,7 @@
                 <Grid Margin="12 8 12 12">
                     <StackPanel>
                         <TextBlock 
-                            Text="Computer strength"
+                            Text="Practice computer level"
                             Style="{StaticResource LabelTextStyle}" />
                         <Grid>
                             <Grid.ColumnDefinitions>
