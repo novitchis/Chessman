@@ -10,23 +10,23 @@ namespace ChessEngineClient.ViewModel
 {
     public class SettingsViewModel : ViewModelBase
     {
-        private IPropertySet settingsSet = null;
+        private IAppSettings appSettings = null;
 
         public int ComputerStrength
         {
             get
             {
-                return (int)settingsSet[AppSettingsKeys.ComputerStrengthKey];
+                return (int)appSettings.Values[AppSettingsKeys.ComputerStrengthKey];
             }
             set
             {
-                settingsSet[AppSettingsKeys.ComputerStrengthKey] = value;
+                appSettings.Values[AppSettingsKeys.ComputerStrengthKey] = value;
             }
         }
 
-        public SettingsViewModel(IPropertySet settingsSet)
+        public SettingsViewModel(IAppSettings appSettings)
         {
-            this.settingsSet = settingsSet;
+            this.appSettings = appSettings;
         }
     }
 }
