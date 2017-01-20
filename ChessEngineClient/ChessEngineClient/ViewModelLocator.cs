@@ -61,7 +61,8 @@ namespace ChessEngineClient
             IOCContainer.RegisterType<PracticeViewModel, PracticeViewModel>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<SettingsViewModel, SettingsViewModel>(new ContainerControlledLifetimeManager());
 
-            IOCContainer.RegisterInstance<IPropertySet>(ApplicationData.Current.LocalSettings.Values);
+            IOCContainer.RegisterType<IAppSettings, LocalAppDataSettings>();
+            //IOCContainer.RegisterInstance<IPropertySet>(ApplicationData.Current.LocalSettings.Values);
 
             IOCContainer.RegisterType<IAnalysisReceiver, AnalysisReceiver>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IEngineNotification, AnalysisReceiver>(new ContainerControlledLifetimeManager());

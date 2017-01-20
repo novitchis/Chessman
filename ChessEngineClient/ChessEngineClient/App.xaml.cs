@@ -22,6 +22,7 @@ using Windows.UI.Popups;
 using Windows.Foundation.Metadata;
 using Windows.Phone.UI.Input;
 using Windows.UI.ViewManagement;
+using Windows.Storage;
 
 namespace ChessEngineClient
 {
@@ -80,7 +81,7 @@ namespace ChessEngineClient
             // just ensure that the window is active
             if (appShell == null)
             {
-                AppSettingsKeys.InitializeDefaultSettings(ViewModelLocator.IOCContainer.Resolve<IPropertySet>());
+                AppSettingsKeys.InitializeDefaultSettings(ApplicationData.Current.LocalSettings);
                 // Create a Frame to act as the navigation context and navigate to the first page
                 appShell = new AppShell();
                 BootstrapNavigationService(appShell.AppFrame);

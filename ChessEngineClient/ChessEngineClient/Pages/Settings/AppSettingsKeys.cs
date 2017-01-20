@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 
 namespace ChessEngineClient
 {
@@ -11,10 +12,10 @@ namespace ChessEngineClient
     {
         public const string ComputerStrengthKey = "ComputerStrength";
 
-        public static void InitializeDefaultSettings(IPropertySet settingsSet)
+        public static void InitializeDefaultSettings(ApplicationDataContainer settingsContainer)
         {
-            if (!settingsSet.ContainsKey(ComputerStrengthKey))
-                settingsSet[ComputerStrengthKey] = 5;
+            if (!settingsContainer.Values.ContainsKey(ComputerStrengthKey))
+                settingsContainer.Values[ComputerStrengthKey] = 5;
         }
     }
 }

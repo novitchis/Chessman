@@ -1,4 +1,5 @@
-﻿using ChessEngineClient.ViewModel;
+﻿using ChessEngineClient.Util;
+using ChessEngineClient.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,14 +34,18 @@ namespace ChessEngineClient.View
 
         private async void OnSelectedMoveChanged(object sender, SelectionChangedEventArgs e)
         {
-            // await just to get rid of the warning
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
+            ListBox list = (ListBox)sender;
+            if (list.SelectedItem == null)
+                return;
+
+            await Dispatcher.RunIdleAsync((o) => 
             {
-                // focus the item to bring it into view
-                // since normal list.ScrollIntoView() does not work
-                ListBox list = (ListBox)sender;
-                ListBoxItem item = list.ItemContainerGenerator.ContainerFromItem(list.SelectedItem) as ListBoxItem;
-                item?.Focus(FocusState.Keyboard);
+                var scrollViewer = VisualTreeHelperEx.FindChild<ScrollViewer>(list);
+                ListBoxItem item = list.ContainerFromItem(list.SelectedItem) as ListBoxItem;
+                if (item != null)
+                {
+                    scrollViewer.ScrollToElement(item);
+                }
             });
         }
 

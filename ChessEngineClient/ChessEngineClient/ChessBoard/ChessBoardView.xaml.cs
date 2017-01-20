@@ -24,7 +24,7 @@ namespace ChessEngineClient.View
     public sealed partial class ChessBoardView : UserControl
     {
         private const double MinPieceSize = 75;
-        private const double MinimumDragDistance = 15;
+        private const double MinimumDragDistance = 4;
 
         public static readonly DependencyProperty HasDragAndDropProperty = DependencyProperty.Register("HasDragAndDrop", typeof(bool), typeof(ChessBoardView), new PropertyMetadata(false));
 
@@ -175,9 +175,9 @@ namespace ChessEngineClient.View
 
                 // if enterd fast enaugh this can cause the square 
                 // not to receive mouse enter events
-                SquareView squareView = VisualTreeHelperEx.FindParent<SquareView>(e.OriginalSource as DependencyObject);
-                if (squareView != null)
-                    squareView.IsDropTarget = true;
+                //SquareView squareView = VisualTreeHelperEx.FindParent<SquareView>(e.OriginalSource as DependencyObject);
+                //if (squareView != null)
+                //    squareView.IsDropTarget = true;
             }
         }
     }

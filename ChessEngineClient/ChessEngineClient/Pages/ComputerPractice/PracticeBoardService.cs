@@ -113,8 +113,11 @@ namespace ChessEngineClient
                 skillLevel = strengthValue * 2;
 
             engine.SetOptions(new EngineOptions() { SkillLevel = skillLevel });
-            // this can be further adjusted
-            secondsLeft = skillLevel;
+
+            // on each go we have to give some time limit
+            // this is a way of limiting the ammount of time per move
+            // TODO: this can be further adjusted
+            secondsLeft = (skillLevel + 1) * 10;
         }
     }
 }

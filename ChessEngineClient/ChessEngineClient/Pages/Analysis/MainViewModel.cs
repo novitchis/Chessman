@@ -26,6 +26,9 @@ namespace ChessEngineClient.ViewModel
         {
             AnalysisViewModel = ViewModelLocator.IOCContainer.Resolve<AnalysisViewModel>();
             BoardViewModel = new AnalysisChessBoardViewModel(analysisBoardService);
+
+            // TODO: just until we fix the crash on start
+            useInitializationDelay = true;
         }
 
         public override void OnNavigatedTo(object parameter)

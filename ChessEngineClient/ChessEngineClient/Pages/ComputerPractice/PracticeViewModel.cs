@@ -12,7 +12,7 @@ namespace ChessEngineClient.ViewModel
     public class PracticeViewModel : BoardPageViewModel, INavigationAware
     {
         private IPracticeBoardService practiceBoardService = null;
-        private IPropertySet propertiesSet = null;
+        private IAppSettings appSettings = null;
 
         public ICommand SwitchColor
         {
@@ -40,17 +40,17 @@ namespace ChessEngineClient.ViewModel
         public PracticeViewModel(
             INavigationService navigationService, 
             IPracticeBoardService practiceBoardService,
-            IPropertySet propertiesSet)
+            IAppSettings appSettings)
             : base(navigationService, practiceBoardService)
         {
             this.practiceBoardService = practiceBoardService;
-            this.propertiesSet = propertiesSet;
+            this.appSettings = appSettings;
             BoardViewModel = new PracticeBoardViewModel(practiceBoardService);
         }
 
         public override void OnNavigatedTo(object parameter)
         {
-            int engineStrength = (int)propertiesSet[AppSettingsKeys.ComputerStrengthKey];
+            int engineStrength = (int)appSettings.Values[AppSettingsKeys.ComputerStrengthKey];
             practiceBoardService.SetEngineStrength(engineStrength);
 
             PositionLoadOptions positionLoadOptions = parameter as PositionLoadOptions;

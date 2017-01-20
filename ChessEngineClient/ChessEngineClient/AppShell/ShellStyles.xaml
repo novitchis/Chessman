@@ -21,7 +21,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="UseSystemFocusVisuals" Value="False" />
-        <Setter Property="FocusVisualPrimaryThickness" Value="0" />
+        <!--<Setter Property="FocusVisualPrimaryThickness" Value="0" />-->
         <Setter Property="Background" Value="{StaticResource AccentBrush700}" />
         <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
         <Setter Property="Content">
@@ -30,7 +30,7 @@
             </Setter.Value>
         </Setter>
         <Setter Property="AutomationProperties.Name" Value="Navigation" />
-        <Setter Property="UseSystemFocusVisuals" Value="True" />
+        <Setter Property="UseSystemFocusVisuals" Value="False" />
         <!--<Setter Property="FocusVisualMargin" Value="0" />-->
         <Setter Property="Template">
             <Setter.Value>
@@ -96,6 +96,12 @@
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused" />
+                                <VisualState x:Name="Unfocused"/>
+                                <VisualState x:Name="PointerFocused"/>
+                            </VisualStateGroup>
+
                         </VisualStateManager.VisualStateGroups>
                         <Grid x:Name="backgroundPanel"></Grid>
 
@@ -113,7 +119,7 @@
     <Style x:Key="SplitPaneButton" TargetType="Button">
         <Setter Property="Padding" Value="0" />
         <Setter Property="UseSystemFocusVisuals" Value="False" />
-        <Setter Property="FocusVisualPrimaryThickness" Value="0" />
+        <!--<Setter Property="FocusVisualPrimaryThickness" Value="0" />-->
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="BorderThickness" Value="0" />
