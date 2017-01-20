@@ -12,6 +12,7 @@ namespace ChessEngine
 	{
 		ST_FEN = 0,
 		ST_PGN,
+		ST_DETECT,
 	};
 
 	enum CastlingType
@@ -26,17 +27,17 @@ namespace ChessEngine
 
 	struct MoveDataImpl
 	{
-		MoveDataImpl ()
-			: nCastlingMask( FullCastlingMask )
+		MoveDataImpl()
+			: nCastlingMask(FullCastlingMask)
 		{
 			pawnTransform = false;
 		}
 
-		MoveDataImpl( const int _moveIndex, const MoveImpl& _move, const ChessPieceImpl& _capturedPiece )
-			: move( _move )
-			, capturedPiece( _capturedPiece )
-			, nCastlingMask( FullCastlingMask )
-			, moveIndex( _moveIndex )
+		MoveDataImpl(int _moveIndex, const MoveImpl& _move, const ChessPieceImpl& _capturedPiece)
+			: move(_move)
+			, capturedPiece(_capturedPiece)
+			, nCastlingMask(FullCastlingMask)
+			, moveIndex(_moveIndex)
 		{
 			pawnTransform = false;
 		}
@@ -68,18 +69,18 @@ namespace ChessEngine
 		ChessBoardImpl(const ChessBoardImpl& board);
 
 		~ChessBoardImpl();
-		
+
 		// TODO //
 		void						Initialize(); //Initial Position
 		void						Clear();
-		std::string					Serialize( SerializationType type ); 
-		bool						LoadFrom( const std::string& strData, SerializationType type );
+		std::string					Serialize(SerializationType type);
+		bool						LoadFrom(const std::string& strData);
 		void						StorePGN();
 
-		ChessPieceImpl				GetPiece( const CoordinateImpl& coord ) const;
+		ChessPieceImpl				GetPiece(const CoordinateImpl& coord) const;
 
 		// edit board
-		void						SetPiece( const ChessPieceImpl& piece, const CoordinateImpl& coord );
+		void						SetPiece(const ChessPieceImpl& piece, const CoordinateImpl& coord);
 		void						SetSideToMove(bool bWhite);
 		bool						AcceptEditedPosition();
 
@@ -87,36 +88,38 @@ namespace ChessEngine
 		int							GetCurrentMoveIndex();
 		std::list<MoveDataImpl>		GetVariationMoveData(std::list<MoveImpl> moves);
 
-		std::list<CoordinateImpl>	GetAvailableMoves( const CoordinateImpl& coord ) const;
-		bool						SubmitMove( const MoveImpl& move, AdditionalMoveInfo& additionalInfo);
-		bool						SubmitMove( const MoveImpl& move );
+		std::list<CoordinateImpl>	GetAvailableMoves(const CoordinateImpl& coord) const;
+		bool						SubmitMove(const MoveImpl& move, AdditionalMoveInfo& additionalInfo);
+		bool						SubmitMove(const MoveImpl& move);
 		std::string					GetLastMoveText();
 
-		bool						UndoMove( bool bWhiteMove ); // TODO
-		bool						GoToMove( int moveIndex );
-		bool						ValidateMove( const MoveImpl& move, AdditionalMoveInfo& coordEnPassant ) const;
-		bool						PromotePawn( CoordinateImpl coord, ChessPieceImpl piece );
+		bool						UndoMove(bool bWhiteMove);
+		bool						GoToMove(int moveIndex);
+		bool						ValidateMove(const MoveImpl& move, AdditionalMoveInfo& coordEnPassant) const;
+		bool						PromotePawn(CoordinateImpl coord, ChessPieceImpl piece);
 
 		std::list<CoordinateImpl>		getPiecesMovableAs(MoveImpl move, char pieceType, bool pWhite) const;
-		bool							GetAttackingFields( const CoordinateImpl& coord, bool bWhiteAttacks, std::list<CoordinateImpl>& listAttacker ) const;
-		CoordinateImpl					GetKingPos( bool bWhite ) const;
+		bool							GetAttackingFields(const CoordinateImpl& coord, bool bWhiteAttacks, std::list<CoordinateImpl>& listAttacker) const;
+		CoordinateImpl					GetKingPos(bool bWhite) const;
 		bool							IsWhiteTurn() const;
 		bool							InCheck();
 		bool							IsMate();
 		bool							IsStaleMate();
 		MoveDataImpl					GetLastMove() const;
 		std::map<ChessPieceImpl, int>	GetCapturedPieces() const;
-		void							GetPreservedState( StatePreserveType type, Core::StatePreserver& state );
-		void							UpdateState( StatePreserveType type, const Core::Variant& vtState );
+		void							GetPreservedState(StatePreserveType type, Core::StatePreserver& state);
+		void							UpdateState(StatePreserveType type, const Core::Variant& vtState);
 		void							ClearPreservedStates();
 
 	private:
 		std::string					Serialize2FEN() const;
 		std::string					Serialize2PGN();
-		bool						LoadFromFEN( const std::string& strData );
-		bool						LoadFromPGN( const std::string& strData );
+		bool						LoadFromFEN(const std::string& strData);
+		bool						LoadFromPGN(const std::string& strData);
+		SerializationType			DetectFormat(const std::string& strData);
 		bool						IsEnPassantMove(AdditionalMoveInfo& coordEnPassant) const;
 		void						RemoveMovesAfterCurrent();
+		bool						IsValidFen(const std::string& strData);
 
 	private:
 		ChessPieceImpl				m_memBoard[8][8];
@@ -129,7 +132,7 @@ namespace ChessEngine
 		bool						m_bStorePGN;
 		int							m_currentMoveIndex;
 		std::map< StatePreserveType, Core::StatePreserver > m_mapStates;
-		
+
 		friend class MoveValidationAlgorithm;
 		friend class MoveScope;
 	};

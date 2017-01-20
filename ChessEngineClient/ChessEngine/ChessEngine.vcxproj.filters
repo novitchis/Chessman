@@ -90,6 +90,9 @@
     <ClCompile Include="EngineOptions.cpp">
       <Filter>Managed</Filter>
     </ClCompile>
+    <ClCompile Include="PGNParser.cpp">
+      <Filter>Impl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -198,6 +201,9 @@
     </ClInclude>
     <ClInclude Include="EngineOptions.h">
       <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="PGNParser.h">
+      <Filter>Impl</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

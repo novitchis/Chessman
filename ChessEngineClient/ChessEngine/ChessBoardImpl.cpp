@@ -5,14 +5,16 @@
 #include <sstream>
 #include <ctype.h>
 #include <iostream>
+#include <regex>
 #include "Utils.h"
+#include "PGNParser.h"
 
 using namespace ChessEngine;
 
 #define MAX_FEN_LENGTH		128
 
 ChessBoardImpl::ChessBoardImpl(void)
-	: m_bStorePGN ( false )
+	: m_bStorePGN(false)
 {
 
 	Initialize();
@@ -41,7 +43,7 @@ ChessBoardImpl::~ChessBoardImpl(void)
 }
 
 
-std::string ChessBoardImpl::Serialize( SerializationType type )
+std::string ChessBoardImpl::Serialize(SerializationType type)
 {
 	switch (type)
 	{
@@ -49,20 +51,26 @@ std::string ChessBoardImpl::Serialize( SerializationType type )
 		return Serialize2FEN();
 	case ChessEngine::ST_PGN:
 		return Serialize2PGN();
+	case ChessEngine::ST_DETECT:
+		break;
 	default:
 		return "";
 	}
+
+	return "";
 }
 
 
-bool ChessBoardImpl::LoadFrom( const std::string& strData, SerializationType type )
+bool ChessBoardImpl::LoadFrom(const std::string& strData)
 {
-	switch (type)
+	SerializationType detectedType = DetectFormat(strData);
+	switch (detectedType)
 	{
-	case ChessEngine::ST_FEN: 
-		return LoadFromFEN( strData );
+	case ChessEngine::ST_FEN:
+		return LoadFromFEN(strData);
 	case ChessEngine::ST_PGN:
-		return LoadFromPGN( strData );
+		return LoadFromPGN(strData);
+		break;
 	default:
 		return "";
 	}
@@ -75,14 +83,14 @@ void ChessBoardImpl::StorePGN()
 }
 
 
-ChessPieceImpl ChessBoardImpl::GetPiece( const CoordinateImpl& coord ) const
+ChessPieceImpl ChessBoardImpl::GetPiece(const CoordinateImpl& coord) const
 {
-	if ( !coord ) return ChessPieceImpl();
+	if (!coord) return ChessPieceImpl();
 	return m_memBoard[coord.nRank][coord.nColumn];
 }
 
 
-void ChessBoardImpl::SetPiece( const ChessPieceImpl& piece, const CoordinateImpl& coord )
+void ChessBoardImpl::SetPiece(const ChessPieceImpl& piece, const CoordinateImpl& coord)
 {
 	m_memBoard[coord.nRank][coord.nColumn] = piece;
 }
@@ -164,82 +172,82 @@ std::list<MoveDataImpl>	ChessBoardImpl::GetVariationMoveData(std::list<MoveImpl>
 	return variationMoves;
 }
 
-std::list<CoordinateImpl> ChessBoardImpl::GetAvailableMoves( const CoordinateImpl& coord ) const
+std::list<CoordinateImpl> ChessBoardImpl::GetAvailableMoves(const CoordinateImpl& coord) const
 {
-	ChessBoardImpl copy( *this );
-	MoveValidationAlgorithm MoveAlg( &copy );
-	return MoveAlg.GetAvailableMoves( coord );
+	ChessBoardImpl copy(*this);
+	MoveValidationAlgorithm MoveAlg(&copy);
+	return MoveAlg.GetAvailableMoves(coord);
 }
 
 
 std::string	ChessBoardImpl::GetLastMoveText()
 {
-	if ( m_currentMoveIndex ) return "";
+	if (m_currentMoveIndex) return "";
 	else return GetLastMove().strPGNUserFriendly;
 }
 
 
-bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& additionalInfo )
+bool ChessBoardImpl::SubmitMove(const MoveImpl& move, AdditionalMoveInfo& additionalInfo)
 {
-	if( !ValidateMove( move, additionalInfo ) ) return false;
+	if (!ValidateMove(move, additionalInfo)) return false;
 	ClearPreservedStates();
-	m_lastPiece = GetPiece( move.from );
-	
+	m_lastPiece = GetPiece(move.from);
+
 	// update last piece or pawn move for FEN serialization //
 	int nPrevLastPawnMoveOrCapture = m_nLastPawnMoveOrCapture;
-	if ( ( m_lastPiece.cPiece == ChessPieceImpl::Pawn ) ||
-		 ( GetPiece( move.to ) != ChessPieceImpl() ) ) m_nLastPawnMoveOrCapture = 0;
+	if ((m_lastPiece.cPiece == ChessPieceImpl::Pawn) ||
+		(GetPiece(move.to) != ChessPieceImpl())) m_nLastPawnMoveOrCapture = 0;
 	else ++m_nLastPawnMoveOrCapture;
 
-	auto capturedPiece = GetPiece( move.to );
+	auto capturedPiece = GetPiece(move.to);
 	if (IsEnPassantMove(additionalInfo))
 		capturedPiece = GetPiece(additionalInfo.coordEnPassant);
 
 	// handle pawn promotion //
-	bool bPromotion = ( m_lastPiece.cPiece == ChessPieceImpl::Pawn ) && ( ( move.to.nRank == 0 ) || ( move.to.nRank == 7 ) );
-	if ( bPromotion )
+	bool bPromotion = (m_lastPiece.cPiece == ChessPieceImpl::Pawn) && ((move.to.nRank == 0) || (move.to.nRank == 7));
+	if (bPromotion)
 	{
 		m_lastPiece.cPiece = move.promotionPiece.cPiece;
-		if ( m_lastPiece.cPiece == ChessPieceImpl::None )
+		if (m_lastPiece.cPiece == ChessPieceImpl::None)
 			m_lastPiece.cPiece = ChessPieceImpl::Queen;
 
 		m_lastPiece.bTransformed = true;
 	}
-	
+
 	std::list<CoordinateImpl>	listAttackers;
-	if ( m_bStorePGN )
-		GetAttackingFields( move.to, m_lastPiece.bWhite, listAttackers );
+	if (m_bStorePGN)
+		GetAttackingFields(move.to, m_lastPiece.bWhite, listAttackers);
 
-	SetPiece( m_lastPiece, move.to );
-	SetPiece( ChessPieceImpl(), move.from );
+	SetPiece(m_lastPiece, move.to);
+	SetPiece(ChessPieceImpl(), move.from);
 
-	if( additionalInfo.coordEnPassant ) 
-		m_memBoard[ additionalInfo.coordEnPassant.nRank ][additionalInfo.coordEnPassant.nColumn] = ChessPieceImpl();
-	if ( additionalInfo.RockMove )
+	if (additionalInfo.coordEnPassant)
+		m_memBoard[additionalInfo.coordEnPassant.nRank][additionalInfo.coordEnPassant.nColumn] = ChessPieceImpl();
+	if (additionalInfo.RockMove)
 	{
-		SetPiece( GetPiece( additionalInfo.RockMove.from ), additionalInfo.RockMove.to );
-		SetPiece( ChessPieceImpl(), additionalInfo.RockMove.from );
+		SetPiece(GetPiece(additionalInfo.RockMove.from), additionalInfo.RockMove.to);
+		SetPiece(ChessPieceImpl(), additionalInfo.RockMove.from);
 	}
 
-	MoveDataImpl moveData( m_currentMoveIndex + 1, move, capturedPiece );
+	MoveDataImpl moveData(m_currentMoveIndex + 1, move, capturedPiece);
 	moveData.enPassantCapture = IsEnPassantMove(additionalInfo);
 
 	bool bKingCastle = false;
 	bool bBQueenCastle = false;
 	// update castling info //
-	if ( m_lastPiece.bWhite ) 
+	if (m_lastPiece.bWhite)
 	{
-		if(	m_lastPiece.cPiece == ChessPieceImpl::King ) {
-			if ( move.from.hDistance (move.to) == 2)
+		if (m_lastPiece.cPiece == ChessPieceImpl::King) {
+			if (move.from.hDistance(move.to) == 2)
 			{
-				SetPiece(ChessPieceImpl(), CoordinateImpl(0,0));
-				SetPiece(ChessPieceImpl(ChessPieceImpl::Rock, true), CoordinateImpl(0,3));
+				SetPiece(ChessPieceImpl(), CoordinateImpl(0, 0));
+				SetPiece(ChessPieceImpl(ChessPieceImpl::Rock, true), CoordinateImpl(0, 3));
 				bBQueenCastle = true;
 			}
-			else if ( move.from.hDistance (move.to) == -2)
+			else if (move.from.hDistance(move.to) == -2)
 			{
-				SetPiece(ChessPieceImpl(), CoordinateImpl(0,7));
-				SetPiece(ChessPieceImpl(ChessPieceImpl::Rock, true), CoordinateImpl(0,5));
+				SetPiece(ChessPieceImpl(), CoordinateImpl(0, 7));
+				SetPiece(ChessPieceImpl(ChessPieceImpl::Rock, true), CoordinateImpl(0, 5));
 				bKingCastle = true;
 			}
 
@@ -251,18 +259,18 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 	}
 	else
 	{
-		if(	m_lastPiece.cPiece == ChessPieceImpl::King ) 
+		if (m_lastPiece.cPiece == ChessPieceImpl::King)
 		{
-			if ( move.from.hDistance (move.to) == 2)
+			if (move.from.hDistance(move.to) == 2)
 			{
-				SetPiece(ChessPieceImpl(), CoordinateImpl(7,0));
-				SetPiece(ChessPieceImpl(ChessPieceImpl::Rock, false), CoordinateImpl(7,3));
+				SetPiece(ChessPieceImpl(), CoordinateImpl(7, 0));
+				SetPiece(ChessPieceImpl(ChessPieceImpl::Rock, false), CoordinateImpl(7, 3));
 				bBQueenCastle = true;
 			}
-			else if ( move.from.hDistance (move.to) == -2)
+			else if (move.from.hDistance(move.to) == -2)
 			{
-				SetPiece(ChessPieceImpl(), CoordinateImpl(7,7));
-				SetPiece(ChessPieceImpl(ChessPieceImpl::Rock, false), CoordinateImpl(7,5));
+				SetPiece(ChessPieceImpl(), CoordinateImpl(7, 7));
+				SetPiece(ChessPieceImpl(ChessPieceImpl::Rock, false), CoordinateImpl(7, 5));
 				bKingCastle = true;
 			}
 
@@ -272,68 +280,68 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 			moveData.nCastlingMask &= ~(m_nCastlingMask & CT_BlackQueenSide);
 		}
 	}
-	if ( m_lastPiece.bWhite )
+	if (m_lastPiece.bWhite)
 	{
-		if( ( m_lastPiece.cPiece == ChessPieceImpl::Rock ) && (move.from == CoordinateImpl( 0, 7 ) ) )
+		if ((m_lastPiece.cPiece == ChessPieceImpl::Rock) && (move.from == CoordinateImpl(0, 7)))
 			moveData.nCastlingMask &= ~CT_WhiteKingSide;
-		if( ( m_lastPiece.cPiece == ChessPieceImpl::Rock ) && (move.from == CoordinateImpl( 0, 0 ) ) )
+		if ((m_lastPiece.cPiece == ChessPieceImpl::Rock) && (move.from == CoordinateImpl(0, 0)))
 			moveData.nCastlingMask &= ~CT_WhiteQueenSide;
 	}
 	else
 	{
-		if( ( m_lastPiece.cPiece == ChessPieceImpl::Rock ) && (move.from == CoordinateImpl( 7, 7 ) ) )
+		if ((m_lastPiece.cPiece == ChessPieceImpl::Rock) && (move.from == CoordinateImpl(7, 7)))
 			moveData.nCastlingMask &= ~CT_BlackKingSide;
-		if( ( m_lastPiece.cPiece == ChessPieceImpl::Rock ) && (move.from == CoordinateImpl( 7, 0 ) ) )
+		if ((m_lastPiece.cPiece == ChessPieceImpl::Rock) && (move.from == CoordinateImpl(7, 0)))
 			moveData.nCastlingMask &= ~CT_BlackQueenSide;
 	}
 
 	m_nCastlingMask &= moveData.nCastlingMask;
 	moveData.nLastPawnMoveOrCapture = nPrevLastPawnMoveOrCapture;
-	if ( m_lastPiece.cPiece == ChessPieceImpl::King ) 
+	if (m_lastPiece.cPiece == ChessPieceImpl::King)
 	{
-		if ( m_lastPiece.bWhite ) m_coordWhiteKing = move.to;
+		if (m_lastPiece.bWhite) m_coordWhiteKing = move.to;
 		else m_coordBlackKing = move.to;
 	}
 
 	// update pgn str //
-	if( m_bStorePGN )
+	if (m_bStorePGN)
 	{
-		if ( bKingCastle ) {
+		if (bKingCastle) {
 			moveData.strPGNMove = "O-O";
 			moveData.strPGNUserFriendly = "King side castle";
 		}
-		else if ( bBQueenCastle ) {
+		else if (bBQueenCastle) {
 			moveData.strPGNMove = "O-O-O";
 			moveData.strPGNUserFriendly = "Queen side castle";
 		}
 		else {
 			bool bAmbigous = false;
 			CoordinateImpl coordAmbigous;
-			for ( auto it : listAttackers )
+			for (auto it : listAttackers)
 			{
-				if( GetPiece( it ).cPiece == m_lastPiece.cPiece ) {
+				if (GetPiece(it).cPiece == m_lastPiece.cPiece) {
 					coordAmbigous = it;
 					break;
 				}
 			}
 
 			bool bPawn = (m_lastPiece.cPiece == ChessPieceImpl::Pawn) || bPromotion;
-			if ( !bPawn )
+			if (!bPawn)
 			{
-				moveData.strPGNMove += toupper( m_lastPiece.cPiece );
+				moveData.strPGNMove += toupper(m_lastPiece.cPiece);
 				moveData.strPGNUserFriendly = m_lastPiece.GetPieceStr();
 			}
-			else if ( !capturedPiece.IsEmpty() ) moveData.strPGNUserFriendly += 'a' + move.from.nColumn;
+			else if (!capturedPiece.IsEmpty()) moveData.strPGNUserFriendly += 'a' + move.from.nColumn;
 
-			if ( coordAmbigous && !bPawn ) moveData.strPGNUserFriendly += " from " + coordAmbigous.GetCoordStr();
-			if ( ( coordAmbigous && !bPawn) || ( bPawn && !capturedPiece.IsEmpty() ) ) {
+			if (coordAmbigous && !bPawn) moveData.strPGNUserFriendly += " from " + coordAmbigous.GetCoordStr();
+			if ((coordAmbigous && !bPawn) || (bPawn && !capturedPiece.IsEmpty())) {
 				// if column is the same, use column //
-				if ( move.from.nColumn == coordAmbigous.nColumn )
+				if (move.from.nColumn == coordAmbigous.nColumn)
 					moveData.strPGNMove += move.from.nRank + L'1';
 				else
 					moveData.strPGNMove += move.from.nColumn + L'a';
 			}
-			if( !capturedPiece.IsEmpty() ) {
+			if (!capturedPiece.IsEmpty()) {
 				moveData.strPGNMove += "x";
 				moveData.strPGNUserFriendly += " takes ";
 			}
@@ -341,17 +349,17 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 			moveData.strPGNUserFriendly += " ";
 			moveData.strPGNUserFriendly += move.to.GetCoordStr();
 
-			if( bPromotion ) {
+			if (bPromotion) {
 				moveData.strPGNMove += "=";
-				moveData.strPGNMove += toupper( m_lastPiece.cPiece );
+				moveData.strPGNMove += toupper(m_lastPiece.cPiece);
 				moveData.pawnTransform = true;
 				moveData.strPGNUserFriendly += " Promotes to " + m_lastPiece.GetPieceStr();
 			}
-			if ( IsMate() ) {
+			if (IsMate()) {
 				moveData.strPGNMove += "#";
 				moveData.strPGNUserFriendly += " check mate";
 			}
-			else if ( InCheck() ) {
+			else if (InCheck()) {
 				moveData.strPGNMove += "+";
 				moveData.strPGNUserFriendly += " check";
 			}
@@ -365,7 +373,7 @@ bool ChessBoardImpl::SubmitMove( const MoveImpl& move, AdditionalMoveInfo& addit
 	}
 
 	if (m_listMoves.size() == m_currentMoveIndex + 1) {
-		m_listMoves.push_back( moveData );
+		m_listMoves.push_back(moveData);
 	}
 
 	m_currentMoveIndex++;
@@ -381,19 +389,19 @@ void ChessBoardImpl::RemoveMovesAfterCurrent()
 	}
 }
 
-bool ChessBoardImpl::SubmitMove( const MoveImpl& move )
+bool ChessBoardImpl::SubmitMove(const MoveImpl& move)
 {
-	return SubmitMove( move, AdditionalMoveInfo() );
+	return SubmitMove(move, AdditionalMoveInfo());
 }
 
 
-bool ChessBoardImpl::GoToMove( int moveIndex )
+bool ChessBoardImpl::GoToMove(int moveIndex)
 {
 	if (moveIndex > (int)(m_listMoves.size() - 1))
 		return false;
 
 	// first handle go to first move
-	if (m_currentMoveIndex < 0) 
+	if (m_currentMoveIndex < 0)
 	{
 		auto it = m_listMoves.begin();
 		SubmitMove(it->move);
@@ -426,58 +434,58 @@ bool ChessBoardImpl::GoToMove( int moveIndex )
 }
 
 
-bool ChessBoardImpl::UndoMove( bool bWhiteMove )
+bool ChessBoardImpl::UndoMove(bool bWhiteMove)
 {
-	if ( m_currentMoveIndex < 0 ) return false;
+	if (m_currentMoveIndex < 0) return false;
 	ClearPreservedStates();
 
 	int nMovesToUndo = 0;
-	if ( ( bWhiteMove != m_lastPiece.bWhite ) && m_currentMoveIndex >= 1 ) nMovesToUndo = 2;
+	if ((bWhiteMove != m_lastPiece.bWhite) && m_currentMoveIndex >= 1) nMovesToUndo = 2;
 	else nMovesToUndo = 1;
 
-	while ( nMovesToUndo-- )
+	while (nMovesToUndo--)
 	{
 		MoveDataImpl moveData = GetLastMove();
 		m_nCastlingMask |= ~moveData.nCastlingMask;
 		m_nCastlingMask &= 0xF;
 
 		m_nLastPawnMoveOrCapture = moveData.nLastPawnMoveOrCapture;
-		auto piece = GetPiece( moveData.move.to );
-		if ( moveData.pawnTransform)
+		auto piece = GetPiece(moveData.move.to);
+		if (moveData.pawnTransform)
 			piece.cPiece = ChessPieceImpl::Pawn;
 
-		SetPiece( piece, moveData.move.from );
+		SetPiece(piece, moveData.move.from);
 		CoordinateImpl capturedCoordinates = moveData.move.to;
 		if (moveData.enPassantCapture)
 		{
 			capturedCoordinates = CoordinateImpl(moveData.move.from.nRank, moveData.move.to.nColumn);
 			SetPiece(ChessPieceImpl(), moveData.move.to);
 		}
-		SetPiece( moveData.capturedPiece, capturedCoordinates);
+		SetPiece(moveData.capturedPiece, capturedCoordinates);
 		m_lastPiece = piece;
-		if ( m_lastPiece.cPiece == ChessPieceImpl::King ) 
+		if (m_lastPiece.cPiece == ChessPieceImpl::King)
 		{
-			if ( m_lastPiece.bWhite ) m_coordWhiteKing = moveData.move.from;
+			if (m_lastPiece.bWhite) m_coordWhiteKing = moveData.move.from;
 			else m_coordBlackKing = moveData.move.from;
-			if ( abs( moveData.move.to.nColumn - moveData.move.from.nColumn ) == 2 )
+			if (abs(moveData.move.to.nColumn - moveData.move.from.nColumn) == 2)
 			{
 				// casling move. move the rock also //
-				auto coordRock = CoordinateImpl( moveData.move.from.nRank, (moveData.move.to.nColumn + moveData.move.from.nColumn)/2 );
-				auto prospectedRock = GetPiece( coordRock );
+				auto coordRock = CoordinateImpl(moveData.move.from.nRank, (moveData.move.to.nColumn + moveData.move.from.nColumn) / 2);
+				auto prospectedRock = GetPiece(coordRock);
 				CoordinateImpl coordRockDest;
 
 				coordRockDest.nRank = coordRock.nRank;
 				coordRockDest.nColumn = coordRock.nColumn < 4 ? 0 : 7;
-				_ASSERTE( prospectedRock.cPiece == ChessPieceImpl::Rock );
-				SetPiece( prospectedRock, coordRockDest );
-				SetPiece( ChessPieceImpl(), coordRock );
+				_ASSERTE(prospectedRock.cPiece == ChessPieceImpl::Rock);
+				SetPiece(prospectedRock, coordRockDest);
+				SetPiece(ChessPieceImpl(), coordRock);
 			}
 		}
 		m_currentMoveIndex--;
 	}
 
 	// update last piece //
-	if( m_currentMoveIndex < 0 )
+	if (m_currentMoveIndex < 0)
 	{
 		m_lastPiece.bWhite = !m_lastPiece.bWhite;
 		m_lastPiece.cPiece = ChessPieceImpl::None;
@@ -485,7 +493,7 @@ bool ChessBoardImpl::UndoMove( bool bWhiteMove )
 	else
 	{
 		MoveDataImpl moveData = GetLastMove();
-		m_lastPiece = GetPiece( moveData.move.to );
+		m_lastPiece = GetPiece(moveData.move.to);
 	}
 	return true;
 }
@@ -497,17 +505,17 @@ bool ChessBoardImpl::IsEnPassantMove(AdditionalMoveInfo& additionalMove) const
 		additionalMove.coordEnPassant.nRank != -1;
 }
 
-bool ChessBoardImpl::ValidateMove( const MoveImpl& move, AdditionalMoveInfo& additionalMove ) const
+bool ChessBoardImpl::ValidateMove(const MoveImpl& move, AdditionalMoveInfo& additionalMove) const
 {
-	ChessPieceImpl piece = GetPiece( move.from );
-	if ( ( piece.IsEmpty() ) || piece.bWhite == m_lastPiece.bWhite ) return false;
+	ChessPieceImpl piece = GetPiece(move.from);
+	if ((piece.IsEmpty()) || piece.bWhite == m_lastPiece.bWhite) return false;
 
 	ChessBoardImpl copy(*this);
-	MoveValidationAlgorithm MoveAlg( &copy );
-	return MoveAlg.Run( move, additionalMove );
+	MoveValidationAlgorithm MoveAlg(&copy);
+	return MoveAlg.Run(move, additionalMove);
 }
 
-bool ChessBoardImpl::PromotePawn( CoordinateImpl coord, ChessPieceImpl piece )
+bool ChessBoardImpl::PromotePawn(CoordinateImpl coord, ChessPieceImpl piece)
 {
 	if (GetPiece(coord).cPiece != ChessPieceImpl::Pawn)
 		return false;
@@ -517,17 +525,17 @@ bool ChessBoardImpl::PromotePawn( CoordinateImpl coord, ChessPieceImpl piece )
 }
 
 
-bool ChessBoardImpl::GetAttackingFields( const CoordinateImpl& coord, bool bWhiteAttacks, std::list<CoordinateImpl>& listAttacker ) const
+bool ChessBoardImpl::GetAttackingFields(const CoordinateImpl& coord, bool bWhiteAttacks, std::list<CoordinateImpl>& listAttacker) const
 {
-	MoveValidationAlgorithm MoveAlg( this );
-	listAttacker = MoveAlg.GetAttackingFields( coord, bWhiteAttacks );
+	MoveValidationAlgorithm MoveAlg(this);
+	listAttacker = MoveAlg.GetAttackingFields(coord, bWhiteAttacks);
 	return !listAttacker.empty();
 }
 
 
-CoordinateImpl ChessBoardImpl::GetKingPos( bool bWhite ) const
+CoordinateImpl ChessBoardImpl::GetKingPos(bool bWhite) const
 {
-	if ( bWhite ) return m_coordWhiteKing;
+	if (bWhite) return m_coordWhiteKing;
 	else return m_coordBlackKing;
 }
 
@@ -541,12 +549,12 @@ bool ChessBoardImpl::IsWhiteTurn() const
 bool ChessBoardImpl::InCheck()
 {
 	Core::StatePreserver state;
-	GetPreservedState( SPT_InCheck, state );
-	if ( !state.HasChanged() ) return state.GetState();
+	GetPreservedState(SPT_InCheck, state);
+	if (!state.HasChanged()) return state.GetState();
 
 	std::list<CoordinateImpl>	listAttackers;
-	auto result = GetAttackingFields( GetKingPos( !m_lastPiece.bWhite ), m_lastPiece.bWhite, listAttackers );
-	UpdateState( SPT_InCheck, result );
+	auto result = GetAttackingFields(GetKingPos(!m_lastPiece.bWhite), m_lastPiece.bWhite, listAttackers);
+	UpdateState(SPT_InCheck, result);
 	return result;
 }
 
@@ -554,37 +562,37 @@ bool ChessBoardImpl::InCheck()
 bool ChessBoardImpl::IsMate()
 {
 	Core::StatePreserver state;
-	GetPreservedState( SPT_IsMate, state );
-	if ( !state.HasChanged() ) return state.GetState();
+	GetPreservedState(SPT_IsMate, state);
+	if (!state.HasChanged()) return state.GetState();
 
 	bool bRes = true;
-	if ( !InCheck() ) 
+	if (!InCheck())
 	{
 		bRes = false;
-		goto END; 
+		goto END;
 	}
-	if ( !GetAvailableMoves( GetKingPos( !m_lastPiece.bWhite) ).empty() )
+	if (!GetAvailableMoves(GetKingPos(!m_lastPiece.bWhite)).empty())
 	{
 		bRes = false;
-		goto END; 
+		goto END;
 	}
 
-	for ( int i = 0; i < 8; ++i )
-		for ( int j = 0; j < 8; ++j )
+	for (int i = 0; i < 8; ++i)
+		for (int j = 0; j < 8; ++j)
 		{
-			auto crtCoord = CoordinateImpl( i, j ) ;
-			auto piece = GetPiece( crtCoord );
-			if ( piece.IsEmpty() ) continue;
-			if ( piece.bWhite == m_lastPiece.bWhite ) continue;
-			if ( !GetAvailableMoves( crtCoord ).empty() ) 
+			auto crtCoord = CoordinateImpl(i, j);
+			auto piece = GetPiece(crtCoord);
+			if (piece.IsEmpty()) continue;
+			if (piece.bWhite == m_lastPiece.bWhite) continue;
+			if (!GetAvailableMoves(crtCoord).empty())
 			{
 				bRes = false;
-				goto END; 
+				goto END;
 			}
 		}
 
 END:
-	UpdateState( SPT_IsMate, bRes );
+	UpdateState(SPT_IsMate, bRes);
 	return bRes;
 }
 
@@ -592,47 +600,47 @@ END:
 bool ChessBoardImpl::IsStaleMate()
 {
 	Core::StatePreserver state;
-	GetPreservedState( SPT_IsStaleMate, state );
-	if ( !state.HasChanged() ) return state.GetState();
+	GetPreservedState(SPT_IsStaleMate, state);
+	if (!state.HasChanged()) return state.GetState();
 
 	bool bRes = true;
 
-	if ( InCheck() ) 
+	if (InCheck())
 	{
 		bRes = false;
 		goto END;
 	}
 
 	int nPieceCount = 0;
-	for ( int i = 0; i < 8; ++i )
-		for ( int j = 0; j < 8; ++j )
+	for (int i = 0; i < 8; ++i)
+		for (int j = 0; j < 8; ++j)
 		{
-			if ( GetPiece( CoordinateImpl(i, j ) ) != ChessPieceImpl() ) ++nPieceCount;
-			if( nPieceCount > 2 ) break;
+			if (GetPiece(CoordinateImpl(i, j)) != ChessPieceImpl()) ++nPieceCount;
+			if (nPieceCount > 2) break;
 		}
-	if ( nPieceCount == 2 ) return true;
+	if (nPieceCount == 2) return true;
 
-	for ( int i = 0; i < 8; ++i )
-		for ( int j = 0; j < 8; ++j )
+	for (int i = 0; i < 8; ++i)
+		for (int j = 0; j < 8; ++j)
 		{
-			auto crtCoord = CoordinateImpl( i, j ) ;
-			auto piece = GetPiece( crtCoord );
-			if ( piece.IsEmpty() ) continue;
-			if ( piece.bWhite == m_lastPiece.bWhite ) continue;
-			if ( !GetAvailableMoves( crtCoord ).empty() ) 
+			auto crtCoord = CoordinateImpl(i, j);
+			auto piece = GetPiece(crtCoord);
+			if (piece.IsEmpty()) continue;
+			if (piece.bWhite == m_lastPiece.bWhite) continue;
+			if (!GetAvailableMoves(crtCoord).empty())
 			{
 				bRes = false;
 				goto END;
 			}
 		}
 END:
-	UpdateState( SPT_IsStaleMate, bRes );
+	UpdateState(SPT_IsStaleMate, bRes);
 	return bRes;
 }
 
 MoveDataImpl ChessBoardImpl::GetLastMove() const
 {
-	if ( m_currentMoveIndex < 0 ) return MoveDataImpl();
+	if (m_currentMoveIndex < 0) return MoveDataImpl();
 	auto it = std::next(m_listMoves.begin(), m_currentMoveIndex);
 	return *it;
 }
@@ -641,27 +649,27 @@ MoveDataImpl ChessBoardImpl::GetLastMove() const
 std::map<ChessPieceImpl, int> ChessBoardImpl::GetCapturedPieces() const
 {
 	std::map<ChessPieceImpl, int>  mapResult;
-	
-	mapResult[ChessPieceImpl(ChessPieceImpl::Pawn,		true) ] = 8;
-	mapResult[ChessPieceImpl(ChessPieceImpl::Knight,	true) ] = 2;
-	mapResult[ChessPieceImpl(ChessPieceImpl::Bishop,	true) ] = 2;
-	mapResult[ChessPieceImpl(ChessPieceImpl::Rock,		true) ] = 2;
-	mapResult[ChessPieceImpl(ChessPieceImpl::Queen,		true) ] = 1;
 
-	mapResult[ChessPieceImpl(ChessPieceImpl::Pawn,		false) ] = 8;
-	mapResult[ChessPieceImpl(ChessPieceImpl::Knight,	false) ] = 2;
-	mapResult[ChessPieceImpl(ChessPieceImpl::Bishop,	false) ] = 2;
-	mapResult[ChessPieceImpl(ChessPieceImpl::Rock,		false) ] = 2;
-	mapResult[ChessPieceImpl(ChessPieceImpl::Queen,		false) ] = 1;
+	mapResult[ChessPieceImpl(ChessPieceImpl::Pawn, true)] = 8;
+	mapResult[ChessPieceImpl(ChessPieceImpl::Knight, true)] = 2;
+	mapResult[ChessPieceImpl(ChessPieceImpl::Bishop, true)] = 2;
+	mapResult[ChessPieceImpl(ChessPieceImpl::Rock, true)] = 2;
+	mapResult[ChessPieceImpl(ChessPieceImpl::Queen, true)] = 1;
 
-	for ( int i = 0; i < 8; ++i )
-		for ( int j = 0; j < 8; ++j )
+	mapResult[ChessPieceImpl(ChessPieceImpl::Pawn, false)] = 8;
+	mapResult[ChessPieceImpl(ChessPieceImpl::Knight, false)] = 2;
+	mapResult[ChessPieceImpl(ChessPieceImpl::Bishop, false)] = 2;
+	mapResult[ChessPieceImpl(ChessPieceImpl::Rock, false)] = 2;
+	mapResult[ChessPieceImpl(ChessPieceImpl::Queen, false)] = 1;
+
+	for (int i = 0; i < 8; ++i)
+		for (int j = 0; j < 8; ++j)
 		{
-			auto piece = GetPiece( CoordinateImpl( i, j ) );
-			if ( ( piece.IsEmpty() ) || ( piece.cPiece == ChessPieceImpl::King )) continue;
-			if ( piece.bTransformed )
-				mapResult[ChessPieceImpl( ChessPieceImpl::Pawn, piece.bWhite) ] --;
-			else 
+			auto piece = GetPiece(CoordinateImpl(i, j));
+			if ((piece.IsEmpty()) || (piece.cPiece == ChessPieceImpl::King)) continue;
+			if (piece.bTransformed)
+				mapResult[ChessPieceImpl(ChessPieceImpl::Pawn, piece.bWhite)] --;
+			else
 				mapResult[piece] --;
 		}
 
@@ -669,14 +677,14 @@ std::map<ChessPieceImpl, int> ChessBoardImpl::GetCapturedPieces() const
 }
 
 
-void ChessBoardImpl::GetPreservedState( StatePreserveType type, Core::StatePreserver& state )
+void ChessBoardImpl::GetPreservedState(StatePreserveType type, Core::StatePreserver& state)
 {
 	state = m_mapStates[type];
 }
 
-void ChessBoardImpl::UpdateState( StatePreserveType type, const Core::Variant& vtState )
+void ChessBoardImpl::UpdateState(StatePreserveType type, const Core::Variant& vtState)
 {
-	m_mapStates[type].SetState( vtState );
+	m_mapStates[type].SetState(vtState);
 }
 
 void ChessBoardImpl::ClearPreservedStates()
@@ -690,9 +698,9 @@ void ChessBoardImpl::Clear()
 	m_listMoves.clear();
 	m_currentMoveIndex = -1;
 	// generate empty chess board //
-	for ( int i = 0; i < 8; ++i )
-		for ( int j = 0; j < 8; ++j )
-			m_memBoard[ i ][ j ] = ChessPieceImpl();
+	for (int i = 0; i < 8; ++i)
+		for (int j = 0; j < 8; ++j)
+			m_memBoard[i][j] = ChessPieceImpl();
 
 	ClearPreservedStates();
 }
@@ -702,66 +710,66 @@ void ChessBoardImpl::Initialize()
 	Clear();
 
 	// generate pawns //
-	for ( int i = 0; i < 8; ++i ) 
+	for (int i = 0; i < 8; ++i)
 	{
-		m_memBoard[ 1 ][ i ] = ChessPieceImpl( ChessPieceImpl::Pawn, true );
-		m_memBoard[ 6 ][ i ] = ChessPieceImpl( ChessPieceImpl::Pawn, false );
+		m_memBoard[1][i] = ChessPieceImpl(ChessPieceImpl::Pawn, true);
+		m_memBoard[6][i] = ChessPieceImpl(ChessPieceImpl::Pawn, false);
 	}
 
 	// rocks //
-	m_memBoard[ 0 ][ 0 ] = m_memBoard[ 0 ][ 7 ] = ChessPieceImpl( ChessPieceImpl::Rock, true );
-	m_memBoard[ 7 ][ 0 ] = m_memBoard[ 7 ][ 7 ] = ChessPieceImpl( ChessPieceImpl::Rock, false );
-				 		   	      				   					  
+	m_memBoard[0][0] = m_memBoard[0][7] = ChessPieceImpl(ChessPieceImpl::Rock, true);
+	m_memBoard[7][0] = m_memBoard[7][7] = ChessPieceImpl(ChessPieceImpl::Rock, false);
+
 	// knights  //		   	      				   					  
-	m_memBoard[ 0 ][ 1 ] = m_memBoard[ 0 ][ 6 ] = ChessPieceImpl( ChessPieceImpl::Knight, true );
-	m_memBoard[ 7 ][ 1 ] = m_memBoard[ 7 ][ 6 ] = ChessPieceImpl( ChessPieceImpl::Knight, false );
-				 		   	      				   					  
+	m_memBoard[0][1] = m_memBoard[0][6] = ChessPieceImpl(ChessPieceImpl::Knight, true);
+	m_memBoard[7][1] = m_memBoard[7][6] = ChessPieceImpl(ChessPieceImpl::Knight, false);
+
 	// Bishops  //		   	      				   					  
-	m_memBoard[ 0 ][ 2 ] = m_memBoard[ 0 ][ 5 ] = ChessPieceImpl( ChessPieceImpl::Bishop, true );
-	m_memBoard[ 7 ][ 2 ] = m_memBoard[ 7 ][ 5 ] = ChessPieceImpl( ChessPieceImpl::Bishop, false );
+	m_memBoard[0][2] = m_memBoard[0][5] = ChessPieceImpl(ChessPieceImpl::Bishop, true);
+	m_memBoard[7][2] = m_memBoard[7][5] = ChessPieceImpl(ChessPieceImpl::Bishop, false);
 
 	// Queens //
-	m_memBoard[ 0 ][3 ] = ChessPieceImpl( ChessPieceImpl::Queen, true );
-	m_memBoard[ 7 ][3 ] = ChessPieceImpl( ChessPieceImpl::Queen, false );
+	m_memBoard[0][3] = ChessPieceImpl(ChessPieceImpl::Queen, true);
+	m_memBoard[7][3] = ChessPieceImpl(ChessPieceImpl::Queen, false);
 
 	// Kings //
-	m_memBoard[ 0 ][ 4 ] = ChessPieceImpl( ChessPieceImpl::King, true );
-	m_memBoard[ 7 ][ 4 ] = ChessPieceImpl( ChessPieceImpl::King, false );
-	
-	m_coordWhiteKing = CoordinateImpl (0, 4);
-	m_coordBlackKing = CoordinateImpl (7, 4);
+	m_memBoard[0][4] = ChessPieceImpl(ChessPieceImpl::King, true);
+	m_memBoard[7][4] = ChessPieceImpl(ChessPieceImpl::King, false);
+
+	m_coordWhiteKing = CoordinateImpl(0, 4);
+	m_coordBlackKing = CoordinateImpl(7, 4);
 	m_nCastlingMask = FullCastlingMask;
 	m_lastPiece.bWhite = false;
 	m_nLastPawnMoveOrCapture = 0;
 }
 
- // refer to http://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation //
+// refer to http://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation //
 std::string ChessBoardImpl::Serialize2FEN() const
 {
 	std::string strFEN;
-	strFEN.reserve( MAX_FEN_LENGTH );
+	strFEN.reserve(MAX_FEN_LENGTH);
 
-	for ( int i = 7; i >= 0; --i ) 
+	for (int i = 7; i >= 0; --i)
 	{
 		int nOpenFields = 0;
-		for ( int j = 0; j < 8; ++j ) 
+		for (int j = 0; j < 8; ++j)
 		{
-			auto crtPiece = GetPiece( CoordinateImpl( i, j ) );
-			if ( crtPiece != ChessPieceImpl() ) 
+			auto crtPiece = GetPiece(CoordinateImpl(i, j));
+			if (crtPiece != ChessPieceImpl())
 			{
-				if ( nOpenFields ) 
+				if (nOpenFields)
 				{
-					strFEN += std::to_string( nOpenFields );
+					strFEN += std::to_string(nOpenFields);
 					nOpenFields = 0;
 				}
-				strFEN += crtPiece.bWhite ? toupper( crtPiece.cPiece ) : crtPiece.cPiece;
+				strFEN += crtPiece.bWhite ? toupper(crtPiece.cPiece) : crtPiece.cPiece;
 			}
-			else 
+			else
 				++nOpenFields;
 		}
-		
-		if ( nOpenFields ) strFEN += std::to_string( nOpenFields );
-		if ( i > 0 ) strFEN += '/'; // end rank
+
+		if (nOpenFields) strFEN += std::to_string(nOpenFields);
+		if (i > 0) strFEN += '/'; // end rank
 	}
 
 	// nextmove //
@@ -769,33 +777,33 @@ std::string ChessBoardImpl::Serialize2FEN() const
 	strFEN += m_lastPiece.bWhite ? 'b' : 'w';
 	strFEN += ' ';
 	// add castling informations //
-	if ( ( m_nCastlingMask & 0xF ) == 0 )
+	if ((m_nCastlingMask & 0xF) == 0)
 		strFEN += "-";
 	else
 	{
-		if ( m_nCastlingMask & CT_WhiteKingSide ) strFEN += L'K';
-		if ( m_nCastlingMask & CT_WhiteQueenSide ) strFEN += L'Q';
-		if ( m_nCastlingMask & CT_BlackKingSide ) strFEN += L'k';
-		if ( m_nCastlingMask & CT_BlackQueenSide ) strFEN += L'q';
+		if (m_nCastlingMask & CT_WhiteKingSide) strFEN += L'K';
+		if (m_nCastlingMask & CT_WhiteQueenSide) strFEN += L'Q';
+		if (m_nCastlingMask & CT_BlackKingSide) strFEN += L'k';
+		if (m_nCastlingMask & CT_BlackQueenSide) strFEN += L'q';
 	}
 	strFEN += " ";
 
 	// add en-passant possibilities //
 	std::string strEnPassant = "-";
-	if ( ( m_lastPiece.cPiece == ChessPieceImpl::Pawn ) && m_currentMoveIndex >= 0 )
+	if ((m_lastPiece.cPiece == ChessPieceImpl::Pawn) && m_currentMoveIndex >= 0)
 	{
 		auto lastMove = GetLastMove().move;
-		if ( abs( lastMove.from.nRank - lastMove.to.nRank ) == 2 )
-			strEnPassant = CoordinateImpl( (lastMove.from.nRank + lastMove.to.nRank ) / 2, lastMove.from.nColumn ).ToString();
+		if (abs(lastMove.from.nRank - lastMove.to.nRank) == 2)
+			strEnPassant = CoordinateImpl((lastMove.from.nRank + lastMove.to.nRank) / 2, lastMove.from.nColumn).ToString();
 	}
 	strFEN += strEnPassant;
 	strFEN += " ";
 	// last capture or pawn advance //
-	strFEN += std::to_string( m_nLastPawnMoveOrCapture );
+	strFEN += std::to_string(m_nLastPawnMoveOrCapture);
 	strFEN += " ";
 	// move count //
-	strFEN += std::to_string( (m_currentMoveIndex + 1) / 2 + 1 );
-	
+	strFEN += std::to_string((m_currentMoveIndex + 1) / 2 + 1);
+
 	return strFEN;
 }
 
@@ -814,13 +822,13 @@ std::list<CoordinateImpl> ChessBoardImpl::getPiecesMovableAs(MoveImpl move, char
 	for (int r = 0; r < 8; ++r)
 		for (int c = 0; c < 8; ++c)
 		{
-			CoordinateImpl candidate(r,c);
+			CoordinateImpl candidate(r, c);
 			if (move.from == candidate)
 				continue;
 
 			ChessPieceImpl candidatePiece = mockBoard.m_memBoard[r][c];
 
-			if (candidatePiece.cPiece == pieceType && candidatePiece.bWhite == pWhite) 
+			if (candidatePiece.cPiece == pieceType && candidatePiece.bWhite == pWhite)
 			{
 				std::list<CoordinateImpl> possibleMoves = moveChecker.GetAvailableMoves(candidate);
 				for (auto it = possibleMoves.begin(); it != possibleMoves.end(); ++it)
@@ -832,10 +840,10 @@ std::list<CoordinateImpl> ChessBoardImpl::getPiecesMovableAs(MoveImpl move, char
 			}
 		}
 
-//	std::cout << std::endl << "possible moves to " << coord.ToString() << " are:" << std::endl;
+	//	std::cout << std::endl << "possible moves to " << coord.ToString() << " are:" << std::endl;
 	// TODO remove this after I'm sure this works properly
-//	for (auto it = result.begin(); it != result.end(); ++it)
-//		std::cout << it->ToString() << std::endl;
+	//	for (auto it = result.begin(); it != result.end(); ++it)
+	//		std::cout << it->ToString() << std::endl;
 
 	return result;
 }
@@ -843,97 +851,97 @@ std::list<CoordinateImpl> ChessBoardImpl::getPiecesMovableAs(MoveImpl move, char
 std::string ChessBoardImpl::Serialize2PGN()
 {
 	Core::StatePreserver state;
-	GetPreservedState( SPT_PGNSerialization, state );
-	if ( !state.HasChanged() ) return state.GetState();
-	
+	GetPreservedState(SPT_PGNSerialization, state);
+	if (!state.HasChanged()) return state.GetState();
+
 	std::string result = "";
 	int moveNo = 0;
 
 	int nWhiteMaxMoveLen = 0;
 	int nBlackMaxMoveLen = 0;
-	for ( auto it = m_listMoves.begin(); it != m_listMoves.end(); ++it )
+	for (auto it = m_listMoves.begin(); it != m_listMoves.end(); ++it)
 	{
-		if (moveNo > m_currentMoveIndex) 
+		if (moveNo > m_currentMoveIndex)
 			break;
 
-		if( moveNo % 2 )
+		if (moveNo % 2)
 		{
-			if ( nWhiteMaxMoveLen < it->strPGNMove.size() ) 
+			if (nWhiteMaxMoveLen < it->strPGNMove.size())
 				nWhiteMaxMoveLen = (int)it->strPGNMove.size();
 		}
 		else
 		{
-			if ( nBlackMaxMoveLen < it->strPGNMove.size() ) 
+			if (nBlackMaxMoveLen < it->strPGNMove.size())
 				nBlackMaxMoveLen = (int)it->strPGNMove.size();
 		}
 		++moveNo;
 	}
 
-	nWhiteMaxMoveLen ++;
-	nBlackMaxMoveLen ++;
+	nWhiteMaxMoveLen++;
+	nBlackMaxMoveLen++;
 
 	moveNo = 0;
-	for ( auto it = m_listMoves.begin(); it != m_listMoves.end(); ++it )
+	for (auto it = m_listMoves.begin(); it != m_listMoves.end(); ++it)
 	{
 		if (moveNo > m_currentMoveIndex)
 			break;
 
-		if ( moveNo % 2 == 0 )
+		if (moveNo % 2 == 0)
 		{
 			result += "\n";
 			result += std::to_string(moveNo / 2 + 1) + ". ";
 		}
-		
+
 		std::string movestr = it->strPGNMove;
 
 		// max move length: 7 e.g. : dxe8=Q+ ( pawn from d7 takes at e8, promoting to queen and giving check ) //
-		int nMaxMoveSize = (moveNo%2) ? nWhiteMaxMoveLen : nBlackMaxMoveLen;
-		while ( movestr.size() < nMaxMoveSize ) 
+		int nMaxMoveSize = (moveNo % 2) ? nWhiteMaxMoveLen : nBlackMaxMoveLen;
+		while (movestr.size() < nMaxMoveSize)
 			movestr += " ";
 		result += movestr;
-		
-		++ moveNo;
+
+		++moveNo;
 	}
 
-	UpdateState( SPT_PGNSerialization, result );
+	UpdateState(SPT_PGNSerialization, result);
 	return result;
 }
 
 
-bool ChessBoardImpl::LoadFromFEN( const std::string& strData )
+bool ChessBoardImpl::LoadFromFEN(const std::string& strData)
 {
 	std::string strToken;
-	std::istringstream stm( strData );
-	std::getline( stm, strToken, ' ' );
+	std::istringstream stm(strData);
+	std::getline(stm, strToken, ' ');
 
 	Clear();
 
 	// parse pieces
 	int nCrtRank = 7;
 	int nCrtColumn = 0;
-	for ( auto i = 0; i < strToken.size(); ++i )
+	for (auto i = 0; i < strToken.size(); ++i)
 	{
 		auto crtChar = strToken[i];
-		if ( IN_RANGE( crtChar, '1', '9' ) ) nCrtColumn += crtChar - '0'; // empty squares //
-		if ( IN_RANGE( crtChar, 'a', 'z' ) ) 
+		if (IN_RANGE(crtChar, '1', '9')) nCrtColumn += crtChar - '0'; // empty squares //
+		if (IN_RANGE(crtChar, 'a', 'z'))
 		{
 			CoordinateImpl coord(nCrtRank, nCrtColumn);
-			SetPiece( ChessPieceImpl( tolower( crtChar ), false ), coord );
+			SetPiece(ChessPieceImpl(tolower(crtChar), false), coord);
 			if (crtChar == 'k')
 				m_coordBlackKing = coord;
 
 			nCrtColumn++;
 		}
-		if ( IN_RANGE( crtChar, 'A', 'Z' ) ) 
+		if (IN_RANGE(crtChar, 'A', 'Z'))
 		{
 			CoordinateImpl coord(nCrtRank, nCrtColumn);
-			SetPiece( ChessPieceImpl( tolower( crtChar ), true ), coord );
+			SetPiece(ChessPieceImpl(tolower(crtChar), true), coord);
 			if (crtChar == 'K')
 				m_coordWhiteKing = coord;
 
 			nCrtColumn++;
 		}
-		if ( crtChar == '/' ) 
+		if (crtChar == '/')
 		{
 			--nCrtRank;
 			nCrtColumn = 0;
@@ -941,81 +949,92 @@ bool ChessBoardImpl::LoadFromFEN( const std::string& strData )
 	}
 
 	// current color//
-	std::getline( stm, strToken, ' ' );
-	m_lastPiece.bWhite = ( strToken[0] == 'b' );
+	std::getline(stm, strToken, ' ');
+	m_lastPiece.bWhite = (strToken[0] == 'b');
 
 	// castling info //
-	std::getline( stm, strToken, ' ' );
+	std::getline(stm, strToken, ' ');
 	m_nCastlingMask = 0;
-	if ( strToken != "-" )
+	if (strToken != "-")
 	{
 		// also validate castles even if the FEN allows it
-		if ( strToken.find( 'K' ) != -1 && GetPiece(CoordinateImpl(0, 7)) == ChessPieceImpl(ChessPieceImpl::Rock, true))
+		if (strToken.find('K') != -1 && GetPiece(CoordinateImpl(0, 7)) == ChessPieceImpl(ChessPieceImpl::Rock, true))
 			m_nCastlingMask |= CT_WhiteKingSide;
-		if ( strToken.find( 'Q' ) != -1 && GetPiece(CoordinateImpl(0, 0)) == ChessPieceImpl(ChessPieceImpl::Rock, true)) 
+		if (strToken.find('Q') != -1 && GetPiece(CoordinateImpl(0, 0)) == ChessPieceImpl(ChessPieceImpl::Rock, true))
 			m_nCastlingMask |= CT_WhiteQueenSide;
-		if ( strToken.find( 'k' ) != -1 && GetPiece(CoordinateImpl(7, 7)) == ChessPieceImpl(ChessPieceImpl::Rock, false))
+		if (strToken.find('k') != -1 && GetPiece(CoordinateImpl(7, 7)) == ChessPieceImpl(ChessPieceImpl::Rock, false))
 			m_nCastlingMask |= CT_BlackKingSide;
-		if ( strToken.find( 'q' ) != -1 && GetPiece(CoordinateImpl(7, 0)) == ChessPieceImpl(ChessPieceImpl::Rock, false))
+		if (strToken.find('q') != -1 && GetPiece(CoordinateImpl(7, 0)) == ChessPieceImpl(ChessPieceImpl::Rock, false))
 			m_nCastlingMask |= CT_BlackQueenSide;
 	}
 
 	// TODO: load the rest //
-	return false;
+	return true;
 }
 
-bool ChessBoardImpl::LoadFromPGN( const std::string& strData )
+void DisplayBoard(ChessBoardImpl& board, bool bShowFEN)
 {
-	Initialize();
+	for (int i = 8; i >= 0; --i) {
+		for (int j = 0; j < 8; ++j) {
+			ChessPieceImpl piece = board.GetPiece(CoordinateImpl(i, j));
+			printf("%c", !piece.bWhite ? piece.cPiece : piece.cPiece + ('A' - 'a'));
+		}
+		printf("\n");
+	}
+	if (bShowFEN)
+		std::cout << board.Serialize(ST_FEN) << std::endl;
+	else
+		std::cout << board.Serialize(ST_PGN) << std::endl;
+}
 
+bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
+{
 	std::string strToken;
-	std::istringstream stm( strData );
-	std::string delims = " \n\t";
-
-	auto tokens = split(strData, delims);
-
-	for (auto it = tokens.begin(); it != tokens.end(); ++it)
+	PGNParser parser(strData);
+	parser.Start();
+	int nMoveCount = 0;
+	while (parser.IsValid() && parser.GetNext(strToken))
 	{
+		if (strToken.size() < 2) {
+			std::cout << "token too short: " << strToken << "To Play " << (nMoveCount % 2 ? "white" : "black") << "Move:" << nMoveCount / 2 + 1 << std::endl;
+			return false;
+		}
 		MoveImpl move;
-
-		std::string strToken = *it;
-		if (strToken.find('.') != std::string::npos)
-			continue;
 
 		if (strToken.find("O-O-O") != std::string::npos)
 		{
 			// queen-side castling
 			if (IsWhiteTurn())
-				SubmitMove(MoveImpl(CoordinateImpl(0,4), CoordinateImpl(0,2)));
+				SubmitMove(MoveImpl(CoordinateImpl(0, 4), CoordinateImpl(0, 2)));
 			else
-				SubmitMove(MoveImpl(CoordinateImpl(7,4), CoordinateImpl(7,2)));
+				SubmitMove(MoveImpl(CoordinateImpl(7, 4), CoordinateImpl(7, 2)));
 			continue;
-		} 
+		}
 		else if (strToken.find("O-O") != std::string::npos)
 		{
 			// king-side castling
 			if (IsWhiteTurn())
-				SubmitMove(MoveImpl(CoordinateImpl(0,4), CoordinateImpl(0,6)));
+				SubmitMove(MoveImpl(CoordinateImpl(0, 4), CoordinateImpl(0, 6)));
 			else
-				SubmitMove(MoveImpl(CoordinateImpl(7,4), CoordinateImpl(7,6)));
+				SubmitMove(MoveImpl(CoordinateImpl(7, 4), CoordinateImpl(7, 6)));
 			continue;
 		}
-		
+
 		std::string destString;
 
 		if (strToken.find('=') != std::string::npos)
 		{
 			auto index = strToken.find('=');
-			char destPiece = strToken[index+1];
-			destString = strToken.substr(index-2, index);
+			char destPiece = strToken[index + 1];
+			destString = strToken.substr(index - 2, index);
 
 			move.promotionPiece = ChessPieceImpl(tolower(destPiece), IsWhiteTurn());
 		}
 		else if (strToken[strToken.length() - 1] == '+' || strToken[strToken.length() - 1] == '#')
 		{
-			destString = strToken.substr(strToken.length() - 3, strToken.length() - 2);
+			destString = strToken.substr(strToken.length() - 3, strToken.length() - 1);
 		}
-		else 
+		else
 		{
 			destString = strToken.substr(strToken.length() - 2);
 		}
@@ -1029,29 +1048,29 @@ bool ChessBoardImpl::LoadFromPGN( const std::string& strData )
 			// pawn move
 			pieceType = ChessPieceImpl::Pawn;
 		}
-		else 
+		else
 		{
 			pieceType = tolower(strToken[0]);
 			moveIndex = 1;
 		}
-		
+
 		move.to = destination;
 		std::list<CoordinateImpl> possibleMoves = getPiecesMovableAs(move, pieceType, IsWhiteTurn());
 
 		if (possibleMoves.empty())
 		{
 			std::cout << "error:no possible moves to " <<
-				destination.ToString() << " as " << pieceType << std::endl;
-
+				destination.ToString() << " as " << pieceType << "To Play " << (nMoveCount % 2 ? "white" : "black") << "Move:" << nMoveCount / 2 + 1 << std::endl;
+			DisplayBoard(*this, false);
 			return false;
 		}
 
-		if (possibleMoves.size() > 1) 
+		if (possibleMoves.size() > 1)
 		{
 			//disambiguation
 			if (strToken.length() < 3)
 			{
-				std::cout << "disambiguation error, move string too short" << std::endl;
+				std::cout << "disambiguation error, move string too short" << "To Play " << (nMoveCount % 2 ? "white" : "black") << "Move:" << nMoveCount / 2 + 1 << std::endl;
 				return false;
 			}
 
@@ -1059,38 +1078,123 @@ bool ChessBoardImpl::LoadFromPGN( const std::string& strData )
 			{
 				// disambiguation by file/column
 				auto itNewEnd = std::remove_if(possibleMoves.begin(), possibleMoves.end(),
-					[=] (const CoordinateImpl& coord) {
-						return coord.nColumn != strToken[moveIndex] - 'a';
-					});
-				possibleMoves.erase( itNewEnd, possibleMoves.end() );
-				moveIndex ++;
+					[=](const CoordinateImpl& coord) {
+					return coord.nColumn != strToken[moveIndex] - 'a';
+				});
+				possibleMoves.erase(itNewEnd, possibleMoves.end());
+				moveIndex++;
 			}
-			
+
 			if (possibleMoves.size() > 1 || (IN_RANGE(strToken[moveIndex], '1', '8')))
 			{
 				// disambiguation by rank
 				// if column disambiguation was needed and failed => complete source tile needed
 				auto itNewEnd = std::remove_if(possibleMoves.begin(), possibleMoves.end(),
-					[=] (const CoordinateImpl& coord) {
-						return coord.nRank == strToken[moveIndex] - '1';
-					});
-				possibleMoves.erase( itNewEnd, possibleMoves.end() );
+					[=](const CoordinateImpl& coord) {
+					return coord.nRank != strToken[moveIndex] - '1';
+				});
+				possibleMoves.erase(itNewEnd, possibleMoves.end());
 			}
 		}
-		
+
 		if (possibleMoves.size() != 1)
 		{
 			// goto hell, bug!
-			std::cout << "something buggy at disambiguation, please check." << std::endl;
+			std::cout << "something buggy at disambiguation, please check." << "To Play " << (nMoveCount % 2 ? "white" : "black") << "Move:" << nMoveCount / 2 + 1 << std::endl;
 			return false;
 		}
 
 		move.from = possibleMoves.front();
 
 		// don't really care what the move does, just do it
-		SubmitMove(move);
+		if (!SubmitMove(move))
+			return false;
+		//DisplayBoard(*this, false);
+		++nMoveCount;
 	}
 
 	return true;
 }
 
+
+SerializationType ChessBoardImpl::DetectFormat(const std::string& strData)
+{
+
+	if (IsValidFen(strData))
+		return ST_FEN;
+
+	return ST_PGN;
+}
+
+// Sockfish board validation //
+bool ChessBoardImpl::IsValidFen(const std::string &fen)
+{
+	std::istringstream iss(fen);
+	std::string board, side, castleRights, ep;
+
+	if (!iss) return false;
+
+	iss >> board;
+
+	if (!iss) return false;
+
+	iss >> side;
+
+	if (!iss) {
+		castleRights = "-";
+		ep = "-";
+	}
+	else {
+		iss >> castleRights;
+		if (iss)
+			iss >> ep;
+		else
+			ep = "-";
+	}
+
+	// Let's check that all components of the supposed FEN are OK.
+	if (side != "w" && side != "b") return false;
+	if (castleRights != "-" && castleRights != "K" && castleRights != "Kk"
+		&& castleRights != "Kkq" && castleRights != "Kq" && castleRights != "KQ"
+		&& castleRights != "KQk" && castleRights != "KQq" && castleRights != "KQkq"
+		&& castleRights != "k" && castleRights != "q" && castleRights != "kq"
+		&& castleRights != "Q" && castleRights != "Qk" && castleRights != "Qq"
+		&& castleRights != "Qkq")
+		return false;
+	if (ep != "-") {
+		if (ep.length() != 2) return false;
+		if (!(ep[0] >= 'a' && ep[0] <= 'h')) return false;
+		if (!((side == "w" && ep[1] == '6') || (side == "b" && ep[1] == '3')))
+			return false;
+	}
+
+	// The tricky part: The board.
+	// Seven slashes?
+	if (std::count(board.begin(), board.end(), '/') != 7) return false;
+	// Only legal characters?
+	char chPieces[] = { 'p', 'P', 'n', 'N', 'b', 'B', 'r', 'R', 'q','Q', 'k', 'K' };
+	for (int i = 0; i < board.length(); i++)
+		if (!(board[i] == '/' || (board[i] >= '1' && board[i] <= '8')
+			|| strchr(chPieces, board[i] == NULL)))
+			return false;
+	// Exactly one king per side?
+	if (std::count(board.begin(), board.end(), 'K') != 1) return false;
+	if (std::count(board.begin(), board.end(), 'k') != 1) return false;
+	// Other piece counts reasonable?
+	size_t wp = std::count(board.begin(), board.end(), 'P'),
+		bp = std::count(board.begin(), board.end(), 'p'),
+		wn = std::count(board.begin(), board.end(), 'N'),
+		bn = std::count(board.begin(), board.end(), 'n'),
+		wb = std::count(board.begin(), board.end(), 'B'),
+		bb = std::count(board.begin(), board.end(), 'b'),
+		wr = std::count(board.begin(), board.end(), 'R'),
+		br = std::count(board.begin(), board.end(), 'r'),
+		wq = std::count(board.begin(), board.end(), 'Q'),
+		bq = std::count(board.begin(), board.end(), 'q');
+	if (wp > 8 || bp > 8 || wn > 10 || bn > 10 || wb > 10 || bb > 10
+		|| wr > 10 || br > 10 || wq > 9 || bq > 10
+		|| wp + wn + wb + wr + wq > 15 || bp + bn + bb + br + bq > 15)
+		return false;
+
+	return true;
+}

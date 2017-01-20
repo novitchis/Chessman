@@ -44,7 +44,7 @@ bool ChessBoard::LoadFrom(Platform::String^ strData, int type)
 	try
 	{
 		auto strNativeData = ManagedConverter::ManagedString2String(strData);
-		return m_ChessBoardImpl.LoadFrom(strNativeData, GetSerializationType(type));
+		return m_ChessBoardImpl.LoadFrom(strNativeData);
 	}
 	catch (...)
 	{
