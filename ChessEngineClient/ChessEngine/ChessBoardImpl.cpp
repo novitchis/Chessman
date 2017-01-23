@@ -989,6 +989,9 @@ void DisplayBoard(ChessBoardImpl& board, bool bShowFEN)
 
 bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 {
+	// when moves are parsed they are executed from the starting position
+	Initialize();
+
 	std::string strToken;
 	PGNParser parser(strData);
 	parser.Start();
@@ -1113,7 +1116,7 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 		++nMoveCount;
 	}
 
-	return true;
+	return nMoveCount > 0;
 }
 
 

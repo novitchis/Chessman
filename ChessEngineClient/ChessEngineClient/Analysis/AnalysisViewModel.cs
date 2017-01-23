@@ -133,11 +133,6 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        internal void LoadFrom(string data)
-        {
-            analysisBoardService.LoadFrom(data, BoardSerializationType.PGN);
-        }
-
         private string GetMateEvaluation(AnalysisData data)
         {
             string sign = "-";
@@ -176,11 +171,6 @@ namespace ChessEngineClient.ViewModel
             }
 
             return variationBuilder.ToString();
-        }
-
-        internal string Serialize(BoardSerializationType serializationType)
-        {
-            return analysisBoardService.Serialize(serializationType);
         }
     }
 }

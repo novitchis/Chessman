@@ -112,17 +112,15 @@ void PGNParser::SkipWhiteSpace()
 
 void PGNParser::SkipComments()
 {
-	return;
 	if (m_strPGNData[m_nPos] == ';') // comment until the end of the line
 	{
 		m_nPos = (int)m_strPGNData.find_first_of("\n\r", m_nPos);
 	}
-	if (m_strPGNData[m_nPos] == '{') // comment until the end of the line
+	if (m_strPGNData[m_nPos] == '{')
 	{
 		m_nPos = (int)m_strPGNData.find_first_of("}", m_nPos);
 	}
 }
-
 
 // TODO: Populate GameInfo struct //
 // Skip tags for now //

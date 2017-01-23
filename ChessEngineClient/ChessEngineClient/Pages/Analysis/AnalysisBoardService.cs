@@ -65,5 +65,16 @@ namespace ChessEngineClient
         {
             engine.StopAnalyzing();
         }
+
+        public override bool LoadFrom(string serializedValue)
+        {
+            engine.StopAnalyzing();
+
+            bool result = base.LoadFrom(serializedValue);
+
+            AnalyseCurrentPosition();
+
+            return result;
+        }
     }
 }

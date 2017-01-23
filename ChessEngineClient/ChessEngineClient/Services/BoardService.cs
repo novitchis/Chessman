@@ -92,9 +92,9 @@ namespace ChessEngineClient
             return chessBoard.Serialize((int)type);
         }
 
-        public void LoadFrom(string serializedValue, BoardSerializationType type)
+        public virtual bool LoadFrom(string serializedValue)
         {
-            chessBoard.LoadFrom(serializedValue, (int)type);
+            return chessBoard.LoadFrom(serializedValue);
         }
     }
 }

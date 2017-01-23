@@ -85,7 +85,7 @@ namespace ChessEngineClient.ViewModel
             if (loadOptions.SerializationType != BoardSerializationType.FEN)
                 throw new ArgumentException("Use FEN serialization for edit board loading.");
 
-            editorBoardService.LoadFrom(loadOptions.SerializedBoard, loadOptions.SerializationType);
+            editorBoardService.LoadFrom(loadOptions.SerializedBoard);
             BoardViewModel.RefreshBoard(loadOptions.Perspective);
             IsWhiteToMove = editorBoardService.IsWhiteTurn;
             IsBoardValid = editorBoardService.AcceptEditedPosition();

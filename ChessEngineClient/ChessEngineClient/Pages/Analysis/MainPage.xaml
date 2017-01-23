@@ -50,9 +50,10 @@
                 <AppBarButton Label="New game" Command="{Binding NewGameCommand}" />
                 <AppBarButton Label="Edit position" Command="{Binding EditPositionCommand}" />
                 <AppBarButton Label="Continue vs computer" Command="{Binding PracticePositionCommand}" />
-                <AppBarButton Label="Load" Icon="OpenFile" Command="{Binding LoadPGNCommand}"/>
-                <AppBarButton Label="Save" Icon="Save" Command="{Binding SavePGNCommand}"/>
+                <AppBarSeparator />
+                <AppBarButton Label="Load file" Icon="OpenFile" Command="{Binding LoadPGNCommand}"/>
                 <AppBarButton Label="Load from clipboard" Command="{Binding LoadFromClipboardCommand}" />
+                <AppBarButton Label="Save file" Icon="Save" Command="{Binding SavePGNCommand}"/>
 
             </CommandBar.SecondaryCommands>
         </CommandBar>

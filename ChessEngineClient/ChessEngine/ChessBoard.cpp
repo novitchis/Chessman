@@ -39,12 +39,20 @@ Platform::String^ ChessBoard::Serialize(int type)
 	}
 }
 
-bool ChessBoard::LoadFrom(Platform::String^ strData, int type)
+bool ChessBoard::LoadFrom(Platform::String^ strData)
 {
 	try
 	{
 		auto strNativeData = ManagedConverter::ManagedString2String(strData);
-		return m_ChessBoardImpl.LoadFrom(strNativeData);
+		
+		ChessBoardImpl parserBoardImpl;
+		parserBoardImpl.StorePGN();
+
+		bool isDataValid = parserBoardImpl.LoadFrom(strNativeData);
+		if (isDataValid)
+			m_ChessBoardImpl.LoadFrom(strNativeData); // TODO: :)  
+
+		return isDataValid;
 	}
 	catch (...)
 	{

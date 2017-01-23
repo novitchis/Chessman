@@ -13,7 +13,7 @@ namespace ChessEngineClient.ViewModel
     public class BoardPageViewModel : ViewModelBase, INavigationAware
     {
         private INavigationService navigationService = null;
-        private IEngineBoardService boardService = null;
+        protected IEngineBoardService boardService = null;
         protected bool useInitializationDelay = false;
 
         #region "Properties"
@@ -71,7 +71,7 @@ namespace ChessEngineClient.ViewModel
             PositionLoadOptions positionLoadOptions = parameter as PositionLoadOptions;
             if (positionLoadOptions != null)
             {
-                boardService.LoadFrom(positionLoadOptions.SerializedBoard, positionLoadOptions.SerializationType);
+                boardService.LoadFrom(positionLoadOptions.SerializedBoard);
                 ReloadBoard(positionLoadOptions.Perspective);
             }
 

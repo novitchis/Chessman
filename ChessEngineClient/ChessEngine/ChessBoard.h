@@ -18,7 +18,7 @@ namespace ChessEngine
 		void				Initialize(); //Initial Position
 		void				Clear();
 		Platform::String^	Serialize(int type);
-		bool				LoadFrom(Platform::String^ strData, int type);
+		bool				LoadFrom(Platform::String^ strData);
 		void				StorePGN();
 		ChessPiece^			GetPiece(Coordinate^ coord);
 		void				SetPiece(Coordinate^ coord, ChessPiece^ piece);

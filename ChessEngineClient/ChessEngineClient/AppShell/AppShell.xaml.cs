@@ -94,7 +94,7 @@ namespace ChessEngineClient
                 return;
 
             exitConfirmationDialog = new MessageDialog("Are you sure you want to exit?");
-            exitConfirmationDialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+            exitConfirmationDialog.Commands.Add(new UICommand { Label = "OK", Id = 0 });
             exitConfirmationDialog.Commands.Add(new UICommand { Label = "Cancel", Id = 1 });
 
             var result = await exitConfirmationDialog.ShowAsync();

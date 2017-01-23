@@ -97,10 +97,7 @@ namespace ChessEngineClient.ViewModel
                     await dialog.ShowAsync();
                     return;
                 }
-
-                AnalysisViewModel.LoadFrom(data);
-                BoardViewModel.RefreshSquares();
-                NotationViewModel.ReloadMoves();
+                LoadFrom(data);
             }
         }
 
@@ -134,7 +131,7 @@ namespace ChessEngineClient.ViewModel
                     return;
                 }
 
-                await Windows.Storage.FileIO.WriteTextAsync(file, AnalysisViewModel.Serialize(serializationType));
+                await Windows.Storage.FileIO.WriteTextAsync(file, boardService.Serialize(serializationType));
             }
         }
 
@@ -142,7 +139,19 @@ namespace ChessEngineClient.ViewModel
         {
             var clipboardData = Clipboard.GetContent();
             var clipboardText = await clipboardData.GetTextAsync();
-            AnalysisViewModel.LoadFrom(clipboardText);
+            LoadFrom(clipboardText);
+        }
+
+        private async void LoadFrom(string data)
+        {
+            if (!boardService.LoadFrom(data))
+            {
+                var dialog = new MessageDialog("Could not load PGN/FEN. The content is invalid or not supported.");
+                dialog.Commands.Add(new UICommand { Label = "OK", Id = 0 });
+                await dialog.ShowAsync();
+                return;
+            }
+
             BoardViewModel.RefreshSquares();
             NotationViewModel.ReloadMoves();
         }

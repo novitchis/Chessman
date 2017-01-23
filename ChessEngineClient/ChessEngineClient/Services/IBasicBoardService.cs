@@ -13,7 +13,7 @@ namespace ChessEngineClient
 
         ChessPiece GetPiece(Coordinate coordinate);
 
-        void LoadFrom(string value, BoardSerializationType type);
+        bool LoadFrom(string value);
 
         string Serialize(BoardSerializationType type);
     }
