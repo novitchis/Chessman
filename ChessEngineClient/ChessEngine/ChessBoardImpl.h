@@ -132,6 +132,7 @@ namespace ChessEngine
 		bool						m_bStorePGN;
 		int							m_currentMoveIndex;
 		std::map< StatePreserveType, Core::StatePreserver > m_mapStates;
+		std::string					m_loadedFen;
 
 		friend class MoveValidationAlgorithm;
 		friend class MoveScope;

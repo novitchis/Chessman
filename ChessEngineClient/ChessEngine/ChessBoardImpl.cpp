@@ -36,6 +36,7 @@ ChessBoardImpl::ChessBoardImpl(const ChessBoardImpl& board)
 	m_lastPiece = board.m_lastPiece;
 	m_currentMoveIndex = board.m_currentMoveIndex;
 	m_bStorePGN = board.m_bStorePGN;
+	m_loadedFen = board.m_loadedFen;
 }
 
 ChessBoardImpl::~ChessBoardImpl(void)
@@ -703,6 +704,7 @@ void ChessBoardImpl::Clear()
 			m_memBoard[i][j] = ChessPieceImpl();
 
 	ClearPreservedStates();
+	m_loadedFen = "";
 }
 
 void ChessBoardImpl::Initialize()
@@ -855,6 +857,11 @@ std::string ChessBoardImpl::Serialize2PGN()
 	if (!state.HasChanged()) return state.GetState();
 
 	std::string result = "";
+	if (!m_loadedFen.empty())
+	{
+		result += "[FEN \"" + m_loadedFen + "\"]\n";
+	}
+
 	int moveNo = 0;
 
 	int nWhiteMaxMoveLen = 0;
@@ -969,6 +976,8 @@ bool ChessBoardImpl::LoadFromFEN(const std::string& strData)
 	}
 
 	// TODO: load the rest //
+
+	m_loadedFen = strData;
 	return true;
 }
 
@@ -996,7 +1005,6 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 	PGNParser parser(strData);
 	parser.Start();
 
-	// if pgn starts from a FEN position
 	if (!parser.GetGameInfo().strFenStart.empty())
 		LoadFromFEN(parser.GetGameInfo().strFenStart);
 
@@ -1121,7 +1129,6 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 		++nMoveCount;
 	}
 
-	// TODO: this does not allow PGNs with no moves
 	return nMoveCount > 0;
 }
 

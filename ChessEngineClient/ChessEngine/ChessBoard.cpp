@@ -50,7 +50,7 @@ bool ChessBoard::LoadFrom(Platform::String^ strData)
 
 		bool isDataValid = parserBoardImpl.LoadFrom(strNativeData);
 		if (isDataValid)
-			m_ChessBoardImpl.LoadFrom(strNativeData); // TODO: :)  
+			m_ChessBoardImpl = parserBoardImpl;
 
 		return isDataValid;
 	}
