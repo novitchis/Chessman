@@ -131,5 +131,14 @@ void PGNParser::ParseTag()
 		Invalidate();
 		return;
 	}
+
+	// sample fen tag 
+	// [FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPP1P1/RNBQKBNR w KQkq - 0 1"]
+	if (m_strPGNData.substr(m_nPos + 1, 3) == "FEN")
+	{
+		int fenStartPos = m_nPos + 6;
+		m_GameInfo.strFenStart = m_strPGNData.substr(fenStartPos, nBracketPos - 1 - fenStartPos);
+	}
+
 	m_nPos = nBracketPos+1;
 }

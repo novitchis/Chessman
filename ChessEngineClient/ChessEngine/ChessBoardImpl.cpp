@@ -995,6 +995,11 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 	std::string strToken;
 	PGNParser parser(strData);
 	parser.Start();
+
+	// if pgn starts from a FEN position
+	if (!parser.GetGameInfo().strFenStart.empty())
+		LoadFromFEN(parser.GetGameInfo().strFenStart);
+
 	int nMoveCount = 0;
 	while (parser.IsValid() && parser.GetNext(strToken))
 	{
@@ -1116,6 +1121,7 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 		++nMoveCount;
 	}
 
+	// TODO: this does not allow PGNs with no moves
 	return nMoveCount > 0;
 }
 

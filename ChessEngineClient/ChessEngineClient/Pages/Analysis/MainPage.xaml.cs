@@ -10,6 +10,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -32,6 +33,29 @@ namespace ChessEngineClient.View
         {
             this.InitializeComponent();
             this.Loaded += OnMainPageLoaded;
+
+            Window.Current.CoreWindow.KeyDown += OnCoreWindowKeyDown;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            Window.Current.CoreWindow.KeyDown += OnCoreWindowKeyDown;
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            Window.Current.CoreWindow.KeyDown -= OnCoreWindowKeyDown;
+        }
+
+        private void OnCoreWindowKeyDown(CoreWindow sender, KeyEventArgs args)
+        {
+            var ctrl = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control);
+            if (ctrl.HasFlag(CoreVirtualKeyStates.Down) && args.VirtualKey == VirtualKey.V)
+            {
+                (this.DataContext as MainViewModel).LoadFromClipboardCommand.Execute(null);
+            }
         }
 
         private void OnMainPageLoaded(object sender, RoutedEventArgs e)

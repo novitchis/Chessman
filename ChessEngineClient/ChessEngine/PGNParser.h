@@ -9,6 +9,7 @@ namespace ChessEngine
 		std::string  strSite;
 		std::string  strDate;
 		std::string  strRound;
+		std::string  strFenStart;
 		int			 nwhiteELO;
 		int			 nBlackELO;
 		bool		 bWhiteWon;
