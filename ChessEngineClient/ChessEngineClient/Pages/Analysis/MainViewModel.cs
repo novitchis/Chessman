@@ -138,7 +138,11 @@ namespace ChessEngineClient.ViewModel
         private async void LoadFromClipboardExecuted(object obj)
         {
             var clipboardData = Clipboard.GetContent();
-            var clipboardText = await clipboardData.GetTextAsync();
+            string clipboardText = "Invalid PGN";
+
+            if (clipboardData.Contains("Text"))
+                clipboardText = await clipboardData.GetTextAsync();
+
             LoadFrom(clipboardText);
         }
 
