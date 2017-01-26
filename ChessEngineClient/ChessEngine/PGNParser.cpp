@@ -19,22 +19,6 @@ PGNParser::PGNParser(const std::string& strPGNData)
 
 void PGNParser::Start()
 {
-	// remove result //
-	int nResultPos = (int)m_strPGNData.rfind('-');
-	if(nResultPos != std::string::npos && m_strPGNData.size() - nResultPos < 10) {
-		nResultPos -= 1;
-		while (nResultPos > 0 && strchr(WHITESPACES, m_strPGNData[nResultPos]))
-			--nResultPos;
-		--nResultPos; // skip white score //
-		if(nResultPos > 0)
-			m_strPGNData.resize(nResultPos - 1);
-	}
-	else {
-		//if unknown result => * is being used //
-		nResultPos = (int)m_strPGNData.rfind('*');
-		if(nResultPos != std::string::npos && m_strPGNData.size() - nResultPos < 10) // sanity check to avoid resizing to a comment //
-			m_strPGNData.resize(nResultPos - 1);
-	}
 	// Parse tags //
 	SkipWhiteSpace();
 	
@@ -44,7 +28,14 @@ void PGNParser::Start()
 		SkipWhiteSpace();
 	}
 
-	//std::cout << "pos:" << m_nPos << std::endl;
+	//the FEN tag contains a '-' character
+	// remove result //
+	//If the game result is anything other than *, the result is repeated at the end of the movetext.
+	if (!m_GameInfo.strResult.empty() && m_GameInfo.strResult != "*")
+	{ 
+		int nResultPos = (int)m_strPGNData.rfind(m_GameInfo.strResult);
+		m_strPGNData.resize(nResultPos - 1);
+	}
 }
 
 
@@ -138,6 +129,11 @@ void PGNParser::ParseTag()
 	{
 		int fenStartPos = m_nPos + 6;
 		m_GameInfo.strFenStart = m_strPGNData.substr(fenStartPos, nBracketPos - 1 - fenStartPos);
+	}
+	else if (m_strPGNData.substr(m_nPos + 1, 6) == "Result")
+	{
+		int resultStartPos = m_nPos + 9;
+		m_GameInfo.strResult = m_strPGNData.substr(resultStartPos, nBracketPos - 1 - resultStartPos);
 	}
 
 	m_nPos = nBracketPos+1;

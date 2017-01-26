@@ -1129,7 +1129,7 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 		++nMoveCount;
 	}
 
-	return nMoveCount > 0;
+	return parser.IsValid();
 }
 
 

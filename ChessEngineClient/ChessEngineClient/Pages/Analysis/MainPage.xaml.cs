@@ -49,12 +49,16 @@ namespace ChessEngineClient.View
             Window.Current.CoreWindow.KeyDown -= OnCoreWindowKeyDown;
         }
 
-        private void OnCoreWindowKeyDown(CoreWindow sender, KeyEventArgs args)
+        private void OnCoreWindowKeyDown(CoreWindow sender, KeyEventArgs e)
         {
+            if (e.Handled)
+                return;
+
             var ctrl = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control);
-            if (ctrl.HasFlag(CoreVirtualKeyStates.Down) && args.VirtualKey == VirtualKey.V)
+            if (ctrl.HasFlag(CoreVirtualKeyStates.Down) && e.VirtualKey == VirtualKey.V)
             {
                 (this.DataContext as MainViewModel).LoadFromClipboardCommand.Execute(null);
+                e.Handled = true;
             }
         }
 

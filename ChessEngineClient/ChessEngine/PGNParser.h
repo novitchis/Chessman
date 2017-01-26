@@ -10,6 +10,7 @@ namespace ChessEngine
 		std::string  strDate;
 		std::string  strRound;
 		std::string  strFenStart;
+		std::string  strResult;
 		int			 nwhiteELO;
 		int			 nBlackELO;
 		bool		 bWhiteWon;

@@ -53,6 +53,7 @@
                 <AppBarSeparator />
                 <AppBarButton Label="Load file" Icon="OpenFile" Command="{Binding LoadPGNCommand}"/>
                 <AppBarButton Label="Load from clipboard" Command="{Binding LoadFromClipboardCommand}" />
+                <AppBarSeparator />
                 <AppBarButton Label="Save file" Icon="Save" Command="{Binding SavePGNCommand}"/>
 
             </CommandBar.SecondaryCommands>
