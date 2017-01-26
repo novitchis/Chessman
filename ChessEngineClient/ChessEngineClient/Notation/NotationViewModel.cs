@@ -74,12 +74,24 @@ namespace ChessEngineClient.ViewModel
                 return;
             }
 
-            int groupIndex = currentMoveData.Index / 2;
-            bool isWhiteMove = currentMoveData.Index % 2 == 0;
+            // one null move is added at the begining if the black was first to move
+            int displayMoveIndex = currentMoveData.Index;
+            if (analysisBoardService.WasBlackFirstToMove())
+                displayMoveIndex++;
+
+            int groupIndex = displayMoveIndex / 2;
+            bool isWhiteMove = displayMoveIndex % 2 == 0;
 
             if (GroupedMoves.Count == groupIndex)
             {
-                GroupedMoves.Add(new MoveDataGroup(groupIndex + 1) { WhiteMove = currentMoveData });
+                if (groupIndex == 0 && analysisBoardService.WasBlackFirstToMove())
+                {
+                    GroupedMoves.Add(new MoveDataGroup(groupIndex + 1) { WhiteMove = MoveData.CreateEmptyMove(), BlackMove = currentMoveData });
+                }
+                else
+                {
+                    GroupedMoves.Add(new MoveDataGroup(groupIndex + 1) { WhiteMove = currentMoveData });
+                }
             }
             else
             {

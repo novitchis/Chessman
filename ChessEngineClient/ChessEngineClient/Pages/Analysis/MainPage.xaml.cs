@@ -33,8 +33,6 @@ namespace ChessEngineClient.View
         {
             this.InitializeComponent();
             this.Loaded += OnMainPageLoaded;
-
-            Window.Current.CoreWindow.KeyDown += OnCoreWindowKeyDown;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -51,14 +49,10 @@ namespace ChessEngineClient.View
 
         private void OnCoreWindowKeyDown(CoreWindow sender, KeyEventArgs e)
         {
-            if (e.Handled)
-                return;
-
             var ctrl = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control);
             if (ctrl.HasFlag(CoreVirtualKeyStates.Down) && e.VirtualKey == VirtualKey.V)
             {
                 (this.DataContext as MainViewModel).LoadFromClipboardCommand.Execute(null);
-                e.Handled = true;
             }
         }
 
