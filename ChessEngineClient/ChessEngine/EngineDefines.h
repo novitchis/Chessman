@@ -272,7 +272,7 @@ namespace ChessEngine
 
 	enum MoveInfo
 	{
-		MI_EnPassant = 0,
+		MI_EnPassant = 1,
 		MI_Castle,
 		MI_Check,
 		MI_Promotion,
@@ -280,10 +280,10 @@ namespace ChessEngine
 
 	struct AdditionalMoveInfo
 	{
-		MoveInfo	type;
+		MoveInfo		type;
 		CoordinateImpl	coordEnPassant; // en passant
 		MoveImpl		RockMove; // castle
-		ChessPieceImpl  PromotionPiece;
+		ChessPieceImpl	PromotionPiece;
 	};
 
 	struct EngineOptionsImpl

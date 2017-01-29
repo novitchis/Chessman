@@ -262,6 +262,7 @@ bool MoveValidationAlgorithm::ValidateKingMove(const MoveImpl& move, const Chess
 	CoordinateImpl from(piece.bWhite ? 0 : 7, bColumnIncrease ? 7 : 0);
 	CoordinateImpl to(piece.bWhite ? 0 : 7, bColumnIncrease ? 5 : 3);
 	additionalInfo.RockMove = MoveImpl(from, to);
+	additionalInfo.type = MI_Castle;
 
 	return true;
 }
