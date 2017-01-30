@@ -138,4 +138,17 @@ namespace Framework.MVVM.Converters
             throw new NotImplementedException();
         }
     }
+
+    public class ValueToRadioButtonConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            return value.Equals(parameter);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value.Equals(true) ? parameter : null;
+        }
+    }
 }
