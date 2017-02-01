@@ -1,6 +1,9 @@
 #Introduction
 TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
 
+#Prerequisites
+1.  Store SDK https://msdn.microsoft.com/windows/uwp/monetize/microsoft-store-services-sdk?f=255&MSPPError=-2147217396#install-the-sdk
+
 #Getting Started
 TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
 1.	Installation process
