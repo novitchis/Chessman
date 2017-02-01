@@ -80,7 +80,7 @@ void InProcEngineCommThread::QueueCommand( const std::string& strCommand )
 	{
 		std::wostringstream os_;    
 		os_ << "--> ";
-		os_ << strCommand.c_str();
+		os_ << strCommand.c_str() << "\n";
 		OutputDebugStringW( os_.str().c_str() );
 	}
 #endif

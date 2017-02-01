@@ -12,6 +12,7 @@ namespace ChessEngineClient
     {
         private IEngine engine = null;
         private IEngineNotification engineNotification = null;
+        private bool isStarted = false;
 
         public AnalysisBoardService(IEngineNotification engineNotification, IEngine engine)
         {
@@ -45,7 +46,11 @@ namespace ChessEngineClient
 
         public void Start()
         {
+            // if is not maximum the analyze infinite command has some issues
+            engine.SetOptions(new EngineOptions() { SkillLevel = 20 });
+
             AnalyseCurrentPosition();
+            isStarted = true;
         }
 
         private void AnalyseCurrentPosition()
@@ -64,15 +69,18 @@ namespace ChessEngineClient
         public void Stop()
         {
             engine.StopAnalyzing();
+            isStarted = false;
         }
 
         public override bool LoadFrom(string serializedValue)
         {
-            engine.StopAnalyzing();
+            if (isStarted)
+                engine.StopAnalyzing();
 
             bool result = base.LoadFrom(serializedValue);
 
-            AnalyseCurrentPosition();
+            if (isStarted)
+                AnalyseCurrentPosition();
 
             return result;
         }
