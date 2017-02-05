@@ -23,6 +23,7 @@ using Windows.Foundation.Metadata;
 using Windows.Phone.UI.Input;
 using Windows.UI.ViewManagement;
 using Windows.Storage;
+using Microsoft.Services.Store.Engagement;
 
 namespace ChessEngineClient
 {
@@ -63,7 +64,7 @@ namespace ChessEngineClient
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
@@ -79,6 +80,9 @@ namespace ChessEngineClient
             // just ensure that the window is active
             if (appShell == null)
             {
+                StoreServicesEngagementManager engagementManager = StoreServicesEngagementManager.GetDefault();
+                await engagementManager.RegisterNotificationChannelAsync();
+
                 AppSettingsKeys.InitializeDefaultSettings(ApplicationData.Current.LocalSettings);
                 // Create a Frame to act as the navigation context and navigate to the first page
                 appShell = new AppShell();
