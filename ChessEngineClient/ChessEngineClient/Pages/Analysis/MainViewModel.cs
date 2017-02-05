@@ -1,5 +1,4 @@
-﻿using ChessEngine;
-using Framework.MVVM;
+﻿using Framework.MVVM;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
@@ -8,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
 using Windows.UI.Popups;
 
 namespace ChessEngineClient.ViewModel
@@ -65,54 +67,85 @@ namespace ChessEngineClient.ViewModel
 
         private async void LoadPGNExecuted(object obj)
         {
-            var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
-            picker.SuggestedStartLocation =
-                Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
+            var picker = new FileOpenPicker
+            {
+                ViewMode = PickerViewMode.Thumbnail,
+                SuggestedStartLocation = PickerLocationId.Downloads
+            };
             picker.FileTypeFilter.Add(".pgn");
             picker.FileTypeFilter.Add(".fen");
 
-            Windows.Storage.StorageFile file = await picker.PickSingleFileAsync();
+            StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
-                // read to end //
-                var stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
-                string data;
-                using (var inputStream = stream.GetInputStreamAt(0))
-                {
-                    using (var dataReader = new Windows.Storage.Streams.DataReader(inputStream))
-                    {
-                        uint numBytesLoaded = await dataReader.LoadAsync((uint)stream.Size);
-                        data = dataReader.ReadString(numBytesLoaded);
-                    }
-                }
-                stream.Dispose(); // Or use the stream variable (see previous code snippet) with a using statement as well.
+                string text = await ReadFile(file);
                 string fileType = file.FileType;
-                int serializationType = BoardSerialization.BS_PGN;
                 if (!fileType.ToLower().Equals(".pgn") && !fileType.ToLower().Equals(".fen"))
                 {
-                    var dialog = new MessageDialog(String.Format("Unsupported file format {0}.\nPlease provide a .pgn or .fen file!" + fileType));
+                    var dialog = new MessageDialog($"Unsupported file format {fileType}.\nPlease provide a .pgn or .fen file!");
                     dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
 
                     await dialog.ShowAsync();
                     return;
                 }
-                LoadFrom(data);
+                LoadFrom(text);
             }
+        }
+
+        private static async Task<string> ReadFile(StorageFile file)
+        {
+            using (var stream = await file.OpenAsync(FileAccessMode.Read))
+            using (var inputStream = stream.GetInputStreamAt(0))
+            using (var dataReader = new DataReader(inputStream))
+            {
+                uint numBytesLoaded = await dataReader.LoadAsync((uint)stream.Size);
+                byte[] fileBytes = new byte[numBytesLoaded];
+                dataReader.ReadBytes(fileBytes);
+
+                Encoding fileEncoding = DetectEncoding(fileBytes);
+                int textOffset = GetTextOffset(fileBytes, fileEncoding);
+
+                return fileEncoding.GetString(fileBytes, textOffset, fileBytes.Length - textOffset);
+            }
+        }
+
+        private static Encoding DetectEncoding(byte[] fileBytes)
+        {
+            Encoding result = Encoding.UTF8;
+
+            Ude.CharsetDetector detector = new Ude.CharsetDetector();
+            detector.Feed(fileBytes, 0, fileBytes.Length);
+            detector.DataEnd();
+            if (detector.Charset != null)
+                result = Encoding.GetEncoding(detector.Charset);
+
+            return result;
+        }
+
+        private static int GetTextOffset(byte[] fileBytes, Encoding fileEncoding)
+        {
+            int result = 0;
+            foreach (var item in fileEncoding.GetPreamble())
+            {
+                if (fileBytes[result] == item)
+                    result++;
+                else
+                    break;
+            }
+            return result;
         }
 
         private async void SavePGNExecuted(object obj)
         {
-            var savePicker = new Windows.Storage.Pickers.FileSavePicker();
-            savePicker.SuggestedStartLocation =
-                Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
-            // Dropdown of file types the user can save the file as
+            var savePicker = new FileSavePicker
+            {
+                SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+                SuggestedFileName = "My Game"
+            };
             savePicker.FileTypeChoices.Add("PGN File", new List<string>() { ".pgn" });
             savePicker.FileTypeChoices.Add("FEN File", new List<string>() { ".fen" });
-            // Default file name if the user does not type one in or select a file to replace
-            savePicker.SuggestedFileName = "My Game";
-            var file = await savePicker.PickSaveFileAsync();
 
+            var file = await savePicker.PickSaveFileAsync();
             if (file != null)
             {
                 BoardSerializationType serializationType = BoardSerializationType.PGN;
@@ -131,7 +164,7 @@ namespace ChessEngineClient.ViewModel
                     return;
                 }
 
-                await Windows.Storage.FileIO.WriteTextAsync(file, boardService.Serialize(serializationType));
+                await FileIO.WriteTextAsync(file, boardService.Serialize(serializationType));
             }
         }
 
