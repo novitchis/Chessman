@@ -42,27 +42,27 @@ void PGNParser::Start()
 bool PGNParser::GetNext(std::string& strMove)
 {
 	if (!IsValid()) return false;
-	SkipWhiteSpace();
-	SkipComments();
+	SkipToNextToken();
+
 	if (AtEnd()) return false;
-	
+
 	// parse move number //
 	if (m_bWhiteMove)
 	{
 		m_nPos = (int)m_strPGNData.find('.', m_nPos);
-		if (m_nPos == std::string::npos) 
+		if (m_nPos == std::string::npos)
 		{
 			Invalidate();
 			return false;
 		}
 		++m_nPos;
 	}
-
-	SkipWhiteSpace();
-	if (!IsValid()) 
-		return false;
-	// parse move //
 	
+	SkipToNextToken();
+	if (!IsValid())
+		return false;
+
+	// parse move //
 	int nMoveEnd = m_nPos;
 	for (int i = m_nPos + 1; nMoveEnd < m_strPGNData.size(); ++i)
 	{
@@ -76,7 +76,15 @@ bool PGNParser::GetNext(std::string& strMove)
 		Invalidate();
 		return false;
 	}
+	
+	// parse move number //
+	// when the pgn contains variation the return to main line can look like: 10...Nf6
 	strMove = m_strPGNData.substr(m_nPos, nMoveEnd-m_nPos);
+
+	int lastPointIndex = (int)strMove.rfind('.');
+	if (lastPointIndex != -1)
+		strMove = strMove.substr(lastPointIndex + 1);
+
 	m_nPos = nMoveEnd;
 	m_bWhiteMove = !m_bWhiteMove;
 	
@@ -90,6 +98,16 @@ GameInfo PGNParser::GetGameInfo()
 	return m_GameInfo;
 }
 
+void PGNParser::SkipToNextToken()
+{
+	int iterationPos = -1;
+	while (iterationPos != m_nPos)
+	{
+		iterationPos = m_nPos;
+		SkipWhiteSpace();
+		SkipComments();
+	}
+}
 
 void PGNParser::SkipWhiteSpace()
 {
@@ -105,11 +123,15 @@ void PGNParser::SkipComments()
 {
 	if (m_strPGNData[m_nPos] == ';') // comment until the end of the line
 	{
-		m_nPos = (int)m_strPGNData.find_first_of("\n\r", m_nPos);
+		m_nPos = (int)m_strPGNData.find_first_of("\n\r", m_nPos) + 1;
 	}
 	if (m_strPGNData[m_nPos] == '{')
 	{
-		m_nPos = (int)m_strPGNData.find_first_of("}", m_nPos);
+		m_nPos = (int)m_strPGNData.find_first_of("}", m_nPos) + 1;
+	}
+	if (m_strPGNData[m_nPos] == '(')
+	{
+		m_nPos = (int)m_strPGNData.find_first_of(")", m_nPos) + 1;
 	}
 }
 

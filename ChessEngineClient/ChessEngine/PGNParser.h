@@ -27,6 +27,7 @@ namespace ChessEngine
 		GameInfo GetGameInfo();
 
 	private:
+		void SkipToNextToken();
 		void SkipWhiteSpace();
 		void SkipComments();
 		void ParseTag();
