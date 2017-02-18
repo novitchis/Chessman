@@ -9,5 +9,7 @@ namespace ChessEngine
 		property Platform::Array<Move^>^	Analysis;
 		property float						Score;
 		property bool						IsBestMove;
+		property int						Depth;
+		property int						NodesPerSecond;
 	};
 }

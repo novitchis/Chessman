@@ -16,6 +16,7 @@ namespace ChessEngineClient.ViewModel
         private string moves = String.Empty;
         private SynchronizationContext uiSynchronizationContext = null;
         private string evaluation = "-";
+        private string depth = "";
         private bool isActive = false;
 
         #region "Properties"
@@ -28,6 +29,19 @@ namespace ChessEngineClient.ViewModel
                 if (evaluation != value)
                 {
                     evaluation = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string Depth
+        {
+            get { return depth; }
+            set
+            {
+                if (depth != value)
+                {
+                    depth = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -65,7 +79,6 @@ namespace ChessEngineClient.ViewModel
         {
             this.analysisBoardService = analysisBoardService;
             this.analysisReceiver = analysisReceiver;
-           
             uiSynchronizationContext = SynchronizationContext.Current;
         }
 
@@ -125,6 +138,7 @@ namespace ChessEngineClient.ViewModel
                         return;
 
                     Evaluation = newEvalutation;
+                    Depth = $"Depth {e.Data.Depth}";
                     Moves = newMoves;
                 }, null);
             }

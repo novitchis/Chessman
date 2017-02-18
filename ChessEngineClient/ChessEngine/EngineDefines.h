@@ -258,6 +258,8 @@ namespace ChessEngine
 		std::list<MoveImpl>			listAnalysis;
 		float						fScore;
 		bool						isBestMove;
+		int							depth;
+		int							nodesPerSecond;
 		
 		AnalysisDataImpl()
 		{

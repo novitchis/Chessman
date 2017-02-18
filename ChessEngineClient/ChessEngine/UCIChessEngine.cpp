@@ -314,21 +314,25 @@ bool UCIChessEngine::ProcessGoResponse( const std::string& strResponse)
 	AnalysisDataImpl analysisData;
 	for (auto iter : vecProspectedLines)
 	{
-		int nCpPos = iter.find("cp");
-		int nPvPos = iter.rfind("pv");
-		nCpPos += 3;
-		nPvPos += 3;
+		int nCpPos = iter.find("cp") + 3;
+		int nPvPos = iter.rfind("pv") + 3;
+		int depthPos = iter.find("depth") + 6;
+		int npsPos = iter.find("nps") + 4;
 
 		int nNextSpace = iter.find(" ", nCpPos);
 		auto strCp = iter.substr(nCpPos, nNextSpace - nCpPos);
+		nNextSpace = iter.find(" ", depthPos);
+		auto strDepth = iter.substr(depthPos, nNextSpace - depthPos);
+		auto strNPS = iter.substr(npsPos, nNextSpace - npsPos);
 		auto strMoves = iter.substr(nPvPos, iter.size() - nPvPos);
 		auto vecMoves = split<std::string>(strMoves, " ");
 
 		if (vecMoves.empty()) continue;
 
 		AnalysisDataImpl crtAnalysisData;
-		
 		crtAnalysisData.fScore = atof(strCp.c_str()) / 100.;
+		crtAnalysisData.depth = atoi(strDepth.c_str());
+		crtAnalysisData.nodesPerSecond = atoi(strNPS.c_str());
 		for (auto it : vecMoves)
 		{
 			crtAnalysisData.listAnalysis.push_back(MoveImpl::FromString(it));
@@ -338,7 +342,9 @@ bool UCIChessEngine::ProcessGoResponse( const std::string& strResponse)
 			analysisData = crtAnalysisData;
 	}
 	
-	if (analysisData.listAnalysis.size() == 0) return true; // ignore it!
+	if (analysisData.listAnalysis.size() == 0)
+		return true; // ignore it!
+
 	m_pNotification->OnEngineMoveFinished( analysisData.listAnalysis.front(), analysisData );
 
 	return true;

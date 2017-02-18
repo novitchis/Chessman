@@ -31,7 +31,6 @@
                 <view:AnalysisView x:Name="analysisView"
                                 DataContext="{Binding AnalysisViewModel}"
                                 Height="48" />
-                
                 <view:NotationView x:Name="notationView"
                                    DataContext="{Binding NotationViewModel}" />
                 <view:ChessBoardView x:Name="chessBoard"

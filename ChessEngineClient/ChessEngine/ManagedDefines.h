@@ -17,5 +17,4 @@ namespace ChessEngine
 			int get() { return ST_PGN; }
 		}
 	};
-
 }
