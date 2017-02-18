@@ -20,6 +20,7 @@ namespace ChessEngineClient.ViewModel
             InitBoard();
 
             Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.CurrentMoveChanged, OnCurrentMoveChangedMessage);
+            Messenger.Default.Register<GenericMessage<Move>>(this, NotificationMessages.AnalysisBestMoveReceived, OnAnalysisReceived);
         }
 
         private void OnCurrentMoveChangedMessage(GenericMessage<MoveData> moveMessage)
@@ -78,6 +79,11 @@ namespace ChessEngineClient.ViewModel
                 index = coordinate.Y * 8 + 7 - coordinate.X;
 
             return index;
+        }
+
+        private void OnAnalysisReceived(GenericMessage<Move> bestMoveMessage)
+        {
+            SuggestedMove = bestMoveMessage.Content;
         }
     }
 }

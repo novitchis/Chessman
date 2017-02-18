@@ -93,7 +93,8 @@
                      PointerReleased="OnBoardPointerReleased" 
                      PointerExited="OnBoardPointerExited"
                      PointerEntered="OnBoardPointerEntered"
-                     ItemContainerStyle="{StaticResource SquareListBoxItemStyle}">
+                     ItemContainerStyle="{StaticResource SquareListBoxItemStyle}"
+                     SizeChanged="OnBoardSizeChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <view:SquareView 
@@ -116,10 +117,14 @@
             <ItemsControl Grid.Row="1" Grid.Column="2" Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" />
             <ItemsControl Grid.Column="1" Grid.Row="2" Style="{StaticResource FieldLettersListStyle}"  ItemsSource="{Binding FieldLetters}" />
             <Canvas
+                x:Name="arrowsCanvas"
+                IsHitTestVisible="False"
+                Grid.Row="1"
+                Grid.Column="1" />
+            <Canvas
                 x:Name="dragCanvas"
                 Grid.Row="1"
                 Grid.Column="1" />
-
         </Grid>
     </Border>
 </UserControl>

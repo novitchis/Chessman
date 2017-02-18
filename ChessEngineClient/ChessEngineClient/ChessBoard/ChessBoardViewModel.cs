@@ -21,7 +21,8 @@ namespace ChessEngineClient.ViewModel
         private SideColor perspective = SideColor.White;
         private int[] rankNumbers = RankNumbersAsWhite;
         private char[] fieldLetters = FieldLettersAsWhite;
-
+        private Move suggestedMove = null;
+        
         #region "Properties"
 
         public List<SquareViewModel> Squares
@@ -75,6 +76,19 @@ namespace ChessEngineClient.ViewModel
         public SideColor Perspective
         {
             get { return perspective; }
+        }
+
+        public Move SuggestedMove
+        {
+            get { return suggestedMove; }
+            set
+            {
+                if (suggestedMove != value)
+                {
+                    suggestedMove = value;
+                    NotifyPropertyChanged();
+                }
+            }
         }
 
         public ICommand TogglePerspectiveCommand
@@ -144,6 +158,7 @@ namespace ChessEngineClient.ViewModel
             }
 
             SelectedSquare = null;
+            SuggestedMove = null;
         }
 
         protected virtual bool OnSelectionChanged(SquareViewModel selectedSquare, SquareViewModel value)

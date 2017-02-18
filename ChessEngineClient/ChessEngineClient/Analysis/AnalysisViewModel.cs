@@ -137,6 +137,8 @@ namespace ChessEngineClient.ViewModel
                     if (!IsActive)
                         return;
 
+                    Messenger.Default.Send(new GenericMessage<Move>(this, e.Data.Analysis[0]), NotificationMessages.AnalysisBestMoveReceived);
+
                     Evaluation = newEvalutation;
                     Depth = $"Depth {e.Data.Depth}";
                     Moves = newMoves;

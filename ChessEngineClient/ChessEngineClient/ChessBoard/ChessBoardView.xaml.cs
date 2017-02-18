@@ -3,7 +3,6 @@ using ChessEngineClient.Util;
 using ChessEngineClient.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Devices.Input;
@@ -17,6 +16,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Shapes;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 namespace ChessEngineClient.View
@@ -26,12 +26,19 @@ namespace ChessEngineClient.View
         private const double MinPieceSize = 75;
         private const double MinimumDragDistance = 4;
 
+        public static readonly DependencyProperty SuggestedMoveProperty =DependencyProperty.Register("SuggestedMove", typeof(Move), typeof(ChessBoardView), new PropertyMetadata(null, OnSuggestedMoveChangedThunk));
         public static readonly DependencyProperty HasDragAndDropProperty = DependencyProperty.Register("HasDragAndDrop", typeof(bool), typeof(ChessBoardView), new PropertyMetadata(false));
 
         private bool isDragStarted = false;
         private ChessPieceView draggingPieceView = null;
         private Point dragStartPoint = new Point();
         private SquareView pointerPressSquare = null;
+
+        public Move SuggestedMove
+        {
+            get { return (Move)GetValue(SuggestedMoveProperty); }
+            set { SetValue(SuggestedMoveProperty, value); }
+        }
 
         public bool HasDragAndDrop
         {
@@ -47,6 +54,9 @@ namespace ChessEngineClient.View
         public ChessBoardView()
         {
             this.InitializeComponent();
+
+            Binding suggestedMoveBinding = new Binding() { Path =  new PropertyPath("SuggestedMove") };
+            SetBinding(SuggestedMoveProperty, suggestedMoveBinding);
         }
 
         private void OnBoardPointerMoved(object sender, PointerRoutedEventArgs e)
@@ -179,6 +189,77 @@ namespace ChessEngineClient.View
                 //if (squareView != null)
                 //    squareView.IsDropTarget = true;
             }
+        }
+
+        private static void OnSuggestedMoveChangedThunk(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((ChessBoardView)d).RefreshArrows();
+        }
+
+        private void RefreshArrows()
+        {
+            if (SuggestedMove != null)
+                DrawSuggestedMoveArrow();
+            else
+                ClearAllArrows();
+        }
+
+        private void DrawSuggestedMoveArrow()
+        {
+            if (board.ActualWidth == 0)
+                return;
+
+            double squareWidth = board.ActualWidth / 8;
+
+            Point start = GetSquareMiddlePoint(SuggestedMove.GetFrom(), squareWidth);
+            Point end = GetSquareMiddlePoint(SuggestedMove.GetTo(), squareWidth);
+
+            DrawArrow(start, end, squareWidth / 3);
+        }
+
+        private Point GetSquareMiddlePoint(Coordinate coordinate, double squareWidth)
+        {
+            double halfSquareWidth = squareWidth / 2;
+
+            Point middlePoint = new Point()
+            {
+                X = coordinate.X * squareWidth + halfSquareWidth,
+                Y = (7 - coordinate.Y) * squareWidth + halfSquareWidth
+            };
+
+            return middlePoint;
+        }
+
+        private void DrawArrow(Point start, Point end, double baseWidth)
+        {
+            ClearAllArrows();
+
+            double distance = ArrowDrawUtil.GetDistance(start, end);
+            var points = ArrowDrawUtil.GetArrowGeometryPoints(distance, baseWidth);
+            double angle = ArrowDrawUtil.GetLineAngle(start, end);
+
+            var pathFigure = new PathFigure() { StartPoint = points[0] };
+            points.Skip(1).ToList().ForEach(p => pathFigure.Segments.Add(new LineSegment() { Point = p }));
+
+            //TODO: move color to resources
+            Path path = new Path() { Fill = new SolidColorBrush(new Windows.UI.Color() { A = 80, R = 0, G = 0, B = 0 }) };
+
+            Canvas.SetLeft(path, start.X);
+            Canvas.SetTop(path, start.Y);
+            path.Data = new PathGeometry() { Figures = new PathFigureCollection() { pathFigure } };
+            path.RenderTransform = new RotateTransform() { Angle = angle };
+
+            arrowsCanvas.Children.Add(path);
+        }
+
+        private void ClearAllArrows()
+        {
+            arrowsCanvas.Children.Clear();
+        }
+
+        private void OnBoardSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            RefreshArrows();
         }
     }
 }
