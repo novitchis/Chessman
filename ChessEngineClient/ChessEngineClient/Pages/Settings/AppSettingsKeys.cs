@@ -10,12 +10,16 @@ namespace ChessEngineClient
 {
     public static class AppSettingsKeys
     {
+        public const string ShowBestMoveArrow = "ShowAnalysisArrow";
         public const string ComputerStrengthKey = "ComputerStrength";
 
         public static void InitializeDefaultSettings(ApplicationDataContainer settingsContainer)
         {
             if (!settingsContainer.Values.ContainsKey(ComputerStrengthKey))
                 settingsContainer.Values[ComputerStrengthKey] = 5;
+
+            if (!settingsContainer.Values.ContainsKey(ShowBestMoveArrow))
+                settingsContainer.Values[ShowBestMoveArrow] = true;
         }
     }
 }

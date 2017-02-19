@@ -16,6 +16,8 @@ namespace ChessEngineClient.ViewModel
 {
     public class MainViewModel : BoardPageViewModel, INavigationAware
     {
+        private IAppSettings appSettings = null;
+
         public AnalysisViewModel AnalysisViewModel { get; set; }
 
         public ICommand PracticePositionCommand
@@ -23,9 +25,10 @@ namespace ChessEngineClient.ViewModel
             get { return new RelayCommand(PracticePositionExecuted); }
         }
 
-        public MainViewModel(INavigationService navigationService, IEngineBoardService analysisBoardService)
+        public MainViewModel(INavigationService navigationService, IEngineBoardService analysisBoardService, IAppSettings appSettings)
             : base(navigationService, analysisBoardService)
         {
+            this.appSettings = appSettings;
             AnalysisViewModel = ViewModelLocator.IOCContainer.Resolve<AnalysisViewModel>();
             BoardViewModel = new AnalysisChessBoardViewModel(analysisBoardService);
 
@@ -35,8 +38,15 @@ namespace ChessEngineClient.ViewModel
 
         public override void OnNavigatedTo(object parameter)
         {
+            InitSettings();
+
             AnalysisViewModel.SubscribeToAnalysis();
             base.OnNavigatedTo(parameter);
+        }
+
+        private void InitSettings()
+        {
+            BoardViewModel.ShowSuggestedMoveArrow = (bool)appSettings.Values[AppSettingsKeys.ShowBestMoveArrow];
         }
 
         public override void OnNavigatingFrom()

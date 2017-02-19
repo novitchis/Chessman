@@ -24,6 +24,18 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
+        public bool ShowBestMoveArrow
+        {
+            get
+            {
+                return (bool)appSettings.Values[AppSettingsKeys.ShowBestMoveArrow];
+            }
+            set
+            {
+                appSettings.Values[AppSettingsKeys.ShowBestMoveArrow] = value;
+            }
+        }
+
         public SettingsViewModel(IAppSettings appSettings)
         {
             this.appSettings = appSettings;

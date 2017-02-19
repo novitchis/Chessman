@@ -11,7 +11,19 @@ namespace ChessEngineClient.ViewModel
 {
     public class AnalysisChessBoardViewModel : ChessBoardViewModel
     {
-        IBoardService analysisBoardService = null;
+        private bool showSuggestedMoveArrow = false;
+        private IBoardService analysisBoardService = null;
+
+        public bool ShowSuggestedMoveArrow
+        {
+            get { return showSuggestedMoveArrow; }
+            set
+            {
+                showSuggestedMoveArrow = value;
+                if (!showSuggestedMoveArrow)
+                    SuggestedMove = null;
+            }
+        }
 
         public AnalysisChessBoardViewModel(IBoardService analysisBoardService)
             : base(analysisBoardService)
@@ -83,7 +95,8 @@ namespace ChessEngineClient.ViewModel
 
         private void OnAnalysisReceived(GenericMessage<Move> bestMoveMessage)
         {
-            SuggestedMove = bestMoveMessage.Content;
+            if (ShowSuggestedMoveArrow)
+                SuggestedMove = bestMoveMessage.Content;
         }
     }
 }

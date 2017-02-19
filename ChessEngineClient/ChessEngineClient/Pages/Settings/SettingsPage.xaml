@@ -19,7 +19,7 @@
                         Text="Settings"
                         Style="{StaticResource HeaderTextStyle}" />
                 </Grid>
-                <Grid Margin="12 8 12 12">
+                <StackPanel Margin="12 8 12 12">
                     <StackPanel>
                         <TextBlock 
                             Text="Practice computer level"
@@ -47,7 +47,16 @@
                                 Style="{StaticResource LabelTextStyle}" />
                         </Grid>
                     </StackPanel>
-                </Grid>
+                    <StackPanel>
+                        <TextBlock 
+                            Text="Show analysis best move arrow"
+                            Style="{StaticResource LabelTextStyle}" />
+                        <ToggleSwitch 
+                            OnContent="Yes" 
+                            OffContent="No"
+                            IsOn="{Binding ShowBestMoveArrow, Mode=TwoWay}"/>
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
         </Grid>
         <VisualStateManager.VisualStateGroups>
