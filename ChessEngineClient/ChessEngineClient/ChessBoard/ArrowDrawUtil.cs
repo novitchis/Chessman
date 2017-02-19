@@ -15,7 +15,7 @@ namespace ChessEngineClient
             double halfWidth = baseWidth / 2.0f;
             double headLength = baseWidth * 2.5f;
             double baseLength = length - headLength;
-            double halfWingsSpan = baseWidth * 2f;
+            double halfWingsSpan = baseWidth * 1.8f;
 
             return new List<Point>()
             {
