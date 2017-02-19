@@ -1196,21 +1196,21 @@ bool ChessBoardImpl::IsValidFen(const std::string &fen)
 	// Exactly one king per side?
 	if (std::count(board.begin(), board.end(), 'K') != 1) return false;
 	if (std::count(board.begin(), board.end(), 'k') != 1) return false;
-	// Other piece counts reasonable?
-	size_t wp = std::count(board.begin(), board.end(), 'P'),
-		bp = std::count(board.begin(), board.end(), 'p'),
-		wn = std::count(board.begin(), board.end(), 'N'),
-		bn = std::count(board.begin(), board.end(), 'n'),
-		wb = std::count(board.begin(), board.end(), 'B'),
-		bb = std::count(board.begin(), board.end(), 'b'),
-		wr = std::count(board.begin(), board.end(), 'R'),
-		br = std::count(board.begin(), board.end(), 'r'),
-		wq = std::count(board.begin(), board.end(), 'Q'),
-		bq = std::count(board.begin(), board.end(), 'q');
-	if (wp > 8 || bp > 8 || wn > 10 || bn > 10 || wb > 10 || bb > 10
-		|| wr > 10 || br > 10 || wq > 9 || bq > 10
-		|| wp + wn + wb + wr + wq > 15 || bp + bn + bb + br + bq > 15)
-		return false;
+	//// Other piece counts reasonable?
+	//size_t wp = std::count(board.begin(), board.end(), 'P'),
+	//	bp = std::count(board.begin(), board.end(), 'p'),
+	//	wn = std::count(board.begin(), board.end(), 'N'),
+	//	bn = std::count(board.begin(), board.end(), 'n'),
+	//	wb = std::count(board.begin(), board.end(), 'B'),
+	//	bb = std::count(board.begin(), board.end(), 'b'),
+	//	wr = std::count(board.begin(), board.end(), 'R'),
+	//	br = std::count(board.begin(), board.end(), 'r'),
+	//	wq = std::count(board.begin(), board.end(), 'Q'),
+	//	bq = std::count(board.begin(), board.end(), 'q');
+	//if (wp > 8 || bp > 8 || wn > 10 || bn > 10 || wb > 10 || bb > 10
+	//	|| wr > 10 || br > 10 || wq > 9 || bq > 10
+	//	|| wp + wn + wb + wr + wq > 15 || bp + bn + bb + br + bq > 15)
+	//	return false;
 
 	return true;
 }
