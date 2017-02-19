@@ -214,7 +214,7 @@ namespace ChessEngineClient.View
             Point start = GetSquareMiddlePoint(SuggestedMove.GetFrom(), squareWidth);
             Point end = GetSquareMiddlePoint(SuggestedMove.GetTo(), squareWidth);
 
-            DrawArrow(start, end, squareWidth / 3);
+            DrawArrow(start, end, squareWidth / 4);
         }
 
         private Point GetSquareMiddlePoint(Coordinate coordinate, double squareWidth)
@@ -242,7 +242,7 @@ namespace ChessEngineClient.View
             points.Skip(1).ToList().ForEach(p => pathFigure.Segments.Add(new LineSegment() { Point = p }));
 
             //TODO: move color to resources
-            Path path = new Path() { Fill = new SolidColorBrush(new Windows.UI.Color() { A = 80, R = 0, G = 0, B = 0 }) };
+            Path path = new Path() { Fill = (Brush)App.Current.Resources["BoardArrowBrush"] };
 
             Canvas.SetLeft(path, start.X);
             Canvas.SetTop(path, start.Y);

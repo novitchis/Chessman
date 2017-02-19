@@ -28,11 +28,23 @@ namespace ChessEngineClient.ViewModel
         {
             get
             {
-                return (bool)appSettings.Values[AppSettingsKeys.ShowBestMoveArrow];
+                return (bool)appSettings.Values[AppSettingsKeys.ShowBestMoveArrowKey];
             }
             set
             {
-                appSettings.Values[AppSettingsKeys.ShowBestMoveArrow] = value;
+                appSettings.Values[AppSettingsKeys.ShowBestMoveArrowKey] = value;
+            }
+        }
+
+        public bool SavePositionsBetweenSessions
+        {
+            get
+            {
+                return (bool)appSettings.Values[AppSettingsKeys.SavePositionsBetweenSessionsKey];
+            }
+            set
+            {
+                appSettings.Values[AppSettingsKeys.SavePositionsBetweenSessionsKey] = value;
             }
         }
 

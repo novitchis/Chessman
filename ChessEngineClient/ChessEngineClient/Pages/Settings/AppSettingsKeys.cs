@@ -10,16 +10,20 @@ namespace ChessEngineClient
 {
     public static class AppSettingsKeys
     {
-        public const string ShowBestMoveArrow = "ShowAnalysisArrow";
+        public const string ShowBestMoveArrowKey = "ShowAnalysisArrow";
         public const string ComputerStrengthKey = "ComputerStrength";
+        public const string SavePositionsBetweenSessionsKey = "SavePositionsBetweenSessions";
 
         public static void InitializeDefaultSettings(ApplicationDataContainer settingsContainer)
         {
             if (!settingsContainer.Values.ContainsKey(ComputerStrengthKey))
                 settingsContainer.Values[ComputerStrengthKey] = 5;
 
-            if (!settingsContainer.Values.ContainsKey(ShowBestMoveArrow))
-                settingsContainer.Values[ShowBestMoveArrow] = true;
+            if (!settingsContainer.Values.ContainsKey(ShowBestMoveArrowKey))
+                settingsContainer.Values[ShowBestMoveArrowKey] = true;
+
+            if (!settingsContainer.Values.ContainsKey(SavePositionsBetweenSessionsKey))
+                settingsContainer.Values[SavePositionsBetweenSessionsKey] = true;
         }
     }
 }

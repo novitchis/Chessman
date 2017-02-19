@@ -46,7 +46,7 @@ namespace ChessEngineClient.ViewModel
 
         private void InitSettings()
         {
-            BoardViewModel.ShowSuggestedMoveArrow = (bool)appSettings.Values[AppSettingsKeys.ShowBestMoveArrow];
+            BoardViewModel.ShowSuggestedMoveArrow = (bool)appSettings.Values[AppSettingsKeys.ShowBestMoveArrowKey];
         }
 
         public override void OnNavigatingFrom()
