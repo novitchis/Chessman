@@ -40,7 +40,8 @@ namespace ChessEngineClient
         {
             Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
                 Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
-                Microsoft.ApplicationInsights.WindowsCollectors.Session);
+                Microsoft.ApplicationInsights.WindowsCollectors.Session |
+                Microsoft.ApplicationInsights.WindowsCollectors.PageView);
 
             this.InitializeComponent();
             this.Suspending += OnSuspending;
