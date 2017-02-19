@@ -13,9 +13,9 @@ namespace ChessEngineClient
         public static List<Point> GetArrowGeometryPoints(double length, double baseWidth)
         {
             double halfWidth = baseWidth / 2.0f;
-            double headLength = baseWidth * 1.2f;
+            double headLength = baseWidth * 2.5f;
             double baseLength = length - headLength;
-            double halfWingsSpan = baseWidth * 1.1f;
+            double halfWingsSpan = baseWidth * 2f;
 
             return new List<Point>()
             {
@@ -35,6 +35,7 @@ namespace ChessEngineClient
             double radianAngle = Math.Atan(m);
             double degreeAngle = radianAngle * (180 / Math.PI);
 
+            // adjust direction of the line
             if (start.X > end.X)
                 degreeAngle += 180;
 
