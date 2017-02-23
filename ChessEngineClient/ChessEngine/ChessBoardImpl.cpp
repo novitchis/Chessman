@@ -1017,7 +1017,7 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 		}
 		MoveImpl move;
 
-		if (strToken.find("O-O-O") != std::string::npos)
+		if (strToken.find("O-O-O") != std::string::npos || strToken.find("0-0-0") != std::string::npos)
 		{
 			// queen-side castling
 			if (IsWhiteTurn())
@@ -1026,7 +1026,7 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 				SubmitMove(MoveImpl(CoordinateImpl(7, 4), CoordinateImpl(7, 2)));
 			continue;
 		}
-		else if (strToken.find("O-O") != std::string::npos)
+		else if (strToken.find("O-O") != std::string::npos || strToken.find("0-0") != std::string::npos)
 		{
 			// king-side castling
 			if (IsWhiteTurn())
