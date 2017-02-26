@@ -1,4 +1,5 @@
 ﻿using ChessEngine;
+using ChessEngineClient.Services;
 using ChessEngineClient.ViewModel;
 using Framework.MVVM;
 using Microsoft.Practices.Unity;
@@ -73,6 +74,7 @@ namespace ChessEngineClient
             IOCContainer.RegisterType<IEngineBoardService, AnalysisBoardService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IBoardEditorService, EditorService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IPracticeBoardService, PracticeBoardService>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<ITextReaderService, TextReaderService>(new ContainerControlledLifetimeManager());
         }
     }
 }
