@@ -180,15 +180,7 @@ namespace ChessEngineClient.View
         private void OnBoardPointerEntered(object sender, PointerRoutedEventArgs e)
         {
             if (isDragStarted)
-            {
                 board.ReleasePointerCaptures();
-
-                // if enterd fast enaugh this can cause the square 
-                // not to receive mouse enter events
-                //SquareView squareView = VisualTreeHelperEx.FindParent<SquareView>(e.OriginalSource as DependencyObject);
-                //if (squareView != null)
-                //    squareView.IsDropTarget = true;
-            }
         }
 
         private static void OnSuggestedMoveChangedThunk(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -221,10 +213,14 @@ namespace ChessEngineClient.View
         {
             double halfSquareWidth = squareWidth / 2;
 
+            // from black perspective the board is rotated
+            double actualX = ViewModel.Perspective == SideColor.White ? coordinate.X : 7 - coordinate.X;
+            double actualY = ViewModel.Perspective == SideColor.White ? 7 - coordinate.Y : coordinate.Y;
+
             Point middlePoint = new Point()
             {
-                X = coordinate.X * squareWidth + halfSquareWidth,
-                Y = (7 - coordinate.Y) * squareWidth + halfSquareWidth
+                X = actualX * squareWidth + halfSquareWidth,
+                Y = actualY * squareWidth + halfSquareWidth
             };
 
             return middlePoint;
@@ -241,7 +237,6 @@ namespace ChessEngineClient.View
             var pathFigure = new PathFigure() { StartPoint = points[0] };
             points.Skip(1).ToList().ForEach(p => pathFigure.Segments.Add(new LineSegment() { Point = p }));
 
-            //TODO: move color to resources
             Path path = new Path() { Fill = (Brush)App.Current.Resources["BoardArrowBrush"] };
 
             Canvas.SetLeft(path, start.X);
