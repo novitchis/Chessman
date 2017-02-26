@@ -84,10 +84,12 @@ namespace ChessEngineClient
                 StoreServicesEngagementManager engagementManager = StoreServicesEngagementManager.GetDefault();
                 await engagementManager.RegisterNotificationChannelAsync();
 
-                AppSettingsKeys.InitializeDefaultSettings(ApplicationData.Current.LocalSettings);
                 // Create a Frame to act as the navigation context and navigate to the first page
                 appShell = new AppShell();
                 BootstrapNavigationService(appShell.AppFrame);
+
+                AppPersistenceManager.InitializeDefaultSettings(ApplicationData.Current.LocalSettings);
+                AppPersistenceManager.RestoreApplicationState(ApplicationData.Current.LocalSettings);
 
                 appShell.DataContext = ViewModelLocator.IOCContainer.Resolve<AppShellViewModel>();
                 appShell.AppFrame.NavigationFailed += OnNavigationFailed;
@@ -147,7 +149,9 @@ namespace ChessEngineClient
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
+
+            AppPersistenceManager.SaveApplicationState(ApplicationData.Current.LocalSettings);
+
             deferral.Complete();
         }
 

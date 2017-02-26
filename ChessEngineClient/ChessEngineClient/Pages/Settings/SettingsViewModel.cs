@@ -16,11 +16,11 @@ namespace ChessEngineClient.ViewModel
         {
             get
             {
-                return (int)appSettings.Values[AppSettingsKeys.ComputerStrengthKey];
+                return (int)appSettings.Values[AppPersistenceManager.ComputerStrengthKey];
             }
             set
             {
-                appSettings.Values[AppSettingsKeys.ComputerStrengthKey] = value;
+                appSettings.Values[AppPersistenceManager.ComputerStrengthKey] = value;
             }
         }
 
@@ -28,11 +28,11 @@ namespace ChessEngineClient.ViewModel
         {
             get
             {
-                return (bool)appSettings.Values[AppSettingsKeys.ShowBestMoveArrowKey];
+                return (bool)appSettings.Values[AppPersistenceManager.ShowBestMoveArrowKey];
             }
             set
             {
-                appSettings.Values[AppSettingsKeys.ShowBestMoveArrowKey] = value;
+                appSettings.Values[AppPersistenceManager.ShowBestMoveArrowKey] = value;
             }
         }
 
@@ -40,11 +40,11 @@ namespace ChessEngineClient.ViewModel
         {
             get
             {
-                return (bool)appSettings.Values[AppSettingsKeys.SavePositionsBetweenSessionsKey];
+                return (bool)appSettings.Values[AppPersistenceManager.SavePositionsBetweenSessionsKey];
             }
             set
             {
-                appSettings.Values[AppSettingsKeys.SavePositionsBetweenSessionsKey] = value;
+                appSettings.Values[AppPersistenceManager.SavePositionsBetweenSessionsKey] = value;
             }
         }
 

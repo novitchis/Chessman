@@ -70,10 +70,7 @@ namespace ChessEngineClient.ViewModel
         {
             PositionLoadOptions positionLoadOptions = parameter as PositionLoadOptions;
             if (positionLoadOptions != null)
-            {
-                boardService.LoadFrom(positionLoadOptions.SerializedBoard);
-                ReloadBoard(positionLoadOptions.Perspective);
-            }
+                LoadPosition(positionLoadOptions);
 
             if (useInitializationDelay)
             {
@@ -82,6 +79,12 @@ namespace ChessEngineClient.ViewModel
             }
 
             boardService.Start();
+        }
+
+        public virtual void LoadPosition(PositionLoadOptions positionLoadOptions)
+        {
+            boardService.LoadFrom(positionLoadOptions.SerializedBoard);
+            ReloadBoard(positionLoadOptions.Perspective);
         }
 
         public virtual void OnNavigatingFrom()
@@ -132,7 +135,7 @@ namespace ChessEngineClient.ViewModel
             navigationService.NavigateTo(ViewModelLocator.EditPositionPageNavigationName, GetPositionLoadOptions(BoardSerializationType.FEN));
         }
 
-        protected PositionLoadOptions GetPositionLoadOptions(BoardSerializationType serializationType)
+        public PositionLoadOptions GetPositionLoadOptions(BoardSerializationType serializationType)
         {
             return new PositionLoadOptions()
             {

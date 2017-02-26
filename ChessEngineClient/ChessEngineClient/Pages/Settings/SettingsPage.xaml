@@ -56,7 +56,7 @@
                             OffContent="No"
                             IsOn="{Binding ShowBestMoveArrow, Mode=TwoWay}"/>
                     </StackPanel>
-                    <!--<StackPanel>
+                    <StackPanel>
                         <TextBlock 
                             Text="Save boards between sessions"
                             Style="{StaticResource LabelTextStyle}" />
@@ -64,7 +64,7 @@
                             OnContent="Yes" 
                             OffContent="No"
                             IsOn="{Binding SavePositionsBetweenSessions, Mode=TwoWay}"/>
-                    </StackPanel>-->
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </Grid>

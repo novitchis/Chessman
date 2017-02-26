@@ -172,7 +172,7 @@
     </Compile>
     <Compile Include="Notation\NotationViewModel.cs" />
     <Compile Include="NotificationMessages.cs" />
-    <Compile Include="Pages\Settings\AppSettingsKeys.cs" />
+    <Compile Include="Pages\Settings\AppPersistenceManager.cs" />
     <Compile Include="Pages\Settings\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>

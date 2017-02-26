@@ -50,16 +50,16 @@ namespace ChessEngineClient.ViewModel
 
         public override void OnNavigatedTo(object parameter)
         {
-            int engineStrength = (int)appSettings.Values[AppSettingsKeys.ComputerStrengthKey];
+            int engineStrength = (int)appSettings.Values[AppPersistenceManager.ComputerStrengthKey];
             practiceBoardService.SetEngineStrength(engineStrength);
 
-            PositionLoadOptions positionLoadOptions = parameter as PositionLoadOptions;
-            if (positionLoadOptions != null)
-            {
-                UserColor = positionLoadOptions.Perspective;
-            }
-
             base.OnNavigatedTo(parameter);
+        }
+
+        public override void LoadPosition(PositionLoadOptions positionLoadOptions)
+        {
+            base.LoadPosition(positionLoadOptions);
+            UserColor = positionLoadOptions.Perspective;
         }
 
         private void SwitchColorExecuted(object obj)

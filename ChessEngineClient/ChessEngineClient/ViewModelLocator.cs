@@ -38,7 +38,7 @@ namespace ChessEngineClient
             }
         }
 
-        public static PracticeViewModel ExerciseViewModel
+        public static PracticeViewModel PracticeViewModel
         {
             get
             {
@@ -54,7 +54,7 @@ namespace ChessEngineClient
             }
         }
 
-        public ViewModelLocator()
+        static ViewModelLocator()
         {
             IOCContainer.RegisterType<MainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<EditPositionViewModel, EditPositionViewModel>(new ContainerControlledLifetimeManager());
@@ -62,7 +62,6 @@ namespace ChessEngineClient
             IOCContainer.RegisterType<SettingsViewModel, SettingsViewModel>(new ContainerControlledLifetimeManager());
 
             IOCContainer.RegisterType<IAppSettings, LocalAppDataSettings>();
-            //IOCContainer.RegisterInstance<IPropertySet>(ApplicationData.Current.LocalSettings.Values);
 
             IOCContainer.RegisterType<IAnalysisReceiver, AnalysisReceiver>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IEngineNotification, AnalysisReceiver>(new ContainerControlledLifetimeManager());
