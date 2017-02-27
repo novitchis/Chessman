@@ -45,6 +45,8 @@ namespace ChessEngineClient
 
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.EnteredBackground += AppEnteredBackground;
+
             this.UnhandledException += OnUnhandledException;
         }
 
@@ -150,9 +152,12 @@ namespace ChessEngineClient
         {
             var deferral = e.SuspendingOperation.GetDeferral();
 
-            AppPersistenceManager.SaveApplicationState(ApplicationData.Current.LocalSettings);
-
             deferral.Complete();
+        }
+
+        private void AppEnteredBackground(object sender, EnteredBackgroundEventArgs e)
+        {
+            AppPersistenceManager.SaveApplicationState(ApplicationData.Current.LocalSettings);
         }
 
         private async void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)

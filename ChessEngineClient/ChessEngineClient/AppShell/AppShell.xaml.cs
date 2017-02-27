@@ -21,6 +21,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Practices.Unity;
+using Windows.Storage;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace ChessEngineClient
@@ -100,7 +101,10 @@ namespace ChessEngineClient
             var result = await exitConfirmationDialog.ShowAsync();
             exitConfirmationDialog = null;
             if (result != null && (int)result.Id == 0)
+            {
+                AppPersistenceManager.SaveApplicationState(ApplicationData.Current.LocalSettings);
                 Application.Current.Exit();
+            }
         }
 
         private void OnCurrentPageChanged(object sender, SelectionChangedEventArgs e)

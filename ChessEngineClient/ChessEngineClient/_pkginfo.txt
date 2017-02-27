@@ -1,1 +1,1 @@
-D:\Personal\Repos\Chess\ChessEngineClient\ChessEngineClient\AppPackages\ChessEngineClient_1.2.5.0\ChessEngineClient_1.2.5.0_x86_x64_arm.appxbundle
+D:\Personal\Repos\Chess\ChessEngineClient\ChessEngineClient\AppPackages\ChessEngineClient_1.2.6.0\ChessEngineClient_1.2.6.0_x86_x64_arm.appxbundle
