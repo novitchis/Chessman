@@ -44,13 +44,12 @@ namespace ChessEngineClient
                 Microsoft.ApplicationInsights.WindowsCollectors.PageView);
 
             this.InitializeComponent();
-            this.Suspending += OnSuspending;
 
             // only present in 14393
             if (ApiInformation.IsEventPresent("Windows.UI.Xaml.Application", "EnteredBackground"))
-                this.EnteredBackground += (o, e) => OnAppEnteredBackground();
+                this.EnteredBackground += OnEnteredBackground;
             else
-                this.Suspending += (o, e) => OnAppEnteredBackground();
+                this.Suspending += OnSuspending;
 
             this.UnhandledException += OnUnhandledException;
         }
@@ -156,11 +155,20 @@ namespace ChessEngineClient
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
+            SaveApplicationState();
 
             deferral.Complete();
         }
 
-        private void OnAppEnteredBackground()
+        private void OnEnteredBackground(object sender, EnteredBackgroundEventArgs e)
+        {
+            var deferral = e.GetDeferral();
+            SaveApplicationState();
+
+            deferral.Complete();
+        }
+
+        private void SaveApplicationState()
         {
             AppPersistenceManager.SaveApplicationState(ApplicationData.Current.LocalSettings);
         }
