@@ -45,7 +45,12 @@ namespace ChessEngineClient
 
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            this.EnteredBackground += (o, e) => OnAppEnteredBackground();
+
+            // only present in 14393
+            if (ApiInformation.IsEventPresent("Windows.UI.Xaml.Application", "EnteredBackground"))
+                this.EnteredBackground += (o, e) => OnAppEnteredBackground();
+            else
+                this.Suspending += (o, e) => OnAppEnteredBackground();
 
             this.UnhandledException += OnUnhandledException;
         }
