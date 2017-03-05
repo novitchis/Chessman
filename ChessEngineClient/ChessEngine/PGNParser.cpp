@@ -106,6 +106,7 @@ void PGNParser::SkipToNextToken()
 		iterationPos = m_nPos;
 		SkipWhiteSpace();
 		SkipComments();
+		SkipVariations();
 	}
 }
 
@@ -129,9 +130,26 @@ void PGNParser::SkipComments()
 	{
 		m_nPos = (int)m_strPGNData.find_first_of("}", m_nPos) + 1;
 	}
+}
+
+void PGNParser::SkipVariations()
+{
 	if (m_strPGNData[m_nPos] == '(')
 	{
-		m_nPos = (int)m_strPGNData.find_first_of(")", m_nPos) + 1;
+		int stackCount = 0;
+		while (!AtEnd())
+		{
+			if (m_strPGNData[m_nPos] == '(')
+				++stackCount;
+			else if (m_strPGNData[m_nPos] == ')')
+				--stackCount;
+
+			++m_nPos;
+
+			if (stackCount == 0)
+				break;
+
+		}
 	}
 }
 

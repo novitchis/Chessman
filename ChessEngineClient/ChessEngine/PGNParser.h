@@ -30,6 +30,7 @@ namespace ChessEngine
 		void SkipToNextToken();
 		void SkipWhiteSpace();
 		void SkipComments();
+		void SkipVariations();
 		void ParseTag();
 		bool AtEnd() { return m_nPos >= (int)m_strPGNData.size(); }
 		void Invalidate() { m_bValid = false;  }
