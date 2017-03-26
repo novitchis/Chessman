@@ -1037,22 +1037,48 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 		}
 
 		std::string destString;
-
 		if (strToken.find('=') != std::string::npos)
 		{
 			auto index = strToken.find('=');
 			char destPiece = strToken[index + 1];
 			destString = strToken.substr(index - 2, index);
-
 			move.promotionPiece = ChessPieceImpl(tolower(destPiece), IsWhiteTurn());
 		}
 		else if (strToken[strToken.length() - 1] == '+' || strToken[strToken.length() - 1] == '#')
 		{
-			destString = strToken.substr(strToken.length() - 3, strToken.length() - 1);
+			// check for promotion without '='
+			if (std::string("QRBN").find(strToken[strToken.length() - 2]) != std::string::npos)
+			{
+				if (strToken.size() < 4) {
+					// too short
+					return false;
+				}
+				char destPiece = strToken[strToken.length() - 2];
+				destString = strToken.substr(strToken.length() - 4, strToken.length() - 2);
+				move.promotionPiece = ChessPieceImpl(tolower(destPiece), IsWhiteTurn());
+			}
+			else
+			{
+				destString = strToken.substr(strToken.length() - 3, strToken.length() - 1);
+			}
 		}
 		else
 		{
-			destString = strToken.substr(strToken.length() - 2);
+			// check for promotion without '='
+			if (std::string("QRBN").find(strToken[strToken.length() - 1]) != std::string::npos)
+			{
+				if (strToken.size() < 3) {
+					// too short
+					return false;
+				}
+				char destPiece = strToken[strToken.length() - 1];
+				destString = strToken.substr(strToken.length() - 3);
+				move.promotionPiece = ChessPieceImpl(tolower(destPiece), IsWhiteTurn());
+			}
+			else
+			{
+				destString = strToken.substr(strToken.length() - 2);
+			}
 		}
 
 		CoordinateImpl destination = CoordinateImpl::FromString(destString);
