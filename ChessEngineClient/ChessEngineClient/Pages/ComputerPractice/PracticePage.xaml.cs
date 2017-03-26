@@ -1,10 +1,13 @@
-﻿using System;
+﻿using ChessEngineClient.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -55,6 +58,30 @@ namespace ChessEngineClient.View
                 chessBoard.MaxHeight = newSize.Height - notationView.MinHeight - 130;
             else
                 chessBoard.MaxHeight = Double.PositiveInfinity;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            Window.Current.CoreWindow.KeyDown += OnCoreWindowKeyDown;
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            Window.Current.CoreWindow.KeyDown -= OnCoreWindowKeyDown;
+        }
+
+        private void OnCoreWindowKeyDown(CoreWindow sender, KeyEventArgs e)
+        {
+            if (e.VirtualKey == VirtualKey.Left)
+            {
+                (this.DataContext as PracticeViewModel).GoBackCommand.Execute(null);
+            }
+            else if (e.VirtualKey == VirtualKey.Right)
+            {
+                (this.DataContext as PracticeViewModel).GoForwardCommand.Execute(null);
+            }
         }
     }
 }

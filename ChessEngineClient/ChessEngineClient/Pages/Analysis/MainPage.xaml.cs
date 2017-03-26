@@ -54,6 +54,14 @@ namespace ChessEngineClient.View
             {
                 (this.DataContext as MainViewModel).LoadFromClipboardCommand.Execute(null);
             }
+            else if (e.VirtualKey == VirtualKey.Left)
+            {
+                (this.DataContext as MainViewModel).GoBackCommand.Execute(null);
+            }
+            else if (e.VirtualKey == VirtualKey.Right)
+            {
+                (this.DataContext as MainViewModel).GoForwardCommand.Execute(null);
+            }
         }
 
         private void OnMainPageLoaded(object sender, RoutedEventArgs e)
