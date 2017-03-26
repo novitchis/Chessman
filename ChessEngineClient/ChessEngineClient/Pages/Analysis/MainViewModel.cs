@@ -27,7 +27,11 @@ namespace ChessEngineClient.ViewModel
             get { return new RelayCommand(PracticePositionExecuted); }
         }
 
-        public MainViewModel(INavigationService navigationService, IEngineBoardService analysisBoardService, ITextReaderService textService, IAppSettings appSettings)
+        public MainViewModel(
+            INavigationService navigationService, 
+            IEngineBoardService analysisBoardService, 
+            ITextReaderService textService, 
+            IAppSettings appSettings)
             : base(navigationService, analysisBoardService)
         {
             this.appSettings = appSettings;

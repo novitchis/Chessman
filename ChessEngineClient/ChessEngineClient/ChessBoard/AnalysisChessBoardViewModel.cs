@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Practices.Unity;
 
 namespace ChessEngineClient.ViewModel
 {
@@ -13,6 +14,7 @@ namespace ChessEngineClient.ViewModel
     {
         private bool showSuggestedMoveArrow = false;
         private IBoardService analysisBoardService = null;
+        private IMoveAudioFeedbackService audioService = null;
 
         public bool ShowSuggestedMoveArrow
         {
@@ -29,6 +31,7 @@ namespace ChessEngineClient.ViewModel
             : base(analysisBoardService)
         {
             this.analysisBoardService = analysisBoardService;
+            this.audioService = ViewModelLocator.IOCContainer.Resolve<IMoveAudioFeedbackService>();
             InitBoard();
 
             Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.CurrentMoveChanged, OnCurrentMoveChangedMessage);
@@ -37,6 +40,8 @@ namespace ChessEngineClient.ViewModel
 
         private void OnCurrentMoveChangedMessage(GenericMessage<MoveData> moveMessage)
         {
+            audioService.PlayMoveExecuted();
+
             RefreshSquares();
         }
 

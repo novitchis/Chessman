@@ -130,6 +130,8 @@
     </Compile>
     <Compile Include="ChessBoard\ChessPieceViewModel.cs" />
     <Compile Include="ChessBoard\EditChessBoardViewModel.cs" />
+    <Compile Include="ChessBoard\MoveAudioFeedbackService.cs" />
+    <Compile Include="ChessBoard\IMoveAudioFeedbackService.cs" />
     <Compile Include="ChessBoard\SquareView.xaml.cs">
       <DependentUpon>SquareView.xaml</DependentUpon>
     </Compile>
@@ -201,6 +203,7 @@
     <None Include="ChessEngineClient_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\chess-move-on-alabaster.wav" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-125.png" />
     <Content Include="Assets\SplashScreen.scale-150.png" />
