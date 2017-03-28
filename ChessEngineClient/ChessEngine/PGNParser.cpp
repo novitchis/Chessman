@@ -21,20 +21,22 @@ void PGNParser::Start()
 {
 	// Parse tags //
 	SkipWhiteSpace();
-	
+
 	while (IsValid() && !AtEnd() && m_strPGNData[m_nPos] == '[')
 	{
 		ParseTag();
 		SkipWhiteSpace();
 	}
 
-	//the FEN tag contains a '-' character
-	// remove result //
-	//If the game result is anything other than *, the result is repeated at the end of the movetext.
-	if (!m_GameInfo.strResult.empty() && m_GameInfo.strResult != "*")
-	{ 
+	// remove result
+	if (!m_GameInfo.strResult.empty())
+	{
 		int nResultPos = (int)m_strPGNData.rfind(m_GameInfo.strResult);
-		m_strPGNData.resize(nResultPos - 1);
+		// check if it's at the end of the string
+		// possible results: "1-0", "0-1", "1/2-1/2", "*"
+		if (nResultPos != std::string::npos && m_strPGNData.size() - nResultPos < 10)
+			m_strPGNData.resize(nResultPos - 1);
+
 	}
 }
 
@@ -57,7 +59,7 @@ bool PGNParser::GetNext(std::string& strMove)
 		}
 		++m_nPos;
 	}
-	
+
 	SkipToNextToken();
 	if (!IsValid())
 		return false;
@@ -69,17 +71,15 @@ bool PGNParser::GetNext(std::string& strMove)
 		if (strchr(WHITESPACES, m_strPGNData[++nMoveEnd]) != NULL)
 			break;
 	}
-	
-	//m_strPGNData.find_first_of(WHITESPACES, m_nPos);
-	//std::cout << "find_first_of:" << nMoveEnd << std::endl;
+
 	if (nMoveEnd == std::string::npos) {
 		Invalidate();
 		return false;
 	}
-	
+
 	// parse move number //
 	// when the pgn contains variation the return to main line can look like: 10...Nf6
-	strMove = m_strPGNData.substr(m_nPos, nMoveEnd-m_nPos);
+	strMove = m_strPGNData.substr(m_nPos, nMoveEnd - m_nPos);
 
 	int lastPointIndex = (int)strMove.rfind('.');
 	if (lastPointIndex != -1)
@@ -87,8 +87,6 @@ bool PGNParser::GetNext(std::string& strMove)
 
 	m_nPos = nMoveEnd;
 	m_bWhiteMove = !m_bWhiteMove;
-	
-	//std::cout << "pos:" << m_nPos << std::endl;
 
 	return true;
 }
@@ -176,5 +174,5 @@ void PGNParser::ParseTag()
 		m_GameInfo.strResult = m_strPGNData.substr(resultStartPos, nBracketPos - 1 - resultStartPos);
 	}
 
-	m_nPos = nBracketPos+1;
+	m_nPos = nBracketPos + 1;
 }
