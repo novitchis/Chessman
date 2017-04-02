@@ -81,10 +81,13 @@ namespace ChessEngineClient
             RequestComputerMove();
         }
 
-        private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
+        private async void OnAnalysisReceived(object sender, AnalysisEventArgs e)
         {
             if (e.Data.IsBestMove)
             {
+                // just delay for one second the move, to not be so fast
+                await Task.Delay(1000);
+
                 base.SubmitMove(e.Data.Analysis[0].GetFrom(), e.Data.Analysis[0].GetTo());
                 mainSynchronizationContext.Post(o =>
                 {
@@ -103,32 +106,30 @@ namespace ChessEngineClient
 
         public void SetEngineStrength(int strengthValue)
         {
-            // reajust the engine skill level since the level 2 is already too strong
-            // strength(1..10) - skill level(0..20)
             int skillLevel = 0;
 
             switch (strengthValue)
             {
                 case 1:
-                    skillLevel = 3; depth = 1; moveTime = 50; break;
+                    skillLevel = 0; depth = 1; moveTime = 50; break;
                 case 2:
-                    skillLevel = 6; depth = 2; moveTime = 100; break;
+                    skillLevel = 2; depth = 2; moveTime = 100; break;
                 case 3:
-                    skillLevel = 9; depth = 3; moveTime = 150; break;
+                    skillLevel = 5; depth = 3; moveTime = 150; break;
                 case 4:
-                    skillLevel = 11; depth = 4; moveTime = 200; break;
+                    skillLevel = 7; depth = 4; moveTime = 200; break;
                 case 5:
-                    skillLevel = 14; depth = 5; moveTime = 250; break;
+                    skillLevel = 10; depth = 5; moveTime = 250; break;
                 case 6:
-                    skillLevel = 16; depth = 7; moveTime = 300; break;
+                    skillLevel = 12; depth = 7; moveTime = 300; break;
                 case 7:
-                    skillLevel = 18; depth = 10; moveTime = 350; break;
+                    skillLevel = 14; depth = 10; moveTime = 350; break;
                 case 8:
-                    skillLevel = 18; depth = 12; moveTime = 400; break;
+                    skillLevel = 16; depth = 12; moveTime = 500; break;
                 case 9:
-                    skillLevel = 20; depth = 14; moveTime = 500; break;
+                    skillLevel = 20; depth = 14; moveTime = 1000; break;
                 case 10:
-                    skillLevel = 20; depth = 16; moveTime = 1000; break;
+                    skillLevel = 20; depth = 16; moveTime = 2000; break;
                 default:
                     break;
             }

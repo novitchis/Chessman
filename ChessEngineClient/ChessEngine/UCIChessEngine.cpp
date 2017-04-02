@@ -116,18 +116,18 @@ bool UCIChessEngine::Analyze( ChessBoardImpl& board, int depth /*= -1*/, int mov
 	strCommand += board.Serialize( ST_FEN );
 	strCommand += "\n";
 	std::ostringstream commandStringStream;
-	commandStringStream << "go ";
+	commandStringStream << "go";
 	if (moveTime == -1 && depth == -1)
 	{
-		commandStringStream << "infinite";
+		commandStringStream << " infinite";
 	}
 	else
 	{
 		if (moveTime != -1)
-			commandStringStream << "movetime " << moveTime;
+			commandStringStream << " movetime " << moveTime;
 
 		if (depth != -1)
-			commandStringStream << "depth " << depth;
+			commandStringStream << " depth " << depth;
 	}
 	
 	// TODO: what is this?
