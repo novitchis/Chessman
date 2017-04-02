@@ -10,7 +10,7 @@ namespace ChessEngine
 		virtual bool ConnectTo( const std::wstring& strEnginePath ) = 0;
 		virtual bool Start() = 0;
 		virtual bool Stop() = 0;
-		virtual bool Analyze(ChessBoardImpl& board, int secondsLeft = -1) = 0;
+		virtual bool Analyze(ChessBoardImpl& board, int depth = -1, int moveTime = -1) = 0;
 		virtual bool StopAnalyzing() = 0;
 		virtual void SetOptions( const EngineOptionsImpl& options ) = 0;
 		virtual void EnableMoveDelay() = 0;

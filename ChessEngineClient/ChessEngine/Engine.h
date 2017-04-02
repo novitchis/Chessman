@@ -17,7 +17,7 @@ namespace ChessEngine
 
 		virtual bool Start();
 		virtual bool Stop();
-		virtual bool Analyze(ChessBoard^ board, int secondsLeft);
+		virtual bool Analyze(ChessBoard^ board, int depth, int moveTime);
 
 		virtual bool StopAnalyzing();
 		virtual void SetOptions(EngineOptions^ options);

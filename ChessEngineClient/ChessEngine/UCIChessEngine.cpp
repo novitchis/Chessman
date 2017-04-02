@@ -107,9 +107,7 @@ bool UCIChessEngine::Stop()
 	return true;
 }
 
-
-
-bool UCIChessEngine::Analyze( ChessBoardImpl& board, int secondsLeft)
+bool UCIChessEngine::Analyze( ChessBoardImpl& board, int depth /*= -1*/, int moveTime /*= -1*/)
 {
 	if (board.IsMate() || board.IsStaleMate())
 		return false;
@@ -118,14 +116,18 @@ bool UCIChessEngine::Analyze( ChessBoardImpl& board, int secondsLeft)
 	strCommand += board.Serialize( ST_FEN );
 	strCommand += "\n";
 	std::ostringstream commandStringStream;
-	if (secondsLeft == -1)
+	commandStringStream << "go ";
+	if (moveTime == -1 && depth == -1)
 	{
-		commandStringStream << "go infinite";
+		commandStringStream << "infinite";
 	}
 	else
 	{
-		int mSecondsLeft = secondsLeft * 1000;
-		commandStringStream << "go wtime " << mSecondsLeft << " btime " << mSecondsLeft;
+		if (moveTime != -1)
+			commandStringStream << "movetime " << moveTime;
+
+		if (depth != -1)
+			commandStringStream << "depth " << depth;
 	}
 	
 	// TODO: what is this?

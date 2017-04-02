@@ -58,7 +58,7 @@ namespace ChessEngineClient
             if (!ChessBoard.IsStalemate() && !ChessBoard.IsCheckmate())
             {
                 engineNotification.OnStateChanged(EngineState.Analyze);
-                engine.Analyze(ChessBoard, -1);
+                engine.Analyze(ChessBoard, -1, -1);
             }
             else
             {

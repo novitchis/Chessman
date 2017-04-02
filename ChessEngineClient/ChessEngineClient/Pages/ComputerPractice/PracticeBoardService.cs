@@ -15,7 +15,8 @@ namespace ChessEngineClient
         private SynchronizationContext mainSynchronizationContext = null;
         private IEngine engine = null;
         private IAnalysisReceiver analysisReceiver = null;
-        private int secondsLeft = -1;
+        private int depth = -1;
+        private int moveTime = -1;
         private bool isStarted = false;
 
         public SideColor UserColor
@@ -66,7 +67,7 @@ namespace ChessEngineClient
             if (ChessBoard.IsStalemate() || ChessBoard.IsCheckmate())
                 return;
 
-            engine.Analyze(ChessBoard, secondsLeft);
+            engine.Analyze(ChessBoard, depth, moveTime);
         }
 
         public void Start()
@@ -105,19 +106,34 @@ namespace ChessEngineClient
             // reajust the engine skill level since the level 2 is already too strong
             // strength(1..10) - skill level(0..20)
             int skillLevel = 0;
-            if (strengthValue <= 3)
-                skillLevel = strengthValue - 1;
-            else if (strengthValue < 6)
-                skillLevel = (strengthValue - 1) * 2;
-            else
-                skillLevel = strengthValue * 2;
+
+            switch (strengthValue)
+            {
+                case 1:
+                    skillLevel = 3; depth = 1; moveTime = 50; break;
+                case 2:
+                    skillLevel = 6; depth = 2; moveTime = 100; break;
+                case 3:
+                    skillLevel = 9; depth = 3; moveTime = 150; break;
+                case 4:
+                    skillLevel = 11; depth = 4; moveTime = 200; break;
+                case 5:
+                    skillLevel = 14; depth = 5; moveTime = 250; break;
+                case 6:
+                    skillLevel = 16; depth = 7; moveTime = 300; break;
+                case 7:
+                    skillLevel = 18; depth = 10; moveTime = 350; break;
+                case 8:
+                    skillLevel = 18; depth = 12; moveTime = 400; break;
+                case 9:
+                    skillLevel = 20; depth = 14; moveTime = 500; break;
+                case 10:
+                    skillLevel = 20; depth = 16; moveTime = 1000; break;
+                default:
+                    break;
+            }
 
             engine.SetOptions(new EngineOptions() { SkillLevel = skillLevel });
-
-            // on each go we have to give some time limit
-            // this is a way of limiting the ammount of time per move
-            // TODO: this can be further adjusted
-            secondsLeft = (skillLevel + 1) * 10;
         }
     }
 }

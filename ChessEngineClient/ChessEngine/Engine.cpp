@@ -57,11 +57,11 @@ bool Engine::Stop()
 	}
 }
 
-bool Engine::Analyze(ChessBoard^ board, int secondsLeft)
+bool Engine::Analyze(ChessBoard^ board, int depth, int moveTime)
 {
 	try
 	{
-		return m_pEngineImpl->Analyze(board->m_ChessBoardImpl, secondsLeft);
+		return m_pEngineImpl->Analyze(board->m_ChessBoardImpl, depth, moveTime);
 	}
 	catch (...)
 	{
