@@ -1,6 +1,7 @@
 #pragma once
 #include "ChessBoardImpl.h"
 #include "ManagedConverter.h"
+#include "ChessPiece.h"
 
 namespace ChessEngine
 {
@@ -40,6 +41,25 @@ namespace ChessEngine
 					m_move = ref new ChessEngine::Move(m_moveData.move);
 
 				return m_move;
+			}
+		}
+
+		property ChessEngine::ChessPiece^ CapturedPiece
+		{
+			ChessEngine::ChessPiece^ get()
+			{
+				if (!m_moveData.capturedPiece.IsEmpty())
+					return ref new ChessEngine::ChessPiece(m_moveData.capturedPiece);
+
+				return nullptr;
+			}
+		}
+
+		property bool IsCastle
+		{
+			bool get() 
+			{
+				return m_moveData.nCastlingMask != FullCastlingMask;
 			}
 		}
 

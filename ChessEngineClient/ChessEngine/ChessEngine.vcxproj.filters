@@ -65,7 +65,6 @@
     <ClCompile Include="Move.cpp">
       <Filter>Managed</Filter>
     </ClCompile>
-    <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="..\Common\ThreadBase.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -92,6 +91,9 @@
     </ClCompile>
     <ClCompile Include="PGNParser.cpp">
       <Filter>Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessPiece.cpp">
+      <Filter>Managed</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -168,7 +170,6 @@
     <ClInclude Include="Move.h">
       <Filter>Managed</Filter>
     </ClInclude>
-    <ClInclude Include="ChessPiece.h" />
     <ClInclude Include="..\Common\ThreadBase.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -204,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="PGNParser.h">
       <Filter>Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="ChessPiece.h">
+      <Filter>Managed</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

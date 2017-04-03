@@ -40,7 +40,8 @@ namespace ChessEngineClient.ViewModel
 
         private void OnCurrentMoveChangedMessage(GenericMessage<MoveData> moveMessage)
         {
-            audioService.PlayMoveExecuted();
+            if (moveMessage.Content != null)
+                audioService.PlayMoveExecuted(moveMessage.Content);
 
             RefreshSquares();
         }
