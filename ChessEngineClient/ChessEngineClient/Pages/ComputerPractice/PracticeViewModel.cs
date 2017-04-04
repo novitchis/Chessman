@@ -50,10 +50,16 @@ namespace ChessEngineClient.ViewModel
 
         public override void OnNavigatedTo(object parameter)
         {
+            InitiSettings();
+            base.OnNavigatedTo(parameter);
+        }
+
+        private void InitiSettings()
+        {
             int engineStrength = (int)appSettings.Values[AppPersistenceManager.ComputerStrengthKey];
             practiceBoardService.SetEngineStrength(engineStrength);
 
-            base.OnNavigatedTo(parameter);
+            BoardViewModel.PlaySounds = (bool)appSettings.Values[AppPersistenceManager.EnableMoveSoundsKey];
         }
 
         public override void LoadPosition(PositionLoadOptions positionLoadOptions)

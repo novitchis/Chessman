@@ -49,6 +49,15 @@
                     </StackPanel>
                     <StackPanel>
                         <TextBlock 
+                            Text="Play move sounds"
+                            Style="{StaticResource LabelTextStyle}" />
+                        <ToggleSwitch 
+                            OnContent="Yes" 
+                            OffContent="No"
+                            IsOn="{Binding EnableMoveSounds, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock 
                             Text="Show analysis best move arrow"
                             Style="{StaticResource LabelTextStyle}" />
                         <ToggleSwitch 

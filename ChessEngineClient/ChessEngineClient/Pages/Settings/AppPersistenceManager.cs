@@ -14,6 +14,7 @@ namespace ChessEngineClient
 {
     public static class AppPersistenceManager
     {
+        public const string EnableMoveSoundsKey = "EnableMoveSoundsKey";
         public const string ShowBestMoveArrowKey = "ShowAnalysisArrow";
         public const string ComputerStrengthKey = "ComputerStrength";
         public const string SavePositionsBetweenSessionsKey = "SavePositionsBetweenSessions";
@@ -31,6 +32,9 @@ namespace ChessEngineClient
 
             if (!settingsContainer.Values.ContainsKey(SavePositionsBetweenSessionsKey))
                 settingsContainer.Values[SavePositionsBetweenSessionsKey] = true;
+
+            if (!settingsContainer.Values.ContainsKey(EnableMoveSoundsKey))
+                settingsContainer.Values[EnableMoveSoundsKey] = true;
         }
 
         public static void SaveApplicationState(ApplicationDataContainer settingsContainer)

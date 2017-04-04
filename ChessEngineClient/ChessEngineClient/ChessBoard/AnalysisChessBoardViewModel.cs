@@ -27,6 +27,8 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
+        public bool PlaySounds { get; set; }
+
         public AnalysisChessBoardViewModel(IBoardService analysisBoardService)
             : base(analysisBoardService)
         {
@@ -40,8 +42,8 @@ namespace ChessEngineClient.ViewModel
 
         private void OnCurrentMoveChangedMessage(GenericMessage<MoveData> moveMessage)
         {
-            if (moveMessage.Content != null)
-                audioService.PlayMoveExecuted(moveMessage.Content);
+            if (PlaySounds && moveMessage.Content != null)
+                audioService.PlayMoveExecuted(moveMessage.Content.PgnMove);
 
             RefreshSquares();
         }

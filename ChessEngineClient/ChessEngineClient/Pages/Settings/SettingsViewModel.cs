@@ -24,6 +24,18 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
+        public bool EnableMoveSounds
+        {
+            get
+            {
+                return (bool)appSettings.Values[AppPersistenceManager.EnableMoveSoundsKey];
+            }
+            set
+            {
+                appSettings.Values[AppPersistenceManager.EnableMoveSoundsKey] = value;
+            }
+        }
+
         public bool ShowBestMoveArrow
         {
             get

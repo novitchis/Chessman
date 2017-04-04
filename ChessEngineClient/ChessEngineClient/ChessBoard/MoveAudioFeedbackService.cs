@@ -38,22 +38,22 @@ namespace ChessEngineClient
             mediaElements[moveType] = moveMediaElement;
         }
         
-        public void PlayMoveExecuted(MoveData moveData)
+        public void PlayMoveExecuted(string pgnMove)
         {
-            MoveType moveType = GetMoveType(moveData);
+            MoveType moveType = GetMoveType(pgnMove);
 
             if (mediaElements.ContainsKey(moveType))
                 mediaElements[moveType].Play();
         }
 
-        private MoveType GetMoveType(MoveData moveData)
+        private MoveType GetMoveType(string pgnMove)
         {
             MoveType moveType = MoveType.NormalMove;
-            if (moveData.PgnMove.Contains('+') || moveData.PgnMove.Contains('#'))
+            if (pgnMove.Contains('+') || pgnMove.Contains('#'))
                 moveType = MoveType.Check;
-            else if (moveData.CapturedPiece != null)
+            else if (pgnMove.Contains("x"))
                 moveType = MoveType.Capture;
-            else if (moveData.IsCastle)
+            else if (pgnMove.Contains("O-O"))
                 moveType = MoveType.Castle;
 
             return moveType;

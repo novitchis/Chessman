@@ -9,6 +9,6 @@ namespace ChessEngineClient
 {
     public interface IMoveAudioFeedbackService
     {
-        void PlayMoveExecuted(MoveData moveData);
+        void PlayMoveExecuted(string pgnMove);
     }
 }
