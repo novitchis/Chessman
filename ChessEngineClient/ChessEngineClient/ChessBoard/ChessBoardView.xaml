@@ -84,6 +84,7 @@
                      ItemsSource="{Binding Squares}"
                      Grid.Row="1"
                      Grid.Column="1"
+                     Background="{StaticResource WhiteSquareBrush}"
                      BorderThickness="2"
                      BorderBrush="{StaticResource WhiteSquareBrush}"
                      SelectedItem="{Binding SelectedSquare, Mode=TwoWay}"
