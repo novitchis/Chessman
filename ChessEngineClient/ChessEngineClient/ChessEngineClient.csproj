@@ -120,6 +120,7 @@
     <Compile Include="AppShell\NavMenuItem.cs" />
     <Compile Include="ChessBoard\AnalysisChessBoardViewModel.cs" />
     <Compile Include="ChessBoard\ArrowDrawUtil.cs" />
+    <Compile Include="ChessBoard\BoardPanel.cs" />
     <Compile Include="ChessBoard\ChessBoardView.xaml.cs">
       <DependentUpon>ChessBoardView.xaml</DependentUpon>
     </Compile>

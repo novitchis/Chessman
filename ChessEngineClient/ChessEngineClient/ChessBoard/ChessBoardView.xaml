@@ -109,7 +109,7 @@
                 </ListBox.ItemTemplate>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <c:UniformGrid Rows="8" Columns="8" />
+                        <c:BoardPanel Perspective="{Binding Perspective, Mode=OneWay}"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </ListBox>

@@ -76,6 +76,14 @@ namespace ChessEngineClient.ViewModel
         public SideColor Perspective
         {
             get { return perspective; }
+            set
+            {
+                if (perspective != value)
+                {
+                    perspective = value;
+                    NotifyPropertyChanged();
+                }
+            }
         }
 
         public Move SuggestedMove
@@ -106,33 +114,30 @@ namespace ChessEngineClient.ViewModel
         protected void InitBoard()
         {
             var newSquares = new List<SquareViewModel>();
+            for (int y = 0; y < 8; y++)
+            {
+                for (int x = 0; x < 8; x++)
+                    newSquares.Add(new SquareViewModel(new Coordinate(x, 7 - y)));
+            }
 
+            Squares = newSquares;
+            UpdateRankAndFields();
+
+            RefreshSquares();
+        }
+
+        private void UpdateRankAndFields()
+        {
             if (perspective == SideColor.White)
             {
                 RankNumbers = RankNumbersAsWhite;
                 FieldLetters = FieldLettersAsWhite;
-
-                for (int y = 0; y < 8; y++)
-                {
-                    for (int x = 0; x < 8; x++)
-                        newSquares.Add(new SquareViewModel(new Coordinate(x, 7 - y)));
-                }
             }
             else
             {
                 RankNumbers = RankNumbersAsWhite.Reverse().ToArray();
                 FieldLetters = FieldLettersAsWhite.Reverse().ToArray();
-
-                for (int y = 0; y < 8; y++)
-                {
-                    for (int x = 0; x < 8; x++)
-                        newSquares.Add(new SquareViewModel(new Coordinate(7 - x, y)));
-                }
             }
-
-            Squares = newSquares;
-
-            RefreshSquares();
         }
 
         public void RefreshBoard(SideColor changedPerspective)
@@ -168,8 +173,9 @@ namespace ChessEngineClient.ViewModel
 
         private void TogglePerspectiveExecuted(object obj)
         {
-            perspective = perspective == SideColor.Black ? SideColor.White : SideColor.Black;
-            InitBoard();
+            Perspective = Perspective == SideColor.Black ? SideColor.White : SideColor.Black;
+            UpdateRankAndFields();
+            SuggestedMove = null;
         }
     }
 }
