@@ -1,6 +1,8 @@
 ﻿using ChessEngine;
+using ChessEngineClient.Controls;
 using ChessEngineClient.Util;
 using ChessEngineClient.ViewModel;
+using Framework.MVVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Composition;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -15,6 +18,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 
@@ -30,9 +34,11 @@ namespace ChessEngineClient.View
         public static readonly DependencyProperty HasDragAndDropProperty = DependencyProperty.Register("HasDragAndDrop", typeof(bool), typeof(ChessBoardView), new PropertyMetadata(false));
 
         private bool isDragStarted = false;
-        private ChessPieceView draggingPieceView = null;
+        private ContentPresenter draggingPieceItem = null;
         private Point dragStartPoint = new Point();
         private SquareView pointerPressSquare = null;
+        private ChessPieceView draggingPieceView = null;
+        private ChessPieceViewModel dragSourcePieceViewModel = null;
 
         public Move SuggestedMove
         {
@@ -57,6 +63,62 @@ namespace ChessEngineClient.View
 
             Binding suggestedMoveBinding = new Binding() { Path =  new PropertyPath("SuggestedMove") };
             SetBinding(SuggestedMoveProperty, suggestedMoveBinding);
+
+            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.MoveExecuted, OnMoveExecuted);
+            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.GoForwardExecuted, OnGoForwardExecuted);
+        }
+
+        private void OnMoveExecuted(GenericMessage<MoveData> message)
+        {
+            //TODO: execute aditional moves
+
+            //ExecuteAnimatedMove(message.Content);
+            //throw new NotImplementedException();
+        }
+
+        private void OnGoForwardExecuted(GenericMessage<MoveData> message)
+        {
+            AnimateOnMoveExecuted(message.Content);
+        }
+
+        private void AnimateOnMoveExecuted(MoveData moveData)
+        {
+            //SquareView fromSquareView = GetSquareViewFromCoordinate(moveData.Move.GetFrom());
+            ////SquareViewModel fromSquareViewModel = fromSquareView.DataContext as SquareViewModel;
+
+            //SquareView toSquareView = GetSquareViewFromCoordinate(moveData.Move.GetTo());
+            //SquareViewModel toSquareViewModel = toSquareView.DataContext as SquareViewModel;
+
+            ////ChessPieceViewModel pieceViewModel = fromSquareViewModel.PieceViewModel;
+            //ChessPieceView movingPieceView = new ChessPieceView()
+            //{
+            //    Width = fromSquareView.ActualWidth,
+            //    Height = fromSquareView.ActualWidth,
+            //    DataContext = toSquareViewModel.PieceViewModel,
+            //    IsHitTestVisible = false,
+            //};
+
+            //Point animationStartPoint = fromSquareView.TransformToVisual(board).TransformPoint(new Point(0, 0));
+            //Point animationEndPoint = toSquareView.TransformToVisual(board).TransformPoint(new Point(0, 0));
+
+            ////fromSquareViewModel.PieceViewModel = null;
+
+            //toSquareView.IsPieceDragged = true;
+            //Storyboard moveStoryBoard = ChessBoardAnimationsFactory.GetMoveAnimationStoryBoard(movingPieceView, animationStartPoint, animationEndPoint);
+            //moveStoryBoard.Begin();
+            //moveStoryBoard.Completed += (o, e) => 
+            //{
+            //    //toSquareViewModel.PieceViewModel = pieceViewModel;
+            //    toSquareView.IsPieceDragged = false;
+            //    dragCanvas.Children.Remove(movingPieceView);
+            //};
+
+            //dragCanvas.Children.Add(movingPieceView);
+        }
+
+        private SquareView GetSquareViewFromCoordinate(Coordinate coordinate)
+        {
+            return VisualTreeHelperEx.FindChild<SquareView>(board.ContainerFromIndex(coordinate.X + (8 * (7 - coordinate.Y))));
         }
 
         private void OnBoardPointerMoved(object sender, PointerRoutedEventArgs e)
@@ -87,6 +149,25 @@ namespace ChessEngineClient.View
             double positionY = point.PointerDevice.PointerDeviceType == PointerDeviceType.Touch ?
                 point.Position.Y - draggingPieceView.Height : point.Position.Y - draggingPieceView.Height / 2;
             Canvas.SetTop(draggingPieceView, positionY);
+
+
+            //double dragPieceWidth = draggingPieceItem.ActualWidth;
+            //double dragPieceHeight = draggingPieceItem.ActualHeight;
+
+            //ScaleTransform scaleTransform = draggingPieceItem.RenderTransform as ScaleTransform;
+            //if (scaleTransform != null)
+            //{
+            //    dragPieceWidth *= scaleTransform.ScaleX;
+            //    dragPieceHeight *= scaleTransform.ScaleY;
+            //}
+
+            //// adjust Y to display slightly above the touch area
+            //double dragY = point.Position.Y - dragPieceHeight / 2;
+            //if (point.PointerDevice.PointerDeviceType == PointerDeviceType.Touch)
+            //    dragY = point.Position.Y - dragPieceHeight;
+
+            //Canvas.SetLeft(draggingPieceItem, point.Position.X - dragPieceWidth / 2);
+            //Canvas.SetTop(draggingPieceItem, dragY);
         }
 
         private void OnBoardPointerReleased(object sender, PointerRoutedEventArgs e)
@@ -100,9 +181,11 @@ namespace ChessEngineClient.View
                 return;
 
             dragCanvas.Children.Clear();
-            draggingPieceView = null;
+
             isDragStarted = false;
-            pointerPressSquare.IsPieceDragged = false;
+
+            dragSourcePieceViewModel.IsDragSource = false;
+            dragSourcePieceViewModel = null;
             pointerPressSquare = null;
         }
 
@@ -111,27 +194,30 @@ namespace ChessEngineClient.View
             if (!isDragStarted && pointerPressSquare != null && e.Pointer.IsInContact)
             {
                 SquareViewModel squareVM = (SquareViewModel)pointerPressSquare.DataContext;
-                if (squareVM.PieceViewModel != null)
+                dragSourcePieceViewModel = ViewModel.GetPieceViewModel(squareVM.Coordinate);
+
+                if (dragSourcePieceViewModel != null)
                 {
                     PointerPoint pointerPoint = e.GetCurrentPoint(board);
                     if (!HasPointerMovedEnaugh(pointerPoint.Position))
                         return;
 
-                    StartDragMove(e.Pointer, pointerPoint, squareVM.PieceViewModel);
+                    StartDragMove(e.Pointer, pointerPoint);
                 }
             }
         }
 
-        private void StartDragMove(Pointer pointer, PointerPoint pointerPoint, ChessPieceViewModel pieceViewModel)
+        private void StartDragMove(Pointer pointer, PointerPoint pointerPoint)
         {
-            double optimalPieceSize = pointer.PointerDeviceType == PointerDeviceType.Touch ?
-                    Math.Max(pointerPressSquare.ActualWidth * 1.5, MinPieceSize) : pointerPressSquare.ActualWidth;
+            double optimalPieceSize = pointerPressSquare.ActualWidth;
+            if (pointer.PointerDeviceType == PointerDeviceType.Touch && optimalPieceSize < MinPieceSize)
+                optimalPieceSize = Math.Max(pointerPressSquare.ActualWidth * 1.5, MinPieceSize);
 
             draggingPieceView = new ChessPieceView()
             {
                 Width = optimalPieceSize,
                 Height = optimalPieceSize,
-                DataContext = pieceViewModel,
+                DataContext = new ChessPieceViewModel(dragSourcePieceViewModel.Piece, null),
                 IsHitTestVisible = false
             };
 
@@ -141,7 +227,7 @@ namespace ChessEngineClient.View
             board.SelectedItem = pointerPressSquare.DataContext;
 
             isDragStarted = true;
-            pointerPressSquare.IsPieceDragged = true;
+            dragSourcePieceViewModel.IsDragSource = true;
         }
 
         private bool HasPointerMovedEnaugh(Point postion)
@@ -237,14 +323,14 @@ namespace ChessEngineClient.View
             var pathFigure = new PathFigure() { StartPoint = points[0] };
             points.Skip(1).ToList().ForEach(p => pathFigure.Segments.Add(new LineSegment() { Point = p }));
 
-            Path path = new Path() { Fill = (Brush)App.Current.Resources["BoardArrowBrush"] };
+            Path bestMoveArrowPath = new Path() { Fill = (Brush)App.Current.Resources["BoardArrowBrush"] };
 
-            Canvas.SetLeft(path, start.X);
-            Canvas.SetTop(path, start.Y);
-            path.Data = new PathGeometry() { Figures = new PathFigureCollection() { pathFigure } };
-            path.RenderTransform = new RotateTransform() { Angle = angle };
+            Canvas.SetLeft(bestMoveArrowPath, start.X);
+            Canvas.SetTop(bestMoveArrowPath, start.Y);
+            bestMoveArrowPath.Data = new PathGeometry() { Figures = new PathFigureCollection() { pathFigure } };
+            bestMoveArrowPath.RenderTransform = new RotateTransform() { Angle = angle };
 
-            arrowsCanvas.Children.Add(path);
+            arrowsCanvas.Children.Add(bestMoveArrowPath);
         }
 
         private void ClearAllArrows()

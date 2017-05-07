@@ -4,8 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:view="using:ChessEngineClient.View"
-    xmlns:controls="using:ChessEngineClient.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -14,12 +12,6 @@
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="DefaultState"/>
-
-                <VisualState x:Name="IsDragSourceSate">
-                    <VisualState.Setters>
-                        <Setter Target="pieceView.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-                </VisualState>
                 <VisualState x:Name="Highlighted">
                     <VisualState.Setters>
                         <Setter Target="rootGrid.Background" Value="{StaticResource SelectedSquareLighterBrush}" />
@@ -27,12 +19,5 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <Grid x:Name="selectionOverlay"></Grid>
-        <Viewbox>
-            <!--This is a hack to take up space-->
-            <Border Width="20" Height="20"/>
-        </Viewbox>
-
-            <view:ChessPieceView x:Name="pieceView" DataContext="{Binding PieceViewModel}" />
     </Grid>
 </UserControl>

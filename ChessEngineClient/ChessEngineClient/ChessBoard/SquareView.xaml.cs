@@ -21,15 +21,8 @@ namespace ChessEngineClient.View
 {
     public sealed partial class SquareView : UserControl
     {
-        public static readonly DependencyProperty IsPieceDraggedProperty = DependencyProperty.Register("IsPieceDragged", typeof(bool), typeof(SquareView), new PropertyMetadata(false, OnVisualStatePropertyChanged));
         public static readonly DependencyProperty IsDropTargetProperty = DependencyProperty.Register("IsDropTarget", typeof(bool), typeof(SquareView), new PropertyMetadata(false, OnVisualStatePropertyChanged));
         public static readonly DependencyProperty IsHighlightedProperty = DependencyProperty.Register("IsHighlighted", typeof(bool), typeof(SquareView), new PropertyMetadata(false, OnVisualStatePropertyChanged));
-
-        public bool IsPieceDragged
-        {
-            get { return (bool)GetValue(IsPieceDraggedProperty); }
-            set { SetValue(IsPieceDraggedProperty, value); }
-        }
 
         public bool IsDropTarget
         {
@@ -54,11 +47,16 @@ namespace ChessEngineClient.View
             Messenger.Default.Send((SquareViewModel)DataContext, NotificationMessages.SquarePressed);
         }
 
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            // I don't know why this is required
+            base.MeasureOverride(availableSize);
+            return availableSize;
+        }
+
         private void RefreshVisualState()
         {
-            if (IsPieceDragged)
-                VisualStateManager.GoToState(this, "IsDragSourceSate", true);
-            else if (IsDropTarget || IsHighlighted)
+            if (IsDropTarget || IsHighlighted)
                 VisualStateManager.GoToState(this, "Highlighted", true);
             else
                 VisualStateManager.GoToState(this, "DefaultState", true);

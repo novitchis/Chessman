@@ -8,10 +8,12 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    UseLayoutRounding="True">
+    x:Name="currentView">
 
-    <Grid Background="Transparent">
-        <Viewbox Margin="3">
+    <Grid>
+        <Viewbox Margin="2"
+                 Visibility="{Binding IsDragSource, Converter={StaticResource BoolToVisibilityConverter}, 
+                    ConverterParameter={StaticResource InvertedConversionType}}">
             <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource ChessPieceTemplateSelector}" />
         </Viewbox>
     </Grid>

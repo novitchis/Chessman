@@ -24,7 +24,7 @@
             </Style>
 
             <Style x:Key="RankNumberListStyle" TargetType="ItemsControl">
-                <Setter Property="Width" Value="10" />
+                <Setter Property="Width" Value="12" />
                 <Setter Property="ItemsPanel">
                     <Setter.Value>
                         <ItemsPanelTemplate>
@@ -42,7 +42,7 @@
             </Style>
 
             <Style x:Key="FieldLettersListStyle" TargetType="ItemsControl">
-                <Setter Property="Height" Value="10" />
+                <Setter Property="Height" Value="12" />
                 <Setter Property="ItemsPanel">
                     <Setter.Value>
                         <ItemsPanelTemplate>
@@ -80,25 +80,26 @@
             <ItemsControl Grid.Column="1" Style="{StaticResource FieldLettersListStyle}"  ItemsSource="{Binding FieldLetters}" />
             <ItemsControl Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" Grid.Row="1" />
 
-            <ListBox x:Name="board"
-                     ItemsSource="{Binding Squares}"
-                     Grid.Row="1"
-                     Grid.Column="1"
-                     Background="{StaticResource WhiteSquareBrush}"
-                     BorderThickness="2"
-                     BorderBrush="{StaticResource WhiteSquareBrush}"
-                     SelectedItem="{Binding SelectedSquare, Mode=TwoWay}"
-                     HorizontalAlignment="Center"
-                     Template="{StaticResource NoScrollListTemplate}"
-                     PointerMoved="OnBoardPointerMoved"
-                     PointerReleased="OnBoardPointerReleased" 
-                     PointerExited="OnBoardPointerExited"
-                     PointerEntered="OnBoardPointerEntered"
-                     ItemContainerStyle="{StaticResource SquareListBoxItemStyle}"
-                     SizeChanged="OnBoardSizeChanged">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <view:SquareView 
+                <Grid 
+                    Grid.Row="1" 
+                    Grid.Column="1"
+                    BorderThickness="2"
+                    BorderBrush="{StaticResource WhiteSquareBrush}">
+                <ListBox x:Name="board"
+                        ItemsSource="{Binding Squares}"
+                        SelectedItem="{Binding SelectedSquare, Mode=TwoWay}"
+                        Template="{StaticResource NoScrollListTemplate}"
+                        Background="{StaticResource WhiteSquareBrush}"
+                        BorderThickness="0"
+                        PointerMoved="OnBoardPointerMoved"
+                        PointerReleased="OnBoardPointerReleased" 
+                        PointerExited="OnBoardPointerExited"
+                        PointerEntered="OnBoardPointerEntered"
+                        ItemContainerStyle="{StaticResource SquareListBoxItemStyle}"
+                        SizeChanged="OnBoardSizeChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <view:SquareView 
                             DataContext="{Binding }" 
                             IsHighlighted="{Binding IsLastMoveSquare}"
                             PointerEntered="OnSquarePointerEntered"
@@ -106,26 +107,36 @@
                             PointerMoved="OnSquarePointerMoved"
                             PointerPressed="OnSquarePointerPressed"
                             PointerReleased="OnSquarePointerReleased" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <c:BoardPanel Perspective="{Binding Perspective, Mode=OneWay}"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-            </ListBox>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <c:BoardPanel Perspective="{Binding Perspective, Mode=OneWay}"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+
+                <ItemsControl x:Name="piecesItemsControl"
+                            IsHitTestVisible="False"
+                            ItemsSource="{Binding Pieces}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <view:ChessPieceView />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <c:BoardPanel Perspective="{Binding Perspective, Mode=OneWay}"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+                <Canvas x:Name="arrowsCanvas" IsHitTestVisible="False" />
+                <Canvas x:Name="dragCanvas" IsHitTestVisible="False" />
+            </Grid>
 
             <ItemsControl Grid.Row="1" Grid.Column="2" Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" />
             <ItemsControl Grid.Column="1" Grid.Row="2" Style="{StaticResource FieldLettersListStyle}"  ItemsSource="{Binding FieldLetters}" />
-            <Canvas
-                x:Name="arrowsCanvas"
-                IsHitTestVisible="False"
-                Grid.Row="1"
-                Grid.Column="1" />
-            <Canvas
-                x:Name="dragCanvas"
-                Grid.Row="1"
-                Grid.Column="1" />
+            
         </Grid>
     </Border>
 </UserControl>

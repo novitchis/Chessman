@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ChessEngineClient.ViewModel
 {
-    public class SquareViewModel : ViewModelBase
+    public class SquareViewModel : ViewModelBase, ICoordinatedItem
     {
         private ChessPieceViewModel pieceViewModel = null;
         private bool isLastMoveSquare = false;
@@ -17,18 +17,6 @@ namespace ChessEngineClient.ViewModel
 
         public Coordinate Coordinate { get; private set; }
 
-        public ChessPieceViewModel PieceViewModel
-        {
-            get { return pieceViewModel; }
-            set
-            {
-                if (pieceViewModel != value)
-                {
-                    pieceViewModel = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
 
         public bool IsLastMoveSquare
         {

@@ -2,6 +2,7 @@
 using Framework.MVVM;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ namespace ChessEngineClient.ViewModel
         private IBasicBoardService basicBoardService = null;
         private List<SquareViewModel> squares = null;
         private SquareViewModel selectedSquare = null;
+        private ObservableCollection<ChessPieceViewModel> pieces = new ObservableCollection<ChessPieceViewModel>();
         private SideColor perspective = SideColor.White;
         private int[] rankNumbers = RankNumbersAsWhite;
         private char[] fieldLetters = FieldLettersAsWhite;
@@ -51,7 +53,20 @@ namespace ChessEngineClient.ViewModel
                     NotifyPropertyChanged();
                 }
             }
-        }       
+        }
+
+        public ObservableCollection<ChessPieceViewModel> Pieces
+        {
+            get { return pieces; }
+            set
+            {
+                if (pieces != value)
+                {
+                    pieces = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         public int[] RankNumbers
         {
@@ -143,27 +158,44 @@ namespace ChessEngineClient.ViewModel
         public void RefreshBoard(SideColor changedPerspective)
         {
             if (perspective == changedPerspective)
-            {
                 RefreshSquares();
-            }
             else
             {
-                perspective = changedPerspective;
+                Perspective = changedPerspective;
+                // TODO: this should not always recreate squares
                 InitBoard();
             }
         }
 
         public virtual void RefreshSquares()
         {
+            Pieces.Clear();
+
             foreach (SquareViewModel square in Squares)
             {
                 ChessPiece piece = basicBoardService.GetPiece(square.Coordinate);
-                square.PieceViewModel = piece != null ? new ChessPieceViewModel(piece) : null;
+                if (piece != null)
+                    Pieces.Add(new ChessPieceViewModel(piece, square.Coordinate));
                 square.IsLastMoveSquare = false;
             }
 
             SelectedSquare = null;
             SuggestedMove = null;
+        }
+
+        public ChessPieceViewModel GetPieceViewModel(Coordinate c)
+        {
+            return Pieces.FirstOrDefault(p => p.Coordinate.X == c.X && p.Coordinate.Y == c.Y);
+        }
+
+        public bool RemovePiece(ChessPieceViewModel pieceViewModel)
+        {
+            return Pieces.Remove(pieceViewModel);
+        }
+
+        public void AddPiece(ChessPieceViewModel pieceViewModel)
+        {
+            Pieces.Add(pieceViewModel);
         }
 
         protected virtual bool OnSelectionChanged(SquareViewModel selectedSquare, SquareViewModel value)

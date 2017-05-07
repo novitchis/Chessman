@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace ChessEngineClient.ViewModel
 {
-    public class ChessPieceViewModel : ViewModelBase
+    public class ChessPieceViewModel : ViewModelBase, ICoordinatedItem
     {
         private bool isHighlighted = false;
+        private bool isDragSource = false;
 
         public bool IsHighlighted
         {
@@ -28,14 +29,33 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
+        public bool IsDragSource
+        {
+            get { return isDragSource; }
+            set
+            {
+                if (isDragSource != value)
+                {
+                    isDragSource = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         public ChessPiece Piece
         {
             get; private set;
         }
 
-        public ChessPieceViewModel(ChessPiece piece)
+        public Coordinate Coordinate
+        {
+            get; set;
+        }
+
+        public ChessPieceViewModel(ChessPiece piece, Coordinate coordinate)
         {
             Piece = piece;
+            Coordinate = coordinate;
         }
     }
 }

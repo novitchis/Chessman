@@ -91,6 +91,7 @@ namespace ChessEngineClient
                 base.SubmitMove(e.Data.Analysis[0].GetFrom(), e.Data.Analysis[0].GetTo());
                 mainSynchronizationContext.Post(o =>
                 {
+                    // TODO: this doesnt work yet
                     // TODO: this should be done differently
                     Messenger.Default.Send(new MessageBase(this, this), NotificationMessages.MoveExecuted);
                 }, null);

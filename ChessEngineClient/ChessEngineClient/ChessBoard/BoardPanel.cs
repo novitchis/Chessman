@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace ChessEngineClient.Controls
 {
-    public class BoardPanel: Panel
+    public class BoardPanel: Canvas
     {
         public static readonly DependencyProperty PerspectiveProperty =
             DependencyProperty.Register("Perspective", typeof(SideColor), typeof(BoardPanel), new PropertyMetadata(SideColor.White, OnPerspectiveChanged));
@@ -23,40 +23,63 @@ namespace ChessEngineClient.Controls
 
         public BoardPanel()
         {
-            UseLayoutRounding = true;
         }
 
         protected override Size MeasureOverride(Size availableSize)
         {
             //this will throw if the panel is inside an infinite sized parent which should not happen
-            double rectSize = Math.Min(availableSize.Width, availableSize.Height) / 8;
+            double minSize = Math.Min(availableSize.Width, availableSize.Height);
+
+            // rendering is more crisp on a grid of 4 px
+            double rectSize = GetMultipleOfFourSmallerThan((int)minSize / 8);
             foreach (var child in Children.OfType<FrameworkElement>())
                 child.Measure(new Size(rectSize, rectSize));
 
-            double boardSize = rectSize * 8;
-            return new Size(boardSize, boardSize);
+            return new Size(rectSize * 8, rectSize * 8);
+        }
+
+        private double GetMultipleOfFourSmallerThan(int value)
+        {
+            return value / 4 * 4;
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
             double rectSize = Math.Min(finalSize.Width, finalSize.Height) / 8;
-            foreach (FrameworkElement child in Children.OfType<FrameworkElement>())
+            if (Perspective == SideColor.White)
             {
-                SquareViewModel squareViewModel = (SquareViewModel)child.DataContext;
-                if (Perspective == SideColor.White)
+                foreach (FrameworkElement child in Children.OfType<FrameworkElement>())
                 {
-                    child.Arrange(new Rect(squareViewModel.Coordinate.X * rectSize, 
-                        (7 - squareViewModel.Coordinate.Y) * rectSize, rectSize, rectSize));
+                    ICoordinatedItem coordinateItem = child.DataContext as ICoordinatedItem;
+                    if (coordinateItem == null)
+                        continue;
+
+                    double x = Math.Round(coordinateItem.Coordinate.X * rectSize);
+                    double y = Math.Round((7 - coordinateItem.Coordinate.Y) * rectSize);
+
+                    Canvas.SetLeft(child, x);
+                    Canvas.SetTop(child, y);
+                    child.Arrange(new Rect(new Point(x, y), child.DesiredSize));
                 }
-                else
+            }
+            else
+            {
+                foreach (FrameworkElement child in Children.OfType<FrameworkElement>())
                 {
-                    child.Arrange(new Rect((7 - squareViewModel.Coordinate.X) * rectSize,
-                        squareViewModel.Coordinate.Y * rectSize, rectSize, rectSize));
+                    ICoordinatedItem coordinateItem = child.DataContext as ICoordinatedItem;
+                    if (coordinateItem == null)
+                        continue;
+
+                    double x = (7 - coordinateItem.Coordinate.X) * rectSize;
+                    double y = coordinateItem.Coordinate.Y * rectSize;
+
+                    Canvas.SetLeft(child, x);
+                    Canvas.SetTop(child, y);
+                    child.Arrange(new Rect(new Point(x, y), child.DesiredSize));
                 }
             }
 
-            double boardSize = rectSize * 8;
-            return new Size(boardSize, boardSize);
+            return finalSize;
         }
 
         private static void OnPerspectiveChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

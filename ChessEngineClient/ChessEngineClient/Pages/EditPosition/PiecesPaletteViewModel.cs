@@ -47,7 +47,7 @@ namespace ChessEngineClient.ViewModel
                 new ChessPiece(PieceType.Rook, black),
                 new ChessPiece(PieceType.Queen, black),
                 new ChessPiece(PieceType.King, black),
-            }.Select(p => new ChessPieceViewModel(p)).ToList();
+            }.Select(p => new ChessPieceViewModel(p, null)).ToList();
         }
     }
 }

@@ -41,10 +41,12 @@ namespace ChessEngineClient.ViewModel
                 if (currentMove != value)
                 {
                     currentMove = value;
-                    if (currentMove != null)
+                    if (currentMove != null && analysisBoardService.GetCurrentMove().Index != currentMove.Index)
+                    {
                         analysisBoardService.GoToMove(currentMove.Index);
+                        Messenger.Default.Send(new GenericMessage<MoveData>(currentMove), NotificationMessages.CurrentMoveChanged);
+                    }
 
-                    Messenger.Default.Send(new GenericMessage<MoveData>(currentMove), NotificationMessages.CurrentMoveChanged);
                     NotifyPropertyChanged();
                 }
             }
@@ -55,10 +57,12 @@ namespace ChessEngineClient.ViewModel
         public NotationViewModel(IBoardService analysisBoardService)
         {
             this.analysisBoardService = analysisBoardService;
-            Messenger.Default.Register<MessageBase>(this, NotificationMessages.MoveExecuted, OnMoveExecutedMessage);
+            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.MoveExecuted, OnMoveExecutedMessage);
+            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.GoBackExecuted, OnMoveExecutedMessage);
+            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.GoForwardExecuted, OnMoveExecutedMessage);
         }
 
-        private void OnMoveExecutedMessage(MessageBase message)
+        private void OnMoveExecutedMessage(GenericMessage<MoveData> message)
         {
             // check if message is intended for current board service
             if (message.Target == analysisBoardService)

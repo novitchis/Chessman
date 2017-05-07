@@ -106,16 +106,16 @@ namespace ChessEngineClient.ViewModel
                 moveIndex = currentMove.Index + 1;
 
             if (boardService.GoToMove(moveIndex))
-                Messenger.Default.Send(new MessageBase(this, boardService), NotificationMessages.MoveExecuted);
+                Messenger.Default.Send(new GenericMessage<MoveData>(this, boardService, boardService.GetCurrentMove()), NotificationMessages.GoForwardExecuted);
         }
 
         private void OnGoBackCommand(object obj)
         {
-            MoveData currentMove = boardService.GetCurrentMove();
-            if (currentMove != null)
+            MoveData undoedMove = boardService.GetCurrentMove();
+            if (undoedMove != null)
             {
-                if (boardService.GoToMove(currentMove.Index - 1))
-                    Messenger.Default.Send(new MessageBase(this, boardService), NotificationMessages.MoveExecuted);
+                if (boardService.GoToMove(undoedMove.Index - 1))
+                    Messenger.Default.Send(new GenericMessage<MoveData>(this, boardService, undoedMove), NotificationMessages.GoBackExecuted);
             }
         }
 

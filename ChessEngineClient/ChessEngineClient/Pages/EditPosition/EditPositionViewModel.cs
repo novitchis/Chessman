@@ -97,14 +97,16 @@ namespace ChessEngineClient.ViewModel
             if (BoardViewModel.Squares.IndexOf(squareVM) == -1)
                 return;
 
-            if (squareVM.PieceViewModel != null || PiecesPaletteViewModel.SelectedPiece == null)
+            ChessPieceViewModel pieceViewModel = BoardViewModel.GetPieceViewModel(squareVM.Coordinate);
+
+            if (pieceViewModel != null || PiecesPaletteViewModel.SelectedPiece == null)
             {
-                squareVM.PieceViewModel = null;
+                BoardViewModel.RemovePiece(pieceViewModel);
                 editorBoardService.SetPiece(squareVM.Coordinate, null);
             }
             else
             {
-                squareVM.PieceViewModel = new ChessPieceViewModel(PiecesPaletteViewModel.SelectedPiece.Piece);
+                BoardViewModel.AddPiece(new ChessPieceViewModel(PiecesPaletteViewModel.SelectedPiece.Piece, squareVM.Coordinate));
                 editorBoardService.SetPiece(squareVM.Coordinate, PiecesPaletteViewModel.SelectedPiece.Piece);
             }
 
@@ -113,11 +115,10 @@ namespace ChessEngineClient.ViewModel
 
         private void ClearExecuted(object obj)
         {
-            BoardViewModel.Squares.ForEach(s =>
-            {
-                s.PieceViewModel = null;
-                editorBoardService.SetPiece(s.Coordinate, null);
-            });
+            foreach (ChessPieceViewModel piece in BoardViewModel.Pieces)
+                editorBoardService.SetPiece(piece.Coordinate, null);
+
+            BoardViewModel.Pieces.Clear();
 
             IsBoardValid = false;
         }

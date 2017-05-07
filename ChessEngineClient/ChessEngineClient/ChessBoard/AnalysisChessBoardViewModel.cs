@@ -37,13 +37,21 @@ namespace ChessEngineClient.ViewModel
             InitBoard();
 
             Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.CurrentMoveChanged, OnCurrentMoveChangedMessage);
+            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.GoForwardExecuted, OnCurrentMoveChangedMessage);
+            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.GoBackExecuted, OnCurrentMoveChangedMessage);
+
             Messenger.Default.Register<GenericMessage<Move>>(this, NotificationMessages.AnalysisBestMoveReceived, OnAnalysisReceived);
         }
 
         private void OnCurrentMoveChangedMessage(GenericMessage<MoveData> moveMessage)
         {
-            if (PlaySounds && moveMessage.Content != null)
-                audioService.PlayMoveExecuted(moveMessage.Content.PgnMove);
+            OnCurrentMoveChanged(moveMessage.Content);
+        }
+
+        private void OnCurrentMoveChanged(MoveData currentMove)
+        {
+            if (PlaySounds && currentMove != null)
+                audioService.PlayMoveExecuted(currentMove.PgnMove);
 
             RefreshSquares();
         }
@@ -55,7 +63,11 @@ namespace ChessEngineClient.ViewModel
 
             bool result = analysisBoardService.SubmitMove(oldSquare.Coordinate, newSquare.Coordinate);
             if (result)
-                Messenger.Default.Send(new MessageBase(this, analysisBoardService), NotificationMessages.MoveExecuted);
+            {
+                var currentMove = analysisBoardService.GetCurrentMove();
+                Messenger.Default.Send(new GenericMessage<MoveData>(this, analysisBoardService, currentMove), NotificationMessages.MoveExecuted);
+                OnCurrentMoveChanged(currentMove);
+            }
 
             return result;
         }
@@ -78,14 +90,14 @@ namespace ChessEngineClient.ViewModel
             bool shouldHighlightWhiteKing = analysisBoardService.GetIsStalemate() || (analysisBoardService.IsWhiteTurn && analysisBoardService.GetIsInCheck());
             bool shouldHighlightBlackKing = analysisBoardService.GetIsStalemate() || (!analysisBoardService.IsWhiteTurn && analysisBoardService.GetIsInCheck());
 
-            foreach (SquareViewModel square in Squares)
+            foreach (ChessPieceViewModel pieceVM in Pieces)
             {
-                if (square.PieceViewModel != null && square.PieceViewModel.Piece.Type == PieceType.King)
+                if (pieceVM.Piece.Type == PieceType.King)
                 {
-                    if (square.PieceViewModel.Piece.Color == PieceColor.White)
-                        square.PieceViewModel.IsHighlighted = shouldHighlightWhiteKing;
+                    if (pieceVM.Piece.Color == PieceColor.White)
+                        pieceVM.IsHighlighted = shouldHighlightWhiteKing;
                     else
-                        square.PieceViewModel.IsHighlighted = shouldHighlightBlackKing;
+                        pieceVM.IsHighlighted = shouldHighlightBlackKing;
                 }
             }
         }
