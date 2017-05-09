@@ -2,6 +2,7 @@
 #include "ChessBoardImpl.h"
 #include "ManagedConverter.h"
 #include "ChessPiece.h"
+#include "Coordinate.h"
 
 namespace ChessEngine
 {
@@ -11,6 +12,8 @@ namespace ChessEngine
 		MoveData(MoveDataImpl moveData);
 	public:
 		MoveData();
+
+		//IVector<List^ GetMovedPieceCoordiantes();
 
 		virtual Platform::String^ ToString()override
 		{

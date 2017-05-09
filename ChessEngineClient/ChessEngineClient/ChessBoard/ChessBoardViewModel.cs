@@ -157,14 +157,8 @@ namespace ChessEngineClient.ViewModel
 
         public void RefreshBoard(SideColor changedPerspective)
         {
-            if (perspective == changedPerspective)
-                RefreshSquares();
-            else
-            {
-                Perspective = changedPerspective;
-                // TODO: this should not always recreate squares
-                InitBoard();
-            }
+            Perspective = changedPerspective;
+            RefreshSquares();
         }
 
         public virtual void RefreshSquares()
@@ -208,6 +202,12 @@ namespace ChessEngineClient.ViewModel
             Perspective = Perspective == SideColor.Black ? SideColor.White : SideColor.Black;
             UpdateRankAndFields();
             SuggestedMove = null;
+        }
+
+        public bool SelectedPieceDroped(SquareViewModel targetSquare)
+        {
+            //TODO: execute the move?
+            return false;
         }
     }
 }

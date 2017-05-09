@@ -149,25 +149,6 @@ namespace ChessEngineClient.View
             double positionY = point.PointerDevice.PointerDeviceType == PointerDeviceType.Touch ?
                 point.Position.Y - draggingPieceView.Height : point.Position.Y - draggingPieceView.Height / 2;
             Canvas.SetTop(draggingPieceView, positionY);
-
-
-            //double dragPieceWidth = draggingPieceItem.ActualWidth;
-            //double dragPieceHeight = draggingPieceItem.ActualHeight;
-
-            //ScaleTransform scaleTransform = draggingPieceItem.RenderTransform as ScaleTransform;
-            //if (scaleTransform != null)
-            //{
-            //    dragPieceWidth *= scaleTransform.ScaleX;
-            //    dragPieceHeight *= scaleTransform.ScaleY;
-            //}
-
-            //// adjust Y to display slightly above the touch area
-            //double dragY = point.Position.Y - dragPieceHeight / 2;
-            //if (point.PointerDevice.PointerDeviceType == PointerDeviceType.Touch)
-            //    dragY = point.Position.Y - dragPieceHeight;
-
-            //Canvas.SetLeft(draggingPieceItem, point.Position.X - dragPieceWidth / 2);
-            //Canvas.SetTop(draggingPieceItem, dragY);
         }
 
         private void OnBoardPointerReleased(object sender, PointerRoutedEventArgs e)
@@ -251,7 +232,8 @@ namespace ChessEngineClient.View
             {
                 SquareView dropSquare = (SquareView)sender;
                 dropSquare.IsDropTarget = false;
-                board.SelectedItem = dropSquare.DataContext;
+                ViewModel.SelectedPieceDroped((SquareViewModel)dropSquare.DataContext);
+                //board.SelectedItem = dropSquare.DataContext;
             }
 
             EndDragMove();
