@@ -8,13 +8,15 @@ namespace ChessEngineClient
 {
     public interface IPracticeBoardService : IEngineBoardService
     {
+        event AnalysisEventHandler AnalysisReceived;
+
         SideColor UserColor { get; }
 
         void SwitchUserColor();
 
         void RequestComputerMove();
 
-        bool GetIsComputerTurn();
+        bool IsComputerTurn();
 
         void SetEngineStrength(int strengthValue);
     }

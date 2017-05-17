@@ -19,6 +19,8 @@ namespace ChessEngineClient
         private int moveTime = -1;
         private bool isStarted = false;
 
+        public event AnalysisEventHandler AnalysisReceived;
+
         public SideColor UserColor
         {
             get; private set;
@@ -35,12 +37,11 @@ namespace ChessEngineClient
 
         public override bool SubmitMove(Coordinate from, Coordinate to)
         {
-            if (GetIsComputerTurn())
-                return false;
-
             return base.SubmitMove(from, to);
         }
 
+        //TODO: this should not know anything about user color
+        // move this to view model
         public void SwitchUserColor()
         {
             bool wasStarted = isStarted;
@@ -53,7 +54,7 @@ namespace ChessEngineClient
                 Start();
         }
 
-        public bool GetIsComputerTurn()
+        public bool IsComputerTurn()
         {
             SideColor sideToMove = IsWhiteTurn ? SideColor.White : SideColor.Black;
             if (sideToMove == UserColor)
@@ -75,27 +76,14 @@ namespace ChessEngineClient
             analysisReceiver.AnalysisReceived += OnAnalysisReceived;
             isStarted = true;
 
-            if (!GetIsComputerTurn())
-                return;
-
-            RequestComputerMove();
+            if (IsComputerTurn())
+                RequestComputerMove();
         }
 
-        private async void OnAnalysisReceived(object sender, AnalysisEventArgs e)
+        private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
         {
             if (e.Data.IsBestMove)
-            {
-                // just delay for one second the move, to not be so fast
-                await Task.Delay(1000);
-
-                base.SubmitMove(e.Data.Analysis[0].GetFrom(), e.Data.Analysis[0].GetTo());
-                mainSynchronizationContext.Post(o =>
-                {
-                    // TODO: this doesnt work yet
-                    // TODO: this should be done differently
-                    Messenger.Default.Send(new MessageBase(this, this), NotificationMessages.MoveExecuted);
-                }, null);
-            }
+                mainSynchronizationContext.Post(o => AnalysisReceived?.Invoke(this, e), null);
         }
 
         public void Stop()

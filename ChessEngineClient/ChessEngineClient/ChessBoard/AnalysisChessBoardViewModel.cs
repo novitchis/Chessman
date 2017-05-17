@@ -45,31 +45,63 @@ namespace ChessEngineClient.ViewModel
 
         private void OnCurrentMoveChangedMessage(GenericMessage<MoveData> moveMessage)
         {
-            OnCurrentMoveChanged(moveMessage.Content);
-        }
-
-        private void OnCurrentMoveChanged(MoveData currentMove)
-        {
-            if (PlaySounds && currentMove != null)
-                audioService.PlayMoveExecuted(currentMove.PgnMove);
-
             RefreshSquares();
         }
 
-        protected override bool OnSelectionChanged(SquareViewModel oldSquare, SquareViewModel newSquare)
+        //TODO: this should be moved to a separate class that will monitor messages
+        private void PlayMoveSound(MoveData currentMove)
+        {
+            if (PlaySounds && currentMove != null)
+                audioService.PlayMoveExecuted(currentMove.PgnMove);
+        }
+
+        protected override void OnSelectionChanged(SquareViewModel oldSquare, SquareViewModel newSquare)
         {
             if (oldSquare == null || newSquare == null)
-                return false;
+                return;
 
-            bool result = analysisBoardService.SubmitMove(oldSquare.Coordinate, newSquare.Coordinate);
+            TryExecuteMove(oldSquare.Coordinate, newSquare.Coordinate, true);
+        }
+
+        public override void OnPieceDropped(SquareViewModel targetSquare)
+        {
+            TryExecuteMove(SelectedSquare.Coordinate, targetSquare.Coordinate, false);
+            base.OnPieceDropped(targetSquare);
+        }
+
+        protected virtual bool TryExecuteMove(Coordinate fromCoordinate, Coordinate toCoordinate, bool useAnimations)
+        {
+            bool result = analysisBoardService.SubmitMove(fromCoordinate, toCoordinate);
             if (result)
             {
                 var currentMove = analysisBoardService.GetCurrentMove();
-                Messenger.Default.Send(new GenericMessage<MoveData>(this, analysisBoardService, currentMove), NotificationMessages.MoveExecuted);
-                OnCurrentMoveChanged(currentMove);
+                if (useAnimations)
+                {
+                    AnimateMove(currentMove);
+                }
+                else
+                {
+                    PlayMoveSound(currentMove);
+                    RefreshSquares();
+                    Messenger.Default.Send(new GenericMessage<MoveData>(this, analysisBoardService, currentMove), NotificationMessages.MoveExecuted);
+                }               
             }
 
             return result;
+        }
+
+        //TODO: refactor this?
+        protected void AnimateMove(MoveData moveData)
+        {
+            MoveAnimationTask moveAnimationTask = new MoveAnimationTask(moveData);
+            moveAnimationTask.OnTaskCompleted = () =>
+            {
+                PlayMoveSound(moveData);
+                RefreshSquares();
+                Messenger.Default.Send(new GenericMessage<MoveData>(this, analysisBoardService, moveData), NotificationMessages.MoveExecuted);
+            };
+
+            Messenger.Default.Send(new GenericMessage<MoveAnimationTask>(this, moveAnimationTask), NotificationMessages.AnimateMoveTaskCreated);
         }
 
         public override void RefreshSquares()
@@ -100,17 +132,6 @@ namespace ChessEngineClient.ViewModel
                         pieceVM.IsHighlighted = shouldHighlightBlackKing;
                 }
             }
-        }
-
-        private int GetSquareIndex(Coordinate coordinate)
-        {
-            int index = -1;
-            if (Perspective == SideColor.White)
-                index = (7 - coordinate.Y) * 8 + coordinate.X;
-            else
-                index = coordinate.Y * 8 + 7 - coordinate.X;
-
-            return index;
         }
 
         private void OnAnalysisReceived(GenericMessage<Move> bestMoveMessage)

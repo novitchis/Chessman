@@ -64,61 +64,44 @@ namespace ChessEngineClient.View
             Binding suggestedMoveBinding = new Binding() { Path =  new PropertyPath("SuggestedMove") };
             SetBinding(SuggestedMoveProperty, suggestedMoveBinding);
 
-            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.MoveExecuted, OnMoveExecuted);
-            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.GoForwardExecuted, OnGoForwardExecuted);
+            Messenger.Default.Register<GenericMessage<MoveAnimationTask>>(this, NotificationMessages.AnimateMoveTaskCreated, OnAnimateMoveTaskReceived);
+            //Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.MoveExecuted, OnMoveExecuted);
+            //Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.GoForwardExecuted, OnGoForwardExecuted);
         }
 
-        private void OnMoveExecuted(GenericMessage<MoveData> message)
+        private void OnAnimateMoveTaskReceived(GenericMessage<MoveAnimationTask> message)
         {
-            //TODO: execute aditional moves
+            if (message.Sender != ViewModel)
+                return;
 
-            //ExecuteAnimatedMove(message.Content);
-            //throw new NotImplementedException();
+            MoveAnimationsFactory moveAnimationsFactory = new MoveAnimationsFactory();
+
+            foreach (var pieceMove in message.Content.MovedPieceCoordinates)
+            {
+                Coordinate fromCoordinate = pieceMove.Item1;
+                Coordinate toCoordinate = pieceMove.Item2;
+
+                Point animationStartPoint = GetCoordinatePositionOnBoard(fromCoordinate);
+                Point animationEndPoint = GetCoordinatePositionOnBoard(toCoordinate);
+
+                ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPieceViewModel(fromCoordinate));
+                moveAnimationsFactory.AddMoveAnimation(pieceItemView, animationStartPoint, animationEndPoint);
+            }
+
+            if (message.Content.RemovedPieceCoordinate != null)
+            {
+                ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPieceViewModel(message.Content.RemovedPieceCoordinate));
+                moveAnimationsFactory.AddRemoveAnimation(pieceItemView);
+            }
+
+            moveAnimationsFactory.StoryBoard.Completed += (o, e) => message.Content.CompleteTask();
+            moveAnimationsFactory.StoryBoard.Begin();
         }
 
-        private void OnGoForwardExecuted(GenericMessage<MoveData> message)
+        private Point GetCoordinatePositionOnBoard(Coordinate coordinate)
         {
-            AnimateOnMoveExecuted(message.Content);
-        }
-
-        private void AnimateOnMoveExecuted(MoveData moveData)
-        {
-            //SquareView fromSquareView = GetSquareViewFromCoordinate(moveData.Move.GetFrom());
-            ////SquareViewModel fromSquareViewModel = fromSquareView.DataContext as SquareViewModel;
-
-            //SquareView toSquareView = GetSquareViewFromCoordinate(moveData.Move.GetTo());
-            //SquareViewModel toSquareViewModel = toSquareView.DataContext as SquareViewModel;
-
-            ////ChessPieceViewModel pieceViewModel = fromSquareViewModel.PieceViewModel;
-            //ChessPieceView movingPieceView = new ChessPieceView()
-            //{
-            //    Width = fromSquareView.ActualWidth,
-            //    Height = fromSquareView.ActualWidth,
-            //    DataContext = toSquareViewModel.PieceViewModel,
-            //    IsHitTestVisible = false,
-            //};
-
-            //Point animationStartPoint = fromSquareView.TransformToVisual(board).TransformPoint(new Point(0, 0));
-            //Point animationEndPoint = toSquareView.TransformToVisual(board).TransformPoint(new Point(0, 0));
-
-            ////fromSquareViewModel.PieceViewModel = null;
-
-            //toSquareView.IsPieceDragged = true;
-            //Storyboard moveStoryBoard = ChessBoardAnimationsFactory.GetMoveAnimationStoryBoard(movingPieceView, animationStartPoint, animationEndPoint);
-            //moveStoryBoard.Begin();
-            //moveStoryBoard.Completed += (o, e) => 
-            //{
-            //    //toSquareViewModel.PieceViewModel = pieceViewModel;
-            //    toSquareView.IsPieceDragged = false;
-            //    dragCanvas.Children.Remove(movingPieceView);
-            //};
-
-            //dragCanvas.Children.Add(movingPieceView);
-        }
-
-        private SquareView GetSquareViewFromCoordinate(Coordinate coordinate)
-        {
-            return VisualTreeHelperEx.FindChild<SquareView>(board.ContainerFromIndex(coordinate.X + (8 * (7 - coordinate.Y))));
+            FrameworkElement squareItem = (FrameworkElement)board.ContainerFromIndex(ViewModel.GetSquareIndex(coordinate));
+            return squareItem.TransformToVisual(board).TransformPoint(new Point(0, 0));
         }
 
         private void OnBoardPointerMoved(object sender, PointerRoutedEventArgs e)
@@ -232,8 +215,7 @@ namespace ChessEngineClient.View
             {
                 SquareView dropSquare = (SquareView)sender;
                 dropSquare.IsDropTarget = false;
-                ViewModel.SelectedPieceDroped((SquareViewModel)dropSquare.DataContext);
-                //board.SelectedItem = dropSquare.DataContext;
+                ViewModel.OnPieceDropped((SquareViewModel)dropSquare.DataContext);
             }
 
             EndDragMove();

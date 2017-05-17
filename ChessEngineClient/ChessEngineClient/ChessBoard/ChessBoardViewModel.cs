@@ -177,9 +177,14 @@ namespace ChessEngineClient.ViewModel
             SuggestedMove = null;
         }
 
-        public ChessPieceViewModel GetPieceViewModel(Coordinate c)
+        public int GetSquareIndex(Coordinate coordinate)
         {
-            return Pieces.FirstOrDefault(p => p.Coordinate.X == c.X && p.Coordinate.Y == c.Y);
+            return coordinate.X + (8 * (7 - coordinate.Y));
+        }
+
+        public ChessPieceViewModel GetPieceViewModel(Coordinate coordinate)
+        {
+            return Pieces.FirstOrDefault(p => p.Coordinate.X == coordinate.X && p.Coordinate.Y == coordinate.Y);
         }
 
         public bool RemovePiece(ChessPieceViewModel pieceViewModel)
@@ -192,9 +197,8 @@ namespace ChessEngineClient.ViewModel
             Pieces.Add(pieceViewModel);
         }
 
-        protected virtual bool OnSelectionChanged(SquareViewModel selectedSquare, SquareViewModel value)
+        protected virtual void OnSelectionChanged(SquareViewModel oldSquare, SquareViewModel newSquare)
         {
-            return true;
         }
 
         private void TogglePerspectiveExecuted(object obj)
@@ -204,10 +208,9 @@ namespace ChessEngineClient.ViewModel
             SuggestedMove = null;
         }
 
-        public bool SelectedPieceDroped(SquareViewModel targetSquare)
+        public virtual void OnPieceDropped(SquareViewModel targetSquare)
         {
-            //TODO: execute the move?
-            return false;
+            SelectedSquare = targetSquare;
         }
     }
 }

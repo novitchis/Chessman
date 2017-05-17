@@ -121,7 +121,7 @@
     <Compile Include="ChessBoard\AnalysisChessBoardViewModel.cs" />
     <Compile Include="ChessBoard\ArrowDrawUtil.cs" />
     <Compile Include="ChessBoard\BoardPanel.cs" />
-    <Compile Include="ChessBoard\ChessBoardAnimationsFactory.cs" />
+    <Compile Include="ChessBoard\MoveAnimationsFactory.cs" />
     <Compile Include="ChessBoard\ChessBoardView.xaml.cs">
       <DependentUpon>ChessBoardView.xaml</DependentUpon>
     </Compile>
@@ -133,6 +133,7 @@
     <Compile Include="ChessBoard\ChessPieceViewModel.cs" />
     <Compile Include="ChessBoard\EditChessBoardViewModel.cs" />
     <Compile Include="ChessBoard\ICoordinatedItem.cs" />
+    <Compile Include="ChessBoard\MoveAnimationTask.cs" />
     <Compile Include="ChessBoard\MoveAudioFeedbackService.cs" />
     <Compile Include="ChessBoard\IMoveAudioFeedbackService.cs" />
     <Compile Include="ChessBoard\SquareView.xaml.cs">

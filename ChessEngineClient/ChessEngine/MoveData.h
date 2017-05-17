@@ -13,8 +13,6 @@ namespace ChessEngine
 	public:
 		MoveData();
 
-		//IVector<List^ GetMovedPieceCoordiantes();
-
 		virtual Platform::String^ ToString()override
 		{
 			return PgnMove;
@@ -47,6 +45,14 @@ namespace ChessEngine
 			}
 		}
 
+		property bool EnPassantCapture
+		{
+			bool get()
+			{
+				return m_moveData.enPassantCapture;
+			}
+		}
+
 		property ChessEngine::ChessPiece^ CapturedPiece
 		{
 			ChessEngine::ChessPiece^ get()
@@ -62,7 +68,7 @@ namespace ChessEngine
 		{
 			bool get() 
 			{
-				return m_moveData.nCastlingMask != FullCastlingMask;
+				return m_moveData.strPGNMove == "O-O" || m_moveData.strPGNMove == "O-O-O";
 			}
 		}
 
