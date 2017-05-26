@@ -37,14 +37,33 @@ namespace ChessEngineClient.ViewModel
             InitBoard();
 
             Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.CurrentMoveChanged, OnCurrentMoveChangedMessage);
-            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.GoForwardExecuted, OnCurrentMoveChangedMessage);
+            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.GoForwardExecuted, OnGoForwardMessage);
             Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.GoBackExecuted, OnCurrentMoveChangedMessage);
 
             Messenger.Default.Register<GenericMessage<Move>>(this, NotificationMessages.AnalysisBestMoveReceived, OnAnalysisReceived);
         }
 
-        private void OnCurrentMoveChangedMessage(GenericMessage<MoveData> moveMessage)
+        private void OnGoBackMessage(GenericMessage<MoveData> message)
         {
+            if (this.analysisBoardService != message.Target)
+                return;
+
+            UndoMoveOnBoard(message.Content);
+        }
+
+        private void OnGoForwardMessage(GenericMessage<MoveData> message)
+        {
+            if (this.analysisBoardService != message.Target)
+                return;
+
+            ExecuteCurrentMoveOnBoard(true);
+        }
+
+        private void OnCurrentMoveChangedMessage(GenericMessage<MoveData> message)
+        {
+            if (this.analysisBoardService != message.Target)
+                return;
+
             RefreshSquares();
         }
 
@@ -73,35 +92,58 @@ namespace ChessEngineClient.ViewModel
         {
             bool result = analysisBoardService.SubmitMove(fromCoordinate, toCoordinate);
             if (result)
-            {
-                var currentMove = analysisBoardService.GetCurrentMove();
-                if (useAnimations)
-                {
-                    AnimateMove(currentMove);
-                }
-                else
-                {
-                    PlayMoveSound(currentMove);
-                    RefreshSquares();
-                    Messenger.Default.Send(new GenericMessage<MoveData>(this, analysisBoardService, currentMove), NotificationMessages.MoveExecuted);
-                }               
-            }
+                ExecuteCurrentMoveOnBoard(useAnimations);
 
             return result;
         }
 
-        //TODO: refactor this?
-        protected void AnimateMove(MoveData moveData)
+        private void UndoMoveOnBoard(MoveData move)
         {
-            MoveAnimationTask moveAnimationTask = new MoveAnimationTask(moveData);
-            moveAnimationTask.OnTaskCompleted = () =>
+            //TODO: this does not works
+
+            MoveTask moveTask = new MoveTask(move);
+            moveTask.ReverseMovedPieceCoordinates();
+
+            ExecuteMoveTask(moveTask);
+
+            moveTask.OnTransitionCompleted = () =>
             {
-                PlayMoveSound(moveData);
-                RefreshSquares();
-                Messenger.Default.Send(new GenericMessage<MoveData>(this, analysisBoardService, moveData), NotificationMessages.MoveExecuted);
+                //TODO: capture move?
+                PlayMoveSound(move);
             };
 
-            Messenger.Default.Send(new GenericMessage<MoveAnimationTask>(this, moveAnimationTask), NotificationMessages.AnimateMoveTaskCreated);
+            Messenger.Default.Send(new GenericMessage<MoveTask>(this, moveTask), NotificationMessages.AnimateMoveTaskCreated);
+        }
+
+        private void ExecuteCurrentMoveOnBoard(bool useAnimations)
+        {
+            MoveData currentMove = analysisBoardService.GetCurrentMove();
+            MoveTask moveTask = new MoveTask(currentMove);
+            moveTask.OnTransitionCompleted = () =>
+            {
+                PlayMoveSound(currentMove);
+                ExecuteMoveTask(moveTask);
+                Messenger.Default.Send(new GenericMessage<MoveData>(this, analysisBoardService, currentMove), NotificationMessages.MoveExecuted);
+            };
+
+            if (useAnimations)
+                Messenger.Default.Send(new GenericMessage<MoveTask>(this, moveTask), NotificationMessages.AnimateMoveTaskCreated);
+            else
+                moveTask.OnTransitionCompleted();
+        }
+
+        private void ExecuteMoveTask(MoveTask moveTask)
+        {
+            if (moveTask.CapturedPieceCoordinate != null)
+                RemovePiece(GetPieceViewModel(moveTask.CapturedPieceCoordinate));
+
+            foreach (var positionChange in moveTask.MovedPiecesCoordinates)
+            {
+                ChessPieceViewModel pieceViewModel = GetPieceViewModel(positionChange.Item1);
+                pieceViewModel.Coordinate = positionChange.Item2;
+            }
+
+            RefreshPositionStateMarkers();
         }
 
         public override void RefreshSquares()
@@ -112,13 +154,17 @@ namespace ChessEngineClient.ViewModel
 
         private void RefreshPositionStateMarkers()
         {
-            MoveData lastMove = analysisBoardService.GetCurrentMove();
-            if (lastMove != null)
-            {
-                Squares[GetSquareIndex(lastMove.Move.GetFrom())].IsLastMoveSquare = true;
-                Squares[GetSquareIndex(lastMove.Move.GetTo())].IsLastMoveSquare = true;
-            }
+            SelectedSquare = null;
+            SuggestedMove = null;
 
+            MoveData lastMove = analysisBoardService.GetCurrentMove();
+            
+            SetLastMove(lastMove);
+            SetKingsHighlight();
+        }
+
+        private void SetKingsHighlight()
+        {
             bool shouldHighlightWhiteKing = analysisBoardService.GetIsStalemate() || (analysisBoardService.IsWhiteTurn && analysisBoardService.GetIsInCheck());
             bool shouldHighlightBlackKing = analysisBoardService.GetIsStalemate() || (!analysisBoardService.IsWhiteTurn && analysisBoardService.GetIsInCheck());
 
@@ -131,6 +177,16 @@ namespace ChessEngineClient.ViewModel
                     else
                         pieceVM.IsHighlighted = shouldHighlightBlackKing;
                 }
+            }
+        }
+
+        private void SetLastMove(MoveData lastMove)
+        {
+            Squares.ForEach(s => s.IsLastMoveSquare = false);
+            if (lastMove != null)
+            {
+                Squares[GetSquareIndex(lastMove.Move.GetFrom())].IsLastMoveSquare = true;
+                Squares[GetSquareIndex(lastMove.Move.GetTo())].IsLastMoveSquare = true;
             }
         }
 

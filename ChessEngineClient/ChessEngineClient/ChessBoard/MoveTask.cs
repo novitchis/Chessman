@@ -7,30 +7,30 @@ using System.Threading.Tasks;
 
 namespace ChessEngineClient.ViewModel
 {
-    public class MoveAnimationTask
+    public class MoveTask
     {
-        public Action OnTaskCompleted
+        public Action OnTransitionCompleted
         {
             get; set;
         }
 
-        public List<Tuple<Coordinate, Coordinate>> MovedPieceCoordinates
+        public List<Tuple<Coordinate, Coordinate>> MovedPiecesCoordinates
         {
             get; set;
         }
 
-        public Coordinate RemovedPieceCoordinate { get; set; }
+        public Coordinate CapturedPieceCoordinate { get; set; }
 
-        public MoveAnimationTask(MoveData moveData)
+        public MoveTask(MoveData moveData)
         {
-            MovedPieceCoordinates = GetChangedPieceCoordinates(moveData);
+            MovedPiecesCoordinates = GetChangedPieceCoordinates(moveData);
 
             if (moveData.CapturedPiece != null)
             {
                 if (moveData.EnPassantCapture)
-                    RemovedPieceCoordinate = new Coordinate(moveData.Move.GetTo().X, moveData.Move.GetFrom().Y);
+                    CapturedPieceCoordinate = new Coordinate(moveData.Move.GetTo().X, moveData.Move.GetFrom().Y);
                 else
-                    RemovedPieceCoordinate = moveData.Move.GetTo();
+                    CapturedPieceCoordinate = moveData.Move.GetTo();
             }
         }
 
@@ -55,9 +55,14 @@ namespace ChessEngineClient.ViewModel
             return coordinateChanges;
         }
 
+        public void ReverseMovedPieceCoordinates()
+        {
+            MovedPiecesCoordinates = MovedPiecesCoordinates.Select(t => Tuple.Create(t.Item2, t.Item1)).ToList();
+        }
+
         public void CompleteTask()
         {
-            OnTaskCompleted?.Invoke();
+            OnTransitionCompleted?.Invoke();
         }
     }
 }

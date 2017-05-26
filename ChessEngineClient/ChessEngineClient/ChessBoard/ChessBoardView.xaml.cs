@@ -34,7 +34,6 @@ namespace ChessEngineClient.View
         public static readonly DependencyProperty HasDragAndDropProperty = DependencyProperty.Register("HasDragAndDrop", typeof(bool), typeof(ChessBoardView), new PropertyMetadata(false));
 
         private bool isDragStarted = false;
-        private ContentPresenter draggingPieceItem = null;
         private Point dragStartPoint = new Point();
         private SquareView pointerPressSquare = null;
         private ChessPieceView draggingPieceView = null;
@@ -64,19 +63,19 @@ namespace ChessEngineClient.View
             Binding suggestedMoveBinding = new Binding() { Path =  new PropertyPath("SuggestedMove") };
             SetBinding(SuggestedMoveProperty, suggestedMoveBinding);
 
-            Messenger.Default.Register<GenericMessage<MoveAnimationTask>>(this, NotificationMessages.AnimateMoveTaskCreated, OnAnimateMoveTaskReceived);
+            Messenger.Default.Register<GenericMessage<MoveTask>>(this, NotificationMessages.AnimateMoveTaskCreated, OnAnimateMoveTaskReceived);
             //Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.MoveExecuted, OnMoveExecuted);
             //Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.GoForwardExecuted, OnGoForwardExecuted);
         }
 
-        private void OnAnimateMoveTaskReceived(GenericMessage<MoveAnimationTask> message)
+        private void OnAnimateMoveTaskReceived(GenericMessage<MoveTask> message)
         {
             if (message.Sender != ViewModel)
                 return;
 
             MoveAnimationsFactory moveAnimationsFactory = new MoveAnimationsFactory();
 
-            foreach (var pieceMove in message.Content.MovedPieceCoordinates)
+            foreach (var pieceMove in message.Content.MovedPiecesCoordinates)
             {
                 Coordinate fromCoordinate = pieceMove.Item1;
                 Coordinate toCoordinate = pieceMove.Item2;
@@ -88,14 +87,21 @@ namespace ChessEngineClient.View
                 moveAnimationsFactory.AddMoveAnimation(pieceItemView, animationStartPoint, animationEndPoint);
             }
 
-            if (message.Content.RemovedPieceCoordinate != null)
+            if (message.Content.CapturedPieceCoordinate != null)
             {
-                ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPieceViewModel(message.Content.RemovedPieceCoordinate));
+                ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPieceViewModel(message.Content.CapturedPieceCoordinate));
                 moveAnimationsFactory.AddRemoveAnimation(pieceItemView);
             }
 
-            moveAnimationsFactory.StoryBoard.Completed += (o, e) => message.Content.CompleteTask();
+            moveAnimationsFactory.StoryBoard.Completed += (o, e) =>
+            {
+                message.Content.CompleteTask();
+                IsHitTestVisible = true;
+            };
+
             moveAnimationsFactory.StoryBoard.Begin();
+            // dont allow user interactions with the board for the duration of the animation
+            IsHitTestVisible = false;
         }
 
         private Point GetCoordinatePositionOnBoard(Coordinate coordinate)
@@ -216,6 +222,10 @@ namespace ChessEngineClient.View
                 SquareView dropSquare = (SquareView)sender;
                 dropSquare.IsDropTarget = false;
                 ViewModel.OnPieceDropped((SquareViewModel)dropSquare.DataContext);
+
+                // make sure to re-layout possible changed pieces
+                // when a piece changes its coordinate it does not change view arrange
+                piecesItemsControl.ItemsPanelRoot.InvalidateArrange();
             }
 
             EndDragMove();

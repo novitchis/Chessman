@@ -133,7 +133,7 @@
     <Compile Include="ChessBoard\ChessPieceViewModel.cs" />
     <Compile Include="ChessBoard\EditChessBoardViewModel.cs" />
     <Compile Include="ChessBoard\ICoordinatedItem.cs" />
-    <Compile Include="ChessBoard\MoveAnimationTask.cs" />
+    <Compile Include="ChessBoard\MoveTask.cs" />
     <Compile Include="ChessBoard\MoveAudioFeedbackService.cs" />
     <Compile Include="ChessBoard\IMoveAudioFeedbackService.cs" />
     <Compile Include="ChessBoard\SquareView.xaml.cs">

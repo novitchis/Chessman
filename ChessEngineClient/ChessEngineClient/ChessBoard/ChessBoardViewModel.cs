@@ -170,11 +170,7 @@ namespace ChessEngineClient.ViewModel
                 ChessPiece piece = basicBoardService.GetPiece(square.Coordinate);
                 if (piece != null)
                     Pieces.Add(new ChessPieceViewModel(piece, square.Coordinate));
-                square.IsLastMoveSquare = false;
             }
-
-            SelectedSquare = null;
-            SuggestedMove = null;
         }
 
         public int GetSquareIndex(Coordinate coordinate)
