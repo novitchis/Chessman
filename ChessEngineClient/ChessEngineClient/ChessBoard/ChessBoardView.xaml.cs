@@ -104,7 +104,9 @@ namespace ChessEngineClient.View
             if (moveTask.CapturedPieceCoordinate != null)
             {
                 ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPieceViewModel(moveTask.CapturedPieceCoordinate));
-                moveAnimationsFactory.AddRemoveAnimation(pieceItemView);
+                // 
+                if (pieceItemView != null)
+                    moveAnimationsFactory.AddRemoveAnimation(pieceItemView);
             }
 
             moveAnimationsFactory.StoryBoard.Completed += (o, e) =>
