@@ -38,7 +38,7 @@ namespace ChessEngineClient.ViewModel
 
             Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.CurrentMoveChanged, OnCurrentMoveChangedMessage);
             Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.GoForwardExecuted, OnGoForwardMessage);
-            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.GoBackExecuted, OnCurrentMoveChangedMessage);
+            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.GoBackExecuted, OnGoBackMessage);
 
             Messenger.Default.Register<GenericMessage<Move>>(this, NotificationMessages.AnalysisBestMoveReceived, OnAnalysisReceived);
         }
@@ -99,24 +99,24 @@ namespace ChessEngineClient.ViewModel
 
         private void UndoMoveOnBoard(MoveData move)
         {
-            //TODO: this does not works
+            ClearCurrentMoveData();
 
             MoveTask moveTask = new MoveTask(move);
-            moveTask.ReverseMovedPieceCoordinates();
-
-            ExecuteMoveTask(moveTask);
+            UndoMoveTask(moveTask);
 
             moveTask.OnTransitionCompleted = () =>
             {
-                //TODO: capture move?
                 PlayMoveSound(move);
+                Messenger.Default.Send(new GenericMessage<MoveData>(this, analysisBoardService, analysisBoardService.GetCurrentMove()), NotificationMessages.MoveExecuted);
             };
 
-            Messenger.Default.Send(new GenericMessage<MoveTask>(this, moveTask), NotificationMessages.AnimateMoveTaskCreated);
+            Messenger.Default.Send(new GenericMessage<MoveTask>(this, moveTask), NotificationMessages.AnimateUndoMoveTaskCreated);
         }
 
         private void ExecuteCurrentMoveOnBoard(bool useAnimations)
         {
+            ClearCurrentMoveData();
+
             MoveData currentMove = analysisBoardService.GetCurrentMove();
             MoveTask moveTask = new MoveTask(currentMove);
             moveTask.OnTransitionCompleted = () =>
@@ -146,6 +146,20 @@ namespace ChessEngineClient.ViewModel
             RefreshPositionStateMarkers();
         }
 
+        private void UndoMoveTask(MoveTask moveTask)
+        {
+            if (moveTask.CapturedPieceCoordinate != null)
+                AddPiece(new ChessPieceViewModel(analysisBoardService.GetPiece(moveTask.CapturedPieceCoordinate), moveTask.CapturedPieceCoordinate));
+
+            foreach (var positionChange in moveTask.MovedPiecesCoordinates)
+            {
+                ChessPieceViewModel pieceViewModel = GetPieceViewModel(positionChange.Item2);
+                pieceViewModel.Coordinate = positionChange.Item1;
+            }
+
+            RefreshPositionStateMarkers();
+        }
+
         public override void RefreshSquares()
         {
             base.RefreshSquares();
@@ -154,9 +168,6 @@ namespace ChessEngineClient.ViewModel
 
         private void RefreshPositionStateMarkers()
         {
-            SelectedSquare = null;
-            SuggestedMove = null;
-
             MoveData lastMove = analysisBoardService.GetCurrentMove();
             
             SetLastMove(lastMove);

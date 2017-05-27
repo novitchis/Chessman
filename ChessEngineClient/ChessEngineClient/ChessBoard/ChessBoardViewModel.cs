@@ -163,6 +163,7 @@ namespace ChessEngineClient.ViewModel
 
         public virtual void RefreshSquares()
         {
+            ClearCurrentMoveData();
             Pieces.Clear();
 
             foreach (SquareViewModel square in Squares)
@@ -171,6 +172,12 @@ namespace ChessEngineClient.ViewModel
                 if (piece != null)
                     Pieces.Add(new ChessPieceViewModel(piece, square.Coordinate));
             }
+        }
+
+        protected void ClearCurrentMoveData()
+        {
+            SuggestedMove = null;
+            SelectedSquare = null;
         }
 
         public int GetSquareIndex(Coordinate coordinate)

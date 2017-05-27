@@ -64,8 +64,7 @@ namespace ChessEngineClient.View
             SetBinding(SuggestedMoveProperty, suggestedMoveBinding);
 
             Messenger.Default.Register<GenericMessage<MoveTask>>(this, NotificationMessages.AnimateMoveTaskCreated, OnAnimateMoveTaskReceived);
-            //Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.MoveExecuted, OnMoveExecuted);
-            //Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.GoForwardExecuted, OnGoForwardExecuted);
+            Messenger.Default.Register<GenericMessage<MoveTask>>(this, NotificationMessages.AnimateUndoMoveTaskCreated, OnAnimateUndoMoveTaskReceived);
         }
 
         private void OnAnimateMoveTaskReceived(GenericMessage<MoveTask> message)
@@ -73,29 +72,44 @@ namespace ChessEngineClient.View
             if (message.Sender != ViewModel)
                 return;
 
+            AnimateMoveTask(message.Content, false);
+        }
+
+        private void OnAnimateUndoMoveTaskReceived(GenericMessage<MoveTask> message)
+        {
+            if (message.Sender != ViewModel)
+                return;
+
+            AnimateMoveTask(message.Content, true);
+        }
+
+        private void AnimateMoveTask(MoveTask moveTask, bool isUndo)
+        {
             MoveAnimationsFactory moveAnimationsFactory = new MoveAnimationsFactory();
 
-            foreach (var pieceMove in message.Content.MovedPiecesCoordinates)
+            foreach (var pieceMove in moveTask.MovedPiecesCoordinates)
             {
-                Coordinate fromCoordinate = pieceMove.Item1;
-                Coordinate toCoordinate = pieceMove.Item2;
+                Coordinate fromCoordinate = isUndo ? pieceMove.Item2 : pieceMove.Item1;
+                Coordinate toCoordinate = isUndo ? pieceMove.Item1 : pieceMove.Item2;
 
                 Point animationStartPoint = GetCoordinatePositionOnBoard(fromCoordinate);
                 Point animationEndPoint = GetCoordinatePositionOnBoard(toCoordinate);
 
-                ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPieceViewModel(fromCoordinate));
+                // when undo animation is requested the viewmodels have the position already changed
+                Coordinate currentPieceCoordinate = isUndo ? toCoordinate : fromCoordinate;
+                ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPieceViewModel(currentPieceCoordinate));
                 moveAnimationsFactory.AddMoveAnimation(pieceItemView, animationStartPoint, animationEndPoint);
             }
 
-            if (message.Content.CapturedPieceCoordinate != null)
+            if (moveTask.CapturedPieceCoordinate != null)
             {
-                ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPieceViewModel(message.Content.CapturedPieceCoordinate));
+                ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPieceViewModel(moveTask.CapturedPieceCoordinate));
                 moveAnimationsFactory.AddRemoveAnimation(pieceItemView);
             }
 
             moveAnimationsFactory.StoryBoard.Completed += (o, e) =>
             {
-                message.Content.CompleteTask();
+                moveTask.CompleteTask();
                 IsHitTestVisible = true;
             };
 

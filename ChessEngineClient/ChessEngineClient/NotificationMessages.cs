@@ -12,6 +12,7 @@ namespace ChessEngineClient
         public const string AnalysisBestMoveReceived = "AnalysisBestMoveReceived";
         public const string MoveExecuted = "MoveExecuted";
         public const string AnimateMoveTaskCreated = "MoveExecuted";
+        public const string AnimateUndoMoveTaskCreated = "UndoMoveExecuted";
         public const string GoBackExecuted = "GoBackExecuted";
         public const string GoForwardExecuted = "GoForwardExecuted";
         public const string SquarePressed = "SquarePressed";
