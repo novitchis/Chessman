@@ -52,6 +52,8 @@ namespace ChessEngineClient.ViewModel
             get; set;
         }
 
+        public bool RemovePending { get; set; }
+
         public ChessPieceViewModel(ChessPiece piece, Coordinate coordinate)
         {
             Piece = piece;

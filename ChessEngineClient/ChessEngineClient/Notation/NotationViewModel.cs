@@ -41,10 +41,10 @@ namespace ChessEngineClient.ViewModel
                 if (currentMove != value)
                 {
                     currentMove = value;
-                    if (currentMove != null && analysisBoardService.GetCurrentMove().Index != currentMove.Index)
+                    if (currentMove != null)
                     {
-                        analysisBoardService.GoToMove(currentMove.Index);
-                        Messenger.Default.Send(new GenericMessage<MoveData>(this, analysisBoardService, currentMove), NotificationMessages.CurrentMoveChanged);
+                        if (analysisBoardService.GoToMove(currentMove.Index))
+                            Messenger.Default.Send(new GenericMessage<MoveData>(this, analysisBoardService, currentMove), NotificationMessages.CurrentMoveChanged);
                     }
 
                     NotifyPropertyChanged();

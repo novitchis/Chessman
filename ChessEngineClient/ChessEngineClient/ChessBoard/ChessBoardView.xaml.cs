@@ -95,18 +95,16 @@ namespace ChessEngineClient.View
                 Point animationStartPoint = GetCoordinatePositionOnBoard(fromCoordinate);
                 Point animationEndPoint = GetCoordinatePositionOnBoard(toCoordinate);
 
-                // when undo animation is requested the viewmodels have the position already changed
-                Coordinate currentPieceCoordinate = isUndo ? toCoordinate : fromCoordinate;
-                ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPieceViewModel(currentPieceCoordinate));
+                ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPiece(toCoordinate));
                 moveAnimationsFactory.AddMoveAnimation(pieceItemView, animationStartPoint, animationEndPoint);
             }
 
             if (moveTask.CapturedPieceCoordinate != null)
             {
-                ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPieceViewModel(moveTask.CapturedPieceCoordinate));
-                // 
-                if (pieceItemView != null)
-                    moveAnimationsFactory.AddRemoveAnimation(pieceItemView);
+                // if is not undo the removed piece is marked to be removed and only removed after the animation
+                ChessPieceViewModel removedPiece = isUndo ? ViewModel.GetPiece(moveTask.CapturedPieceCoordinate) : ViewModel.GetRemovedPiece(moveTask.CapturedPieceCoordinate);
+                ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(removedPiece);
+                moveAnimationsFactory.AddRemoveAnimation(pieceItemView);
             }
 
             moveAnimationsFactory.StoryBoard.Completed += (o, e) =>
@@ -180,7 +178,7 @@ namespace ChessEngineClient.View
             if (!isDragStarted && pointerPressSquare != null && e.Pointer.IsInContact)
             {
                 SquareViewModel squareVM = (SquareViewModel)pointerPressSquare.DataContext;
-                dragSourcePieceViewModel = ViewModel.GetPieceViewModel(squareVM.Coordinate);
+                dragSourcePieceViewModel = ViewModel.GetPiece(squareVM.Coordinate);
 
                 if (dragSourcePieceViewModel != null)
                 {

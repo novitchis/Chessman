@@ -21,8 +21,11 @@ namespace ChessEngineClient.ViewModel
 
         public Coordinate CapturedPieceCoordinate { get; set; }
 
+        public MoveData MoveData { get; set; }
+
         public MoveTask(MoveData moveData)
         {
+            MoveData = moveData;
             MovedPiecesCoordinates = GetChangedPieceCoordinates(moveData);
 
             if (moveData.CapturedPiece != null)

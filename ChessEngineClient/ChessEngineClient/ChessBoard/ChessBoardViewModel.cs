@@ -185,9 +185,14 @@ namespace ChessEngineClient.ViewModel
             return coordinate.X + (8 * (7 - coordinate.Y));
         }
 
-        public ChessPieceViewModel GetPieceViewModel(Coordinate coordinate)
+        public ChessPieceViewModel GetPiece(Coordinate coordinate)
         {
-            return Pieces.FirstOrDefault(p => p.Coordinate.X == coordinate.X && p.Coordinate.Y == coordinate.Y);
+            return Pieces.FirstOrDefault(p => !p.RemovePending && p.Coordinate.X == coordinate.X && p.Coordinate.Y == coordinate.Y);
+        }
+
+        public ChessPieceViewModel GetRemovedPiece(Coordinate coordinate)
+        {
+            return Pieces.FirstOrDefault(p => p.RemovePending && p.Coordinate.X == coordinate.X && p.Coordinate.Y == coordinate.Y);
         }
 
         public bool RemovePiece(ChessPieceViewModel pieceViewModel)

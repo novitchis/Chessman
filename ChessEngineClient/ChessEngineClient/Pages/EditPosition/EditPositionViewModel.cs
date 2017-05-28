@@ -97,7 +97,7 @@ namespace ChessEngineClient.ViewModel
             if (BoardViewModel.Squares.IndexOf(squareVM) == -1)
                 return;
 
-            ChessPieceViewModel pieceViewModel = BoardViewModel.GetPieceViewModel(squareVM.Coordinate);
+            ChessPieceViewModel pieceViewModel = BoardViewModel.GetPiece(squareVM.Coordinate);
 
             if (pieceViewModel != null || PiecesPaletteViewModel.SelectedPiece == null)
             {
