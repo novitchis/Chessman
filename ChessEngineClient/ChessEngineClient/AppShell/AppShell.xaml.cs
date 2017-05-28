@@ -22,6 +22,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Practices.Unity;
 using Windows.Storage;
+using Windows.System.Profile;
+using Windows.Graphics.Display;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace ChessEngineClient
@@ -65,6 +67,10 @@ namespace ChessEngineClient
 
                 SystemNavigationManager.GetForCurrentView().BackRequested += SystemNavigationManager_BackRequested;
             };
+
+            // the name is not reliable
+            if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
+                DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
         }
 
         private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
