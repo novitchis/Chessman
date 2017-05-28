@@ -136,6 +136,7 @@
     <Compile Include="ChessBoard\MoveTask.cs" />
     <Compile Include="ChessBoard\MoveAudioFeedbackService.cs" />
     <Compile Include="ChessBoard\IMoveAudioFeedbackService.cs" />
+    <Compile Include="ChessBoard\RankOrFieldViewModel.cs" />
     <Compile Include="ChessBoard\SquareView.xaml.cs">
       <DependentUpon>SquareView.xaml</DependentUpon>
     </Compile>
@@ -275,6 +276,11 @@
     <Page Include="ChessBoard\ChessBoardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChessBoard\ChessBoardViewStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="ChessBoard\ChessPieceResources.xaml">
       <SubType>Designer</SubType>

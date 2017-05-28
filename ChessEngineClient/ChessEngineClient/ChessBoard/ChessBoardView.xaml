@@ -13,51 +13,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="SquareListBoxItemStyle.xaml" />
+                <ResourceDictionary Source="ChessBoardViewStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
-            <Style x:Key="RankOrFieldText" TargetType="TextBlock">
-                <Setter Property="HorizontalAlignment" Value="Center" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="Foreground" Value="{StaticResource WhiteSquareBrush}" />
-                <Setter Property="TextAlignment" Value="Center" />
-                <Setter Property="FontSize" Value="10" />
-            </Style>
-
-            <Style x:Key="RankNumberListStyle" TargetType="ItemsControl">
-                <Setter Property="Width" Value="12" />
-                <Setter Property="ItemsPanel">
-                    <Setter.Value>
-                        <ItemsPanelTemplate>
-                            <c:UniformGrid Rows="8" Columns="1" />
-                        </ItemsPanelTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="ItemTemplate">
-                    <Setter.Value>
-                        <DataTemplate>
-                            <TextBlock Style="{StaticResource RankOrFieldText}" Text="{Binding }" />
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <Style x:Key="FieldLettersListStyle" TargetType="ItemsControl">
-                <Setter Property="Height" Value="12" />
-                <Setter Property="ItemsPanel">
-                    <Setter.Value>
-                        <ItemsPanelTemplate>
-                            <c:UniformGrid Columns="8" Rows="1"/>
-                        </ItemsPanelTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="ItemTemplate">
-                    <Setter.Value>
-                        <DataTemplate>
-                            <TextBlock Style="{StaticResource RankOrFieldText}" Text="{Binding }"/>
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Border         
@@ -77,17 +34,18 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <ItemsControl Grid.Column="1" Style="{StaticResource FieldLettersListStyle}"  ItemsSource="{Binding FieldLetters}" />
-            <ItemsControl Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" Grid.Row="1" />
+            <ItemsControl x:Name="topFieldLetters" Grid.Column="1" Style="{StaticResource FieldLettersListStyle}" ItemsSource="{Binding FieldLetters}" />
+            <ItemsControl x:Name="leftRankNumbers" Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" Grid.Row="1" />
 
-            <ItemsControl Grid.Row="1" Grid.Column="2" Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" />
-            <ItemsControl Grid.Column="1" Grid.Row="2" Style="{StaticResource FieldLettersListStyle}"  ItemsSource="{Binding FieldLetters}" />
+            <ItemsControl x:Name="rightRankNumbers" Grid.Row="1" Grid.Column="2" Style="{StaticResource RankNumberListStyle}" ItemsSource="{Binding RankNumbers}" />
+            <ItemsControl x:Name="bottomFieldLetters" Grid.Column="1" Grid.Row="2" Style="{StaticResource FieldLettersListStyle}"  ItemsSource="{Binding FieldLetters}" />
             
             <Grid 
-                    Grid.Row="1" 
-                    Grid.Column="1"
-                    BorderThickness="2"
-                    BorderBrush="{StaticResource WhiteSquareBrush}">
+                x:Name="boardGrid"
+                Grid.Row="1" 
+                Grid.Column="1"
+                BorderThickness="2"
+                BorderBrush="{StaticResource WhiteSquareBrush}">
                 <ListBox x:Name="board"
                         ItemsSource="{Binding Squares}"
                         SelectedItem="{Binding SelectedSquare, Mode=TwoWay}"
@@ -119,6 +77,20 @@
                     </ListBox.ItemsPanel>
                 </ListBox>
 
+                <ItemsControl x:Name="onSquareLeftRankNumbers" 
+                              Style="{StaticResource RankNumberListStyle}" 
+                              ItemTemplate="{StaticResource OnSquareRankItemTemplate}"
+                              HorizontalAlignment="Left"
+                              ItemsSource="{Binding RankNumbers}" 
+                              Visibility="Collapsed" />
+                <ItemsControl x:Name="onSquareBottomFieldLetters" 
+                              Style="{StaticResource FieldLettersListStyle}" 
+                              ItemTemplate="{StaticResource OnSquareFieldItemTemplate}"
+                              VerticalAlignment="Bottom"
+                              ItemsSource="{Binding FieldLetters}"
+                              Visibility="Collapsed"/>
+
+
                 <ItemsControl x:Name="piecesItemsControl"
                             IsHitTestVisible="False"
                             ItemsSource="{Binding Pieces}">
@@ -136,7 +108,39 @@
                 <Canvas x:Name="arrowsCanvas" IsHitTestVisible="False" />
                 <Canvas x:Name="dragCanvas" IsHitTestVisible="False" />
             </Grid>
-
         </Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--<Setter Target="topFieldLetters.Visibility" Value="Visible"/>
+                        <Setter Target="leftRankNumbers.Visibility" Value="Visible"/>
+                        <Setter Target="rightRankNumbers.Visibility" Value="Visible"/>
+                        <Setter Target="bottomFieldLetters.Visibility" Value="Visible"/>-->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+
+                        <Setter Target="topFieldLetters.Visibility" Value="Collapsed"/>
+                        <Setter Target="leftRankNumbers.Visibility" Value="Collapsed"/>
+                        <Setter Target="rightRankNumbers.Visibility" Value="Collapsed"/>
+                        <Setter Target="bottomFieldLetters.Visibility" Value="Collapsed"/>
+
+                        <Setter Target="onSquareLeftRankNumbers.Visibility" Value="Visible"/>
+                        <Setter Target="onSquareBottomFieldLetters.Visibility" Value="Visible"/>
+
+                        <Setter Target="boardGrid.BorderThickness" Value="0"/>
+                        
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Border>
 </UserControl>

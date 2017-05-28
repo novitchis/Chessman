@@ -13,16 +13,16 @@ namespace ChessEngineClient.ViewModel
 {
     public class ChessBoardViewModel : ViewModelBase
     {
-        public static int[] RankNumbersAsWhite = new[] { 8, 7, 6, 5, 4, 3, 2, 1 };
-        public static char[] FieldLettersAsWhite = new[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
+        public static RankOrFieldViewModel[] RankNumbersAsWhite = RankOrFieldViewModel.GetRanksAsWhite();
+        public static RankOrFieldViewModel[] FieldLettersAsWhite = RankOrFieldViewModel.GetFieldsAsWhite();
 
         private IBasicBoardService basicBoardService = null;
         private List<SquareViewModel> squares = null;
         private SquareViewModel selectedSquare = null;
         private ObservableCollection<ChessPieceViewModel> pieces = new ObservableCollection<ChessPieceViewModel>();
         private SideColor perspective = SideColor.White;
-        private int[] rankNumbers = RankNumbersAsWhite;
-        private char[] fieldLetters = FieldLettersAsWhite;
+        private RankOrFieldViewModel[] rankNumbers = RankNumbersAsWhite;
+        private RankOrFieldViewModel[] fieldLetters = FieldLettersAsWhite;
         private Move suggestedMove = null;
         
         #region "Properties"
@@ -68,7 +68,7 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        public int[] RankNumbers
+        public RankOrFieldViewModel[] RankNumbers
         {
             get { return rankNumbers; }
             set
@@ -78,7 +78,7 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        public char[] FieldLetters
+        public RankOrFieldViewModel[] FieldLetters
         {
             get { return fieldLetters; }
             set
@@ -158,6 +158,7 @@ namespace ChessEngineClient.ViewModel
         public void RefreshBoard(SideColor changedPerspective)
         {
             Perspective = changedPerspective;
+            UpdateRankAndFields();
             RefreshSquares();
         }
 
