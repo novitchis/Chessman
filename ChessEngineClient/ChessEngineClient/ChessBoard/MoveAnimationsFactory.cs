@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.UI.Composition;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media.Animation;
 
 namespace ChessEngineClient.View
 {
     public class MoveAnimationsFactory
     {
-        public const double AnimationDurationSeconds = 0.15;
+        public const double AnimationDurationSeconds = 0.2;
 
         public Storyboard StoryBoard { get; private set; }
 
@@ -22,12 +25,13 @@ namespace ChessEngineClient.View
 
         public void AddMoveAnimation(ContentPresenter item, Point from, Point to)
         {
-            DoubleAnimation xAnimation = new DoubleAnimation() { From = from.X, To = to.X, Duration = TimeSpan.FromSeconds(AnimationDurationSeconds) };
+            CubicEase easeFunction = new CubicEase() { EasingMode = EasingMode.EaseInOut };
+            DoubleAnimation xAnimation = new DoubleAnimation() { From = from.X, To = to.X, Duration = TimeSpan.FromSeconds(AnimationDurationSeconds), EasingFunction = easeFunction };
             StoryBoard.Children.Add(xAnimation);
             Storyboard.SetTarget(xAnimation, item);
             Storyboard.SetTargetProperty(xAnimation, "(Canvas.Left)");
 
-            DoubleAnimation yAnimation = new DoubleAnimation() { From = from.Y, To = to.Y, Duration = TimeSpan.FromSeconds(AnimationDurationSeconds) };
+            DoubleAnimation yAnimation = new DoubleAnimation() { From = from.Y, To = to.Y, Duration = TimeSpan.FromSeconds(AnimationDurationSeconds), EasingFunction = easeFunction };
             StoryBoard.Children.Add(yAnimation);
             Storyboard.SetTarget(yAnimation, item);
             Storyboard.SetTargetProperty(yAnimation, "(Canvas.Top)");
