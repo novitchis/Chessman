@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ChessEngine;
 using System.Threading;
+using ChessEngineClient.Extensions;
 
 namespace ChessEngineClient
 {
@@ -13,11 +14,18 @@ namespace ChessEngineClient
         private IEngine engine = null;
         private IEngineNotification engineNotification = null;
         private bool isStarted = false;
+        private Action debouncedAnalysisAction = null;
 
         public AnalysisBoardService(IEngineNotification engineNotification, IEngine engine)
         {
             this.engineNotification = engineNotification;
             this.engine = engine;
+
+            debouncedAnalysisAction = DebounceExtension.Debounce(() =>
+            {
+                System.Diagnostics.Debug.WriteLine("Analysis");
+                engine.Analyze(ChessBoard, -1, -1);
+            });
         }
 
         public override void ResetBoard()
@@ -58,7 +66,7 @@ namespace ChessEngineClient
             if (!ChessBoard.IsStalemate() && !ChessBoard.IsCheckmate())
             {
                 engineNotification.OnStateChanged(EngineState.Analyze);
-                engine.Analyze(ChessBoard, -1, -1);
+                debouncedAnalysisAction();
             }
             else
             {
