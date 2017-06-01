@@ -67,13 +67,12 @@ bool ChessBoardImpl::LoadFrom(const std::string& strData)
 	SerializationType detectedType = DetectFormat(strData);
 	switch (detectedType)
 	{
-	case ChessEngine::ST_FEN:
-		return LoadFromFEN(strData);
-	case ChessEngine::ST_PGN:
-		return LoadFromPGN(strData);
-		break;
-	default:
-		return "";
+		case ChessEngine::ST_FEN:
+			return LoadFromFEN(strData);
+		case ChessEngine::ST_PGN:
+			return LoadFromPGN(strData);
+		default:
+			return "";
 	}
 }
 
@@ -1001,23 +1000,27 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 	// when moves are parsed they are executed from the starting position
 	Initialize();
 
-	std::string strToken;
 	PGNParser parser(strData);
-	parser.Start();
+	std::list<GameInfo> games = parser.ReadAllGames();
+	if (games.empty())
+		return false;
 
-	if (!parser.GetGameInfo().strFenStart.empty())
-		LoadFromFEN(parser.GetGameInfo().strFenStart);
+	GameInfo firstGame = games.front();
+	if (!firstGame.GetTags()["FEN"].empty())
+		LoadFromFEN(firstGame.GetTags()["FEN"]);
 
 	int nMoveCount = 0;
-	while (parser.IsValid() && parser.GetNext(strToken))
+	std::list<std::string> moves = firstGame.GetMoves();
+	for (auto it = moves.begin(); it != moves.end(); ++it)
 	{
+		std::string strToken = *it;
 		if (strToken.size() < 2) {
 			std::cout << "token too short: " << strToken << "To Play " << (nMoveCount % 2 ? "white" : "black") << "Move:" << nMoveCount / 2 + 1 << std::endl;
 			return false;
 		}
-		MoveImpl move;
 
-		if (strToken.find("O-O-O") != std::string::npos || strToken.find("0-0-0") != std::string::npos)
+		MoveImpl move;
+		if (strToken.find("O-O-O") != std::string::npos)
 		{
 			// queen-side castling
 			if (IsWhiteTurn())
@@ -1026,7 +1029,7 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 				SubmitMove(MoveImpl(CoordinateImpl(7, 4), CoordinateImpl(7, 2)));
 			continue;
 		}
-		else if (strToken.find("O-O") != std::string::npos || strToken.find("0-0") != std::string::npos)
+		else if (strToken.find("O-O") != std::string::npos)
 		{
 			// king-side castling
 			if (IsWhiteTurn())
@@ -1155,7 +1158,7 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 		++nMoveCount;
 	}
 
-	return parser.IsValid();
+	return true;
 }
 
 
