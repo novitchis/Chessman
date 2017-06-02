@@ -195,6 +195,12 @@ namespace ChessEngineClient.ViewModel
             Pieces.Add(pieceViewModel);
         }
 
+        public void ReplacePiece(ChessPieceViewModel oldPieceViewModel, ChessPieceViewModel newPieceViewModel)
+        {
+            RemovePiece(oldPieceViewModel);
+            AddPiece(newPieceViewModel);
+        }
+
         protected virtual void OnSelectionChanged(SquareViewModel oldSquare, SquareViewModel newSquare)
         {
         }

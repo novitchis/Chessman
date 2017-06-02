@@ -150,6 +150,8 @@ namespace ChessEngineClient.ViewModel
                 {
                     //TODO: implement promotion piece type
                     mainPieceViewModel.Piece = new ChessPiece(PieceType.Queen, mainPieceViewModel.Piece.Color == PieceColor.White);
+                    //have to re-add the piece in order to update the view
+                    ReplacePiece(mainPieceViewModel, mainPieceViewModel);
                 }
 
                 PlayMoveSound(moveTask.MoveData);
@@ -172,6 +174,7 @@ namespace ChessEngineClient.ViewModel
             {
                 ChessPieceViewModel promotedPieceViewModel = GetPiece(moveTask.MoveData.Move.GetFrom());
                 promotedPieceViewModel.Piece = new ChessPiece(PieceType.Pawn, promotedPieceViewModel.Piece.Color == PieceColor.White);
+                ReplacePiece(promotedPieceViewModel, promotedPieceViewModel);
             }
 
             moveTask.OnTransitionCompleted = () =>
