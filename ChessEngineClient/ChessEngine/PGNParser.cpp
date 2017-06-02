@@ -114,7 +114,7 @@ bool PGNParser::GetNext(std::string& strMove, std::string resultTag)
 	if (strMove == "0-0-0")
 		strMove = "O-O-O";
 	else if (strMove == "0-0")
-		strMove == "O-O";
+		strMove = "O-O";
 
 	m_nPos = nMoveEnd;
 	m_bWhiteMove = !m_bWhiteMove;
