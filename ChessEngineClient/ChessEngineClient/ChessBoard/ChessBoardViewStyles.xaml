@@ -57,7 +57,7 @@
                 Text="{Binding Value}" 
                 VerticalAlignment="Top" />
             <i:Interaction.Behaviors>
-                <ic:DataTriggerBehavior Binding="{Binding IsOddIndex}" Value="True">
+                <ic:DataTriggerBehavior Binding="{Binding IsOddIndex}" Value="False">
                     <ic:ChangePropertyAction PropertyName="Foreground" TargetObject="{Binding ElementName=textBlock}" Value="{StaticResource BlackSquareBrush}" />
                 </ic:DataTriggerBehavior>
             </i:Interaction.Behaviors>

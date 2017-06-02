@@ -12,6 +12,7 @@ namespace ChessEngineClient.ViewModel
     {
         private bool isHighlighted = false;
         private bool isDragSource = false;
+        private ChessPiece piece = null;
 
         public bool IsHighlighted
         {
@@ -44,7 +45,15 @@ namespace ChessEngineClient.ViewModel
 
         public ChessPiece Piece
         {
-            get; private set;
+            get { return piece; }
+            set
+            {
+                if (piece != value)
+                {
+                    piece = value;
+                    NotifyPropertyChanged();
+                }
+            }
         }
 
         public Coordinate Coordinate

@@ -14,7 +14,7 @@
         <Viewbox Margin="2"
                  Visibility="{Binding IsDragSource, Converter={StaticResource BoolToVisibilityConverter}, 
                     ConverterParameter={StaticResource InvertedConversionType}}">
-            <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource ChessPieceTemplateSelector}" />
+            <ContentControl Content="{Binding Piece}" ContentTemplateSelector="{StaticResource ChessPieceTemplateSelector}" />
         </Viewbox>
     </Grid>
 </UserControl>

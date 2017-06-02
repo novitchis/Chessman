@@ -72,6 +72,14 @@ namespace ChessEngine
 			}
 		}
 
+		property bool PawnPromoted
+		{
+			bool get()
+			{
+				return m_moveData.pawnTransform;
+			}
+		}
+
 		static MoveData^ CreateEmptyMove();
 
 	private:

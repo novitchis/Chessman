@@ -141,7 +141,7 @@ namespace ChessEngineClient.ViewModel
         private void UpdateRankAndFields()
         {
             RankNumbers = RankOrFieldViewModel.GetRanks(perspective);
-            FieldLetters = RankOrFieldViewModel.GetRanks(perspective);
+            FieldLetters = RankOrFieldViewModel.GetFields(perspective);
         }
 
         public void RefreshBoard(SideColor changedPerspective)

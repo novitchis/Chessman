@@ -44,13 +44,13 @@ namespace ChessEngineClient.ViewModel
         {
             var result = new[] {
                 new RankOrFieldViewModel('a'),
-                new RankOrFieldViewModel('b', true),
+                new RankOrFieldViewModel('b'),
                 new RankOrFieldViewModel('c'),
-                new RankOrFieldViewModel('d', true),
+                new RankOrFieldViewModel('d'),
                 new RankOrFieldViewModel('e'),
-                new RankOrFieldViewModel('f', true),
+                new RankOrFieldViewModel('f'),
                 new RankOrFieldViewModel('g'),
-                new RankOrFieldViewModel('h', true),
+                new RankOrFieldViewModel('h'),
             };
 
             if (color == SideColor.Black)
@@ -64,7 +64,7 @@ namespace ChessEngineClient.ViewModel
         private static void LoadIndexes(RankOrFieldViewModel[] viewmodels)
         {
             for (int index = 0; index < viewmodels.Length; index++)
-                viewmodels[index].IsOddIndex = index % 2 == 0;
+                viewmodels[index].IsOddIndex = index % 2 != 0;
         }
     }
 }

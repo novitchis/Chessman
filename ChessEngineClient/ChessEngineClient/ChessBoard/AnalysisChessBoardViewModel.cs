@@ -133,6 +133,8 @@ namespace ChessEngineClient.ViewModel
                 capturedPieceViewModel.RemovePending = true;
             }
 
+            ChessPieceViewModel mainPieceViewModel = GetPiece(moveTask.MoveData.Move.GetFrom());
+
             foreach (var positionChange in moveTask.MovedPiecesCoordinates)
             {
                 ChessPieceViewModel pieceViewModel = GetPiece(positionChange.Item1);
@@ -143,6 +145,12 @@ namespace ChessEngineClient.ViewModel
             {
                 if (capturedPieceViewModel != null)
                     RemovePiece(capturedPieceViewModel);
+
+                if (moveTask.MoveData.PawnPromoted)
+                {
+                    //TODO: implement promotion piece type
+                    mainPieceViewModel.Piece = new ChessPiece(PieceType.Queen, mainPieceViewModel.Piece.Color == PieceColor.White);
+                }
 
                 PlayMoveSound(moveTask.MoveData);
                 Messenger.Default.Send(new GenericMessage<MoveData>(this, analysisBoardService, moveTask.MoveData), NotificationMessages.MoveExecuted);
@@ -158,6 +166,12 @@ namespace ChessEngineClient.ViewModel
             {
                 ChessPieceViewModel pieceViewModel = GetPiece(positionChange.Item2);
                 pieceViewModel.Coordinate = positionChange.Item1;
+            }
+
+            if (moveTask.MoveData.PawnPromoted)
+            {
+                ChessPieceViewModel promotedPieceViewModel = GetPiece(moveTask.MoveData.Move.GetFrom());
+                promotedPieceViewModel.Piece = new ChessPiece(PieceType.Pawn, promotedPieceViewModel.Piece.Color == PieceColor.White);
             }
 
             moveTask.OnTransitionCompleted = () =>
