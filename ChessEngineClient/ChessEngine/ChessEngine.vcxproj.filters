@@ -95,6 +95,9 @@
     <ClCompile Include="ChessPiece.cpp">
       <Filter>Managed</Filter>
     </ClCompile>
+    <ClCompile Include="GameInfo.cpp">
+      <Filter>Impl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -208,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="ChessPiece.h">
       <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInfo.h">
+      <Filter>Impl</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

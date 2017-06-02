@@ -1,44 +1,31 @@
 #pragma once
 #include "EngineDefines.h"
+#include "GameInfo.h"
 
 namespace ChessEngine
 {
-	struct GameInfo
-	{
-		std::string strEvent;
-		std::string  strSite;
-		std::string  strDate;
-		std::string  strRound;
-		std::string  strFenStart;
-		std::string  strResult;
-		int			 nwhiteELO;
-		int			 nBlackELO;
-		bool		 bWhiteWon;
-	};
-
 	class PGNParser
 	{
 	public:
 		PGNParser(const std::string& strPGNData);
 
-		bool	IsValid() { return m_bValid; }
-		void	Start();
-		bool	GetNext(std::string& strMove);
-		GameInfo GetGameInfo();
+		std::list<GameInfo>		ReadAllGames();
+		bool					IsValid() { return m_bValid; }
+		bool					ReadStartGame(GameInfo &gameInfo);
+		bool					GetNext(std::string& strMove, std::string resultTag);
+		bool					AtEnd() { return m_nPos >= (int)m_strPGNData.size(); }
 
 	private:
 		void SkipToNextToken();
 		void SkipWhiteSpace();
 		void SkipComments();
 		void SkipVariations();
-		void ParseTag();
-		bool AtEnd() { return m_nPos >= (int)m_strPGNData.size(); }
-		void Invalidate() { m_bValid = false;  }
+		void ParseTag(GameInfo &gameInfo);
+		void Invalidate() { m_bValid = false; }
+
 	private:
 		std::string		m_strPGNData;
-		GameInfo		m_GameInfo;
 		bool			m_bValid;
-
 		int				m_nPos;
 		bool			m_bWhiteMove;
 	};

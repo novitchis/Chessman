@@ -16,48 +16,78 @@ PGNParser::PGNParser(const std::string& strPGNData)
 
 }
 
-
-void PGNParser::Start()
+std::list<GameInfo> PGNParser::ReadAllGames()
 {
-	// Parse tags //
-	SkipWhiteSpace();
-
-	while (IsValid() && !AtEnd() && m_strPGNData[m_nPos] == '[')
+	std::list<GameInfo> result;
+	while (!AtEnd())
 	{
-		ParseTag();
-		SkipWhiteSpace();
-	}
+		GameInfo game;
+		bool foundNewGame = ReadStartGame(game);
+		if (!foundNewGame)
+			break;
 
-	// remove result
-	if (!m_GameInfo.strResult.empty())
-	{
-		int nResultPos = (int)m_strPGNData.rfind(m_GameInfo.strResult);
-		// check if it's at the end of the string
-		// possible results: "1-0", "0-1", "1/2-1/2", "*"
-		if (nResultPos != std::string::npos && m_strPGNData.size() - nResultPos < 10)
-			m_strPGNData.resize(nResultPos - 1);
+		while (true)
+		{
+			std::string strToken;
+			if (!GetNext(strToken, game.GetTags()["Result"]))
+				break;
 
+			game.AddMove(strToken);
+		}
+		result.push_back(game);
 	}
+	return result;
 }
 
 
-bool PGNParser::GetNext(std::string& strMove)
+bool PGNParser::ReadStartGame(GameInfo &gameInfo)
 {
-	if (!IsValid()) return false;
-	SkipToNextToken();
+	if (!IsValid())
+		return false;
 
-	if (AtEnd()) return false;
+	m_bWhiteMove = true;
+	// Parse tags //
+	SkipWhiteSpace();
+	while (IsValid() && !AtEnd() && m_strPGNData[m_nPos] == '[')
+	{
+		ParseTag(gameInfo);
+		SkipWhiteSpace();
+	}
+
+	return true;
+}
+
+
+bool PGNParser::GetNext(std::string& strMove, std::string resultTag)
+{
+	if (!IsValid())
+		return false;
+
+	SkipToNextToken();
+	if (AtEnd())
+		return false;
 
 	// parse move number //
 	if (m_bWhiteMove)
 	{
-		m_nPos = (int)m_strPGNData.find('.', m_nPos);
+		int resultPos = std::string::npos;
+		if (!resultTag.empty())
+			resultPos = (int)m_strPGNData.find(resultTag, m_nPos);
+		
+		int dotPos = (int)m_strPGNData.find('.', m_nPos);
+		if (resultPos != std::string::npos && dotPos != std::string::npos)
+			m_nPos = resultPos > dotPos ? dotPos : resultPos;
+		else
+			m_nPos = dotPos;
+
 		if (m_nPos == std::string::npos)
 		{
 			Invalidate();
 			return false;
 		}
-		++m_nPos;
+
+		if (m_nPos == dotPos)
+			++m_nPos;
 	}
 
 	SkipToNextToken();
@@ -72,7 +102,8 @@ bool PGNParser::GetNext(std::string& strMove)
 			break;
 	}
 
-	if (nMoveEnd == std::string::npos) {
+	if (nMoveEnd == std::string::npos) 
+	{
 		Invalidate();
 		return false;
 	}
@@ -80,20 +111,21 @@ bool PGNParser::GetNext(std::string& strMove)
 	// parse move number //
 	// when the pgn contains variation the return to main line can look like: 10...Nf6
 	strMove = m_strPGNData.substr(m_nPos, nMoveEnd - m_nPos);
+	if (strMove == "0-0-0")
+		strMove = "O-O-O";
+	else if (strMove == "0-0")
+		strMove = "O-O";
+
+	m_nPos = nMoveEnd;
+	m_bWhiteMove = !m_bWhiteMove;
+	if (strMove == resultTag)
+		return false;
 
 	int lastPointIndex = (int)strMove.rfind('.');
 	if (lastPointIndex != -1)
 		strMove = strMove.substr(lastPointIndex + 1);
 
-	m_nPos = nMoveEnd;
-	m_bWhiteMove = !m_bWhiteMove;
-
 	return true;
-}
-
-GameInfo PGNParser::GetGameInfo()
-{
-	return m_GameInfo;
 }
 
 void PGNParser::SkipToNextToken()
@@ -114,6 +146,7 @@ void PGNParser::SkipWhiteSpace()
 	{
 		if (strchr(WHITESPACES, m_strPGNData[m_nPos]) == NULL)
 			break;
+
 		++m_nPos;
 	}
 }
@@ -121,13 +154,9 @@ void PGNParser::SkipWhiteSpace()
 void PGNParser::SkipComments()
 {
 	if (m_strPGNData[m_nPos] == ';') // comment until the end of the line
-	{
 		m_nPos = (int)m_strPGNData.find_first_of("\n\r", m_nPos) + 1;
-	}
 	if (m_strPGNData[m_nPos] == '{')
-	{
 		m_nPos = (int)m_strPGNData.find_first_of("}", m_nPos) + 1;
-	}
 }
 
 void PGNParser::SkipVariations()
@@ -153,26 +182,19 @@ void PGNParser::SkipVariations()
 
 // TODO: Populate GameInfo struct //
 // Skip tags for now //
-void PGNParser::ParseTag()
+void PGNParser::ParseTag(GameInfo &gameInfo)
 {
 	int nBracketPos = (int)m_strPGNData.find(']', m_nPos);
-	if (nBracketPos == std::string::npos) {
+	int nFirstSpacePos = (int)m_strPGNData.find(' ', m_nPos);
+	if (nBracketPos == std::string::npos || nFirstSpacePos == std::string::npos)
+	{
 		Invalidate();
 		return;
 	}
 
-	// sample fen tag 
-	// [FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPP1P1/RNBQKBNR w KQkq - 0 1"]
-	if (m_strPGNData.substr(m_nPos + 1, 3) == "FEN")
-	{
-		int fenStartPos = m_nPos + 6;
-		m_GameInfo.strFenStart = m_strPGNData.substr(fenStartPos, nBracketPos - 1 - fenStartPos);
-	}
-	else if (m_strPGNData.substr(m_nPos + 1, 6) == "Result")
-	{
-		int resultStartPos = m_nPos + 9;
-		m_GameInfo.strResult = m_strPGNData.substr(resultStartPos, nBracketPos - 1 - resultStartPos);
-	}
+	std::string tagName = m_strPGNData.substr(m_nPos + 1, nFirstSpacePos - 1 - m_nPos);
+	std::string tagValue = m_strPGNData.substr(nFirstSpacePos + 2, nBracketPos - 3 - nFirstSpacePos);
+	gameInfo.AddTag(tagName, tagValue);
 
 	m_nPos = nBracketPos + 1;
 }

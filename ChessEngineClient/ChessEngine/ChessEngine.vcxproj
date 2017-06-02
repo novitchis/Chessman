@@ -232,6 +232,7 @@
     <ClInclude Include="EngineDefines.h" />
     <ClInclude Include="EngineNotificationAdaptor.h" />
     <ClInclude Include="EngineOptions.h" />
+    <ClInclude Include="GameInfo.h" />
     <ClInclude Include="IChessEngine.h" />
     <ClInclude Include="IChessEngineNotifications.h" />
     <ClInclude Include="IEngine.h" />
@@ -268,6 +269,7 @@
     <ClCompile Include="EngineDefines.cpp" />
     <ClCompile Include="EngineNotificationAdaptor.cpp" />
     <ClCompile Include="EngineOptions.cpp" />
+    <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="InProcEngineCommThread.cpp" />
     <ClCompile Include="ManagedConverter.cpp" />
     <ClCompile Include="Move.cpp" />
