@@ -27,7 +27,7 @@ namespace ChessEngineClient.View
 {
     public sealed partial class ChessBoardView : UserControl
     {
-        private const double MinPieceSize = 75;
+        private const double MinPieceSize = 80;
         private const double MinimumDragDistance = 4;
 
         public static readonly DependencyProperty SuggestedMoveProperty =DependencyProperty.Register("SuggestedMove", typeof(Move), typeof(ChessBoardView), new PropertyMetadata(null, OnSuggestedMoveChangedThunk));

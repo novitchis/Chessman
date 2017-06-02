@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.System.Profile;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -30,17 +31,21 @@ namespace ChessEngineClient.Controls
             //this will throw if the panel is inside an infinite sized parent which should not happen
             double minSize = Math.Min(availableSize.Width, availableSize.Height);
 
-            // rendering is more crisp on a grid of 4 px
-            double rectSize = GetMultipleOfFourSmallerThan((int)minSize / 8);
+            double rectSize = GetAjustedSquareSize(minSize / 8);
             foreach (var child in Children.OfType<FrameworkElement>())
                 child.Measure(new Size(rectSize, rectSize));
 
             return new Size(rectSize * 8, rectSize * 8);
         }
 
-        private double GetMultipleOfFourSmallerThan(int value)
+        private double GetAjustedSquareSize(double size)
         {
-            return value / 4 * 4;
+            // the rendering is fine for mobile
+            if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
+                return size;
+
+            // on desktop rendering is more crisp on a grid of 4 px
+            return (int)size / 4 * 4;
         }
 
         protected override Size ArrangeOverride(Size finalSize)
