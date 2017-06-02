@@ -19,23 +19,30 @@ namespace ChessEngineClient.ViewModel
             IsOddIndex = isOddIndex;
         }
 
-        public static RankOrFieldViewModel[] GetRanksAsWhite()
+        public static RankOrFieldViewModel[] GetRanks(SideColor color)
         {
-            return new [] {
-                new RankOrFieldViewModel('8', true),
+            var result = new [] {
+                new RankOrFieldViewModel('8'),
                 new RankOrFieldViewModel('7'),
-                new RankOrFieldViewModel('6', true),
+                new RankOrFieldViewModel('6'),
                 new RankOrFieldViewModel('5'),
-                new RankOrFieldViewModel('4', true),
+                new RankOrFieldViewModel('4'),
                 new RankOrFieldViewModel('3'),
-                new RankOrFieldViewModel('2', true),
+                new RankOrFieldViewModel('2'),
                 new RankOrFieldViewModel('1'),
             };
+
+            if (color == SideColor.Black)
+                result = result.Reverse().ToArray();
+
+            LoadIndexes(result);
+
+            return result;
         }
 
-        public static RankOrFieldViewModel[] GetFieldsAsWhite()
+        public static RankOrFieldViewModel[] GetFields(SideColor color)
         {
-            return new[] {
+            var result = new[] {
                 new RankOrFieldViewModel('a'),
                 new RankOrFieldViewModel('b', true),
                 new RankOrFieldViewModel('c'),
@@ -45,6 +52,19 @@ namespace ChessEngineClient.ViewModel
                 new RankOrFieldViewModel('g'),
                 new RankOrFieldViewModel('h', true),
             };
+
+            if (color == SideColor.Black)
+                result = result.Reverse().ToArray();
+
+            LoadIndexes(result);
+
+            return result;
+        }
+
+        private static void LoadIndexes(RankOrFieldViewModel[] viewmodels)
+        {
+            for (int index = 0; index < viewmodels.Length; index++)
+                viewmodels[index].IsOddIndex = index % 2 == 0;
         }
     }
 }
