@@ -64,12 +64,14 @@ namespace ChessEngineClient.View
         {
             base.OnNavigatedTo(e);
             Window.Current.CoreWindow.KeyDown += OnCoreWindowKeyDown;
+            chessBoard.RegisterAnimationHandlers();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
             Window.Current.CoreWindow.KeyDown -= OnCoreWindowKeyDown;
+            chessBoard.UnRegisterAnimationHandlers();
         }
 
         private void OnCoreWindowKeyDown(CoreWindow sender, KeyEventArgs e)

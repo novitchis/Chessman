@@ -25,6 +25,9 @@ namespace ChessEngineClient.View
 
         public void AddMoveAnimation(ContentPresenter item, Point from, Point to)
         {
+            if (item == null)
+                throw new ArgumentNullException("item", "item cannot be null");
+
             CubicEase easeFunction = new CubicEase() { EasingMode = EasingMode.EaseInOut };
             DoubleAnimation xAnimation = new DoubleAnimation() { From = from.X, To = to.X, Duration = TimeSpan.FromSeconds(AnimationDurationSeconds), EasingFunction = easeFunction };
             StoryBoard.Children.Add(xAnimation);
@@ -47,6 +50,9 @@ namespace ChessEngineClient.View
 
         public void AddRemoveAnimation(ContentPresenter item)
         {
+            if (item == null)
+                throw new ArgumentNullException("item", "item cannot be null");
+
             // set the z index to a lower value so that the capturing piece will always be above it
             ObjectAnimationUsingKeyFrames zIndexAnimation = new ObjectAnimationUsingKeyFrames();
             zIndexAnimation.KeyFrames.Add(new DiscreteObjectKeyFrame() { Value = -1, KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(0)) });

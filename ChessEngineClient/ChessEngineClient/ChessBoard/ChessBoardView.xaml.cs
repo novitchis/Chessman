@@ -62,24 +62,26 @@ namespace ChessEngineClient.View
 
             Binding suggestedMoveBinding = new Binding() { Path =  new PropertyPath("SuggestedMove") };
             SetBinding(SuggestedMoveProperty, suggestedMoveBinding);
+        }
 
+        public void RegisterAnimationHandlers()
+        {
             Messenger.Default.Register<GenericMessage<MoveTask>>(this, NotificationMessages.AnimateMoveTaskCreated, OnAnimateMoveTaskReceived);
             Messenger.Default.Register<GenericMessage<MoveTask>>(this, NotificationMessages.AnimateUndoMoveTaskCreated, OnAnimateUndoMoveTaskReceived);
         }
 
+        public void UnRegisterAnimationHandlers()
+        {
+            Messenger.Default.Unregister<GenericMessage<MoveTask>>(this);
+        }
+
         private void OnAnimateMoveTaskReceived(GenericMessage<MoveTask> message)
         {
-            if (message.Sender != ViewModel)
-                return;
-
             AnimateMoveTask(message.Content, false);
         }
 
         private void OnAnimateUndoMoveTaskReceived(GenericMessage<MoveTask> message)
         {
-            if (message.Sender != ViewModel)
-                return;
-
             AnimateMoveTask(message.Content, true);
         }
 
