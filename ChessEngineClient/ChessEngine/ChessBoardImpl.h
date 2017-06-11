@@ -73,7 +73,7 @@ namespace ChessEngine
 		// TODO //
 		void						Initialize(); //Initial Position
 		void						Clear();
-		std::string					Serialize(SerializationType type);
+		std::string					Serialize(SerializationType type, bool stopOnCurrent = true);
 		bool						LoadFrom(const std::string& strData);
 		void						StorePGN();
 
@@ -113,7 +113,7 @@ namespace ChessEngine
 
 	private:
 		std::string					Serialize2FEN() const;
-		std::string					Serialize2PGN();
+		std::string					Serialize2PGN(bool stopOnCurrent = true);
 		bool						LoadFromFEN(const std::string& strData);
 		bool						LoadFromPGN(const std::string& strData);
 		SerializationType			DetectFormat(const std::string& strData);

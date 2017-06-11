@@ -87,14 +87,18 @@ namespace ChessEngineClient
             return chessBoard.IsCheckmate();
         }
 
-        public string Serialize(BoardSerializationType type)
+        public string Serialize(BoardSerializationType type, bool stopOnCurrent = true)
         {
-            return chessBoard.Serialize((int)type);
+            return chessBoard.Serialize((int)type, stopOnCurrent);
         }
 
-        public virtual bool LoadFrom(string serializedValue)
+        public virtual bool LoadFrom(string serializedValue, int currentMoveIndex = -1)
         {
-            return chessBoard.LoadFrom(serializedValue);
+            bool result = chessBoard.LoadFrom(serializedValue);
+            if (result && currentMoveIndex != -1)
+                chessBoard.GoToMove(currentMoveIndex);
+
+            return result;
         }
     }
 }

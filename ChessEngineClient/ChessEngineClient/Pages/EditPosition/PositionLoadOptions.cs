@@ -18,5 +18,13 @@ namespace ChessEngineClient
 
         [DataMember]
         public SideColor Perspective { get; set; }
+
+        [DataMember]
+        public int CurrentMoveIndex { get; set; }
+
+        public PositionLoadOptions()
+        {
+            CurrentMoveIndex = -1;
+        }
     }
 }

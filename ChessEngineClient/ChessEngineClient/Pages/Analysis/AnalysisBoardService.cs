@@ -80,12 +80,12 @@ namespace ChessEngineClient
             isStarted = false;
         }
 
-        public override bool LoadFrom(string serializedValue)
+        public override bool LoadFrom(string serializedValue, int currentMoveIndex = -1)
         {
             if (isStarted)
                 engine.StopAnalyzing();
 
-            bool result = base.LoadFrom(serializedValue);
+            bool result = base.LoadFrom(serializedValue, currentMoveIndex);
 
             if (isStarted)
                 AnalyseCurrentPosition();

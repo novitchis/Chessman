@@ -26,11 +26,11 @@ void ChessBoard::Clear()
 }
 
 
-Platform::String^ ChessBoard::Serialize(int type)
+Platform::String^ ChessBoard::Serialize(int type, bool stopOnCurrent)
 {
 	try
 	{
-		auto strData = m_ChessBoardImpl.Serialize(GetSerializationType(type));
+		auto strData = m_ChessBoardImpl.Serialize(GetSerializationType(type), stopOnCurrent);
 		return ManagedConverter::String2ManagedString(strData);
 	}
 	catch (...)

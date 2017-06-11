@@ -13,9 +13,9 @@ namespace ChessEngineClient
 
         ChessPiece GetPiece(Coordinate coordinate);
 
-        bool LoadFrom(string value);
+        bool LoadFrom(string value, int index = -1);
 
-        string Serialize(BoardSerializationType type);
+        string Serialize(BoardSerializationType type, bool stopOnCurrent);
     }
 
     public enum BoardSerializationType

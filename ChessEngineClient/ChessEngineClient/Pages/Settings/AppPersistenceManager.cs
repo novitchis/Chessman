@@ -45,10 +45,10 @@ namespace ChessEngineClient
 
             if (savesSessions)
             {
-                PositionLoadOptions analysisPosition = ViewModelLocator.MainViewModel.GetPositionLoadOptions(BoardSerializationType.PGN);
+                PositionLoadOptions analysisPosition = ViewModelLocator.MainViewModel.GetPositionLoadOptions(BoardSerializationType.PGN, false);
                 settingsContainer.Values[SavedAnalysisPositionPgnKey] = JsonConvert.SerializeObject(analysisPosition);
 
-                PositionLoadOptions practicePosition = ViewModelLocator.PracticeViewModel.GetPositionLoadOptions(BoardSerializationType.PGN);
+                PositionLoadOptions practicePosition = ViewModelLocator.PracticeViewModel.GetPositionLoadOptions(BoardSerializationType.PGN, false);
                 settingsContainer.Values[SavedPracticePositionPgnKey] = JsonConvert.SerializeObject(practicePosition);
             }
             else

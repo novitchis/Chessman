@@ -44,14 +44,14 @@ ChessBoardImpl::~ChessBoardImpl(void)
 }
 
 
-std::string ChessBoardImpl::Serialize(SerializationType type)
+std::string ChessBoardImpl::Serialize(SerializationType type, bool stopOnCurrent)
 {
 	switch (type)
 	{
 	case ChessEngine::ST_FEN:
 		return Serialize2FEN();
 	case ChessEngine::ST_PGN:
-		return Serialize2PGN();
+		return Serialize2PGN(stopOnCurrent);
 	case ChessEngine::ST_DETECT:
 		break;
 	default:
@@ -849,7 +849,7 @@ std::list<CoordinateImpl> ChessBoardImpl::getPiecesMovableAs(MoveImpl move, char
 	return result;
 }
 
-std::string ChessBoardImpl::Serialize2PGN()
+std::string ChessBoardImpl::Serialize2PGN(bool stopOnCurrent)
 {
 	Core::StatePreserver state;
 	GetPreservedState(SPT_PGNSerialization, state);
@@ -867,7 +867,7 @@ std::string ChessBoardImpl::Serialize2PGN()
 	int nBlackMaxMoveLen = 0;
 	for (auto it = m_listMoves.begin(); it != m_listMoves.end(); ++it)
 	{
-		if (moveNo > m_currentMoveIndex)
+		if (stopOnCurrent && moveNo > m_currentMoveIndex)
 			break;
 
 		if (moveNo % 2)
@@ -889,7 +889,7 @@ std::string ChessBoardImpl::Serialize2PGN()
 	moveNo = 0;
 	for (auto it = m_listMoves.begin(); it != m_listMoves.end(); ++it)
 	{
-		if (moveNo > m_currentMoveIndex)
+		if (stopOnCurrent && moveNo > m_currentMoveIndex)
 			break;
 
 		if (moveNo % 2 == 0)

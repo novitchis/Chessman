@@ -137,7 +137,7 @@ namespace ChessEngineClient.ViewModel
         {
             return new PositionLoadOptions()
             {
-                SerializedBoard = editorBoardService.Serialize(BoardSerializationType.FEN),
+                SerializedBoard = editorBoardService.Serialize(BoardSerializationType.FEN, true),
                 Perspective = BoardViewModel.Perspective,
             };
         }

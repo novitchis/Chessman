@@ -139,7 +139,7 @@ namespace ChessEngineClient.ViewModel
                     return;
                 }
 
-                await FileIO.WriteTextAsync(file, boardService.Serialize(serializationType));
+                await FileIO.WriteTextAsync(file, boardService.Serialize(serializationType, true));
             }
         }
 

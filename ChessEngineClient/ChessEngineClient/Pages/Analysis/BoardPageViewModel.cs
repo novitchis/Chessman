@@ -83,7 +83,7 @@ namespace ChessEngineClient.ViewModel
 
         public virtual void LoadPosition(PositionLoadOptions positionLoadOptions)
         {
-            boardService.LoadFrom(positionLoadOptions.SerializedBoard);
+            boardService.LoadFrom(positionLoadOptions.SerializedBoard, positionLoadOptions.CurrentMoveIndex);
             ReloadBoard(positionLoadOptions.Perspective);
         }
 
@@ -135,13 +135,14 @@ namespace ChessEngineClient.ViewModel
             navigationService.NavigateTo(ViewModelLocator.EditPositionPageNavigationName, GetPositionLoadOptions(BoardSerializationType.FEN));
         }
 
-        public PositionLoadOptions GetPositionLoadOptions(BoardSerializationType serializationType)
+        public PositionLoadOptions GetPositionLoadOptions(BoardSerializationType serializationType, bool stopOnCurrent = true)
         {
             return new PositionLoadOptions()
             {
-                SerializedBoard = boardService.Serialize(serializationType),
+                SerializedBoard = boardService.Serialize(serializationType, stopOnCurrent),
                 SerializationType = serializationType,
                 Perspective = BoardViewModel.Perspective,
+                CurrentMoveIndex = boardService.GetCurrentMove().Index,
             };
         }
     }
