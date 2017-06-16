@@ -38,10 +38,7 @@ namespace ChessEngineClient
         /// </summary>
         public App()
         {
-            Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
-                Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
-                Microsoft.ApplicationInsights.WindowsCollectors.Session |
-                Microsoft.ApplicationInsights.WindowsCollectors.PageView);
+            RegisterStoreServicesAsync();
 
             this.InitializeComponent();
 
@@ -54,16 +51,15 @@ namespace ChessEngineClient
             this.UnhandledException += OnUnhandledException;
         }
 
-        private void BootstrapNavigationService(Frame frame)
+        private async void RegisterStoreServicesAsync()
         {
-            NavigationService navigationService = new NavigationService(frame);
+            await Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
+                Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
+                Microsoft.ApplicationInsights.WindowsCollectors.Session |
+                Microsoft.ApplicationInsights.WindowsCollectors.PageView);
 
-            navigationService.Configure(ViewModelLocator.MainPageNavigationName, typeof(MainPage));
-            navigationService.Configure(ViewModelLocator.EditPositionPageNavigationName, typeof(EditPositionPage));
-            navigationService.Configure(ViewModelLocator.PracticePageNavigationName, typeof(PracticePage));
-            navigationService.Configure(ViewModelLocator.SettingsPageNavigationName, typeof(SettingsPage));
-
-            ViewModelLocator.IOCContainer.RegisterInstance<INavigationService>(navigationService);
+            StoreServicesEngagementManager manager = StoreServicesEngagementManager.GetDefault();
+            await manager.RegisterNotificationChannelAsync();
         }
 
         /// <summary>
@@ -71,7 +67,7 @@ namespace ChessEngineClient
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override async void OnLaunched(LaunchActivatedEventArgs e)
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
@@ -87,9 +83,6 @@ namespace ChessEngineClient
             // just ensure that the window is active
             if (appShell == null)
             {
-                StoreServicesEngagementManager engagementManager = StoreServicesEngagementManager.GetDefault();
-                await engagementManager.RegisterNotificationChannelAsync();
-
                 // Create a Frame to act as the navigation context and navigate to the first page
                 appShell = new AppShell();
                 BootstrapNavigationService(appShell.AppFrame);
@@ -123,6 +116,18 @@ namespace ChessEngineClient
             }
 
             HideMobileStatusBar();
+        }
+
+        private void BootstrapNavigationService(Frame frame)
+        {
+            NavigationService navigationService = new NavigationService(frame);
+
+            navigationService.Configure(ViewModelLocator.MainPageNavigationName, typeof(MainPage));
+            navigationService.Configure(ViewModelLocator.EditPositionPageNavigationName, typeof(EditPositionPage));
+            navigationService.Configure(ViewModelLocator.PracticePageNavigationName, typeof(PracticePage));
+            navigationService.Configure(ViewModelLocator.SettingsPageNavigationName, typeof(SettingsPage));
+
+            ViewModelLocator.IOCContainer.RegisterInstance<INavigationService>(navigationService);
         }
 
         private async void HideMobileStatusBar()
