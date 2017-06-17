@@ -38,7 +38,10 @@ namespace ChessEngineClient
         /// </summary>
         public App()
         {
-            RegisterStoreServicesAsync();
+            Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
+                Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
+                Microsoft.ApplicationInsights.WindowsCollectors.Session |
+                Microsoft.ApplicationInsights.WindowsCollectors.PageView);
 
             this.InitializeComponent();
 
@@ -49,17 +52,6 @@ namespace ChessEngineClient
                 this.Suspending += OnSuspending;
 
             this.UnhandledException += OnUnhandledException;
-        }
-
-        private async void RegisterStoreServicesAsync()
-        {
-            await Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
-                Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
-                Microsoft.ApplicationInsights.WindowsCollectors.Session |
-                Microsoft.ApplicationInsights.WindowsCollectors.PageView);
-
-            StoreServicesEngagementManager manager = StoreServicesEngagementManager.GetDefault();
-            await manager.RegisterNotificationChannelAsync();
         }
 
         /// <summary>
@@ -86,6 +78,8 @@ namespace ChessEngineClient
                 // Create a Frame to act as the navigation context and navigate to the first page
                 appShell = new AppShell();
                 BootstrapNavigationService(appShell.AppFrame);
+
+                RegisterStoreServicesAsync();
 
                 AppPersistenceManager.InitializeDefaultSettings(ApplicationData.Current.LocalSettings);
                 AppPersistenceManager.RestoreApplicationState(ApplicationData.Current.LocalSettings);
@@ -116,6 +110,12 @@ namespace ChessEngineClient
             }
 
             HideMobileStatusBar();
+        }
+
+        private async void RegisterStoreServicesAsync()
+        {
+            StoreServicesEngagementManager manager = StoreServicesEngagementManager.GetDefault();
+            await manager.RegisterNotificationChannelAsync();
         }
 
         private void BootstrapNavigationService(Frame frame)
