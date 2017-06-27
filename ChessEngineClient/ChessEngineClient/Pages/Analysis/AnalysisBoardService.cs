@@ -30,8 +30,14 @@ namespace ChessEngineClient
 
         public override void ResetBoard()
         {
+            // the engine stops if is analyzing
+            if (isStarted)
+                engine.StopAnalyzing();
+
             base.ResetBoard();
-            AnalyseCurrentPosition();
+
+            if (isStarted)
+                AnalyseCurrentPosition();
         }
 
         public override bool SubmitMove(Coordinate from, Coordinate to)
@@ -82,6 +88,7 @@ namespace ChessEngineClient
 
         public override bool LoadFrom(string serializedValue, int currentMoveIndex = -1)
         {
+            // the engine stops if is analyzing
             if (isStarted)
                 engine.StopAnalyzing();
 

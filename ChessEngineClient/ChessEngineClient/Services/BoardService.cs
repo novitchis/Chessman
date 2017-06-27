@@ -95,7 +95,7 @@ namespace ChessEngineClient
         public virtual bool LoadFrom(string serializedValue, int currentMoveIndex = -1)
         {
             bool result = chessBoard.LoadFrom(serializedValue);
-            if (result && currentMoveIndex != -1)
+            if (result)
                 chessBoard.GoToMove(currentMoveIndex);
 
             return result;

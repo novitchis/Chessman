@@ -83,7 +83,11 @@ namespace ChessEngineClient.ViewModel
 
         public virtual void LoadPosition(PositionLoadOptions positionLoadOptions)
         {
-            boardService.LoadFrom(positionLoadOptions.SerializedBoard, positionLoadOptions.CurrentMoveIndex);
+            if (String.IsNullOrEmpty(positionLoadOptions.SerializedBoard))
+                boardService.ResetBoard();
+            else
+                boardService.LoadFrom(positionLoadOptions.SerializedBoard, positionLoadOptions.CurrentMoveIndex);
+
             ReloadBoard(positionLoadOptions.Perspective);
         }
 
@@ -137,13 +141,18 @@ namespace ChessEngineClient.ViewModel
 
         public PositionLoadOptions GetPositionLoadOptions(BoardSerializationType serializationType, bool stopOnCurrent = true)
         {
-            return new PositionLoadOptions()
+            PositionLoadOptions result = new PositionLoadOptions()
             {
                 SerializedBoard = boardService.Serialize(serializationType, stopOnCurrent),
                 SerializationType = serializationType,
                 Perspective = BoardViewModel.Perspective,
-                CurrentMoveIndex = boardService.GetCurrentMove().Index,
             };
+
+            MoveData currentMove = boardService.GetCurrentMove();
+            if (currentMove != null)
+                result.CurrentMoveIndex = currentMove.Index;
+
+            return result;
         }
     }
 }
