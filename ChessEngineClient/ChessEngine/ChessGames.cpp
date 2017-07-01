@@ -2,7 +2,7 @@
 #include "ChessGames.h"
 
 #include <windows.h>
-#include <ShlObj.h>
+//#include <ShlObj.h>
 #include <Shlwapi.h>
 #include <fstream>
 #include <streambuf>
