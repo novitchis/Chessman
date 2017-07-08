@@ -23,14 +23,14 @@ namespace ChessEngineClient
             AnalysisReceived?.Invoke(this, e);
         }
 
+        public void OnEngineMoveFinished(AnalysisData[] analysis)
+        {
+            OnAnalysisReceived(new AnalysisEventArgs() { AnalysisLines = analysis });
+        }
+
         public void OnEngineError()
         {
             throw new NotImplementedException();
-        }
-
-        public void OnEngineMoveFinished(Move move, AnalysisData analysis)
-        {
-            OnAnalysisReceived(new AnalysisEventArgs() { Data = analysis });
         }
 
         public void OnGameEnded(bool bWhiteWins)
@@ -41,6 +41,6 @@ namespace ChessEngineClient
         public void OnStateChanged(EngineState state)
         {
             AnalysisStateChanged?.Invoke(this, new AnalysisStateEventArgs(state));
-        }
+        }        
     }
 }

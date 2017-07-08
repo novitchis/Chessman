@@ -60,6 +60,7 @@ EngineOptionsImpl ManagedConverter::ConvertManagedOptions(EngineOptions^ options
 {
 	EngineOptionsImpl result;
 	result.level = options->SkillLevel;
+	result.multiPV = options->MultiPV;
 
 	return result;
 }

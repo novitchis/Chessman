@@ -3,6 +3,7 @@
 
 using namespace ChessEngine;
 
-EngineOptions::EngineOptions()
+EngineOptions::EngineOptions() 
+	: m_multiPV(1)
 {
 }

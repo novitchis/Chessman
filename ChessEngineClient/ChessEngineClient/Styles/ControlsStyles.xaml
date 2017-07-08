@@ -52,4 +52,9 @@
         <Setter Property="Margin" Value="0 5 0 0"/>
     </Style>
 
+    <Style x:Key="AnalysisLineText" TargetType="TextBlock">
+        <Setter Property="Margin" Value="10 2 0 2"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+
 </ResourceDictionary>

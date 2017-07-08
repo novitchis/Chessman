@@ -11,5 +11,6 @@ namespace ChessEngine
 		property bool						IsBestMove;
 		property int						Depth;
 		property int						NodesPerSecond;
+		property int						MultiPV;
 	};
 }

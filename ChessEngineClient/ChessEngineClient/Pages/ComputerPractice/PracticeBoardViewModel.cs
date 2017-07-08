@@ -49,7 +49,7 @@ namespace ChessEngineClient.ViewModel
         {
             // just delay for one second the move, to not be so fast
             await Task.Delay(1000);
-            TryExecuteMove(e.Data.Analysis[0].GetFrom(), e.Data.Analysis[0].GetTo(), true);
+            TryExecuteMove(e.AnalysisLines[0].Analysis[0].GetFrom(), e.AnalysisLines[0].Analysis[0].GetTo(), true);
             //TODO: select a square?
         }
     }

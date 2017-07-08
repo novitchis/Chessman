@@ -172,6 +172,8 @@ void UCIChessEngine::SetOptions( const EngineOptionsImpl& options )
 	EnterState( UC_SetOption);
 	std::stringstream stm;
 	stm << "setoption name Skill Level value " << options.level << "\n";
+	stm << "setoption name MultiPV value " << options.multiPV << "\n";
+
 	m_pCommThread->QueueCommand( stm.str() );
 	SendKeepAliveMessage();
 }
@@ -279,8 +281,9 @@ bool UCIChessEngine::ProcessGoResponseBestMove(const std::string& strResponse)
 		AnalysisDataImpl analysisData;
 		analysisData.isBestMove = true;
 		analysisData.listAnalysis.push_back(MoveImpl::FromString(lastLienTokens[1]));
-		
-		m_pNotification->OnEngineMoveFinished(analysisData.listAnalysis.front(), analysisData);
+		std::vector<AnalysisDataImpl> analysis;
+		analysis.push_back(analysisData);
+		m_pNotification->OnEngineMoveFinished(analysis);
 	}
 
 	return isBestMove;
@@ -299,33 +302,48 @@ bool UCIChessEngine::ProcessGoResponse( const std::string& strResponse)
 
 	//m_strCumul += strResponse;
 	auto vecLines = split<std::string>(strResponse, "\n");
-	std::string lastSelDepthLine;
+
+	std::vector<std::string>	vecProspectedLines;
+	int currentDepth = 1;
 	for (auto it : vecLines)
 	{
+		// select only the lines with max depth
 		if (it.find("seldepth") != -1) {
-			// use the last line available
-			lastSelDepthLine = it;
+			int depthPos = it.find("depth") + 6;
+			int nNextSpace = it.find(" ", depthPos);
+			auto strDepth = it.substr(depthPos, nNextSpace - depthPos);
+			int depth = atoi(strDepth.c_str());
+
+			if (depth == currentDepth)
+				vecProspectedLines.push_back(it);
+			else if (depth > currentDepth)
+			{
+				currentDepth = depth;
+				vecProspectedLines.clear();
+				vecProspectedLines.push_back(it);
+			}
 		}
 	}
 	
-	if (lastSelDepthLine.empty()) return true;
+	if (vecProspectedLines.empty()) return true;
 
-	std::vector<std::string>	vecProspectedLines;
-	vecProspectedLines.push_back(lastSelDepthLine);
-
-	AnalysisDataImpl analysisData;
+	std::vector<AnalysisDataImpl> analysis;
 	for (auto iter : vecProspectedLines)
 	{
 		int nCpPos = iter.find("cp") + 3;
 		int nPvPos = iter.rfind("pv") + 3;
 		int depthPos = iter.find("depth") + 6;
 		int npsPos = iter.find("nps") + 4;
+		int multipvPos = iter.find("multipv") + 8;
 
 		int nNextSpace = iter.find(" ", nCpPos);
 		auto strCp = iter.substr(nCpPos, nNextSpace - nCpPos);
 		nNextSpace = iter.find(" ", depthPos);
 		auto strDepth = iter.substr(depthPos, nNextSpace - depthPos);
+		nNextSpace = iter.find(" ", npsPos);
 		auto strNPS = iter.substr(npsPos, nNextSpace - npsPos);
+		nNextSpace = iter.find(" ", multipvPos);
+		auto strMultiPV = iter.substr(multipvPos, nNextSpace - multipvPos);
 		auto strMoves = iter.substr(nPvPos, iter.size() - nPvPos);
 		auto vecMoves = split<std::string>(strMoves, " ");
 
@@ -335,19 +353,19 @@ bool UCIChessEngine::ProcessGoResponse( const std::string& strResponse)
 		crtAnalysisData.fScore = atof(strCp.c_str()) / 100.;
 		crtAnalysisData.depth = atoi(strDepth.c_str());
 		crtAnalysisData.nodesPerSecond = atoi(strNPS.c_str());
+		crtAnalysisData.multiPV = atoi(strMultiPV.c_str());
 		for (auto it : vecMoves)
 		{
 			crtAnalysisData.listAnalysis.push_back(MoveImpl::FromString(it));
 		}
 
-		if (crtAnalysisData > analysisData) 
-			analysisData = crtAnalysisData;
+		analysis.push_back(crtAnalysisData);
 	}
 	
-	if (analysisData.listAnalysis.size() == 0)
+	if (analysis.size() == 0)
 		return true; // ignore it!
 
-	m_pNotification->OnEngineMoveFinished( analysisData.listAnalysis.front(), analysisData );
+	m_pNotification->OnEngineMoveFinished(analysis);
 
 	return true;
 }

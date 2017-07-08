@@ -260,6 +260,7 @@ namespace ChessEngine
 		bool						isBestMove;
 		int							depth;
 		int							nodesPerSecond;
+		int							multiPV;
 		
 		AnalysisDataImpl()
 		{
@@ -291,5 +292,6 @@ namespace ChessEngine
 	struct EngineOptionsImpl
 	{
 		int level;
+		int multiPV;
 	};
 }

@@ -82,7 +82,7 @@ namespace ChessEngineClient
 
         private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
         {
-            if (e.Data.IsBestMove)
+            if (e.AnalysisLines[0].IsBestMove)
                 mainSynchronizationContext.Post(o => AnalysisReceived?.Invoke(this, e), null);
         }
 

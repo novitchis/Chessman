@@ -49,15 +49,22 @@
         <Border 
             Background="{StaticResource WhiteBrush}"
             Grid.Column="1">
-            <TextBox 
-                Margin="0 0 5 0"
-                Text="{Binding Moves}"
-                Padding="10,5,6,5"
-                VerticalAlignment="Center"
-                IsReadOnly="True" 
-                BorderThickness="0" />
+            <ItemsControl ItemsSource="{Binding AnalysisLines, Mode=OneWay}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" BorderThickness="0 0 0 1" BorderBrush="{StaticResource AccentBrush300}">
+                            <TextBlock
+                                Style="{StaticResource AnalysisLineText}"
+                                FontWeight="Bold"
+                                Text="{Binding Evaluation}" />
+                            <TextBlock 
+                                Style="{StaticResource AnalysisLineText}"
+                                Text="{Binding MovesString}" />
+                        </StackPanel>
+                    </DataTemplate>    
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Border>
-
     </Grid>
 </UserControl>
 

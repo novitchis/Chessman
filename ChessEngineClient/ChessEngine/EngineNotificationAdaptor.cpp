@@ -10,22 +10,30 @@ EngineNotificationAdaptor::EngineNotificationAdaptor(IEngineNotification^ pManag
 }
 
 
-void EngineNotificationAdaptor::OnEngineMoveFinished(const MoveImpl& move, const AnalysisDataImpl& analysis)
+void EngineNotificationAdaptor::OnEngineMoveFinished(const std::vector<AnalysisDataImpl>& analysis)
 {
-	Platform::Array<Move^>^ arrayAnalysis = ref new Platform::Array<Move^>(analysis.listAnalysis.size());
-	AnalysisData^ analysisData = ref new AnalysisData();
-	
-	int iCrtIdx = -1;
-	for (auto it : analysis.listAnalysis) {
-		arrayAnalysis->set(++iCrtIdx, ManagedConverter::ConvertNativeMove(it));
-	}
-	analysisData->Analysis = arrayAnalysis;
-	analysisData->Score = analysis.fScore;
-	analysisData->IsBestMove = analysis.isBestMove;
-	analysisData->Depth = analysis.depth;
-	analysisData->NodesPerSecond = analysis.nodesPerSecond;
+	Platform::Array<AnalysisData^>^ result = ref new Platform::Array<AnalysisData^>(analysis.size());
 
-	m_pManagedNotification->OnEngineMoveFinished(ManagedConverter::ConvertNativeMove(move), analysisData);
+	int iCrtLineIdx = -1;
+	for (auto line_it : analysis) {
+		Platform::Array<Move^>^ arrayAnalysis = ref new Platform::Array<Move^>(line_it.listAnalysis.size());
+		AnalysisData^ analysisData = ref new AnalysisData();
+
+		int iCrtIdx = -1;
+		for (auto it : line_it.listAnalysis) {
+			arrayAnalysis->set(++iCrtIdx, ManagedConverter::ConvertNativeMove(it));
+		}
+		analysisData->Analysis = arrayAnalysis;
+		analysisData->Score = line_it.fScore;
+		analysisData->IsBestMove = line_it.isBestMove;
+		analysisData->Depth = line_it.depth;
+		analysisData->NodesPerSecond = line_it.nodesPerSecond;
+		analysisData->MultiPV = line_it.multiPV;
+
+		result->set(++iCrtLineIdx, analysisData);
+	}
+
+	m_pManagedNotification->OnEngineMoveFinished(result);
 }
 
 

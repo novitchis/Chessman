@@ -2,6 +2,8 @@
 using Framework.MVVM;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,11 +15,11 @@ namespace ChessEngineClient.ViewModel
     {
         private IEngineBoardService analysisBoardService = null;
         private IAnalysisReceiver analysisReceiver = null;
-        private string moves = String.Empty;
         private SynchronizationContext uiSynchronizationContext = null;
         private string evaluation = "-";
         private string depth = "";
         private bool isActive = false;
+        private List<AnalysisLineViewModel> analysisLines = null;
 
         #region "Properties"
 
@@ -47,19 +49,6 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        public string Moves
-        {
-            get { return moves; }
-            set
-            {
-                if (moves != value)
-                {
-                    moves = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
         public bool IsActive
         {
             get { return isActive; }
@@ -68,6 +57,19 @@ namespace ChessEngineClient.ViewModel
                 if (isActive != value)
                 {
                     isActive = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public List<AnalysisLineViewModel> AnalysisLines
+        {
+            get { return analysisLines; }
+            set
+            {
+                if (analysisLines != value)
+                {
+                    analysisLines = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -114,79 +116,60 @@ namespace ChessEngineClient.ViewModel
         {
             IsActive = false;
             Evaluation = "-";
-            Moves = string.Empty;
+            AnalysisLines = null;
         }
 
         private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
         {
+            // since the engine may not be stopped in time and the board can be already changed, 
+            // some variations may throw exceptions when getting the pgn from the current board
             try
             {
-                // ignore best move since it does not have the entire line moves
-                if (e.Data.IsBestMove)
-                    return;
-
-                float whiteScoreEvaluation = analysisBoardService.IsWhiteTurn ? e.Data.Score : e.Data.Score * -1;
-                string newEvalutation = whiteScoreEvaluation > 0 ? $"+{whiteScoreEvaluation}" : whiteScoreEvaluation.ToString();
-                string newMoves = GetEvaluationVariationString(e.Data);
-                if (newMoves.TrimEnd().EndsWith("#"))
-                    newEvalutation = GetMateEvaluation(e.Data);
-
-                // make sure it is executed on the ui thread
-                uiSynchronizationContext.Post(o =>
-                {
-                    if (!IsActive)
-                        return;
-
-                    Messenger.Default.Send(new GenericMessage<Move>(this, e.Data.Analysis[0]), NotificationMessages.AnalysisBestMoveReceived);
-
-                    Evaluation = newEvalutation;
-                    Depth = $"Depth {e.Data.Depth}";
-                    Moves = newMoves;
-                }, null);
+                UpdateAnalysisLines(e.AnalysisLines);
             }
             catch
             {
             }
         }
 
-        private string GetMateEvaluation(AnalysisData data)
+        private void UpdateAnalysisLines(AnalysisData[] analysis)
         {
-            string sign = "-";
+            // we can get duplicated varitaions for the same line
+            Dictionary<int, AnalysisData> multiPvToLineMap = analysis.ToDictionary(l => l.MultiPV);
 
-            if ((data.Analysis.Length % 2 != 0 && analysisBoardService.IsWhiteTurn) ||
-                (data.Analysis.Length % 2 == 0 && !analysisBoardService.IsWhiteTurn))
+            List<AnalysisLineViewModel> newAnalysisLinesVM = new List<AnalysisLineViewModel>();
+
+            foreach (int multiPv in multiPvToLineMap.Keys.OrderBy(key => key))
             {
-                sign = "+";
+                // ignore best move since it does not have the entire line moves
+                //if (AnalysisLines.IsBestMove)
+                //    return;
+
+                AnalysisData analysisLine = multiPvToLineMap[multiPv];
+
+                SideColor gameStartedBy = analysisBoardService.WasBlackFirstToMove() ? SideColor.Black : SideColor.White;
+                AnalysisLineViewModel lineVm = new AnalysisLineViewModel(gameStartedBy, analysisLine.Score, analysisBoardService.GetVariationMoveData(analysisLine.Analysis));
+
+                newAnalysisLinesVM.Add(lineVm);
             }
 
-            return sign + "M" + Math.Ceiling(((float)data.Analysis.Length) / 2).ToString();
-        }
-
-        private string GetEvaluationVariationString(AnalysisData data)
-        {
-            StringBuilder variationBuilder = new StringBuilder();
-
-            bool isFirstMoveProcesssed = false;
-            foreach (MoveData moveData in analysisBoardService.GetVariationMoveData(data.Analysis))
+            // make sure it is executed on the ui thread
+            uiSynchronizationContext.Post(o =>
             {
-                int actualMoveindex = moveData.Index;
-                if (analysisBoardService.WasBlackFirstToMove())
-                    actualMoveindex++;
+                if (!IsActive)
+                    return;
 
-                bool isWhiteMove = actualMoveindex % 2 == 0;
-                int moveGroupNumber = actualMoveindex / 2 + 1;
+                // notify best move received for arrow rendering
+                Messenger.Default.Send(new GenericMessage<Move>(this, analysis[0].Analysis[0]), NotificationMessages.AnalysisBestMoveReceived);
 
-                if (isWhiteMove)
-                    variationBuilder.AppendFormat("{0}. {1}", moveGroupNumber, moveData.PgnMove);
-                else if (!isFirstMoveProcesssed)
-                    variationBuilder.AppendFormat("{0}. ... {1} ", moveGroupNumber, moveData.PgnMove);
-                else
-                    variationBuilder.AppendFormat(" {0} ", moveData.PgnMove);
+                AnalysisLines = newAnalysisLinesVM;
 
-                isFirstMoveProcesssed = true;
-            }
+                //TODO: can get rid of this?
+                Evaluation = AnalysisLines[0].Evaluation;
+                Depth = $"Depth {analysis[0].Depth}";
 
-            return variationBuilder.ToString();
+            }, null);
+
         }
     }
 }

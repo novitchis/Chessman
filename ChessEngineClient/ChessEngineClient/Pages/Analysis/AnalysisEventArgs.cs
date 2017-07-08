@@ -11,7 +11,7 @@ namespace ChessEngineClient
 
     public class AnalysisEventArgs: EventArgs
     {
-        public AnalysisData Data { get; set; }
+        public AnalysisData[] AnalysisLines { get; set; }
     }
 
 

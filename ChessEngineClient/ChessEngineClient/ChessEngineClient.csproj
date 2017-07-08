@@ -106,6 +106,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\AnalysisLineViewModel.cs" />
     <Compile Include="Analysis\AnalysisView.xaml.cs">
       <DependentUpon>AnalysisView.xaml</DependentUpon>
     </Compile>
