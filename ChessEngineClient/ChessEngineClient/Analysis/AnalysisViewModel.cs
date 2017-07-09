@@ -13,9 +13,7 @@ namespace ChessEngineClient.ViewModel
 {
     public class AnalysisViewModel : ViewModelBase
     {
-        private const int LinesCount = 2;
-
-        private IEngineBoardService analysisBoardService = null;
+        private IAnalysisBoardService analysisBoardService = null;
         private IAnalysisReceiver analysisReceiver = null;
         private SynchronizationContext uiSynchronizationContext = null;
         private bool isActive = false;
@@ -63,15 +61,21 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
+        public int LinesCount { get; private set; } = 2;
+
         #endregion
 
-        public AnalysisViewModel(IEngineBoardService analysisBoardService, IAnalysisReceiver analysisReceiver)
+        public AnalysisViewModel(IAnalysisBoardService analysisBoardService, IAnalysisReceiver analysisReceiver)
         {
             this.analysisBoardService = analysisBoardService;
             this.analysisReceiver = analysisReceiver;
             uiSynchronizationContext = SynchronizationContext.Current;
+            InitiateEmptyLines();
+        }
 
-            analysisLines = new List<AnalysisLineViewModel>(GetEmptyLinesVM(LinesCount));
+        private void InitiateEmptyLines()
+        {
+            AnalysisLines = GetEmptyLinesVM(LinesCount).ToList();
         }
 
         public void SubscribeToAnalysis()
@@ -84,6 +88,13 @@ namespace ChessEngineClient.ViewModel
         {
             analysisReceiver.AnalysisReceived -= OnAnalysisReceived;
             analysisReceiver.AnalysisStateChanged -= OnAnalysisStateChanged;
+        }
+
+        public void SetAnalysisLines(int linesCount)
+        {
+            LinesCount = linesCount;
+            analysisBoardService.SetAnalysisLines(linesCount);
+            InitiateEmptyLines();
         }
 
         private void OnAnalysisStateChanged(object sender, AnalysisStateEventArgs e)
@@ -107,7 +118,7 @@ namespace ChessEngineClient.ViewModel
         private void OnAnalysisStopped()
         {
             IsActive = false;
-            AnalysisLines = GetEmptyLinesVM(LinesCount).ToList();
+            InitiateEmptyLines();
         }
 
         private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
@@ -125,7 +136,8 @@ namespace ChessEngineClient.ViewModel
 
         private void UpdateAnalysisLines(AnalysisData[] analysis)
         {
-            if (!IsActive)
+            // ignore best move since it does not contain all analysis moves
+            if (!IsActive || analysis[0].IsBestMove)
                 return;
 
             List<AnalysisLineViewModel> newAnalysiLines = GetAnalysisLineVMs(analysis);

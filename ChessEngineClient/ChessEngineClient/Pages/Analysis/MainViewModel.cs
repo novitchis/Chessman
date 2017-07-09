@@ -29,7 +29,7 @@ namespace ChessEngineClient.ViewModel
 
         public MainViewModel(
             INavigationService navigationService, 
-            IEngineBoardService analysisBoardService, 
+            IAnalysisBoardService analysisBoardService, 
             ITextReaderService textService, 
             IAppSettings appSettings)
             : base(navigationService, analysisBoardService)
@@ -55,6 +55,7 @@ namespace ChessEngineClient.ViewModel
         {
             BoardViewModel.ShowSuggestedMoveArrow = (bool)appSettings.Values[AppPersistenceManager.ShowBestMoveArrowKey];
             BoardViewModel.PlaySounds = (bool)appSettings.Values[AppPersistenceManager.EnableMoveSoundsKey];
+            AnalysisViewModel.SetAnalysisLines((int)appSettings.Values[AppPersistenceManager.MultipleLinesKey]);
         }
 
         public override void OnNavigatingFrom()

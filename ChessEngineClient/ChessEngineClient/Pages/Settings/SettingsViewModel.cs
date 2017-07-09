@@ -36,6 +36,18 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
+        public int MultipleLines
+        {
+            get
+            {
+                return (int)appSettings.Values[AppPersistenceManager.MultipleLinesKey];
+            }
+            set
+            {
+                appSettings.Values[AppPersistenceManager.MultipleLinesKey] = value;
+            }
+        }
+
         public bool ShowBestMoveArrow
         {
             get

@@ -9,12 +9,13 @@ using ChessEngineClient.Extensions;
 
 namespace ChessEngineClient
 {
-    public class AnalysisBoardService : BoardService, IEngineBoardService
+    public class AnalysisBoardService : BoardService, IAnalysisBoardService
     {
         private IEngine engine = null;
         private IEngineNotification engineNotification = null;
         private bool isStarted = false;
         private Action debouncedAnalysisAction = null;
+        private int linesCount = 2;
 
         public AnalysisBoardService(IEngineNotification engineNotification, IEngine engine)
         {
@@ -26,6 +27,11 @@ namespace ChessEngineClient
                 System.Diagnostics.Debug.WriteLine("Analysis");
                 engine.Analyze(ChessBoard, -1, -1);
             });
+        }
+
+        public void SetAnalysisLines(int linesCount)
+        {
+            this.linesCount = linesCount;
         }
 
         public override void ResetBoard()
@@ -61,7 +67,7 @@ namespace ChessEngineClient
         public void Start()
         {
             // if is not maximum the analyze infinite command has some issues
-            engine.SetOptions(new EngineOptions() { SkillLevel = 20, MultiPV = 2 });
+            engine.SetOptions(new EngineOptions() { SkillLevel = 20, MultiPV = linesCount });
 
             AnalyseCurrentPosition();
             isStarted = true;

@@ -71,7 +71,7 @@ namespace ChessEngineClient
             engine.Start();
             IOCContainer.RegisterInstance<IEngine>(engine);
 
-            IOCContainer.RegisterType<IEngineBoardService, AnalysisBoardService>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<IAnalysisBoardService, AnalysisBoardService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IBoardEditorService, EditorService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IPracticeBoardService, PracticeBoardService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<ITextReaderService, TextReaderService>(new ContainerControlledLifetimeManager());

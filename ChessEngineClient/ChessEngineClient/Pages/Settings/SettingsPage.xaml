@@ -20,7 +20,70 @@
                         Style="{StaticResource HeaderTextStyle}" />
                 </Grid>
                 <StackPanel Margin="12 8 12 12">
-                    <StackPanel>
+                    <TextBlock 
+                        Text="General"
+                        Style="{StaticResource HeaderLabelTextStyle}" />
+                    <StackPanel Style="{StaticResource SettingsGroupItem}">
+                        <TextBlock 
+                            Text="Play move sounds"
+                            Style="{StaticResource LabelTextStyle}" />
+                        <ToggleSwitch 
+                            OnContent="Yes" 
+                            OffContent="No"
+                            IsOn="{Binding EnableMoveSounds, Mode=TwoWay}"/>
+                        <TextBlock 
+                            Text="Save boards between sessions"
+                            Style="{StaticResource LabelTextStyle}" />
+                        <ToggleSwitch 
+                            OnContent="Yes" 
+                            OffContent="No"
+                            IsOn="{Binding SavePositionsBetweenSessions, Mode=TwoWay}"/>
+                    </StackPanel>
+
+                    <TextBlock 
+                        Text="Analysis"
+                        Style="{StaticResource HeaderLabelTextStyle}" />
+                    <StackPanel Style="{StaticResource SettingsGroupItem}">
+                        <StackPanel>
+                            <TextBlock 
+                                Text="Multiple lines"
+                                Style="{StaticResource LabelTextStyle}" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*" MaxWidth="500"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="0*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Slider x:Name="linesSlider"
+                                    Grid.Column="1"
+                                    Minimum="1" 
+                                    Maximum="5" 
+                                    TickPlacement="Inline" 
+                                    TickFrequency="1"
+                                    Value="{Binding MultipleLines, Mode=TwoWay}"/>
+                                <TextBlock 
+                                    Grid.Column="2"
+                                    Margin="10 0 0 5"
+                                    Text="{x:Bind linesSlider.Value, Mode=OneWay}"
+                                    HorizontalAlignment="Center"
+                                    Style="{StaticResource LabelTextStyle}" />
+                            </Grid>
+                        </StackPanel>
+
+                        <TextBlock 
+                            Text="Best move arrow"
+                            Style="{StaticResource LabelTextStyle}" />
+                        <ToggleSwitch 
+                            OnContent="Yes" 
+                            OffContent="No"
+                            IsOn="{Binding ShowBestMoveArrow, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <TextBlock 
+                        Text="Computer Practice"
+                        Style="{StaticResource HeaderLabelTextStyle}" />
+                    <StackPanel Style="{StaticResource SettingsGroupItem}">
                         <TextBlock 
                             Text="Practice computer level"
                             Style="{StaticResource LabelTextStyle}" />
@@ -47,33 +110,8 @@
                                 Style="{StaticResource LabelTextStyle}" />
                         </Grid>
                     </StackPanel>
-                    <StackPanel>
-                        <TextBlock 
-                            Text="Play move sounds"
-                            Style="{StaticResource LabelTextStyle}" />
-                        <ToggleSwitch 
-                            OnContent="Yes" 
-                            OffContent="No"
-                            IsOn="{Binding EnableMoveSounds, Mode=TwoWay}"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <TextBlock 
-                            Text="Show analysis best move arrow"
-                            Style="{StaticResource LabelTextStyle}" />
-                        <ToggleSwitch 
-                            OnContent="Yes" 
-                            OffContent="No"
-                            IsOn="{Binding ShowBestMoveArrow, Mode=TwoWay}"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <TextBlock 
-                            Text="Save boards between sessions"
-                            Style="{StaticResource LabelTextStyle}" />
-                        <ToggleSwitch 
-                            OnContent="Yes" 
-                            OffContent="No"
-                            IsOn="{Binding SavePositionsBetweenSessions, Mode=TwoWay}"/>
-                    </StackPanel>
+
+                    
                 </StackPanel>
             </StackPanel>
         </Grid>

@@ -154,6 +154,7 @@
     <Compile Include="IAppSettings.cs" />
     <Compile Include="LocalAppDataSettings.cs" />
     <Compile Include="Pages\Analysis\Debounce.cs" />
+    <Compile Include="Pages\Analysis\IAnalysisBoardService.cs" />
     <Compile Include="Pages\ComputerPractice\PracticeBoardViewModel.cs" />
     <Compile Include="Pages\ComputerPractice\PracticePage.xaml.cs">
       <DependentUpon>PracticePage.xaml</DependentUpon>
