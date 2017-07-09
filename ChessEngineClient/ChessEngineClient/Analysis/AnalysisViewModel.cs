@@ -13,41 +13,16 @@ namespace ChessEngineClient.ViewModel
 {
     public class AnalysisViewModel : ViewModelBase
     {
+        private const int LinesCount = 2;
+
         private IEngineBoardService analysisBoardService = null;
         private IAnalysisReceiver analysisReceiver = null;
         private SynchronizationContext uiSynchronizationContext = null;
-        private string evaluation = "-";
-        private string depth = "";
         private bool isActive = false;
         private List<AnalysisLineViewModel> analysisLines = null;
+        private bool isGameOver = false;
 
         #region "Properties"
-
-        public string Evaluation
-        {
-            get { return evaluation; }
-            set
-            {
-                if (evaluation != value)
-                {
-                    evaluation = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public string Depth
-        {
-            get { return depth; }
-            set
-            {
-                if (depth != value)
-                {
-                    depth = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
 
         public bool IsActive
         {
@@ -75,6 +50,19 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
+        public bool IsGameOver
+        {
+            get { return isGameOver; }
+            set
+            {
+                if (isGameOver != value)
+                {
+                    isGameOver = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         #endregion
 
         public AnalysisViewModel(IEngineBoardService analysisBoardService, IAnalysisReceiver analysisReceiver)
@@ -82,6 +70,8 @@ namespace ChessEngineClient.ViewModel
             this.analysisBoardService = analysisBoardService;
             this.analysisReceiver = analysisReceiver;
             uiSynchronizationContext = SynchronizationContext.Current;
+
+            analysisLines = new List<AnalysisLineViewModel>(GetEmptyLinesVM(LinesCount));
         }
 
         public void SubscribeToAnalysis()
@@ -110,13 +100,14 @@ namespace ChessEngineClient.ViewModel
                 default:
                     break;
             }
+
+            IsGameOver = analysisBoardService.GetIsMate() || analysisBoardService.GetIsStalemate();
         }
 
         private void OnAnalysisStopped()
         {
             IsActive = false;
-            Evaluation = "-";
-            AnalysisLines = null;
+            AnalysisLines = GetEmptyLinesVM(LinesCount).ToList();
         }
 
         private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
@@ -134,42 +125,38 @@ namespace ChessEngineClient.ViewModel
 
         private void UpdateAnalysisLines(AnalysisData[] analysis)
         {
-            // we can get duplicated varitaions for the same line
-            Dictionary<int, AnalysisData> multiPvToLineMap = analysis.ToDictionary(l => l.MultiPV);
+            if (!IsActive)
+                return;
 
-            List<AnalysisLineViewModel> newAnalysisLinesVM = new List<AnalysisLineViewModel>();
+            List<AnalysisLineViewModel> newAnalysiLines = GetAnalysisLineVMs(analysis);
 
-            foreach (int multiPv in multiPvToLineMap.Keys.OrderBy(key => key))
-            {
-                // ignore best move since it does not have the entire line moves
-                //if (AnalysisLines.IsBestMove)
-                //    return;
-
-                AnalysisData analysisLine = multiPvToLineMap[multiPv];
-
-                SideColor gameStartedBy = analysisBoardService.WasBlackFirstToMove() ? SideColor.Black : SideColor.White;
-                AnalysisLineViewModel lineVm = new AnalysisLineViewModel(gameStartedBy, analysisLine.Score, analysisBoardService.GetVariationMoveData(analysisLine.Analysis));
-
-                newAnalysisLinesVM.Add(lineVm);
-            }
-
-            // make sure it is executed on the ui thread
+            // analysis is received on a background thread
             uiSynchronizationContext.Post(o =>
             {
-                if (!IsActive)
-                    return;
-
-                // notify best move received for arrow rendering
+                AnalysisLines = newAnalysiLines;
                 Messenger.Default.Send(new GenericMessage<Move>(this, analysis[0].Analysis[0]), NotificationMessages.AnalysisBestMoveReceived);
 
-                AnalysisLines = newAnalysisLinesVM;
-
-                //TODO: can get rid of this?
-                Evaluation = AnalysisLines[0].Evaluation;
-                Depth = $"Depth {analysis[0].Depth}";
-
             }, null);
+        }
 
+        private List<AnalysisLineViewModel> GetAnalysisLineVMs(AnalysisData[] analysis)
+        {
+            List<AnalysisLineViewModel> result = GetEmptyLinesVM(LinesCount).ToList();
+
+            foreach (AnalysisData lineData in analysis)
+            {
+                SideColor gameStartedBy = analysisBoardService.WasBlackFirstToMove() ? SideColor.Black : SideColor.White;
+                var moves = analysisBoardService.GetVariationMoveData(lineData.Analysis);
+                result[lineData.MultiPV - 1] = new AnalysisLineViewModel(gameStartedBy, lineData, moves);
+            }
+
+            return result;
+
+        }
+
+        private IEnumerable<AnalysisLineViewModel> GetEmptyLinesVM(int count)
+        {
+            return Enumerable.Range(0, count).Select(i => new AnalysisLineViewModel() { IsLastItem = i == count });
         }
     }
 }

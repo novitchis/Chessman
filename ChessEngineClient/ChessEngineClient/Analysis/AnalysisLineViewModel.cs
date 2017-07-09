@@ -2,6 +2,7 @@
 using Framework.MVVM;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,27 +13,42 @@ namespace ChessEngineClient.ViewModel
     {
         private SideColor gameStartedBy = SideColor.White;
         private bool isWhiteFirstMove = true;
-        private float score = .0f;
+        private AnalysisData analysisData = null;
+        private IList<MoveData> moves = new List<MoveData>();
 
-        public IList<MoveData> Moves { get; set; }
+        #region "Properties"
+
+        public int Depth
+        {
+            get
+            {
+                if (analysisData == null)
+                    return 0;
+                    
+                return analysisData.Depth;
+            }
+        }
 
         public string Evaluation
         {
             get
             {
-                float whiteScoreEvaluation = isWhiteFirstMove ? score : score * -1;
+                if (analysisData == null)
+                    return null;
+
+                float whiteScoreEvaluation = isWhiteFirstMove ? analysisData.Score : analysisData.Score * -1;
                 string evaluation = whiteScoreEvaluation > 0 ? $"+{whiteScoreEvaluation}" : whiteScoreEvaluation.ToString();
-                if (Moves.Last().PgnMove.TrimEnd().EndsWith("#"))
+                if (moves.Last().PgnMove.TrimEnd().EndsWith("#"))
                 {
                     string sign = "-";
 
-                    if ((Moves.Count % 2 != 0 && isWhiteFirstMove) ||
-                        (Moves.Count % 2 == 0 && !isWhiteFirstMove))
+                    if ((moves.Count % 2 != 0 && isWhiteFirstMove) ||
+                        (moves.Count % 2 == 0 && !isWhiteFirstMove))
                     {
                         sign = "+";
                     }
 
-                    return sign + "M" + Math.Ceiling(((float)Moves.Count) / 2).ToString();
+                    return sign + "M" + Math.Ceiling(((float)moves.Count) / 2).ToString();
                 }
 
                 return evaluation;
@@ -43,10 +59,13 @@ namespace ChessEngineClient.ViewModel
         {
             get
             {
+                if (analysisData == null)
+                    return String.Empty;
+
                 StringBuilder variationBuilder = new StringBuilder();
 
                 bool isFirstMoveProcesssed = false;
-                foreach (MoveData moveData in Moves)
+                foreach (MoveData moveData in moves)
                 {
                     int actualMoveindex = moveData.Index;
                     if (gameStartedBy == SideColor.White)
@@ -69,15 +88,21 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        public AnalysisLineViewModel(SideColor gameStartedBy, float score, IList<MoveData> moves)
+        public bool IsLastItem { get; set; }
+
+        #endregion
+
+        public AnalysisLineViewModel() { }
+
+        public AnalysisLineViewModel(SideColor gameStartedBy, AnalysisData analysisData, IList<MoveData> moves)
         {
             this.gameStartedBy = gameStartedBy;
-            this.score = score;
+            this.analysisData = analysisData;
 
             this.isWhiteFirstMove = gameStartedBy == SideColor.White && moves.First().Index % 2 == 0 ||
                 gameStartedBy == SideColor.Black && moves.First().Index % 2 != 0;
 
-            Moves = moves;
+            this.moves = moves;
         }
     }
 }
