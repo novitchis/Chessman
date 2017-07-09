@@ -397,6 +397,9 @@ bool ChessBoardImpl::SubmitMove(const MoveImpl& move)
 
 bool ChessBoardImpl::GoToMove(int moveIndex)
 {
+	if (m_listMoves.size() == 0)
+		return false;
+
 	if (moveIndex > (int)(m_listMoves.size() - 1))
 		return false;
 
