@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation.Collections;
+using Windows.System.Profile;
 
 namespace ChessEngineClient.ViewModel
 {
@@ -47,6 +48,17 @@ namespace ChessEngineClient.ViewModel
                 appSettings.Values[AppPersistenceManager.MultipleLinesKey] = value;
             }
         }
+
+        public int MaximumLines
+        {
+            get
+            {
+                if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
+                   return 3;
+                return 5;
+            }
+        }
+
 
         public bool ShowBestMoveArrow
         {

@@ -59,7 +59,7 @@
                                 <Slider x:Name="linesSlider"
                                     Grid.Column="1"
                                     Minimum="1" 
-                                    Maximum="5" 
+                                    Maximum="{Binding MaximumLines}" 
                                     TickPlacement="Inline" 
                                     TickFrequency="1"
                                     Value="{Binding MultipleLines, Mode=TwoWay}"/>
@@ -85,7 +85,7 @@
                         Style="{StaticResource HeaderLabelTextStyle}" />
                     <StackPanel Style="{StaticResource SettingsGroupItem}">
                         <TextBlock 
-                            Text="Practice computer level"
+                            Text="Computer level"
                             Style="{StaticResource LabelTextStyle}" />
                         <Grid>
                             <Grid.ColumnDefinitions>
