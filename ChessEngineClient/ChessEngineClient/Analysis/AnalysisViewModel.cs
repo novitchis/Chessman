@@ -75,7 +75,7 @@ namespace ChessEngineClient.ViewModel
 
         private void InitiateEmptyLines()
         {
-            AnalysisLines = GetEmptyLinesVM(LinesCount).ToList();
+            AnalysisLines = GetEmptyLinesVM().ToList();
         }
 
         public void SubscribeToAnalysis()
@@ -153,22 +153,24 @@ namespace ChessEngineClient.ViewModel
 
         private List<AnalysisLineViewModel> GetAnalysisLineVMs(AnalysisData[] analysis)
         {
-            List<AnalysisLineViewModel> result = GetEmptyLinesVM(LinesCount).ToList();
+            List<AnalysisLineViewModel> result = GetEmptyLinesVM().ToList();
 
             foreach (AnalysisData lineData in analysis)
             {
                 SideColor gameStartedBy = analysisBoardService.WasBlackFirstToMove() ? SideColor.Black : SideColor.White;
                 var moves = analysisBoardService.GetVariationMoveData(lineData.Analysis);
-                result[lineData.MultiPV - 1] = new AnalysisLineViewModel(gameStartedBy, lineData, moves);
+                result[lineData.MultiPV - 1] = new AnalysisLineViewModel(gameStartedBy, lineData, moves) { IsLastItem = lineData.MultiPV == LinesCount };
             }
 
-            return result;
+            if (LinesCount == 1)
+                result[0].DisplayEvaluation = false;
 
+            return result;
         }
 
-        private IEnumerable<AnalysisLineViewModel> GetEmptyLinesVM(int count)
+        private IEnumerable<AnalysisLineViewModel> GetEmptyLinesVM()
         {
-            return Enumerable.Range(0, count).Select(i => new AnalysisLineViewModel() { IsLastItem = i == count });
+            return Enumerable.Range(0, LinesCount).Select(i => new AnalysisLineViewModel() { IsLastItem = i == LinesCount - 1 });
         }
     }
 }

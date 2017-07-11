@@ -90,6 +90,8 @@ namespace ChessEngineClient.ViewModel
 
         public bool IsLastItem { get; set; }
 
+        public bool DisplayEvaluation { get; set; } = true;
+
         #endregion
 
         public AnalysisLineViewModel() { }
