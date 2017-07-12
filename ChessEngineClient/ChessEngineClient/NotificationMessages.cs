@@ -8,6 +8,7 @@ namespace ChessEngineClient
 {
     public static class NotificationMessages
     {
+        public const string AnalysisIsOnChanged = "AnalysisIsOnChanged";
         public const string CurrentMoveChanged = "CurrentMoveChanged";
         public const string AnalysisBestMoveReceived = "AnalysisBestMoveReceived";
         public const string MoveExecuted = "MoveExecuted";

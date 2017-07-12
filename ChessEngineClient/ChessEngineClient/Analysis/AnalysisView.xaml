@@ -26,7 +26,7 @@
             <ItemsControl ItemsSource="{Binding AnalysisLines, Mode=OneWay}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel x:Name="itemRootPanel" Orientation="Horizontal" BorderThickness="0 0 0 1" BorderBrush="{StaticResource AccentBrush300}">
+                        <StackPanel x:Name="itemRootPanel" Height="24" Orientation="Horizontal" BorderThickness="0 0 0 1" BorderBrush="{StaticResource AccentBrush300}">
                             <Border 
                                 MinWidth="60"
                                 VerticalAlignment="Center"
@@ -37,8 +37,8 @@
                                     HorizontalAlignment="Center"
                                     Text="{Binding Evaluation}" />
                             </Border>
-                            <TextBlock 
-                                Margin="8 2 0 2"
+                            <TextBlock                                 
+                                VerticalAlignment="Center"
                                 Style="{StaticResource AnalysisLineText}"
                                 Text="{Binding MovesString}" />
                             <i:Interaction.Behaviors>
@@ -49,6 +49,11 @@
                         </StackPanel>
                     </DataTemplate>    
                 </ItemsControl.ItemTemplate>
+                <i:Interaction.Behaviors>
+                    <ic:DataTriggerBehavior Binding="{Binding AnalysisLines.Count}" Value="1">
+                        <ic:ChangePropertyAction PropertyName="Margin" Value="12 0 0 0" />
+                    </ic:DataTriggerBehavior>
+                </i:Interaction.Behaviors>
             </ItemsControl>
         </Border>
     </Grid>

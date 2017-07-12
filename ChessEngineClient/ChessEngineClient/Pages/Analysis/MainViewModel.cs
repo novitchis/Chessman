@@ -39,8 +39,13 @@ namespace ChessEngineClient.ViewModel
             AnalysisViewModel = ViewModelLocator.IOCContainer.Resolve<AnalysisViewModel>();
             BoardViewModel = new AnalysisChessBoardViewModel(analysisBoardService);
 
-            // TODO: just until we fix the crash on start
-            useInitializationDelay = true;
+            Messenger.Default.Register<GenericMessage<bool>>(this, NotificationMessages.AnalysisIsOnChanged, OnAnalysisIsOnChangedMessage);
+        }
+
+        private void OnAnalysisIsOnChangedMessage(GenericMessage<bool> message)
+        {
+            if (!message.Content)
+                BoardViewModel.SuggestedMove = null;
         }
 
         public override void OnNavigatedTo(object parameter)
@@ -49,6 +54,9 @@ namespace ChessEngineClient.ViewModel
 
             AnalysisViewModel.SubscribeToAnalysis();
             base.OnNavigatedTo(parameter);
+
+            if (AnalysisViewModel.IsEngineOn)
+                boardService.Start();
         }
 
         private void InitSettings()
@@ -60,7 +68,9 @@ namespace ChessEngineClient.ViewModel
 
         public override void OnNavigatingFrom()
         {
-            base.OnNavigatingFrom();
+            if (AnalysisViewModel.IsEngineOn)
+                boardService.Stop();
+
             AnalysisViewModel.UnsubscribeToAnalysis();
         }
 

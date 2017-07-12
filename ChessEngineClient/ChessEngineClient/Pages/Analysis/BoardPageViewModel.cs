@@ -14,7 +14,6 @@ namespace ChessEngineClient.ViewModel
     {
         private INavigationService navigationService = null;
         protected IEngineBoardService boardService = null;
-        protected bool useInitializationDelay = false;
 
         #region "Properties"
 
@@ -66,19 +65,11 @@ namespace ChessEngineClient.ViewModel
             NotationViewModel = new NotationViewModel(boardService);
         }
 
-        public virtual async void OnNavigatedTo(object parameter)
+        public virtual void OnNavigatedTo(object parameter)
         {
             PositionLoadOptions positionLoadOptions = parameter as PositionLoadOptions;
             if (positionLoadOptions != null)
                 LoadPosition(positionLoadOptions);
-
-            if (useInitializationDelay)
-            {
-                await Task.Delay(1500);
-                useInitializationDelay = false;
-            }
-
-            boardService.Start();
         }
 
         public virtual void LoadPosition(PositionLoadOptions positionLoadOptions)

@@ -16,11 +16,25 @@ namespace ChessEngineClient.ViewModel
         private IAnalysisBoardService analysisBoardService = null;
         private IAnalysisReceiver analysisReceiver = null;
         private SynchronizationContext uiSynchronizationContext = null;
+        private bool isEngineOn = false;
         private bool isActive = false;
         private List<AnalysisLineViewModel> analysisLines = null;
-        private bool isGameOver = false;
 
         #region "Properties"
+
+        public bool IsEngineOn
+        {
+            get => isEngineOn;
+            set
+            {
+                if (isEngineOn != value)
+                {
+                    isEngineOn = value;
+                    ChangeEngineOnOff(isEngineOn);
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         public bool IsActive
         {
@@ -48,19 +62,6 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
-        public bool IsGameOver
-        {
-            get { return isGameOver; }
-            set
-            {
-                if (isGameOver != value)
-                {
-                    isGameOver = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
         public int LinesCount { get; private set; } = 2;
 
         #endregion
@@ -70,7 +71,6 @@ namespace ChessEngineClient.ViewModel
             this.analysisBoardService = analysisBoardService;
             this.analysisReceiver = analysisReceiver;
             uiSynchronizationContext = SynchronizationContext.Current;
-            InitiateEmptyLines();
         }
 
         private void InitiateEmptyLines()
@@ -90,11 +90,30 @@ namespace ChessEngineClient.ViewModel
             analysisReceiver.AnalysisStateChanged -= OnAnalysisStateChanged;
         }
 
+        private void ChangeEngineOnOff(bool isEngineOn)
+        {
+            if (isEngineOn)
+            {
+                IsActive = true;
+                InitiateEmptyLines();
+                analysisBoardService.Start();
+            }
+            else
+            {
+                IsActive = false;
+                AnalysisLines = null;
+                analysisBoardService.Stop();
+            }
+
+            Messenger.Default.Send(new GenericMessage<bool>(isEngineOn), NotificationMessages.AnalysisIsOnChanged);
+        }
+
         public void SetAnalysisLines(int linesCount)
         {
             LinesCount = linesCount;
             analysisBoardService.SetAnalysisLines(linesCount);
-            InitiateEmptyLines();
+            if (IsEngineOn)
+                InitiateEmptyLines();
         }
 
         private void OnAnalysisStateChanged(object sender, AnalysisStateEventArgs e)
@@ -105,20 +124,13 @@ namespace ChessEngineClient.ViewModel
                     IsActive = true;
                     break;
                 case EngineState.Stop:
-                    OnAnalysisStopped();
+                    IsActive = false;
+                    InitiateEmptyLines();
                     break;
                 case EngineState.Start:
                 default:
                     break;
             }
-
-            IsGameOver = analysisBoardService.GetIsMate() || analysisBoardService.GetIsStalemate();
-        }
-
-        private void OnAnalysisStopped()
-        {
-            IsActive = false;
-            InitiateEmptyLines();
         }
 
         private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
@@ -137,7 +149,7 @@ namespace ChessEngineClient.ViewModel
         private void UpdateAnalysisLines(AnalysisData[] analysis)
         {
             // ignore best move since it does not contain all analysis moves
-            if (!IsActive || analysis[0].IsBestMove)
+            if (analysis[0].IsBestMove)
                 return;
 
             List<AnalysisLineViewModel> newAnalysiLines = GetAnalysisLineVMs(analysis);
@@ -145,6 +157,10 @@ namespace ChessEngineClient.ViewModel
             // analysis is received on a background thread
             uiSynchronizationContext.Post(o =>
             {
+                // this check has to be on the UI thread to avoid race conditions
+                if (!IsActive)
+                    return;
+
                 AnalysisLines = newAnalysiLines;
                 Messenger.Default.Send(new GenericMessage<Move>(this, analysis[0].Analysis[0]), NotificationMessages.AnalysisBestMoveReceived);
 

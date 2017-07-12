@@ -52,6 +52,7 @@ namespace ChessEngineClient.ViewModel
         {
             InitiSettings();
             base.OnNavigatedTo(parameter);
+            boardService.Start();
         }
 
         private void InitiSettings()
