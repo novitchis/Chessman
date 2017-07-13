@@ -66,15 +66,19 @@ namespace ChessEngineClient
 
         public void Start()
         {
+            isStarted = true;
+
             // if is not maximum the analyze infinite command has some issues
             engine.SetOptions(new EngineOptions() { SkillLevel = 20, MultiPV = linesCount });
 
             AnalyseCurrentPosition();
-            isStarted = true;
         }
 
         private void AnalyseCurrentPosition()
         {
+            if (!isStarted)
+                return;
+
             if (!ChessBoard.IsStalemate() && !ChessBoard.IsCheckmate())
             {
                 engineNotification.OnStateChanged(EngineState.Analyze);
@@ -88,8 +92,8 @@ namespace ChessEngineClient
 
         public void Stop()
         {
-            engine.StopAnalyzing();
             isStarted = false;
+            engine.StopAnalyzing();
         }
 
         public override bool LoadFrom(string serializedValue, int currentMoveIndex = -1)
