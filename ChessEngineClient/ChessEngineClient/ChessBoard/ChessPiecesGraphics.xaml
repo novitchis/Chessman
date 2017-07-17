@@ -6,6 +6,8 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core">
 
+    <FontFamily x:Key="ChessFont">/Assets/SegoeUI_Merinda.ttf#Segoe UI Merinda</FontFamily>
+
     <view:ChessPieceTemplateSelector x:Key="ChessPieceTemplateSelector"/>
 
     <!--All these geometries were generated using a tool from an svg file-->

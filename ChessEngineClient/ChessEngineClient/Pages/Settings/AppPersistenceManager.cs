@@ -14,7 +14,9 @@ namespace ChessEngineClient
 {
     public static class AppPersistenceManager
     {
+        //TODO: all these should be set in an object
         public const string EnableMoveSoundsKey = "EnableMoveSoundsKey";
+        public const string NotationTypeKey = "NotationType";
         public const string MultipleLinesKey = "MultipleLines";
         public const string ShowBestMoveArrowKey = "ShowAnalysisArrow";
         public const string ComputerStrengthKey = "ComputerStrength";
@@ -25,6 +27,9 @@ namespace ChessEngineClient
 
         public static void InitializeDefaultSettings(ApplicationDataContainer settingsContainer)
         {
+            if (!settingsContainer.Values.ContainsKey(NotationTypeKey))
+                settingsContainer.Values[NotationTypeKey] = (int)NotationType.Figurines;
+
             if (!settingsContainer.Values.ContainsKey(ComputerStrengthKey))
                 settingsContainer.Values[ComputerStrengthKey] = 5;
 

@@ -61,6 +61,7 @@ namespace ChessEngineClient.ViewModel
             practiceBoardService.SetEngineStrength(engineStrength);
 
             BoardViewModel.PlaySounds = (bool)appSettings.Values[AppPersistenceManager.EnableMoveSoundsKey];
+            NotationViewModel.UseFigurineNotation = (int)appSettings.Values[AppPersistenceManager.NotationTypeKey] == (int)NotationType.Figurines;
         }
 
         public override void LoadPosition(PositionLoadOptions positionLoadOptions)

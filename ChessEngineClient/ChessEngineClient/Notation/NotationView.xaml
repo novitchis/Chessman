@@ -10,13 +10,26 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core" 
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignWidth="400"
+    x:Name="view">
     <UserControl.Resources>
         <CollectionViewSource x:Key="GroupedMovesCollection"
                               Source="{x:Bind ViewModel.GroupedMoves, Mode=OneWay}" 
                               IsSourceGrouped="True" 
                               ItemsPath="Moves">
         </CollectionViewSource>
+
+        <DataTemplate x:Key="EnglishNotationMoveTemplate">
+            <TextBlock 
+                Name="moveText"
+                Text="{Binding PgnMove, FallbackValue='...'}" />
+        </DataTemplate>
+        <DataTemplate x:Key="FigurineNotationMoveTemplate">
+            <TextBlock 
+                Name="moveText"
+                Text="{Binding PgnMove, FallbackValue='...'}"
+                FontFamily="{StaticResource ChessFont}"/>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Border 
@@ -57,7 +70,7 @@
                         </GroupStyle.ContainerStyle>
                         <GroupStyle.Panel>
                             <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
+                                <StackPanel Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
                         </GroupStyle.Panel>
                         <GroupStyle.HeaderTemplate>
@@ -72,13 +85,6 @@
                         </GroupStyle.HeaderTemplate>
                     </GroupStyle>
                 </ItemsControl.GroupStyle>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock 
-                            Name="moveText"
-                            Text="{Binding PgnMove, FallbackValue='...'}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <c:WrapPanel />
@@ -104,6 +110,12 @@
                 </ic:DataTriggerBehavior>
                 <ic:DataTriggerBehavior Binding="{Binding GroupedMoves.Count}" Value="0" ComparisonCondition="NotEqual">
                     <ic:ChangePropertyAction TargetObject="{Binding ElementName=notationText}" PropertyName="Visibility" Value="Collapsed" />
+                </ic:DataTriggerBehavior>
+                <ic:DataTriggerBehavior Binding="{Binding UseFigurineNotation}" Value="True">
+                    <ic:ChangePropertyAction TargetObject="{Binding ElementName=notationList}" PropertyName="ItemTemplate" Value="{StaticResource FigurineNotationMoveTemplate}" />
+                </ic:DataTriggerBehavior>
+                <ic:DataTriggerBehavior Binding="{Binding UseFigurineNotation}" Value="False">
+                    <ic:ChangePropertyAction TargetObject="{Binding ElementName=notationList}" PropertyName="ItemTemplate" Value="{StaticResource EnglishNotationMoveTemplate}" />
                 </ic:DataTriggerBehavior>
             </i:Interaction.Behaviors>
         </Grid>

@@ -13,6 +13,20 @@ namespace ChessEngineClient.ViewModel
     {
         private IAppSettings appSettings = null;
 
+        public NotationType[] AvailableNotationTypes { get; } = new[] { NotationType.Figurines, NotationType.English };
+
+        public NotationType NotationType
+        {
+            get
+            {
+                return (NotationType)appSettings.Values[AppPersistenceManager.NotationTypeKey];
+            }
+            set
+            {
+                appSettings.Values[AppPersistenceManager.NotationTypeKey] = (int)value;
+            }
+        }
+
         public int ComputerStrength
         {
             get

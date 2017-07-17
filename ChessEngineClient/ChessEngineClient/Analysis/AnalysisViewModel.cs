@@ -19,6 +19,7 @@ namespace ChessEngineClient.ViewModel
         private bool isEngineOn = false;
         private bool isActive = false;
         private List<AnalysisLineViewModel> analysisLines = null;
+        private bool useFigurineNotation = true;
 
         #region "Properties"
 
@@ -63,6 +64,19 @@ namespace ChessEngineClient.ViewModel
         }
 
         public int LinesCount { get; private set; } = 2;
+
+        public bool UseFigurineNotation
+        {
+            get { return useFigurineNotation; }
+            set
+            {
+                if (useFigurineNotation != value)
+                {
+                    useFigurineNotation = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         #endregion
 

@@ -51,6 +51,9 @@ namespace ChessEngineClient.View
 
         private void OnCoreWindowKeyDown(CoreWindow sender, KeyEventArgs e)
         {
+            if (e.Handled)
+                return;
+
             var ctrl = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control);
             if (ctrl.HasFlag(CoreVirtualKeyStates.Down) && e.VirtualKey == VirtualKey.V)
             {

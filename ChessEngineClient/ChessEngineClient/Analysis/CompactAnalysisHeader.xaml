@@ -52,7 +52,7 @@
                     </ic:DataTriggerBehavior>
                 </i:Interaction.Behaviors>
             </StackPanel>
-            <ToggleSwitch IsOn="{Binding IsEngineOn, Mode=TwoWay}" Grid.Column="1" OnContent="" OffContent="" MinWidth="0"/>
+            <ToggleSwitch IsTabStop="False" IsOn="{Binding IsEngineOn, Mode=TwoWay}" Grid.Column="1" OnContent="" OffContent="" MinWidth="0"/>
         </Grid>
     </Grid> 
 </UserControl>

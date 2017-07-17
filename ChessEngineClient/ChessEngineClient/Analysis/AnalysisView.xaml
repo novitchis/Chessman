@@ -23,7 +23,7 @@
         <Border 
             Background="{StaticResource WhiteBrush}"
             Grid.Column="1">
-            <ItemsControl ItemsSource="{Binding AnalysisLines, Mode=OneWay}">
+            <ItemsControl x:Name="linesList" ItemsSource="{Binding AnalysisLines, Mode=OneWay}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel x:Name="itemRootPanel" Height="24" Orientation="Horizontal" BorderThickness="0 0 0 1" BorderBrush="{StaticResource AccentBrush300}">
@@ -37,7 +37,7 @@
                                     HorizontalAlignment="Center"
                                     Text="{Binding Evaluation}" />
                             </Border>
-                            <TextBlock                                 
+                            <TextBlock 
                                 VerticalAlignment="Center"
                                 Style="{StaticResource AnalysisLineText}"
                                 Text="{Binding MovesString}" />
@@ -52,6 +52,12 @@
                 <i:Interaction.Behaviors>
                     <ic:DataTriggerBehavior Binding="{Binding AnalysisLines.Count}" Value="1">
                         <ic:ChangePropertyAction PropertyName="Margin" Value="12 0 0 0" />
+                    </ic:DataTriggerBehavior>
+                    <ic:DataTriggerBehavior Binding="{Binding UseFigurineNotation}" Value="True">
+                        <ic:ChangePropertyAction TargetObject="{Binding ElementName=linesList}" PropertyName="FontFamily" Value="{StaticResource ChessFont}" />
+                    </ic:DataTriggerBehavior>
+                    <ic:DataTriggerBehavior Binding="{Binding UseFigurineNotation}" Value="False">
+                        <ic:ChangePropertyAction TargetObject="{Binding ElementName=linesList}" PropertyName="FontFamily" Value="Segoe UI" />
                     </ic:DataTriggerBehavior>
                 </i:Interaction.Behaviors>
             </ItemsControl>

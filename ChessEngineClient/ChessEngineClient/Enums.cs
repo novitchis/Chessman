@@ -11,4 +11,11 @@ namespace ChessEngineClient
         White,
         Black,
     }
+
+    public enum NotationType
+    {
+        Figurines,
+        English
+    }
 }
+

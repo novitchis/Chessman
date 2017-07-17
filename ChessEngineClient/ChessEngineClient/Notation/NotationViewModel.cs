@@ -17,6 +17,7 @@ namespace ChessEngineClient.ViewModel
         private IBoardService analysisBoardService = null;
         private ObservableCollection<MoveDataGroup> groupedMoves = new ObservableCollection<MoveDataGroup>();
         private MoveData currentMove = null;
+        private bool useFigurineNotation = true;
 
         #region Properties
 
@@ -47,6 +48,19 @@ namespace ChessEngineClient.ViewModel
                             Messenger.Default.Send(new GenericMessage<MoveData>(this, analysisBoardService, currentMove), NotificationMessages.CurrentMoveChanged);
                     }
 
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public bool UseFigurineNotation
+        {
+            get { return useFigurineNotation; }
+            set
+            {
+                if (useFigurineNotation != value)
+                {
+                    useFigurineNotation = value;
                     NotifyPropertyChanged();
                 }
             }
