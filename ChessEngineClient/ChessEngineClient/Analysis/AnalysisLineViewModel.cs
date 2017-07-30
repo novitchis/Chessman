@@ -68,7 +68,7 @@ namespace ChessEngineClient.ViewModel
                 foreach (MoveData moveData in moves)
                 {
                     int actualMoveindex = moveData.Index;
-                    if (gameStartedBy == SideColor.White)
+                    if (gameStartedBy == SideColor.Black)
                         actualMoveindex++;
 
                     bool isWhiteMove = actualMoveindex % 2 == 0;
