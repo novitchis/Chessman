@@ -87,6 +87,18 @@ void ChessBoard::SetSideToMove(bool white)
 	m_ChessBoardImpl.SetSideToMove(white);
 }
 
+bool ChessBoard::ValidateMove(Coordinate^ from, Coordinate^ to)
+{
+	try
+	{
+		return m_ChessBoardImpl.ValidateMove(MoveImpl(from->getCoordinateImpl(), to->getCoordinateImpl()));
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to validate move."));
+	}
+}
+
 bool ChessBoard::SubmitMove(Coordinate^ from, Coordinate^ to)
 {
 	try

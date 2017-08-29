@@ -24,6 +24,7 @@ namespace ChessEngine
 		void				SetPiece(Coordinate^ coord, ChessPiece^ piece);
 		void				SetSideToMove(bool white);
 
+		bool				ValidateMove(Coordinate^ from, Coordinate^ to);
 		bool				SubmitMove(Coordinate^ from, Coordinate^ to);
 		bool				UndoMove(bool bWhiteMove);
 		bool				GoToMove(int moveIndex);

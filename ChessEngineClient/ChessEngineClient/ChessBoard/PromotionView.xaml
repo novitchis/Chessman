@@ -1,0 +1,38 @@
+﻿<UserControl
+    x:Class="ChessEngineClient.View.PromotionView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="using:ChessEngineClient.View"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="80">
+
+    <Grid Background="White">
+        <StackPanel>
+            <ItemsControl ItemsSource="{Binding Pieces}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="{StaticResource DefaultBorderBrush}" BorderThickness="1">
+                            <view:ChessPieceView />
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="MaxWidth" Value="70" />
+                        <Setter Property="MaxHeight" Value="70" />
+                        <Setter Property="Margin" Value="2" />
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Background" Value="White" />
+                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
+            <Button HorizontalAlignment="Center"
+                    Margin="0 5">Cancel</Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

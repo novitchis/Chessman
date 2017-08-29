@@ -90,11 +90,40 @@ namespace ChessEngineClient.ViewModel
 
         protected virtual bool TryExecuteMove(Coordinate fromCoordinate, Coordinate toCoordinate, bool useAnimations)
         {
+            //TODO: for a promotion move first validate the move
+            // then display a selection for the promoted piece
+            if (IsPawnPromotionMove(fromCoordinate, toCoordinate))
+            {
+                // TODO: maybe validate always?
+                if (!analysisBoardService.ValidateMove(fromCoordinate, toCoordinate))
+                    return false;
+
+                InitiatePromotionMove(new Move(fromCoordinate, toCoordinate));
+
+                // a promotion move is not immediateley executed
+                // the user is prompted to 
+                return false;
+            }
+
             bool result = analysisBoardService.SubmitMove(fromCoordinate, toCoordinate);
             if (result)
                 ExecuteCurrentMoveOnBoard(useAnimations);
 
             return result;
+        }
+
+        private bool IsPawnPromotionMove(Coordinate fromCoordinate, Coordinate toCoordinate)
+        {
+            ChessPiece movingPiece = analysisBoardService.GetPiece(fromCoordinate);
+            // doesn't matter if is invalid move it wouldn't pass validation
+            return movingPiece != null && movingPiece.Type == PieceType.Pawn && (toCoordinate.Y == 7 || toCoordinate.Y == 0);
+        }
+
+        private void InitiatePromotionMove(Move move)
+        {
+            PromotionMoveTask promotionTask = new PromotionMoveTask(move);
+
+            Messenger.Default.Send(new GenericMessage<PromotionMoveTask>(this, promotionTask), NotificationMessages.AnimatePromotionMoveTask);
         }
 
         private void UndoMoveOnBoard(MoveData move)

@@ -138,7 +138,11 @@
     <Compile Include="ChessBoard\ChessPieceViewModel.cs" />
     <Compile Include="ChessBoard\EditChessBoardViewModel.cs" />
     <Compile Include="ChessBoard\ICoordinatedItem.cs" />
-    <Compile Include="ChessBoard\MoveTask.cs" />
+    <Compile Include="ChessBoard\PromotionView.xaml.cs">
+      <DependentUpon>PromotionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChessBoard\PromotionViewModel.cs" />
+    <Compile Include="ChessBoard\Tasks\MoveTask.cs" />
     <Compile Include="ChessBoard\MoveAudioFeedbackService.cs" />
     <Compile Include="ChessBoard\IMoveAudioFeedbackService.cs" />
     <Compile Include="ChessBoard\RankOrFieldViewModel.cs" />
@@ -146,6 +150,7 @@
       <DependentUpon>SquareView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ChessBoard\SquareViewModel.cs" />
+    <Compile Include="ChessBoard\Tasks\PromotionMoveTask.cs" />
     <Compile Include="Controls\AdaptiveCompositionShadow.xaml.cs">
       <DependentUpon>AdaptiveCompositionShadow.xaml</DependentUpon>
     </Compile>
@@ -303,6 +308,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="ChessBoard\ChessPieceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChessBoard\PromotionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -38,6 +38,11 @@ namespace ChessEngineClient
             return chessBoard.GetPiece(coordinate);
         }
 
+        public bool ValidateMove(Coordinate from, Coordinate to)
+        {
+            return chessBoard.ValidateMove(from, to);
+        }
+
         public virtual bool SubmitMove(Coordinate from, Coordinate to)
         {
             return chessBoard.SubmitMove(from, to);

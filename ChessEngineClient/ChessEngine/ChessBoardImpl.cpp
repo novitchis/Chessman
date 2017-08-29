@@ -508,6 +508,11 @@ bool ChessBoardImpl::IsEnPassantMove(AdditionalMoveInfo& additionalMove) const
 		additionalMove.coordEnPassant.nRank != -1;
 }
 
+bool ChessBoardImpl::ValidateMove(const MoveImpl& move) const
+{
+	return ValidateMove(move, AdditionalMoveInfo());
+}
+
 bool ChessBoardImpl::ValidateMove(const MoveImpl& move, AdditionalMoveInfo& additionalMove) const
 {
 	ChessPieceImpl piece = GetPiece(move.from);

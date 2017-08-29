@@ -68,11 +68,14 @@ namespace ChessEngineClient.View
         {
             Messenger.Default.Register<GenericMessage<MoveTask>>(this, NotificationMessages.AnimateMoveTaskCreated, OnAnimateMoveTaskReceived);
             Messenger.Default.Register<GenericMessage<MoveTask>>(this, NotificationMessages.AnimateUndoMoveTaskCreated, OnAnimateUndoMoveTaskReceived);
+
+            Messenger.Default.Register<GenericMessage<PromotionMoveTask>>(this, NotificationMessages.AnimatePromotionMoveTask, OnAnimatePromotionMoveTask);
         }
 
         public void UnRegisterAnimationHandlers()
         {
             Messenger.Default.Unregister<GenericMessage<MoveTask>>(this);
+            Messenger.Default.Unregister<GenericMessage<PromotionMoveTask>>(this);
         }
 
         private void OnAnimateMoveTaskReceived(GenericMessage<MoveTask> message)
@@ -113,6 +116,40 @@ namespace ChessEngineClient.View
             {
                 moveTask.CompleteTask();
                 IsHitTestVisible = true;
+            };
+
+            moveAnimationsFactory.StoryBoard.Begin();
+            // dont allow user interactions with the board for the duration of the animation
+            IsHitTestVisible = false;
+        }
+
+        private void OnAnimatePromotionMoveTask(GenericMessage<PromotionMoveTask> message)
+        {
+            MoveAnimationsFactory moveAnimationsFactory = new MoveAnimationsFactory();
+
+            Move promotionMove = message.Content.Move;
+            Point animationStartPoint = GetCoordinatePositionOnBoard(promotionMove.GetFrom());
+            Point animationEndPoint = GetCoordinatePositionOnBoard(promotionMove.GetTo());
+
+            ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPiece(promotionMove.GetFrom()));
+            moveAnimationsFactory.AddMoveAnimation(pieceItemView, animationStartPoint, animationEndPoint);
+
+            //ChessPieceViewModel removedPiece = ViewModel.GetPiece(promotionMove.GetTo());
+            //if (removedPiece != null)
+            //{ 
+            //    ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(removedPiece);
+            //    moveAnimationsFactory.AddRemoveAnimation(pieceItemView);
+            //}
+
+            moveAnimationsFactory.StoryBoard.Completed += (o, e) =>
+            {
+                //PromotionView promotionView = new PromotionView();// { Width = 70, Height = 70 * 4 };
+                promotionView.DataContext = new PromotionViewModel(PieceColor.White);
+                promotionSelectionPopup.IsOpen = true;
+                promotionSelectionPopup.HorizontalOffset = animationEndPoint.X;
+
+                //moveTask.CompleteTask();
+                //IsHitTestVisible = true;
             };
 
             moveAnimationsFactory.StoryBoard.Begin();

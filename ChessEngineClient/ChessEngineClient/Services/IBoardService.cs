@@ -13,7 +13,11 @@ namespace ChessEngineClient
 
         MoveData GetCurrentMove();
 
+        bool ValidateMove(Coordinate from, Coordinate to);
+
         bool SubmitMove(Coordinate from, Coordinate to);
+
+        //bool IsPromotionMove(Coordinate from, Coordinate to);
 
         IList<MoveData> GetMoves(bool stopOnCurrentMove = true);
 

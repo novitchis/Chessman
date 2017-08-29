@@ -95,6 +95,7 @@ namespace ChessEngine
 
 		bool						UndoMove(bool bWhiteMove);
 		bool						GoToMove(int moveIndex);
+		bool						ValidateMove(const MoveImpl& move) const;
 		bool						ValidateMove(const MoveImpl& move, AdditionalMoveInfo& coordEnPassant) const;
 		bool						PromotePawn(CoordinateImpl coord, ChessPieceImpl piece);
 
