@@ -108,9 +108,6 @@
                 <Canvas x:Name="arrowsCanvas" IsHitTestVisible="False" />
                 <Canvas x:Name="dragCanvas" IsHitTestVisible="False" />
                 <Popup x:Name="promotionSelectionPopup">
-                    <view:PromotionView x:Name="promotionView">
-                        
-                    </view:PromotionView>
                 </Popup>
             </Grid>
         </Grid>

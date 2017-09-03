@@ -30,6 +30,10 @@ Coordinate^	Move::GetTo()
 	return ref new Coordinate(m_Move.to.nColumn, m_Move.to.nRank);
 }
 
+ChessPiece^	Move::GetPromotionPiece()
+{
+	return ref new ChessPiece(m_Move.promotionPiece);
+}
 
 Platform::String^	Move::ToString()
 {

@@ -74,6 +74,4 @@
     <DataTemplate x:Key="BlackPawnTemplate">
         <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource BlackPawn}" />
     </DataTemplate>
-
-
 </ResourceDictionary>

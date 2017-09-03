@@ -13,12 +13,18 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
-
 namespace ChessEngineClient.View
 {
     public sealed partial class PromotionView : UserControl
     {
+        public static readonly DependencyProperty PieceSizeProperty = DependencyProperty.Register("PieceSize", typeof(double), typeof(PromotionView), new PropertyMetadata(0));
+
+        public double PieceSize
+        {
+            get { return (double)GetValue(PieceSizeProperty); }
+            set { SetValue(PieceSizeProperty, value); }
+        }
+
         public PromotionView()
         {
             this.InitializeComponent();

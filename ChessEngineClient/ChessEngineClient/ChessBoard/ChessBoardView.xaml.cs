@@ -38,6 +38,7 @@ namespace ChessEngineClient.View
         private SquareView pointerPressSquare = null;
         private ChessPieceView draggingPieceView = null;
         private ChessPieceViewModel dragSourcePieceViewModel = null;
+        private PromotionMoveTask promotionTask = null;
 
         public Move SuggestedMove
         {
@@ -127,10 +128,12 @@ namespace ChessEngineClient.View
         {
             MoveAnimationsFactory moveAnimationsFactory = new MoveAnimationsFactory();
 
-            Move promotionMove = message.Content.Move;
+            promotionTask = message.Content;
+            Move promotionMove = promotionTask.Move;
             Point animationStartPoint = GetCoordinatePositionOnBoard(promotionMove.GetFrom());
             Point animationEndPoint = GetCoordinatePositionOnBoard(promotionMove.GetTo());
 
+            //TODO: if the piece was droped there is nothing to animate
             ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPiece(promotionMove.GetFrom()));
             moveAnimationsFactory.AddMoveAnimation(pieceItemView, animationStartPoint, animationEndPoint);
 
@@ -143,11 +146,7 @@ namespace ChessEngineClient.View
 
             moveAnimationsFactory.StoryBoard.Completed += (o, e) =>
             {
-                //PromotionView promotionView = new PromotionView();// { Width = 70, Height = 70 * 4 };
-                promotionView.DataContext = new PromotionViewModel(PieceColor.White);
-                promotionSelectionPopup.IsOpen = true;
-                promotionSelectionPopup.HorizontalOffset = animationEndPoint.X;
-
+                ShowPromotionPopup();
                 //moveTask.CompleteTask();
                 //IsHitTestVisible = true;
             };
@@ -155,6 +154,59 @@ namespace ChessEngineClient.View
             moveAnimationsFactory.StoryBoard.Begin();
             // dont allow user interactions with the board for the duration of the animation
             IsHitTestVisible = false;
+        }
+
+        private void ShowPromotionPopup()
+        {
+            if (promotionTask == null)
+                return;
+
+            Move promotionMove = promotionTask.Move;
+
+            PromotionView promotionView = new PromotionView();
+            Point toSquarePoint = GetCoordinatePositionOnBoard(promotionMove.GetTo());
+            bool isBlackPromotion = promotionMove.GetTo().Y == 0;
+            promotionView.DataContext = new PromotionViewModel(isBlackPromotion ? PieceColor.Black : PieceColor.White)
+            {
+                PieceSelectedCommand = new RelayCommand((p) => {
+
+                    promotionTask.OnPieceSelected((PieceType)p);
+                    if ((PieceType)p == PieceType.None)
+                        CancelPromotionMove();
+
+                    RemovePromotionPopup();
+                })
+            };
+
+            double squareWidth = board.ActualWidth / 8;
+            promotionView.PieceSize = squareWidth;
+            promotionSelectionPopup.Child = promotionView;
+            promotionSelectionPopup.IsOpen = true;
+            promotionSelectionPopup.HorizontalOffset = toSquarePoint.X;
+
+            if (isBlackPromotion)
+                promotionSelectionPopup.VerticalOffset = 3 * squareWidth;
+        }
+
+        private void CancelPromotionMove()
+        {
+            if (promotionTask == null)
+                throw new NotSupportedException("No promotion task pending");
+
+            Move promotionMove = promotionTask.Move;
+            //move the pawn back to original position
+            Point fromPoint = GetCoordinatePositionOnBoard(promotionMove.GetFrom());
+
+            ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPiece(promotionMove.GetFrom()));
+            Canvas.SetLeft(pieceItemView, fromPoint.X);
+            Canvas.SetTop(pieceItemView, fromPoint.Y);
+        }
+
+        private void RemovePromotionPopup()
+        {
+            IsHitTestVisible = true;
+            promotionSelectionPopup.IsOpen = false;
+            promotionTask = null;
         }
 
         private Point GetCoordinatePositionOnBoard(Coordinate coordinate)
@@ -368,6 +420,7 @@ namespace ChessEngineClient.View
         private void OnBoardSizeChanged(object sender, SizeChangedEventArgs e)
         {
             RefreshArrows();
+            ShowPromotionPopup();
         }
     }
 }

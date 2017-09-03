@@ -1,6 +1,7 @@
 #pragma once
 #include "EngineDefines.h"
 #include "Coordinate.h"
+#include "ChessPiece.h"
 
 namespace ChessEngine
 {
@@ -17,6 +18,8 @@ namespace ChessEngine
 
 		Coordinate^					GetFrom();
 		Coordinate^					GetTo();
+		ChessPiece^					GetPromotionPiece();
+
 		virtual Platform::String^	ToString() override;
 		void						FromString(Platform::String^ strMove);
 

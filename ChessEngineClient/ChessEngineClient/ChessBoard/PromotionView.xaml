@@ -7,32 +7,26 @@
     xmlns:view="using:ChessEngineClient.View"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="80">
+    d:DesignWidth="80"
+    x:Name="view">
 
     <Grid Background="White">
-        <StackPanel>
-            <ItemsControl ItemsSource="{Binding Pieces}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderBrush="{StaticResource DefaultBorderBrush}" BorderThickness="1">
-                            <view:ChessPieceView />
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemContainerStyle>
-                    <Style TargetType="ContentPresenter">
-                        <Setter Property="MaxWidth" Value="70" />
-                        <Setter Property="MaxHeight" Value="70" />
-                        <Setter Property="Margin" Value="2" />
-                        <Setter Property="Padding" Value="0" />
-                        <Setter Property="Background" Value="White" />
-                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-            </ItemsControl>
-            <Button HorizontalAlignment="Center"
-                    Margin="0 5">Cancel</Button>
-        </StackPanel>
+        <ItemsControl ItemsSource="{Binding Pieces}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button 
+                        Background="White"
+                        Padding="0" 
+                        BorderThickness="0"
+                        Command="{Binding DataContext.PieceSelectedCommand, ElementName=view}"
+                        CommandParameter="{Binding Piece.Type}">
+                        <view:ChessPieceView
+                            Height="{Binding PieceSize, Mode=OneWay, ElementName=view, FallbackValue=100}" 
+                            Width="{Binding PieceSize, Mode=OneWay, ElementName=view, FallbackValue=100}"/>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Border BorderThickness="1" BorderBrush="{StaticResource DefaultBorderBrush}"/>
     </Grid>
 </UserControl>

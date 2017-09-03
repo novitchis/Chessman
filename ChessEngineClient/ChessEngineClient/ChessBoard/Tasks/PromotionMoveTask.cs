@@ -9,17 +9,13 @@ namespace ChessEngineClient.ViewModel
 {
     public class PromotionMoveTask
     {
-        //public Action OnTransitionCompleted
-        //{
-        //    get; set;
-        //}
-
-        public PieceType PromotionPieceType { get; set; }
+        public Action<PieceType> OnPieceSelected { get; private set; }
 
         public Move Move { get; private set; }
 
-        public PromotionMoveTask(Move move)
+        public PromotionMoveTask(Move move, Action<PieceType> onPieceSelected)
         {
+            OnPieceSelected = onPieceSelected;
             Move = move;
         }
     }

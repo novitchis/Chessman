@@ -121,7 +121,16 @@ namespace ChessEngineClient.ViewModel
 
         private void InitiatePromotionMove(Move move)
         {
-            PromotionMoveTask promotionTask = new PromotionMoveTask(move);
+            PromotionMoveTask promotionTask = new PromotionMoveTask(move, pieceType =>
+            {
+                if (pieceType == PieceType.None)
+                    return;
+
+                ChessPiece piece = new ChessPiece(pieceType, analysisBoardService.IsWhiteTurn);
+                bool result = analysisBoardService.SubmitPromotionMove(move.GetFrom(), move.GetTo(), piece);
+                if (result)
+                    ExecuteCurrentMoveOnBoard(false);
+            });
 
             Messenger.Default.Send(new GenericMessage<PromotionMoveTask>(this, promotionTask), NotificationMessages.AnimatePromotionMoveTask);
         }
@@ -177,8 +186,7 @@ namespace ChessEngineClient.ViewModel
 
                 if (moveTask.MoveData.PawnPromoted)
                 {
-                    //TODO: implement promotion piece type
-                    mainPieceViewModel.Piece = new ChessPiece(PieceType.Queen, mainPieceViewModel.Piece.Color == PieceColor.White);
+                    mainPieceViewModel.Piece = moveTask.MoveData.Move.GetPromotionPiece();
                     //have to re-add the piece in order to update the view
                     ReplacePiece(mainPieceViewModel, mainPieceViewModel);
                 }

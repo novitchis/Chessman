@@ -111,6 +111,21 @@ bool ChessBoard::SubmitMove(Coordinate^ from, Coordinate^ to)
 	}
 }
 
+bool ChessBoard::SubmitPromotionMove(Coordinate^ from, Coordinate^ to, ChessPiece^ piece)
+{
+	try
+	{
+		MoveImpl move(from->getCoordinateImpl(), to->getCoordinateImpl());
+		move.promotionPiece = piece->getPieceImpl();
+
+		return m_ChessBoardImpl.SubmitMove(move);
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to submit move."));
+	}
+}
+
 bool ChessBoard::UndoMove(bool bWhiteMove)
 {
 	try

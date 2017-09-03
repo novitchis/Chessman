@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ChessEngineClient.ViewModel
 {
@@ -12,16 +13,22 @@ namespace ChessEngineClient.ViewModel
     {
         public List<ChessPieceViewModel> Pieces { get; set; }
 
+        public ICommand PieceSelectedCommand { get; set; }
+
         public PromotionViewModel(PieceColor pieceColor)
         {
             bool isWhite = pieceColor == PieceColor.White;
-            Pieces = new List<ChessPiece>
+            Pieces = new List<ChessPieceViewModel>
             {
-                new ChessPiece(PieceType.Queen, isWhite),
-                new ChessPiece(PieceType.Rook, isWhite),
-                new ChessPiece(PieceType.Bishop, isWhite),
-                new ChessPiece(PieceType.Knight, isWhite),
-            }.Select(p => new ChessPieceViewModel(p, null)).ToList();
+                new ChessPieceViewModel(new ChessPiece(PieceType.Queen, isWhite), null),
+                new ChessPieceViewModel(new ChessPiece(PieceType.Rook, isWhite),null),
+                new ChessPieceViewModel(new ChessPiece(PieceType.Bishop, isWhite), null),
+                new ChessPieceViewModel(new ChessPiece(PieceType.Knight, isWhite), null),
+                new ChessPieceViewModel(new ChessPiece(PieceType.None, isWhite), null),
+            };
+
+            if (!isWhite)
+                Pieces.Reverse();
         }
     }
 }
