@@ -98,7 +98,7 @@ namespace ChessEngineClient.ViewModel
                 if (!analysisBoardService.ValidateMove(fromCoordinate, toCoordinate))
                     return false;
 
-                InitiatePromotionMove(new Move(fromCoordinate, toCoordinate));
+                InitiatePromotionMove(new Move(fromCoordinate, toCoordinate), useAnimations);
 
                 // a promotion move is not immediateley executed
                 // the user is prompted to 
@@ -119,9 +119,9 @@ namespace ChessEngineClient.ViewModel
             return movingPiece != null && movingPiece.Type == PieceType.Pawn && (toCoordinate.Y == 7 || toCoordinate.Y == 0);
         }
 
-        private void InitiatePromotionMove(Move move)
+        private void InitiatePromotionMove(Move move, bool isDropAction)
         {
-            PromotionMoveTask promotionTask = new PromotionMoveTask(move, pieceType =>
+            PromotionMoveTask promotionTask = new PromotionMoveTask(move, isDropAction, pieceType =>
             {
                 if (pieceType == PieceType.None)
                     return;

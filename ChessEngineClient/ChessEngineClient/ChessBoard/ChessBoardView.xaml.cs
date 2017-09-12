@@ -126,6 +126,8 @@ namespace ChessEngineClient.View
 
         private void OnAnimatePromotionMoveTask(GenericMessage<PromotionMoveTask> message)
         {
+            //TODO: should not animate move if is drop event
+
             MoveAnimationsFactory moveAnimationsFactory = new MoveAnimationsFactory();
 
             promotionTask = message.Content;

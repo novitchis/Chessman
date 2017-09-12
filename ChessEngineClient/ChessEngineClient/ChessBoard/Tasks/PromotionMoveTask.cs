@@ -13,10 +13,13 @@ namespace ChessEngineClient.ViewModel
 
         public Move Move { get; private set; }
 
-        public PromotionMoveTask(Move move, Action<PieceType> onPieceSelected)
+        public bool IsDropAction { get; private set; }
+
+        public PromotionMoveTask(Move move, bool isDropAction, Action<PieceType> onPieceSelected)
         {
-            OnPieceSelected = onPieceSelected;
             Move = move;
+            IsDropAction = isDropAction;
+            OnPieceSelected = onPieceSelected;
         }
     }
 }
