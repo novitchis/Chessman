@@ -69,7 +69,6 @@ namespace ChessEngineClient.View
         {
             Messenger.Default.Register<GenericMessage<MoveTask>>(this, NotificationMessages.AnimateMoveTaskCreated, OnAnimateMoveTaskReceived);
             Messenger.Default.Register<GenericMessage<MoveTask>>(this, NotificationMessages.AnimateUndoMoveTaskCreated, OnAnimateUndoMoveTaskReceived);
-
             Messenger.Default.Register<GenericMessage<PromotionMoveTask>>(this, NotificationMessages.AnimatePromotionMoveTask, OnAnimatePromotionMoveTask);
         }
 
@@ -126,36 +125,34 @@ namespace ChessEngineClient.View
 
         private void OnAnimatePromotionMoveTask(GenericMessage<PromotionMoveTask> message)
         {
-            //TODO: should not animate move if is drop event
-
-            MoveAnimationsFactory moveAnimationsFactory = new MoveAnimationsFactory();
-
             promotionTask = message.Content;
             Move promotionMove = promotionTask.Move;
-            Point animationStartPoint = GetCoordinatePositionOnBoard(promotionMove.GetFrom());
-            Point animationEndPoint = GetCoordinatePositionOnBoard(promotionMove.GetTo());
 
-            //TODO: if the piece was droped there is nothing to animate
-            ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPiece(promotionMove.GetFrom()));
-            moveAnimationsFactory.AddMoveAnimation(pieceItemView, animationStartPoint, animationEndPoint);
-
-            //ChessPieceViewModel removedPiece = ViewModel.GetPiece(promotionMove.GetTo());
-            //if (removedPiece != null)
-            //{ 
-            //    ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(removedPiece);
-            //    moveAnimationsFactory.AddRemoveAnimation(pieceItemView);
-            //}
-
-            moveAnimationsFactory.StoryBoard.Completed += (o, e) =>
+            if (promotionTask.InstantMove)
             {
+                ChangePieceLocation(promotionMove.GetFrom(), promotionMove.GetTo());
                 ShowPromotionPopup();
-                //moveTask.CompleteTask();
-                //IsHitTestVisible = true;
-            };
+            }
+            else
+            {
+                Point animationStartPoint = GetCoordinatePositionOnBoard(promotionMove.GetFrom());
+                Point animationEndPoint = GetCoordinatePositionOnBoard(promotionMove.GetTo());
 
-            moveAnimationsFactory.StoryBoard.Begin();
+                ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPiece(promotionMove.GetFrom()));
+                MoveAnimationsFactory moveAnimationsFactory = new MoveAnimationsFactory();
+                moveAnimationsFactory.AddMoveAnimation(pieceItemView, animationStartPoint, animationEndPoint);
+                IsHitTestVisible = false;
+
+                moveAnimationsFactory.StoryBoard.Completed += (o, e) =>
+                {
+                    IsHitTestVisible = true;
+                    ShowPromotionPopup();
+                };
+
+                moveAnimationsFactory.StoryBoard.Begin();
+            }
+            
             // dont allow user interactions with the board for the duration of the animation
-            IsHitTestVisible = false;
         }
 
         private void ShowPromotionPopup()
@@ -176,7 +173,8 @@ namespace ChessEngineClient.View
                     if ((PieceType)p == PieceType.None)
                         CancelPromotionMove();
 
-                    RemovePromotionPopup();
+                    promotionTask = null;
+                    promotionSelectionPopup.IsOpen = false;
                 })
             };
 
@@ -196,19 +194,25 @@ namespace ChessEngineClient.View
                 throw new NotSupportedException("No promotion task pending");
 
             Move promotionMove = promotionTask.Move;
-            //move the pawn back to original position
-            Point fromPoint = GetCoordinatePositionOnBoard(promotionMove.GetFrom());
 
-            ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPiece(promotionMove.GetFrom()));
-            Canvas.SetLeft(pieceItemView, fromPoint.X);
-            Canvas.SetTop(pieceItemView, fromPoint.Y);
+            //move the pawn back to original position
+            ChangePieceLocation(promotionMove.GetFrom(), promotionMove.GetFrom());
+            promotionTask = null;
         }
 
-        private void RemovePromotionPopup()
+        private void ChangePieceLocation(Coordinate from, Coordinate to)
         {
-            IsHitTestVisible = true;
-            promotionSelectionPopup.IsOpen = false;
-            promotionTask = null;
+            ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPiece(from));
+            Point toPoint = GetCoordinatePositionOnBoard(to);
+
+            Canvas.SetLeft(pieceItemView, toPoint.X);
+            Canvas.SetTop(pieceItemView, toPoint.Y);
+        }
+
+        private void OnPromotionPopupClosed(object sender, object e)
+        {
+            if (promotionTask != null)
+                CancelPromotionMove();
         }
 
         private Point GetCoordinatePositionOnBoard(Coordinate coordinate)
@@ -332,7 +336,8 @@ namespace ChessEngineClient.View
 
                 // make sure to re-layout possible changed pieces
                 // when a piece changes its coordinate it does not change view arrange
-                piecesItemsControl.ItemsPanelRoot.InvalidateArrange();
+                if (promotionTask == null)
+                    piecesItemsControl.ItemsPanelRoot.InvalidateArrange();
             }
 
             EndDragMove();
@@ -422,7 +427,6 @@ namespace ChessEngineClient.View
         private void OnBoardSizeChanged(object sender, SizeChangedEventArgs e)
         {
             RefreshArrows();
-            ShowPromotionPopup();
-        }
+        }        
     }
 }

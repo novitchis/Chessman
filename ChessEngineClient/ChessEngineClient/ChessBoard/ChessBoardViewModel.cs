@@ -214,7 +214,8 @@ namespace ChessEngineClient.ViewModel
 
         public virtual void OnPieceDropped(SquareViewModel targetSquare)
         {
-            SelectedSquare = targetSquare;
+            selectedSquare = targetSquare;
+            NotifyPropertyChanged("SelectedSquare");
         }
     }
 }

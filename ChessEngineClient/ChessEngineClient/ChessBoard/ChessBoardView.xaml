@@ -107,7 +107,7 @@
                 </ItemsControl>
                 <Canvas x:Name="arrowsCanvas" IsHitTestVisible="False" />
                 <Canvas x:Name="dragCanvas" IsHitTestVisible="False" />
-                <Popup x:Name="promotionSelectionPopup">
+                <Popup x:Name="promotionSelectionPopup" IsLightDismissEnabled="True" Closed="OnPromotionPopupClosed">
                 </Popup>
             </Grid>
         </Grid>

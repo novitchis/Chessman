@@ -20,9 +20,9 @@ namespace ChessEngineClient.ViewModel
             this.practiceBoardService.AnalysisReceived += OnAnalysisReceived;
         }
 
-        protected override bool TryExecuteMove(Coordinate fromCoordinate, Coordinate toCoordinate, bool useAnimations)
+        protected override bool TryExecuteMove(Coordinate fromCoordinate, Coordinate toCoordinate, bool instantMove)
         {
-            bool result = base.TryExecuteMove(fromCoordinate, toCoordinate, useAnimations);
+            bool result = base.TryExecuteMove(fromCoordinate, toCoordinate, instantMove);
             if (result && practiceBoardService.IsComputerTurn())
                 practiceBoardService.RequestComputerMove();
 
@@ -49,7 +49,7 @@ namespace ChessEngineClient.ViewModel
         {
             // just delay for one second the move, to not be so fast
             await Task.Delay(1000);
-            TryExecuteMove(e.AnalysisLines[0].Analysis[0].GetFrom(), e.AnalysisLines[0].Analysis[0].GetTo(), true);
+            TryExecuteMove(e.AnalysisLines[0].Analysis[0].GetFrom(), e.AnalysisLines[0].Analysis[0].GetTo(), false);
             //TODO: select a square?
         }
     }

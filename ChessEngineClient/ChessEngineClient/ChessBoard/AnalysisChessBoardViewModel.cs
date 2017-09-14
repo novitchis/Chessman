@@ -56,7 +56,7 @@ namespace ChessEngineClient.ViewModel
             if (this.analysisBoardService != message.Target)
                 return;
 
-            ExecuteCurrentMoveOnBoard(true);
+            ExecuteCurrentMoveOnBoard(false);
         }
 
         private void OnCurrentMoveChangedMessage(GenericMessage<MoveData> message)
@@ -79,35 +79,33 @@ namespace ChessEngineClient.ViewModel
             if (oldSquare == null || newSquare == null)
                 return;
 
-            TryExecuteMove(oldSquare.Coordinate, newSquare.Coordinate, true);
+            TryExecuteMove(oldSquare.Coordinate, newSquare.Coordinate, false);
         }
 
         public override void OnPieceDropped(SquareViewModel targetSquare)
         {
-            TryExecuteMove(SelectedSquare.Coordinate, targetSquare.Coordinate, false);
+            TryExecuteMove(SelectedSquare.Coordinate, targetSquare.Coordinate, true);
             base.OnPieceDropped(targetSquare);
         }
 
-        protected virtual bool TryExecuteMove(Coordinate fromCoordinate, Coordinate toCoordinate, bool useAnimations)
+        protected virtual bool TryExecuteMove(Coordinate fromCoordinate, Coordinate toCoordinate, bool instantMove)
         {
-            //TODO: for a promotion move first validate the move
-            // then display a selection for the promoted piece
             if (IsPawnPromotionMove(fromCoordinate, toCoordinate))
             {
                 // TODO: maybe validate always?
                 if (!analysisBoardService.ValidateMove(fromCoordinate, toCoordinate))
                     return false;
 
-                InitiatePromotionMove(new Move(fromCoordinate, toCoordinate), useAnimations);
+                InitiatePromotionMove(new Move(fromCoordinate, toCoordinate), instantMove);
 
                 // a promotion move is not immediateley executed
-                // the user is prompted to 
+                // the user is prompted to select the piece type
                 return false;
             }
 
             bool result = analysisBoardService.SubmitMove(fromCoordinate, toCoordinate);
             if (result)
-                ExecuteCurrentMoveOnBoard(useAnimations);
+                ExecuteCurrentMoveOnBoard(instantMove);
 
             return result;
         }
@@ -119,9 +117,9 @@ namespace ChessEngineClient.ViewModel
             return movingPiece != null && movingPiece.Type == PieceType.Pawn && (toCoordinate.Y == 7 || toCoordinate.Y == 0);
         }
 
-        private void InitiatePromotionMove(Move move, bool isDropAction)
+        private void InitiatePromotionMove(Move move, bool instantMove)
         {
-            PromotionMoveTask promotionTask = new PromotionMoveTask(move, isDropAction, pieceType =>
+            PromotionMoveTask promotionTask = new PromotionMoveTask(move, instantMove, pieceType =>
             {
                 if (pieceType == PieceType.None)
                     return;
@@ -129,7 +127,7 @@ namespace ChessEngineClient.ViewModel
                 ChessPiece piece = new ChessPiece(pieceType, analysisBoardService.IsWhiteTurn);
                 bool result = analysisBoardService.SubmitPromotionMove(move.GetFrom(), move.GetTo(), piece);
                 if (result)
-                    ExecuteCurrentMoveOnBoard(false);
+                    ExecuteCurrentMoveOnBoard(true);
             });
 
             Messenger.Default.Send(new GenericMessage<PromotionMoveTask>(this, promotionTask), NotificationMessages.AnimatePromotionMoveTask);
@@ -146,7 +144,7 @@ namespace ChessEngineClient.ViewModel
             RefreshPositionStateMarkers();
         }
 
-        private void ExecuteCurrentMoveOnBoard(bool useAnimations)
+        private void ExecuteCurrentMoveOnBoard(bool instantMove)
         {
             ClearCurrentMoveData();
 
@@ -154,10 +152,10 @@ namespace ChessEngineClient.ViewModel
             MoveTask moveTask = new MoveTask(currentMove);
             ExecuteMoveTask(moveTask);
 
-            if (useAnimations)
-                Messenger.Default.Send(new GenericMessage<MoveTask>(this, moveTask), NotificationMessages.AnimateMoveTaskCreated);
-            else
+            if (instantMove)
                 moveTask.OnTransitionCompleted();
+            else
+                Messenger.Default.Send(new GenericMessage<MoveTask>(this, moveTask), NotificationMessages.AnimateMoveTaskCreated);
 
             RefreshPositionStateMarkers();
         }
