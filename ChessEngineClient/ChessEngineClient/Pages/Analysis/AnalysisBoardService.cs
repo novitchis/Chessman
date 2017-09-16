@@ -55,6 +55,15 @@ namespace ChessEngineClient
             return result;
         }
 
+        public override bool SubmitPromotionMove(Coordinate from, Coordinate to, ChessPiece piece)
+        {
+            bool result = base.SubmitPromotionMove(from, to, piece);
+            if (result)
+                AnalyseCurrentPosition();
+
+            return result;
+        }
+
         public override bool GoToMove(int moveIndex)
         {
             bool result = base.GoToMove(moveIndex);

@@ -48,7 +48,7 @@ namespace ChessEngineClient
             return chessBoard.SubmitMove(from, to);
         }
 
-        public bool SubmitPromotionMove(Coordinate from, Coordinate to, ChessPiece piece)
+        public virtual bool SubmitPromotionMove(Coordinate from, Coordinate to, ChessPiece piece)
         {
             return chessBoard.SubmitPromotionMove(from, to, piece);
         }
