@@ -164,7 +164,11 @@ namespace ChessEngineClient.View
             PromotionView promotionView = new PromotionView();
             Point toSquarePoint = GetCoordinatePositionOnBoard(promotionMove.GetTo());
             bool isBlackPromotion = promotionMove.GetTo().Y == 0;
-            promotionView.DataContext = new PromotionViewModel(isBlackPromotion ? PieceColor.Black : PieceColor.White)
+
+            // if the popup apears on bottom, display the queen on the bottom
+            bool displayedOnBottom = toSquarePoint.Y != 0;
+
+            PromotionViewModel promotionVM = new PromotionViewModel(isBlackPromotion ? PieceColor.Black : PieceColor.White, displayedOnBottom)
             {
                 PieceSelectedCommand = new RelayCommand((p) => {
 
@@ -177,14 +181,17 @@ namespace ChessEngineClient.View
                 })
             };
 
+            promotionView.DataContext = promotionVM;
+
             double squareWidth = board.ActualWidth / 8;
             promotionView.PieceSize = squareWidth;
             promotionSelectionPopup.Child = promotionView;
             promotionSelectionPopup.IsOpen = true;
             promotionSelectionPopup.HorizontalOffset = toSquarePoint.X;
 
-            if (isBlackPromotion)
-                promotionSelectionPopup.VerticalOffset = 3 * squareWidth;
+            promotionSelectionPopup.VerticalOffset = 0;
+            if (displayedOnBottom)
+                promotionSelectionPopup.VerticalOffset = (8 - promotionVM.Pieces.Count) * squareWidth;
         }
 
         private void CancelPromotionMove()
