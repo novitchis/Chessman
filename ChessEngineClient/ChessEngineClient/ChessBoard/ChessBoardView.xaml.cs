@@ -141,6 +141,7 @@ namespace ChessEngineClient.View
                 ContentPresenter pieceItemView = (ContentPresenter)piecesItemsControl.ContainerFromItem(ViewModel.GetPiece(promotionMove.GetFrom()));
                 MoveAnimationsFactory moveAnimationsFactory = new MoveAnimationsFactory();
                 moveAnimationsFactory.AddMoveAnimation(pieceItemView, animationStartPoint, animationEndPoint);
+                // dont allow user interactions with the board for the duration of the animation
                 IsHitTestVisible = false;
 
                 moveAnimationsFactory.StoryBoard.Completed += (o, e) =>
@@ -151,8 +152,6 @@ namespace ChessEngineClient.View
 
                 moveAnimationsFactory.StoryBoard.Begin();
             }
-            
-            // dont allow user interactions with the board for the duration of the animation
         }
 
         private void ShowPromotionPopup()

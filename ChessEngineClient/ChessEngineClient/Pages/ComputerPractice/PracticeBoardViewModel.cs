@@ -20,13 +20,10 @@ namespace ChessEngineClient.ViewModel
             this.practiceBoardService.AnalysisReceived += OnAnalysisReceived;
         }
 
-        protected override bool TryExecuteMove(Coordinate fromCoordinate, Coordinate toCoordinate, bool instantMove)
+        protected override void OnNewMoveExecuted()
         {
-            bool result = base.TryExecuteMove(fromCoordinate, toCoordinate, instantMove);
-            if (result && practiceBoardService.IsComputerTurn())
+            if (practiceBoardService.IsComputerTurn())
                 practiceBoardService.RequestComputerMove();
-
-            return result;
         }
 
         protected override void OnSelectionChanged(SquareViewModel oldSquare, SquareViewModel newSquare)

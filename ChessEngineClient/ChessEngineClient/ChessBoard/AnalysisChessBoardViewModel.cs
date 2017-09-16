@@ -88,7 +88,7 @@ namespace ChessEngineClient.ViewModel
             base.OnPieceDropped(targetSquare);
         }
 
-        protected virtual bool TryExecuteMove(Coordinate fromCoordinate, Coordinate toCoordinate, bool instantMove)
+        protected bool TryExecuteMove(Coordinate fromCoordinate, Coordinate toCoordinate, bool instantMove)
         {
             if (IsPawnPromotionMove(fromCoordinate, toCoordinate))
             {
@@ -105,7 +105,10 @@ namespace ChessEngineClient.ViewModel
 
             bool result = analysisBoardService.SubmitMove(fromCoordinate, toCoordinate);
             if (result)
+            {
                 ExecuteCurrentMoveOnBoard(instantMove);
+                OnNewMoveExecuted();
+            }
 
             return result;
         }
@@ -127,10 +130,17 @@ namespace ChessEngineClient.ViewModel
                 ChessPiece piece = new ChessPiece(pieceType, analysisBoardService.IsWhiteTurn);
                 bool result = analysisBoardService.SubmitPromotionMove(move.GetFrom(), move.GetTo(), piece);
                 if (result)
+                {
                     ExecuteCurrentMoveOnBoard(true);
+                    OnNewMoveExecuted();
+                }
             });
 
             Messenger.Default.Send(new GenericMessage<PromotionMoveTask>(this, promotionTask), NotificationMessages.AnimatePromotionMoveTask);
+        }
+
+        protected virtual void OnNewMoveExecuted()
+        {
         }
 
         private void UndoMoveOnBoard(MoveData move)
