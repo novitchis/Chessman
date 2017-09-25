@@ -176,8 +176,7 @@ namespace ChessEngineClient.ViewModel
                     return;
 
                 AnalysisLines = newAnalysiLines;
-                Messenger.Default.Send(new GenericMessage<Move>(this, analysis[0].Analysis[0]), NotificationMessages.AnalysisBestMoveReceived);
-
+                Messenger.Default.Send(new GenericMessage<Move>(this, newAnalysiLines[0].Moves[0].Move), NotificationMessages.AnalysisBestMoveReceived);
             }, null);
         }
 

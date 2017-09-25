@@ -11,7 +11,7 @@
 using namespace ChessEngine;
 using namespace Core;
 
-#define LOGCOMM 1
+//#define LOGCOMM 1
 
 InProcEngineCommThread::InProcEngineCommThread( IChessEngine* pEngine )
 	: IEngineCommThread(pEngine)

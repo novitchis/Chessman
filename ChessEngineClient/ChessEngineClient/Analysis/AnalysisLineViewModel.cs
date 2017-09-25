@@ -14,7 +14,6 @@ namespace ChessEngineClient.ViewModel
         private SideColor gameStartedBy = SideColor.White;
         private bool isWhiteFirstMove = true;
         private AnalysisData analysisData = null;
-        private IList<MoveData> moves = new List<MoveData>();
 
         #region "Properties"
 
@@ -38,22 +37,24 @@ namespace ChessEngineClient.ViewModel
 
                 float whiteScoreEvaluation = isWhiteFirstMove ? analysisData.Score : analysisData.Score * -1;
                 string evaluation = whiteScoreEvaluation > 0 ? $"+{whiteScoreEvaluation}" : whiteScoreEvaluation.ToString();
-                if (moves.Last().PgnMove.TrimEnd().EndsWith("#"))
+                if (Moves.Last().PgnMove.TrimEnd().EndsWith("#"))
                 {
                     string sign = "-";
 
-                    if ((moves.Count % 2 != 0 && isWhiteFirstMove) ||
-                        (moves.Count % 2 == 0 && !isWhiteFirstMove))
+                    if ((Moves.Count % 2 != 0 && isWhiteFirstMove) ||
+                        (Moves.Count % 2 == 0 && !isWhiteFirstMove))
                     {
                         sign = "+";
                     }
 
-                    return sign + "M" + Math.Ceiling(((float)moves.Count) / 2).ToString();
+                    return sign + "M" + Math.Ceiling(((float)Moves.Count) / 2).ToString();
                 }
 
                 return evaluation;
             }
         }
+
+        public IList<MoveData> Moves { get; private set; }
 
         public string MovesString
         {
@@ -65,7 +66,7 @@ namespace ChessEngineClient.ViewModel
                 StringBuilder variationBuilder = new StringBuilder();
 
                 bool isFirstMoveProcesssed = false;
-                foreach (MoveData moveData in moves)
+                foreach (MoveData moveData in Moves)
                 {
                     int actualMoveindex = moveData.Index;
                     if (gameStartedBy == SideColor.Black)
@@ -104,7 +105,7 @@ namespace ChessEngineClient.ViewModel
             this.isWhiteFirstMove = gameStartedBy == SideColor.White && moves.First().Index % 2 == 0 ||
                 gameStartedBy == SideColor.Black && moves.First().Index % 2 != 0;
 
-            this.moves = moves;
+            this.Moves = moves;
         }
     }
 }
