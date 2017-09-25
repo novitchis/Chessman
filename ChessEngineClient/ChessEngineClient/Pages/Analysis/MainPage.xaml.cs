@@ -96,5 +96,11 @@ namespace ChessEngineClient.View
             else
                 chessBoard.MaxHeight = Double.PositiveInfinity;
         }
+
+        private void OnCommandBarClosed(object sender, object e)
+        {
+            // get rid of the command bar being keyboard focused
+            this.Focus(FocusState.Programmatic);
+        }
     }
 }

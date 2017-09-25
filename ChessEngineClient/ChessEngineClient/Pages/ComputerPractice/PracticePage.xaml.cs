@@ -85,5 +85,11 @@ namespace ChessEngineClient.View
                 (this.DataContext as PracticeViewModel).GoForwardCommand.Execute(null);
             }
         }
+
+        private void OnCommandBarClosed(object sender, object e)
+        {
+            // get rid of the command bar being keyboard focused
+            this.Focus(FocusState.Programmatic);
+        }
     }
 }

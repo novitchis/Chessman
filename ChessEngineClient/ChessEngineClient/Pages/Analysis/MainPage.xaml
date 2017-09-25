@@ -41,7 +41,10 @@
                                      HorizontalAlignment="Center" />
             </RelativePanel>
         </Grid>
-        <CommandBar x:Name="CommandBar" Grid.Row="2" Background="{StaticResource AccentBrush400}">
+        <CommandBar x:Name="CommandBar"
+                    Grid.Row="2" 
+                    Background="{StaticResource AccentBrush400}"
+                    Closed="OnCommandBarClosed">
             <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
             <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}"/>
             <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}"/>

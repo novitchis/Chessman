@@ -32,7 +32,8 @@
         </Grid>
         <CommandBar x:Name="CommandBar" 
                     Grid.Row="2" 
-                    Background="{StaticResource AccentBrush400}">
+                    Background="{StaticResource AccentBrush400}"
+                    Closed="OnCommandBarClosed">
             <AppBarButton 
                 Label="Switch color" 
                 Command="{Binding SwitchColor}"
