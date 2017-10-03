@@ -82,6 +82,11 @@ namespace ChessEngineClient
             return chessBoard.GetVariationMoveData(moves);
         }
 
+        public IList<Coordinate> GetAvailableMoves(Coordinate coordinate)
+        {
+            return chessBoard.GetAvailableMoves(coordinate);
+        }
+
         public bool GetIsInCheck()
         {
             return chessBoard.IsCheck();

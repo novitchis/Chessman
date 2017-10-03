@@ -31,9 +31,10 @@ namespace ChessEngine
 		bool				UndoMove(bool bWhiteMove);
 		bool				GoToMove(int moveIndex);
 
-		IVector<MoveData^>^	GetMoves(bool stopOnCurrent);
-		MoveData^			GetCurrentMove();
-		IVector<MoveData^>^	GetVariationMoveData(IVector<Move^>^ moves);
+		IVector<MoveData^>^		GetMoves(bool stopOnCurrent);
+		MoveData^				GetCurrentMove();
+		IVector<MoveData^>^		GetVariationMoveData(IVector<Move^>^ moves);
+		IVector<Coordinate^>^	GetAvailableMoves(Coordinate^ coordinate);
 
 		bool				IsWhiteTurn();
 		bool				AcceptEditedPosition();
