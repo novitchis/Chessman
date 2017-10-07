@@ -84,6 +84,11 @@ namespace ChessEngineClient
 
         public IList<Coordinate> GetAvailableMoves(Coordinate coordinate)
         {
+            var piece = GetPiece(coordinate);
+            PieceColor colorToMove = IsWhiteTurn ? PieceColor.White : PieceColor.Black;
+            if (piece == null || piece.Color != colorToMove)
+                return new List<Coordinate>();
+
             return chessBoard.GetAvailableMoves(coordinate);
         }
 

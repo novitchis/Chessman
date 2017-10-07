@@ -76,14 +76,30 @@ namespace ChessEngineClient.ViewModel
 
         protected override void OnSelectionChanged(SquareViewModel oldSquare, SquareViewModel newSquare)
         {
+            MarkPossibleMovesSquares(newSquare);
+
             if (oldSquare == null || newSquare == null)
                 return;
 
             TryExecuteMove(oldSquare.Coordinate, newSquare.Coordinate, false);
         }
 
+        private void MarkPossibleMovesSquares(SquareViewModel newSquare)
+        {
+            Squares.ForEach(s => s.PossibleMoveMark = PossibleMoveMark.None);
+
+            if (newSquare == null)
+                return;
+
+            IList<Coordinate> availableMovesCoordinates = analysisBoardService.GetAvailableMoves(newSquare.Coordinate);
+            foreach (Coordinate coordinate in availableMovesCoordinates)
+                GetSquare(coordinate).PossibleMoveMark = GetPiece(coordinate) != null ? PossibleMoveMark.Piece : PossibleMoveMark.EmptySquare;
+        }
+
         public override void OnPieceDropped(SquareViewModel targetSquare)
         {
+            MarkPossibleMovesSquares(targetSquare);
+
             TryExecuteMove(SelectedSquare.Coordinate, targetSquare.Coordinate, true);
             base.OnPieceDropped(targetSquare);
         }
