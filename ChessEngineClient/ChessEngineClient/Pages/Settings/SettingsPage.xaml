@@ -32,6 +32,13 @@
                             OffContent="No"
                             IsOn="{Binding EnableMoveSounds, Mode=TwoWay}"/>
                         <TextBlock 
+                            Text="Show legal moves"
+                            Style="{StaticResource LabelTextStyle}" />
+                        <ToggleSwitch 
+                            OnContent="Yes" 
+                            OffContent="No"
+                            IsOn="{Binding ShowLegalMoves, Mode=TwoWay}"/>
+                        <TextBlock 
                             Text="Save boards between sessions"
                             Style="{StaticResource LabelTextStyle}" />
                         <ToggleSwitch 

@@ -16,6 +16,7 @@ namespace ChessEngineClient
     {
         //TODO: all these should be set in an object
         public const string EnableMoveSoundsKey = "EnableMoveSoundsKey";
+        public const string ShowLegalMovesKey = "ShowLegalMovesKey";
         public const string NotationTypeKey = "NotationType";
         public const string MultipleLinesKey = "MultipleLines";
         public const string ShowBestMoveArrowKey = "ShowAnalysisArrow";
@@ -44,6 +45,9 @@ namespace ChessEngineClient
 
             if (!settingsContainer.Values.ContainsKey(EnableMoveSoundsKey))
                 settingsContainer.Values[EnableMoveSoundsKey] = true;
+
+            if (!settingsContainer.Values.ContainsKey(ShowLegalMovesKey))
+                settingsContainer.Values[ShowLegalMovesKey] = true;
         }
 
         public static void SaveApplicationState(ApplicationDataContainer settingsContainer)

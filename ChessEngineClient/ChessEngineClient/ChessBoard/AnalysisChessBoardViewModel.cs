@@ -15,6 +15,7 @@ namespace ChessEngineClient.ViewModel
         private bool showSuggestedMoveArrow = false;
         private IBoardService analysisBoardService = null;
         private IMoveAudioFeedbackService audioService = null;
+        private bool showLegalMoves = false;
 
         public bool ShowSuggestedMoveArrow
         {
@@ -28,6 +29,16 @@ namespace ChessEngineClient.ViewModel
         }
 
         public bool PlaySounds { get; set; }
+
+        public bool ShowLegalMoves
+        {
+            get => showLegalMoves;
+            set
+            {
+                showLegalMoves = value;
+                MarkLegalMovesSquares(SelectedSquare);
+            }
+        }
 
         public AnalysisChessBoardViewModel(IBoardService analysisBoardService)
             : base(analysisBoardService)
@@ -76,7 +87,7 @@ namespace ChessEngineClient.ViewModel
 
         protected override void OnSelectionChanged(SquareViewModel oldSquare, SquareViewModel newSquare)
         {
-            MarkPossibleMovesSquares(newSquare);
+            MarkLegalMovesSquares(newSquare);
 
             if (oldSquare == null || newSquare == null)
                 return;
@@ -84,11 +95,11 @@ namespace ChessEngineClient.ViewModel
             TryExecuteMove(oldSquare.Coordinate, newSquare.Coordinate, false);
         }
 
-        private void MarkPossibleMovesSquares(SquareViewModel newSquare)
+        private void MarkLegalMovesSquares(SquareViewModel newSquare)
         {
             Squares.ForEach(s => s.PossibleMoveMark = PossibleMoveMark.None);
 
-            if (newSquare == null)
+            if (!ShowLegalMoves || newSquare == null)
                 return;
 
             IList<Coordinate> availableMovesCoordinates = analysisBoardService.GetAvailableMoves(newSquare.Coordinate);
@@ -98,7 +109,7 @@ namespace ChessEngineClient.ViewModel
 
         public override void OnPieceDropped(SquareViewModel targetSquare)
         {
-            MarkPossibleMovesSquares(targetSquare);
+            MarkLegalMovesSquares(targetSquare);
 
             TryExecuteMove(SelectedSquare.Coordinate, targetSquare.Coordinate, true);
             base.OnPieceDropped(targetSquare);

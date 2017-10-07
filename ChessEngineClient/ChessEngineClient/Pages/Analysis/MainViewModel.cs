@@ -62,10 +62,13 @@ namespace ChessEngineClient.ViewModel
         private void InitSettings()
         {
             BoardViewModel.ShowSuggestedMoveArrow = (bool)appSettings.Values[AppPersistenceManager.ShowBestMoveArrowKey];
+            BoardViewModel.ShowLegalMoves = (bool)appSettings.Values[AppPersistenceManager.ShowLegalMovesKey];
             BoardViewModel.PlaySounds = (bool)appSettings.Values[AppPersistenceManager.EnableMoveSoundsKey];
             AnalysisViewModel.SetAnalysisLines((int)appSettings.Values[AppPersistenceManager.MultipleLinesKey]);
-            AnalysisViewModel.UseFigurineNotation = (int)appSettings.Values[AppPersistenceManager.NotationTypeKey] == (int)NotationType.Figurines;
-            NotationViewModel.UseFigurineNotation = (int)appSettings.Values[AppPersistenceManager.NotationTypeKey] == (int)NotationType.Figurines;
+
+            bool useFigurineNotation = (int)appSettings.Values[AppPersistenceManager.NotationTypeKey] == (int)NotationType.Figurines;
+            AnalysisViewModel.UseFigurineNotation = useFigurineNotation;
+            NotationViewModel.UseFigurineNotation = useFigurineNotation;
         }
 
         public override void OnNavigatingFrom()
