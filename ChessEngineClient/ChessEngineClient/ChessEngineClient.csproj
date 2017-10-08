@@ -115,6 +115,9 @@
     <Compile Include="Analysis\CompactAnalysisHeader.xaml.cs">
       <DependentUpon>CompactAnalysisHeader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Analysis\EvaluationBar.xaml.cs">
+      <DependentUpon>EvaluationBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -276,6 +279,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Analysis\CompactAnalysisHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Analysis\EvaluationBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

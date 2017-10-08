@@ -39,6 +39,7 @@
                                      DataContext="{Binding BoardViewModel}"
                                      VerticalAlignment="Center"
                                      HorizontalAlignment="Center" />
+                <view:EvaluationBar x:Name="evaluationBar"/>
             </RelativePanel>
         </Grid>
         <CommandBar x:Name="CommandBar"
@@ -75,16 +76,20 @@
                         <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.Margin" Value="0 0 12 0"/>
 
-                        <Setter Target="compactAnalysisHeader.(RelativePanel.RightOf)" Value="chessBoard"/>
+                        <Setter Target="evaluationBar.(RelativePanel.RightOf)" Value="chessBoard"/>
+                        <Setter Target="evaluationBar.(RelativePanel.AlignTopWith)" Value="chessBoard"/>
+                        <Setter Target="evaluationBar.(RelativePanel.AlignBottomWith)" Value="chessBoard"/>
+
+                        <Setter Target="compactAnalysisHeader.(RelativePanel.RightOf)" Value="evaluationBar"/>
                         <Setter Target="compactAnalysisHeader.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="compactAnalysisHeader.MinWidth" Value="250"/>
 
-                        <Setter Target="analysisView.(RelativePanel.RightOf)" Value="chessBoard"/>
+                        <Setter Target="analysisView.(RelativePanel.RightOf)" Value="evaluationBar"/>
                         <Setter Target="analysisView.(RelativePanel.Below)" Value="compactAnalysisHeader"/>
                         <Setter Target="analysisView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="analysisView.MinWidth" Value="250"/>
 
-                        <Setter Target="notationView.(RelativePanel.RightOf)" Value="chessBoard"/>
+                        <Setter Target="notationView.(RelativePanel.RightOf)" Value="evaluationBar"/>
                         <Setter Target="notationView.(RelativePanel.Below)" Value="analysisView"/>
                         <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="notationView.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
@@ -112,6 +117,7 @@
                         <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.Below)" Value="analysisView"/>
+
 
                         <Setter Target="notationView.(RelativePanel.Below)" Value="chessBoard"/>
                         <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
