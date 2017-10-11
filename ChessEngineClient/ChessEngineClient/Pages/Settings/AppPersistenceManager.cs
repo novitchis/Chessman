@@ -59,11 +59,17 @@ namespace ChessEngineClient
 
             if (savesSessions)
             {
-                PositionLoadOptions analysisPosition = ViewModelLocator.MainViewModel.GetPositionLoadOptions(BoardSerializationType.PGN, false);
-                settingsContainer.Values[SavedAnalysisPositionPgnKey] = JsonConvert.SerializeObject(analysisPosition);
+                if (ViewModelLocator.MainViewModelCreated)
+                {
+                    PositionLoadOptions analysisPosition = ViewModelLocator.MainViewModel.GetPositionLoadOptions(BoardSerializationType.PGN, false);
+                    settingsContainer.Values[SavedAnalysisPositionPgnKey] = JsonConvert.SerializeObject(analysisPosition);
+                }
 
-                PositionLoadOptions practicePosition = ViewModelLocator.PracticeViewModel.GetPositionLoadOptions(BoardSerializationType.PGN, false);
-                settingsContainer.Values[SavedPracticePositionPgnKey] = JsonConvert.SerializeObject(practicePosition);
+                if (ViewModelLocator.PracticeViewModelCreated)
+                {
+                    PositionLoadOptions practicePosition = ViewModelLocator.PracticeViewModel.GetPositionLoadOptions(BoardSerializationType.PGN, false);
+                    settingsContainer.Values[SavedPracticePositionPgnKey] = JsonConvert.SerializeObject(practicePosition);
+                }
             }
             else
             {
@@ -72,21 +78,7 @@ namespace ChessEngineClient
             }
         }
 
-        public static void RestoreBoardPosition(IAppSettings apppSettings, BoardPageViewModel boardPageViewModel)
-        {
-            bool savesSessions = true;
-            if (apppSettings.Values.ContainsKey(SavePositionsBetweenSessionsKey))
-                savesSessions = (bool)apppSettings.Values[SavePositionsBetweenSessionsKey];
-
-            if (savesSessions)
-            {
-                PositionLoadOptions analysisPosition = GetSavedPosition(apppSettings, SavedAnalysisPositionPgnKey);
-                if (analysisPosition != null)
-                    boardPageViewModel.LoadPosition(analysisPosition);
-            }
-        }
-
-        private static PositionLoadOptions GetSavedPosition(IAppSettings apppSettings, string settingsKey)
+        public static PositionLoadOptions GetSavedPosition(IAppSettings apppSettings, string settingsKey)
         {
             if (apppSettings.Values.ContainsKey(settingsKey))
             {

@@ -14,6 +14,7 @@ namespace ChessEngineClient.ViewModel
     {
         private INavigationService navigationService = null;
         protected IEngineBoardService boardService = null;
+        protected bool firstNavigatedToOcurred = false;
 
         #region "Properties"
 
@@ -67,6 +68,8 @@ namespace ChessEngineClient.ViewModel
 
         public virtual void OnNavigatedTo(object parameter)
         {
+            firstNavigatedToOcurred = true;
+
             PositionLoadOptions positionLoadOptions = parameter as PositionLoadOptions;
             if (positionLoadOptions != null)
                 LoadPosition(positionLoadOptions);

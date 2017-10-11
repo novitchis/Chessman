@@ -27,9 +27,12 @@ namespace ChessEngineClient
         {
             get
             {
+                MainViewModelCreated = true;
                 return IOCContainer.Resolve<MainViewModel>();
             }
         }
+
+        public static bool MainViewModelCreated { get; private set; }
 
         public static EditPositionViewModel EditPositionViewModel
         {
@@ -43,9 +46,13 @@ namespace ChessEngineClient
         {
             get
             {
+                PracticeViewModelCreated = true;
                 return IOCContainer.Resolve<PracticeViewModel>();
             }
         }
+
+        public static bool PracticeViewModelCreated { get; private set; }
+
 
         public static SettingsViewModel SettingsViewModel
         {
