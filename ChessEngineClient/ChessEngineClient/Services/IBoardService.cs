@@ -23,6 +23,8 @@ namespace ChessEngineClient
 
         IList<MoveData> GetVariationMoveData(IList<Move> moves);
 
+        IList<Coordinate> GetAvailableMoves(Coordinate coordinate);
+
         bool GoToMove(int moveIndex);
 
         void ResetBoard();

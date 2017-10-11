@@ -63,6 +63,7 @@ namespace ChessEngineClient.ViewModel
             practiceBoardService.SetEngineStrength(engineStrength);
 
             BoardViewModel.PlaySounds = (bool)appSettings.Values[AppPersistenceManager.EnableMoveSoundsKey];
+            BoardViewModel.ShowLegalMoves = (bool)appSettings.Values[AppPersistenceManager.ShowLegalMovesKey];
             NotationViewModel.UseFigurineNotation = (int)appSettings.Values[AppPersistenceManager.NotationTypeKey] == (int)NotationType.Figurines;
         }
 

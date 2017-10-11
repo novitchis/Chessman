@@ -230,6 +230,25 @@ IVector<MoveData^>^	ChessBoard::GetVariationMoveData(IVector<Move^>^ moves)
 	}
 }
 
+IVector<Coordinate^>^ ChessBoard::GetAvailableMoves(Coordinate^ coordinate)
+{
+	try
+	{
+		std::list<CoordinateImpl> availableMoves = m_ChessBoardImpl.GetAvailableMoves(coordinate->getCoordinateImpl());
+
+		Vector<Coordinate^>^ result = ref new Vector<Coordinate^>();
+		for (auto it = availableMoves.begin(); it != availableMoves.end(); ++it)
+			result->Append(ref new Coordinate(it->nColumn, it->nRank));
+
+		return result;
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to get available moves."));
+	}
+}
+
+
 bool ChessBoard::IsWhiteTurn()
 {
 	try

@@ -9,92 +9,59 @@
 
     <Grid Background="{StaticResource AccentBrush300}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid x:Name="contentGrid">
-            <StackPanel>
-                <Grid x:Name="titlePanel" Style="{StaticResource PageTitlePanelStyle}">
+        <Grid x:Name="titlePanel" Style="{StaticResource PageTitlePanelStyle}">
+            <TextBlock 
+                Text="Settings"
+                Style="{StaticResource HeaderTextStyle}" />
+        </Grid>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="12 8 12 12">
+                <TextBlock 
+                    Text="General"
+                    Style="{StaticResource HeaderLabelTextStyle}" />
+                <StackPanel Style="{StaticResource SettingsGroupItem}">
                     <TextBlock 
-                        Text="Settings"
-                        Style="{StaticResource HeaderTextStyle}" />
-                </Grid>
-                <StackPanel Margin="12 8 12 12">
+                        Text="Play move sounds"
+                        Style="{StaticResource LabelTextStyle}" />
+                    <ToggleSwitch 
+                        OnContent="Yes" 
+                        OffContent="No"
+                        IsOn="{Binding EnableMoveSounds, Mode=TwoWay}"/>
                     <TextBlock 
-                        Text="General"
-                        Style="{StaticResource HeaderLabelTextStyle}" />
-                    <StackPanel Style="{StaticResource SettingsGroupItem}">
-                        <TextBlock 
-                            Text="Play move sounds"
-                            Style="{StaticResource LabelTextStyle}" />
-                        <ToggleSwitch 
-                            OnContent="Yes" 
-                            OffContent="No"
-                            IsOn="{Binding EnableMoveSounds, Mode=TwoWay}"/>
-                        <TextBlock 
-                            Text="Save boards between sessions"
-                            Style="{StaticResource LabelTextStyle}" />
-                        <ToggleSwitch 
-                            OnContent="Yes" 
-                            OffContent="No"
-                            IsOn="{Binding SavePositionsBetweenSessions, Mode=TwoWay}"/>
-                        <TextBlock 
-                            Text="Notation type"
-                            Style="{StaticResource LabelTextStyle}" />
-                        <ComboBox 
-                            Width="150"
-                            Margin="0 5 0 0"
-                            ItemsSource="{Binding AvailableNotationTypes}"
-                            SelectedItem="{Binding NotationType, Mode=TwoWay}">
-                        </ComboBox>                    
-                    </StackPanel>
+                        Text="Show legal moves"
+                        Style="{StaticResource LabelTextStyle}" />
+                    <ToggleSwitch 
+                        OnContent="Yes" 
+                        OffContent="No"
+                        IsOn="{Binding ShowLegalMoves, Mode=TwoWay}"/>
+                    <TextBlock 
+                        Text="Save boards between sessions"
+                        Style="{StaticResource LabelTextStyle}" />
+                    <ToggleSwitch 
+                        OnContent="Yes" 
+                        OffContent="No"
+                        IsOn="{Binding SavePositionsBetweenSessions, Mode=TwoWay}"/>
+                    <TextBlock 
+                        Text="Notation type"
+                        Style="{StaticResource LabelTextStyle}" />
+                    <ComboBox 
+                        Width="150"
+                        Margin="0 5 0 0"
+                        ItemsSource="{Binding AvailableNotationTypes}"
+                        SelectedItem="{Binding NotationType, Mode=TwoWay}">
+                    </ComboBox>                    
+                </StackPanel>
 
-                    <TextBlock 
-                        Text="Analysis"
-                        Style="{StaticResource HeaderLabelTextStyle}" />
-                    <StackPanel Style="{StaticResource SettingsGroupItem}">
-                        <StackPanel>
-                            <TextBlock 
-                                Text="Multiple lines"
-                                Style="{StaticResource LabelTextStyle}" />
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*" MaxWidth="500"/>
-                                    <ColumnDefinition Width="30"/>
-                                    <ColumnDefinition Width="0*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Slider x:Name="linesSlider"
-                                    Grid.Column="1"
-                                    Minimum="1" 
-                                    Maximum="{Binding MaximumLines}" 
-                                    TickPlacement="Inline" 
-                                    TickFrequency="1"
-                                    Value="{Binding MultipleLines, Mode=TwoWay}"/>
-                                <TextBlock 
-                                    Grid.Column="2"
-                                    Margin="10 0 0 5"
-                                    Text="{x:Bind linesSlider.Value, Mode=OneWay}"
-                                    HorizontalAlignment="Center"
-                                    Style="{StaticResource LabelTextStyle}" />
-                            </Grid>
-                        </StackPanel>
-
+                <TextBlock 
+                    Text="Analysis"
+                    Style="{StaticResource HeaderLabelTextStyle}" />
+                <StackPanel Style="{StaticResource SettingsGroupItem}">
+                    <StackPanel>
                         <TextBlock 
-                            Text="Best move arrow"
-                            Style="{StaticResource LabelTextStyle}" />
-                        <ToggleSwitch 
-                            OnContent="Yes" 
-                            OffContent="No"
-                            IsOn="{Binding ShowBestMoveArrow, Mode=TwoWay}"/>
-                    </StackPanel>
-                    <TextBlock 
-                        Text="Computer Practice"
-                        Style="{StaticResource HeaderLabelTextStyle}" />
-                    <StackPanel Style="{StaticResource SettingsGroupItem}">
-                        <TextBlock 
-                            Text="Computer level"
+                            Text="Multiple lines"
                             Style="{StaticResource LabelTextStyle}" />
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -104,26 +71,62 @@
                                 <ColumnDefinition Width="0*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Slider x:Name="strengthSlider"
-                                    Grid.Column="1"
-                                    Minimum="1" 
-                                    Maximum="10" 
-                                    TickPlacement="Inline" 
-                                    TickFrequency="1"
-                                    Value="{Binding ComputerStrength, Mode=TwoWay}"/>
+                            <Slider x:Name="linesSlider"
+                                Grid.Column="1"
+                                Minimum="1" 
+                                Maximum="{Binding MaximumLines}" 
+                                TickPlacement="Inline" 
+                                TickFrequency="1"
+                                Value="{Binding MultipleLines, Mode=TwoWay}"/>
                             <TextBlock 
                                 Grid.Column="2"
                                 Margin="10 0 0 5"
-                                Text="{x:Bind strengthSlider.Value, Mode=OneWay}"
+                                Text="{x:Bind linesSlider.Value, Mode=OneWay}"
                                 HorizontalAlignment="Center"
                                 Style="{StaticResource LabelTextStyle}" />
                         </Grid>
                     </StackPanel>
 
-                    
+                    <TextBlock 
+                        Text="Best move arrow"
+                        Style="{StaticResource LabelTextStyle}" />
+                    <ToggleSwitch 
+                        OnContent="Yes" 
+                        OffContent="No"
+                        IsOn="{Binding ShowBestMoveArrow, Mode=TwoWay}"/>
+                </StackPanel>
+                <TextBlock 
+                    Text="Computer Practice"
+                    Style="{StaticResource HeaderLabelTextStyle}" />
+                <StackPanel Style="{StaticResource SettingsGroupItem}">
+                    <TextBlock 
+                        Text="Computer level"
+                        Style="{StaticResource LabelTextStyle}" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*" MaxWidth="500"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="0*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Slider x:Name="strengthSlider"
+                                Grid.Column="1"
+                                Minimum="1" 
+                                Maximum="10" 
+                                TickPlacement="Inline" 
+                                TickFrequency="1"
+                                Value="{Binding ComputerStrength, Mode=TwoWay}"/>
+                        <TextBlock 
+                            Grid.Column="2"
+                            Margin="10 0 0 5"
+                            Text="{x:Bind strengthSlider.Value, Mode=OneWay}"
+                            HorizontalAlignment="Center"
+                            Style="{StaticResource LabelTextStyle}" />
+                    </Grid>
                 </StackPanel>
             </StackPanel>
-        </Grid>
+        </ScrollViewer>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>

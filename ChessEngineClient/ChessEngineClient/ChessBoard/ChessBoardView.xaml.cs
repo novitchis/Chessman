@@ -10,6 +10,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Composition;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
@@ -27,7 +28,7 @@ namespace ChessEngineClient.View
 {
     public sealed partial class ChessBoardView : UserControl
     {
-        private const double MinPieceSize = 80;
+        private const double MinDragPieceSize = 80;
         private const double MinimumDragDistance = 4;
 
         public static readonly DependencyProperty SuggestedMoveProperty =DependencyProperty.Register("SuggestedMove", typeof(Move), typeof(ChessBoardView), new PropertyMetadata(null, OnSuggestedMoveChangedThunk));
@@ -39,6 +40,7 @@ namespace ChessEngineClient.View
         private ChessPieceView draggingPieceView = null;
         private ChessPieceViewModel dragSourcePieceViewModel = null;
         private PromotionMoveTask promotionTask = null;
+        private Ellipse dropHintEllipse = null;
 
         public Move SuggestedMove
         {
@@ -239,7 +241,23 @@ namespace ChessEngineClient.View
         private void OnSquarePointerEntered(object sender, PointerRoutedEventArgs e)
         {
             if (isDragStarted)
+            {
                 ((SquareView)sender).IsDropTarget = true;
+                if (dropHintEllipse != null)
+                    MoveDropHintEllipseToSquare((SquareView)sender);
+            }
+        }
+
+        private void MoveDropHintEllipseToSquare(SquareView square)
+        {
+            if (dropHintEllipse == null)
+                throw new InvalidOperationException("The drop hint ellipse should not be null.");
+
+            SquareViewModel squareVM = (SquareViewModel)square.DataContext;
+            Point squareMiddlePoint = GetSquareMiddlePoint(squareVM.Coordinate);
+
+            Canvas.SetTop(dropHintEllipse, squareMiddlePoint.Y - dropHintEllipse.Height / 2);
+            Canvas.SetLeft(dropHintEllipse, squareMiddlePoint.X - dropHintEllipse.Width / 2);
         }
 
         private void OnSquarePointerExited(object sender, PointerRoutedEventArgs e)
@@ -274,6 +292,7 @@ namespace ChessEngineClient.View
             dragSourcePieceViewModel.IsDragSource = false;
             dragSourcePieceViewModel = null;
             pointerPressSquare = null;
+            dropHintEllipse = null;
         }
 
         private void OnSquarePointerMoved(object sender, PointerRoutedEventArgs e)
@@ -297,8 +316,11 @@ namespace ChessEngineClient.View
         private void StartDragMove(Pointer pointer, PointerPoint pointerPoint)
         {
             double optimalPieceSize = pointerPressSquare.ActualWidth;
-            if (pointer.PointerDeviceType == PointerDeviceType.Touch && optimalPieceSize < MinPieceSize)
-                optimalPieceSize = Math.Max(pointerPressSquare.ActualWidth * 1.5, MinPieceSize);
+            if (pointer.PointerDeviceType == PointerDeviceType.Touch && optimalPieceSize < MinDragPieceSize - 20)
+            {
+                optimalPieceSize = Math.Max(pointerPressSquare.ActualWidth * 1.5, MinDragPieceSize);
+                CreateDropHintEllipse();
+            }
 
             draggingPieceView = new ChessPieceView()
             {
@@ -315,6 +337,21 @@ namespace ChessEngineClient.View
 
             isDragStarted = true;
             dragSourcePieceViewModel.IsDragSource = true;
+        }
+
+        private void CreateDropHintEllipse()
+        {
+            dropHintEllipse = new Ellipse()
+            {
+                Opacity = 0.2,
+                Fill = new SolidColorBrush(Colors.Black),
+                Width = pointerPressSquare.ActualWidth * 2,
+                Height = pointerPressSquare.ActualHeight * 2,
+                IsHitTestVisible = false
+            };
+
+            MoveDropHintEllipseToSquare(pointerPressSquare);
+            dragCanvas.Children.Add(dropHintEllipse);
         }
 
         private bool HasPointerMovedEnaugh(Point postion)
@@ -379,16 +416,16 @@ namespace ChessEngineClient.View
             if (board.ActualWidth == 0)
                 return;
 
+            Point start = GetSquareMiddlePoint(SuggestedMove.GetFrom());
+            Point end = GetSquareMiddlePoint(SuggestedMove.GetTo());
+
             double squareWidth = board.ActualWidth / 8;
-
-            Point start = GetSquareMiddlePoint(SuggestedMove.GetFrom(), squareWidth);
-            Point end = GetSquareMiddlePoint(SuggestedMove.GetTo(), squareWidth);
-
             DrawArrow(start, end, squareWidth / 4);
         }
 
-        private Point GetSquareMiddlePoint(Coordinate coordinate, double squareWidth)
+        private Point GetSquareMiddlePoint(Coordinate coordinate)
         {
+            double squareWidth = board.ActualWidth / 8;
             double halfSquareWidth = squareWidth / 2;
 
             // from black perspective the board is rotated

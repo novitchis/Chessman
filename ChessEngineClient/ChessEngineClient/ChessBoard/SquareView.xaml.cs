@@ -40,6 +40,14 @@ namespace ChessEngineClient.View
         {
             this.InitializeComponent();
             this.PointerPressed += OnSquareViewPointerPressed;
+            this.SizeChanged += OnSizeChanged;
+        }
+
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // this is done manually, a grid will degrade performance on layout/render 
+            ellipseMark.Width = this.ActualWidth / 3;
+            ellipseMark.Height = this.ActualHeight / 3;
         }
 
         private void OnSquareViewPointerPressed(object sender, PointerRoutedEventArgs e)

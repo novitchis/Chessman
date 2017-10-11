@@ -51,6 +51,18 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
+        public bool ShowLegalMoves
+        {
+            get
+            {
+                return (bool)appSettings.Values[AppPersistenceManager.ShowLegalMovesKey];
+            }
+            set
+            {
+                appSettings.Values[AppPersistenceManager.ShowLegalMovesKey] = value;
+            }
+        }
+
         public int MultipleLines
         {
             get

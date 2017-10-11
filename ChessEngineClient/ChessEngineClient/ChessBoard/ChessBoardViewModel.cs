@@ -175,6 +175,11 @@ namespace ChessEngineClient.ViewModel
             return coordinate.X + (8 * (7 - coordinate.Y));
         }
 
+        public SquareViewModel GetSquare(Coordinate coordinate)
+        {
+            return Squares[GetSquareIndex(coordinate)];
+        }
+
         public ChessPieceViewModel GetPiece(Coordinate coordinate)
         {
             return Pieces.FirstOrDefault(p => !p.RemovePending && p.Coordinate.X == coordinate.X && p.Coordinate.Y == coordinate.Y);

@@ -10,8 +10,8 @@ namespace ChessEngineClient.ViewModel
 {
     public class SquareViewModel : ViewModelBase, ICoordinatedItem
     {
-        private ChessPieceViewModel pieceViewModel = null;
         private bool isLastMoveSquare = false;
+        private PossibleMoveMark possibleMoveMark = PossibleMoveMark.None;
 
         #region "Properties"
 
@@ -31,11 +31,31 @@ namespace ChessEngineClient.ViewModel
             }
         }
 
+        public PossibleMoveMark PossibleMoveMark
+        {
+            get { return possibleMoveMark; }
+            set
+            {
+                if (possibleMoveMark != value)
+                {
+                    possibleMoveMark = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         #endregion
 
         public SquareViewModel(Coordinate coordinate)
         {
             Coordinate = coordinate;
         }
+    }
+
+    public enum PossibleMoveMark
+    {
+        None,
+        Piece,
+        EmptySquare
     }
 }
