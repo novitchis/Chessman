@@ -40,6 +40,8 @@ namespace ChessEngineClient.ViewModel
             BoardViewModel = new AnalysisChessBoardViewModel(analysisBoardService);
 
             Messenger.Default.Register<GenericMessage<bool>>(this, NotificationMessages.AnalysisIsOnChanged, OnAnalysisIsOnChangedMessage);
+
+            AppPersistenceManager.RestoreBoardPosition(appSettings, this);
         }
 
         private void OnAnalysisIsOnChangedMessage(GenericMessage<bool> message)

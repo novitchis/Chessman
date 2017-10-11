@@ -46,6 +46,8 @@ namespace ChessEngineClient.ViewModel
             this.practiceBoardService = practiceBoardService;
             this.appSettings = appSettings;
             BoardViewModel = new PracticeBoardViewModel(practiceBoardService);
+
+            AppPersistenceManager.RestoreBoardPosition(appSettings, this);
         }
 
         public override void OnNavigatedTo(object parameter)

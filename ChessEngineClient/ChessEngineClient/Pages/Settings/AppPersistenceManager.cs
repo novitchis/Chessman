@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ChessEngineClient.ViewModel;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -67,29 +68,25 @@ namespace ChessEngineClient
             }
         }
 
-        public static void RestoreApplicationState(ApplicationDataContainer settingsContainer)
+        public static void RestoreBoardPosition(IAppSettings apppSettings, BoardPageViewModel boardPageViewModel)
         {
             bool savesSessions = true;
-            if (settingsContainer.Values.ContainsKey(SavePositionsBetweenSessionsKey))
-                savesSessions = (bool)settingsContainer.Values[SavePositionsBetweenSessionsKey];
+            if (apppSettings.Values.ContainsKey(SavePositionsBetweenSessionsKey))
+                savesSessions = (bool)apppSettings.Values[SavePositionsBetweenSessionsKey];
 
             if (savesSessions)
             {
-                PositionLoadOptions analysisPosition = GetSavedPosition(settingsContainer, SavedAnalysisPositionPgnKey);
+                PositionLoadOptions analysisPosition = GetSavedPosition(apppSettings, SavedAnalysisPositionPgnKey);
                 if (analysisPosition != null)
-                    ViewModelLocator.MainViewModel.LoadPosition(analysisPosition);
-
-                PositionLoadOptions practicePosition = GetSavedPosition(settingsContainer, SavedPracticePositionPgnKey);
-                if (practicePosition != null)
-                    ViewModelLocator.PracticeViewModel.LoadPosition(practicePosition);
+                    boardPageViewModel.LoadPosition(analysisPosition);
             }
         }
 
-        private static PositionLoadOptions GetSavedPosition(ApplicationDataContainer settingsContainer, string settingsKey)
+        private static PositionLoadOptions GetSavedPosition(IAppSettings apppSettings, string settingsKey)
         {
-            if (settingsContainer.Values.ContainsKey(settingsKey))
+            if (apppSettings.Values.ContainsKey(settingsKey))
             {
-                string serializedBoard = (string)settingsContainer.Values[settingsKey];
+                string serializedBoard = (string)apppSettings.Values[settingsKey];
                 try
                 {
                     return JsonConvert.DeserializeObject<PositionLoadOptions>(serializedBoard);

@@ -82,8 +82,6 @@ namespace ChessEngineClient
                 RegisterStoreServicesAsync();
 
                 AppPersistenceManager.InitializeDefaultSettings(ApplicationData.Current.LocalSettings);
-                AppPersistenceManager.RestoreApplicationState(ApplicationData.Current.LocalSettings);
-
                 appShell.DataContext = ViewModelLocator.IOCContainer.Resolve<AppShellViewModel>();
                 appShell.AppFrame.NavigationFailed += OnNavigationFailed;
 
