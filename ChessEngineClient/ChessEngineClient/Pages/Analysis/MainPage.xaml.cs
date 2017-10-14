@@ -102,5 +102,11 @@ namespace ChessEngineClient.View
             // get rid of the command bar being keyboard focused
             this.Focus(FocusState.Programmatic);
         }
+
+        private void BoardSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // needs manual update since ActualHeight doesn't notifie changes for bonding
+            evaluationBar.Height = chessBoard.ActualHeight;
+        }
     }
 }

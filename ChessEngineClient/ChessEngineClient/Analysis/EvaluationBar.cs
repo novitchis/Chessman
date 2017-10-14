@@ -16,13 +16,14 @@ namespace ChessEngineClient.Controls
 {
     public sealed class EvaluationBar : Control
     {
-        public static readonly DependencyProperty EvaluationProperty = DependencyProperty.Register("Evaluation", typeof(double), typeof(EvaluationBar), new PropertyMetadata(0.0, OnEvaluationChangedThunk));
+        public static readonly DependencyProperty EvaluationProperty = DependencyProperty.Register("Evaluation", typeof(string), typeof(EvaluationBar), new PropertyMetadata("0.0", OnEvaluationChangedThunk));
 
+        private Grid evaluationRangePanel = null;
         private Rectangle evaluationIndicator = null;
 
-        public double Evaluation
+        public string Evaluation
         {
-            get { return (double)GetValue(EvaluationProperty); }
+            get { return (string)GetValue(EvaluationProperty); }
             set { SetValue(EvaluationProperty, value); }
         }
 
@@ -36,6 +37,7 @@ namespace ChessEngineClient.Controls
         {
             base.OnApplyTemplate();
 
+            evaluationRangePanel = (Grid)this.GetTemplateChild("EvaluationRangePanel");
             evaluationIndicator = (Rectangle)this.GetTemplateChild("EvaluationIndicator");
             OnEvaluationChanged();
         }
@@ -49,11 +51,27 @@ namespace ChessEngineClient.Controls
         {
             if (evaluationIndicator == null)
                 return;
-                
+
+            evaluationIndicator.Height = evaluationRangePanel.ActualHeight * GetFillPercentage();
+        }
+
+        private double GetFillPercentage()
+        {
             // evaluation is displayed between -4 and 4
-            double displayedEvaluation = Math.Min(Math.Max(Evaluation, -4), 4);
+            double evaluationValue = 0.0;
+            if (!Double.TryParse(Evaluation, out evaluationValue))
+            {
+                // -M1, M2
+                if (Evaluation.StartsWith("-"))
+                    evaluationValue = -4;
+                else
+                    evaluationValue = 4;
+            }
+
+            double displayedEvaluation = Math.Min(Math.Max(evaluationValue, -4), 4);
             double fillPercentage = (displayedEvaluation + 4) / 8;
-            evaluationIndicator.Height = this.ActualHeight * fillPercentage;
+
+            return fillPercentage;
         }
     }
 }

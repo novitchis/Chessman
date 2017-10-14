@@ -3,22 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:ChessEngineClient.Controls">
 
-    <!--<Style TargetType="local2:BoardCanvas" xmlns:local2="using:ChessEngineClient.ChessBoard">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="local2:BoardCanvas">
-                    <Border
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>-->
-
     <Style TargetType="controls:EvaluationBar">
-        <Setter Property="Width" Value="20"/>
+        <Setter Property="Width" Value="26"/>
+        <Setter Property="Background" Value="{StaticResource BlackSquareBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:EvaluationBar">
@@ -26,9 +13,15 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
-                        <Rectangle x:Name="EvaluationIndicator"
-                                   VerticalAlignment="Bottom"
-                                   Fill="{StaticResource SystemControlHighlightAccentBrush}"/>
+                        <Grid x:Name="EvaluationRangePanel" 
+                              Background="DimGray"
+                              Margin="2 14 8 14"
+                              BorderThickness="1" 
+                              BorderBrush="{StaticResource WhiteSquareBrush}">
+                            <Rectangle x:Name="EvaluationIndicator"
+                                       VerticalAlignment="Bottom"
+                                       Fill="White"/>
+                        </Grid>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
