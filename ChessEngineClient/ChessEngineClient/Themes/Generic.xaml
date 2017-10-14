@@ -3,8 +3,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:ChessEngineClient.Controls">
 
+    <Style TargetType="Rectangle" x:Key="EvaluationPointMarkStyle">
+        <Setter Property="Height" Value="1"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Fill" Value="DarkGray"/>
+    </Style>
+
     <Style TargetType="controls:EvaluationBar">
-        <Setter Property="Width" Value="26"/>
+        <Setter Property="Width" Value="32"/>
         <Setter Property="Background" Value="{StaticResource BlackSquareBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -13,14 +19,44 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid Margin="2 14 0 14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
                         <Grid x:Name="EvaluationRangePanel" 
                               Background="DimGray"
-                              Margin="2 14 8 14"
                               BorderThickness="1" 
                               BorderBrush="{StaticResource WhiteSquareBrush}">
                             <Rectangle x:Name="EvaluationIndicator"
                                        VerticalAlignment="Bottom"
                                        Fill="White"/>
+                                <controls:UniformGrid Columns="1" Rows="8">
+                                    <Rectangle Style="{StaticResource EvaluationPointMarkStyle}"/>
+                                    <Rectangle Style="{StaticResource EvaluationPointMarkStyle}"/>
+                                    <Rectangle Style="{StaticResource EvaluationPointMarkStyle}"/>
+                                    <Rectangle />
+                                    <Rectangle Style="{StaticResource EvaluationPointMarkStyle}"/>
+                                    <Rectangle Style="{StaticResource EvaluationPointMarkStyle}"/>
+                                    <Rectangle Style="{StaticResource EvaluationPointMarkStyle}"/>
+                                    <Rectangle/>
+                                </controls:UniformGrid>
+                                <Rectangle Height="2" VerticalAlignment="Center" Fill="Red"/>
+                            </Grid>
+
+                            <TextBlock Style="{StaticResource RankOrFieldText}" Grid.Column="1" VerticalAlignment="Top">4</TextBlock>
+
+                            <controls:UniformGrid Columns="1" Rows="8" Grid.Column="1" Margin="4 6 4 -6">
+                                <TextBlock Style="{StaticResource RankOrFieldText}" VerticalAlignment="Bottom">3</TextBlock>
+                                <TextBlock Style="{StaticResource RankOrFieldText}" VerticalAlignment="Bottom">2</TextBlock>
+                                <TextBlock Style="{StaticResource RankOrFieldText}" VerticalAlignment="Bottom">1</TextBlock>
+                                <TextBlock Style="{StaticResource RankOrFieldText}" VerticalAlignment="Bottom">0</TextBlock>
+                                <TextBlock Style="{StaticResource RankOrFieldText}" VerticalAlignment="Bottom">1</TextBlock>
+                                <TextBlock Style="{StaticResource RankOrFieldText}" VerticalAlignment="Bottom">2</TextBlock>
+                                <TextBlock Style="{StaticResource RankOrFieldText}" VerticalAlignment="Bottom">3</TextBlock>
+                                <TextBlock Style="{StaticResource RankOrFieldText}" VerticalAlignment="Bottom" Margin="0 0 0 6">4</TextBlock>
+                            </controls:UniformGrid>
                         </Grid>
                     </Border>
                 </ControlTemplate>
