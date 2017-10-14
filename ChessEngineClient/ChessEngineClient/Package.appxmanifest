@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="2742Primavista.Chessman" Publisher="CN=1D541042-F05D-4AEC-820A-FD7332F53067" Version="1.2.21.0" />
+  <Identity Name="2742Primavista.Chessman" Publisher="CN=1D541042-F05D-4AEC-820A-FD7332F53067" Version="1.2.24.0" />
   <mp:PhoneIdentity PhoneProductId="9df08938-7e37-465d-8351-f4d8d73d1e95" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Chessman</DisplayName>

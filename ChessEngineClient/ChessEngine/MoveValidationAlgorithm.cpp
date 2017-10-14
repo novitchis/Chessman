@@ -78,9 +78,10 @@ std::list<CoordinateImpl>	MoveValidationAlgorithm::GetAvailableMoves(const Coord
 	std::list<CoordinateImpl> listResult;
 	for (int i = 0; i < 8; ++i)
 		for (int j = 0; j < 8; ++j) {
-			AdditionalMoveInfo additionalInfo;
 			CoordinateImpl crtCoord(i, j);
-			if (Run(MoveImpl(coord, crtCoord), additionalInfo))
+			MoveImpl move(coord, crtCoord);
+			AdditionalMoveInfo additionalInfo;
+			if (Run(move, additionalInfo))
 				listResult.push_back(crtCoord);
 		}
 
