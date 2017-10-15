@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Shapes;
 
 // The Templated Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234235
@@ -20,6 +21,7 @@ namespace ChessEngineClient.Controls
 
         private Grid evaluationRangePanel = null;
         private Rectangle evaluationIndicator = null;
+        private Storyboard storyBoard = null;
 
         public string Evaluation
         {
@@ -31,6 +33,7 @@ namespace ChessEngineClient.Controls
         {
             this.DefaultStyleKey = typeof(EvaluationBar);
             SizeChanged += (o,e) => OnEvaluationChanged();
+            storyBoard = new Storyboard();
         }
 
         protected override void OnApplyTemplate()
@@ -52,7 +55,28 @@ namespace ChessEngineClient.Controls
             if (evaluationIndicator == null)
                 return;
 
-            evaluationIndicator.Height = evaluationRangePanel.ActualHeight * GetFillPercentage();
+            double currentFillPercentage = ((ScaleTransform)(evaluationIndicator.RenderTransform)).ScaleY;
+
+            storyBoard.Stop();
+            storyBoard.Children.Clear();
+
+            double newFillPercentage = 1 - GetFillPercentage();
+            DoubleAnimation heightAnimation = new DoubleAnimation()
+            {
+                From = currentFillPercentage,
+                To = newFillPercentage,
+                FillBehavior = FillBehavior.HoldEnd,
+                Duration = TimeSpan.FromSeconds(0.4),
+                EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseInOut }
+            };
+
+            currentFillPercentage = newFillPercentage;
+ 
+            storyBoard.Children.Add(heightAnimation);
+            Storyboard.SetTarget(heightAnimation, evaluationIndicator);
+            Storyboard.SetTargetProperty(heightAnimation, "(Rectangle.RenderTransform).(ScaleTransform.ScaleY)");
+
+            storyBoard.Begin();
         }
 
         private double GetFillPercentage()

@@ -26,12 +26,15 @@
                             </Grid.ColumnDefinitions>
 
                         <Grid x:Name="EvaluationRangePanel" 
-                              Background="DimGray"
+                              Background="White"
                               BorderThickness="1" 
                               BorderBrush="{StaticResource WhiteSquareBrush}">
-                            <Rectangle x:Name="EvaluationIndicator"
-                                       VerticalAlignment="Bottom"
-                                       Fill="White"/>
+                                <Rectangle x:Name="EvaluationIndicator"
+                                           Fill="DimGray">
+                                    <Rectangle.RenderTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="0.5" />
+                                    </Rectangle.RenderTransform>
+                                </Rectangle>
                                 <controls:UniformGrid Columns="1" Rows="8">
                                     <Rectangle Style="{StaticResource EvaluationPointMarkStyle}"/>
                                     <Rectangle Style="{StaticResource EvaluationPointMarkStyle}"/>
