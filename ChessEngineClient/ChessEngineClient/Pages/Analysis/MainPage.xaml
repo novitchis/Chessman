@@ -48,8 +48,9 @@
                                          SizeChanged="BoardSizeChanged"/>
                     <Grid x:Name="evaluationBarPanel" Grid.Column="1">
                         <controls:EvaluationBar x:Name="evaluationBar" 
+                                                Perspective="{Binding BoardViewModel.Perspective}"
                                                 Evaluation="{Binding AnalysisViewModel.AnalysisLines[0].Evaluation}"
-                                                Visibility="{Binding AnalysisViewModel.IsActive, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                Visibility="{Binding AnalysisViewModel.IsActive, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>
                     </Grid>
                 </Grid>
 

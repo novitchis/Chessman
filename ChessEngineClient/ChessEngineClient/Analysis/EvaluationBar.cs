@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
@@ -18,6 +19,7 @@ namespace ChessEngineClient.Controls
     public sealed class EvaluationBar : Control
     {
         public static readonly DependencyProperty EvaluationProperty = DependencyProperty.Register("Evaluation", typeof(string), typeof(EvaluationBar), new PropertyMetadata("0.0", OnEvaluationChangedThunk));
+        public static readonly DependencyProperty PerspectiveProperty = DependencyProperty.Register("Perspective", typeof(SideColor), typeof(EvaluationBar), new PropertyMetadata(SideColor.White, OnPerspectiveChangedThunk));
 
         private Grid evaluationRangePanel = null;
         private Rectangle evaluationIndicator = null;
@@ -27,6 +29,11 @@ namespace ChessEngineClient.Controls
         {
             get { return (string)GetValue(EvaluationProperty); }
             set { SetValue(EvaluationProperty, value); }
+        }
+        public SideColor Perspective
+        {
+            get { return (SideColor)GetValue(PerspectiveProperty); }
+            set { SetValue(PerspectiveProperty, value); }
         }
 
         public EvaluationBar()
@@ -42,7 +49,9 @@ namespace ChessEngineClient.Controls
 
             evaluationRangePanel = (Grid)this.GetTemplateChild("EvaluationRangePanel");
             evaluationIndicator = (Rectangle)this.GetTemplateChild("EvaluationIndicator");
-            OnEvaluationChanged();
+
+            // sometimes dependency properties are set before apply template
+            OnPerspectiveChanged();
         }
 
         private static void OnEvaluationChangedThunk(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -60,7 +69,7 @@ namespace ChessEngineClient.Controls
             storyBoard.Stop();
             storyBoard.Children.Clear();
 
-            double newFillPercentage = 1 - GetFillPercentage();
+            double newFillPercentage = GetFillPercentage();
             DoubleAnimation heightAnimation = new DoubleAnimation()
             {
                 From = currentFillPercentage,
@@ -95,7 +104,31 @@ namespace ChessEngineClient.Controls
             double displayedEvaluation = Math.Min(Math.Max(evaluationValue, -4), 4);
             double fillPercentage = (displayedEvaluation + 4) / 8;
 
-            return fillPercentage;
+            return Perspective == SideColor.Black ? fillPercentage : 1 - fillPercentage;
+        }
+
+        private static void OnPerspectiveChangedThunk(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((EvaluationBar)d).OnPerspectiveChanged();
+        }
+
+        private void OnPerspectiveChanged()
+        {
+            if (evaluationIndicator == null || evaluationRangePanel == null)
+                return;
+
+            if (Perspective == SideColor.White)
+            {
+                evaluationIndicator.Fill = new SolidColorBrush(Colors.DimGray);
+                evaluationRangePanel.Background = new SolidColorBrush(Colors.White);
+            }
+            else if (Perspective == SideColor.Black)
+            {
+                evaluationIndicator.Fill = new SolidColorBrush(Colors.White);
+                evaluationRangePanel.Background = new SolidColorBrush(Colors.DimGray);
+            }
+
+            OnEvaluationChanged();
         }
     }
 }
