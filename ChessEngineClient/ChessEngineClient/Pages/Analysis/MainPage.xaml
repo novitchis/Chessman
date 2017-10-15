@@ -46,10 +46,11 @@
                                          VerticalAlignment="Center"
                                          HorizontalAlignment="Center"
                                          SizeChanged="BoardSizeChanged"/>
-                    <controls:EvaluationBar x:Name="evaluationBar" 
-                                            Grid.Column="1"
-                                            Evaluation="{Binding AnalysisViewModel.AnalysisLines[0].Evaluation}"
-                                            Visibility="{Binding AnalysisViewModel.IsActive, Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}"/>
+                    <Grid x:Name="evaluationBarPanel" Grid.Column="1">
+                        <controls:EvaluationBar x:Name="evaluationBar" 
+                                                Evaluation="{Binding AnalysisViewModel.AnalysisLines[0].Evaluation}"
+                                                Visibility="{Binding AnalysisViewModel.IsActive, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    </Grid>
                 </Grid>
 
             </RelativePanel>
@@ -127,6 +128,7 @@
                         <Setter Target="chessBoardPanel.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="chessBoardPanel.(RelativePanel.Below)" Value="analysisView"/>
 
+                        <Setter Target="evaluationBarPanel.Visibility" Value="Collapsed"/>
 
                         <Setter Target="notationView.(RelativePanel.Below)" Value="chessBoardPanel"/>
                         <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>

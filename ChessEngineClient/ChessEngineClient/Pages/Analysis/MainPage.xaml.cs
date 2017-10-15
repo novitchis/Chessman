@@ -87,14 +87,14 @@ namespace ChessEngineClient.View
             // for now there is no other way to enforce a min width on the right column
             // for pc layout that can be honored by the parent pannel
             if (analysisView.MinWidth > 0)
-                chessBoard.MaxWidth = newSize.Width - analysisView.MinWidth - 50;
+                chessBoardPanel.MaxWidth = newSize.Width - analysisView.MinWidth - 50;
             else
-                chessBoard.MaxWidth = Double.PositiveInfinity;
+                chessBoardPanel.MaxWidth = Double.PositiveInfinity;
 
             if (notationView.MinHeight > 0)
-                chessBoard.MaxHeight = newSize.Height - notationView.MinHeight - 130;
+                chessBoardPanel.MaxHeight = newSize.Height - notationView.MinHeight - 130;
             else
-                chessBoard.MaxHeight = Double.PositiveInfinity;
+                chessBoardPanel.MaxHeight = Double.PositiveInfinity;
         }
 
         private void OnCommandBarClosed(object sender, object e)
