@@ -24,7 +24,6 @@ namespace ChessEngineClient
 
             debouncedAnalysisAction = DebounceExtension.Debounce(() =>
             {
-                System.Diagnostics.Debug.WriteLine("Analysis");
                 engine.Analyze(ChessBoard, -1, -1);
             });
         }

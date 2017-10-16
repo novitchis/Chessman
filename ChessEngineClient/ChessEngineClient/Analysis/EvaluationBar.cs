@@ -64,23 +64,22 @@ namespace ChessEngineClient.Controls
             if (evaluationIndicator == null)
                 return;
 
-            double currentFillPercentage = ((ScaleTransform)(evaluationIndicator.RenderTransform)).ScaleY;
+            // set a local value for ScaleY, since after stoping the storyboard it will be reverted to the initial local value
+            // wee want to transition smoothly into the new value
+            ((ScaleTransform)(evaluationIndicator.RenderTransform)).ScaleY = ((ScaleTransform)(evaluationIndicator.RenderTransform)).ScaleY;
 
             storyBoard.Stop();
             storyBoard.Children.Clear();
 
             double newFillPercentage = GetFillPercentage();
+
             DoubleAnimation heightAnimation = new DoubleAnimation()
             {
-                From = currentFillPercentage,
                 To = newFillPercentage,
-                FillBehavior = FillBehavior.HoldEnd,
                 Duration = TimeSpan.FromSeconds(0.4),
                 EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseInOut }
             };
 
-            currentFillPercentage = newFillPercentage;
- 
             storyBoard.Children.Add(heightAnimation);
             Storyboard.SetTarget(heightAnimation, evaluationIndicator);
             Storyboard.SetTargetProperty(heightAnimation, "(Rectangle.RenderTransform).(ScaleTransform.ScaleY)");
