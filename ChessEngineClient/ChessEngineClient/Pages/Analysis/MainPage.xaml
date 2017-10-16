@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="using:ChessEngineClient.View"
+    xmlns:controls="using:ChessEngineClient.Controls"
     mc:Ignorable="d"
     DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}"
     d:DesignHeight="1080"
@@ -34,11 +35,25 @@
                                    DataContext="{Binding AnalysisViewModel}" />
                 <view:NotationView x:Name="notationView"
                                    DataContext="{Binding NotationViewModel}" />
-                <view:ChessBoardView x:Name="chessBoard"
-                                     HasDragAndDrop="True"
-                                     DataContext="{Binding BoardViewModel}"
-                                     VerticalAlignment="Center"
-                                     HorizontalAlignment="Center" />
+                <Grid x:Name="chessBoardPanel">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <view:ChessBoardView x:Name="chessBoard"
+                                         HasDragAndDrop="True"
+                                         DataContext="{Binding BoardViewModel}"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         SizeChanged="BoardSizeChanged"/>
+                    <Grid x:Name="evaluationBarPanel" Grid.Column="1">
+                        <controls:EvaluationBar x:Name="evaluationBar" 
+                                                Perspective="{Binding BoardViewModel.Perspective}"
+                                                Evaluation="{Binding AnalysisViewModel.AnalysisLines[0].Evaluation}"
+                                                Visibility="{Binding AnalysisViewModel.IsActive, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>
+                    </Grid>
+                </Grid>
+
             </RelativePanel>
         </Grid>
         <CommandBar x:Name="CommandBar"
@@ -70,21 +85,22 @@
                     <VisualState.Setters>
                         <Setter Target="contentGrid.Margin" Value="12 8 12 12"/>
 
-                        <Setter Target="chessBoard.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
-                        <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
-                        <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
-                        <Setter Target="chessBoard.Margin" Value="0 0 12 0"/>
+                        <Setter Target="chessBoardPanel.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
+                        <Setter Target="chessBoardPanel.(RelativePanel.AlignTopWithPanel)" Value="true"/>
+                        <Setter Target="chessBoardPanel.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+                        <Setter Target="chessBoardPanel.Margin" Value="0 0 12 0"/>
 
-                        <Setter Target="compactAnalysisHeader.(RelativePanel.RightOf)" Value="chessBoard"/>
+
+                        <Setter Target="compactAnalysisHeader.(RelativePanel.RightOf)" Value="chessBoardPanel"/>
                         <Setter Target="compactAnalysisHeader.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="compactAnalysisHeader.MinWidth" Value="250"/>
 
-                        <Setter Target="analysisView.(RelativePanel.RightOf)" Value="chessBoard"/>
+                        <Setter Target="analysisView.(RelativePanel.RightOf)" Value="chessBoardPanel"/>
                         <Setter Target="analysisView.(RelativePanel.Below)" Value="compactAnalysisHeader"/>
                         <Setter Target="analysisView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="analysisView.MinWidth" Value="250"/>
 
-                        <Setter Target="notationView.(RelativePanel.RightOf)" Value="chessBoard"/>
+                        <Setter Target="notationView.(RelativePanel.RightOf)" Value="chessBoardPanel"/>
                         <Setter Target="notationView.(RelativePanel.Below)" Value="analysisView"/>
                         <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="notationView.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
@@ -109,11 +125,13 @@
                         <Setter Target="analysisView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="analysisView.(RelativePanel.Below)" Value="compactAnalysisHeader"/>
 
-                        <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
-                        <Setter Target="chessBoard.(RelativePanel.AlignRightWithPanel)" Value="true"/>
-                        <Setter Target="chessBoard.(RelativePanel.Below)" Value="analysisView"/>
+                        <Setter Target="chessBoardPanel.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+                        <Setter Target="chessBoardPanel.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="chessBoardPanel.(RelativePanel.Below)" Value="analysisView"/>
 
-                        <Setter Target="notationView.(RelativePanel.Below)" Value="chessBoard"/>
+                        <Setter Target="evaluationBarPanel.Visibility" Value="Collapsed"/>
+
+                        <Setter Target="notationView.(RelativePanel.Below)" Value="chessBoardPanel"/>
                         <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="notationView.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
                         <Setter Target="notationView.(RelativePanel.AlignBottomWithPanel)" Value="true"/>

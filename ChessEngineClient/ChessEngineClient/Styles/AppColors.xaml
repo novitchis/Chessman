@@ -38,4 +38,5 @@
     <SolidColorBrush x:Key="AccentBrush700" Color="{StaticResource Accent700}"/>
     <SolidColorBrush x:Key="AccentBrush800" Color="{StaticResource Accent800}"/>
     <SolidColorBrush x:Key="AccentBrush900" Color="{StaticResource Accent900}"/>
+
 </ResourceDictionary>

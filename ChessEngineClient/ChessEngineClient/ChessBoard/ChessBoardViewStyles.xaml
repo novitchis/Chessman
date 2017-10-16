@@ -5,16 +5,8 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity" 
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core" >
 
-    <Style x:Key="RankOrFieldText" TargetType="TextBlock">
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Foreground" Value="{StaticResource WhiteSquareBrush}" />
-        <Setter Property="TextAlignment" Value="Center" />
-        <Setter Property="FontSize" Value="10" />
-    </Style>
-
     <Style x:Key="RankNumberListStyle" TargetType="ItemsControl">
-        <Setter Property="MinWidth" Value="12" />
+        <Setter Property="Width" Value="13" />
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
@@ -32,7 +24,7 @@
     </Style>
 
     <Style x:Key="FieldLettersListStyle" TargetType="ItemsControl">
-        <Setter Property="MinHeight" Value="12" />
+        <Setter Property="Height" Value="13" />
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
