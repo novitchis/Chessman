@@ -80,11 +80,14 @@ std::list<CoordinateImpl>	MoveValidationAlgorithm::GetAvailableMoves(const Coord
 		for (int j = 0; j < 8; ++j)
 			listResult.push_back(CoordinateImpl(i, j));
 
-	listResult.remove_if([=](const CoordinateImpl& crtCoord)
-	{
-		AdditionalMoveInfo additionalInfo;
-		return !Run(MoveImpl(coord, crtCoord), additionalInfo);
-	});
+	auto itNewEnd = std::remove_if(listResult.begin(), listResult.end(),
+		[=](const CoordinateImpl& crtCoord)
+		{
+			AdditionalMoveInfo additionalInfo;
+			return !Run(MoveImpl(coord, crtCoord), additionalInfo);
+		});
+
+	listResult.erase(itNewEnd, listResult.end());
 
 	return listResult;
 }
