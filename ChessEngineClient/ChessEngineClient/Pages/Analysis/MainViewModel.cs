@@ -1,6 +1,6 @@
 ﻿using ChessEngineClient.Services;
 using Framework.MVVM;
-using Microsoft.Practices.Unity;
+using Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

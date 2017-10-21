@@ -2,12 +2,13 @@
 using ChessEngineClient.Services;
 using ChessEngineClient.ViewModel;
 using Framework.MVVM;
-using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity;
+using Unity.Lifetime;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 

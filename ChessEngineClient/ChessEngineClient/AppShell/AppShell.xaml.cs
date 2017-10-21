@@ -20,7 +20,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Microsoft.Practices.Unity;
+using Unity;
 using Windows.Storage;
 using Windows.System.Profile;
 using Windows.Graphics.Display;
