@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Framework.MVVM
 {
-	public class RelayCommand : ICommand
+    public class RelayCommand : ICommand
 	{
 		private readonly Action<object> execute;
 		private readonly Predicate<object> canExecute;

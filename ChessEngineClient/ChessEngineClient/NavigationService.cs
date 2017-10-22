@@ -12,6 +12,7 @@
 // See license.txt in this solution or http://www.galasoft.ch/license_MIT.txt
 // </license>
 // ****************************************************************************
+using Framework.MVVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace Framework.MVVM
+namespace Framework.Platform.UWP
 {
     public class NavigationService : INavigationService
     {

@@ -158,8 +158,10 @@
     <Compile Include="Controls\CompositionShadow.xaml.cs">
       <DependentUpon>CompositionShadow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters.cs" />
     <Compile Include="IAppSettings.cs" />
     <Compile Include="LocalAppDataSettings.cs" />
+    <Compile Include="NavigationService.cs" />
     <Compile Include="Pages\Analysis\Debounce.cs" />
     <Compile Include="Pages\Analysis\IAnalysisBoardService.cs" />
     <Compile Include="Pages\ComputerPractice\PracticeBoardViewModel.cs" />
@@ -383,12 +385,16 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ChessEngineClient.Code\ChessEngineClient.Code.csproj">
+      <Project>{e32d3389-b3a8-4622-b706-262ea0e16d3c}</Project>
+      <Name>ChessEngineClient.Code</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ChessEngine\ChessEngine.vcxproj">
       <Project>{e380a0a9-e02f-454d-8605-5fdd549df428}</Project>
       <Name>ChessEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\Framework.MVVM\Framework.MVVM.csproj">
-      <Project>{89ef9c55-fa72-49d1-88a1-3b794b3c1b86}</Project>
+      <Project>{81f093d5-38eb-4372-8a40-b202630d79aa}</Project>
       <Name>Framework.MVVM</Name>
     </ProjectReference>
   </ItemGroup>

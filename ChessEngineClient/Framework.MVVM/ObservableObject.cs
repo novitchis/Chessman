@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Framework.MVVM
 {
@@ -16,10 +10,11 @@ namespace Framework.MVVM
 
         public void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
         {
-#if DEBUG
-            if (GetType().GetProperty(propertyName) == null)
-                throw new ArgumentException(String.Format("This class does not have a \"{0}\" property.", propertyName));
-#endif
+            //TODO: Not supported by .net standard 1.4
+//#if DEBUG
+//            if (GetType().GetProperty(propertyName) == null)
+//                throw new ArgumentException(String.Format("This class does not have a \"{0}\" property.", propertyName));
+//#endif
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }

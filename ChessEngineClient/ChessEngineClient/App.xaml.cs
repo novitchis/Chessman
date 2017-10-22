@@ -1,29 +1,19 @@
 ﻿using ChessEngineClient.View;
 using Framework.MVVM;
+using Framework.Platform.UWP;
+using Microsoft.Services.Store.Engagement;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using Unity;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.Foundation.Metadata;
+using Windows.Storage;
+using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Unity;
-using Windows.UI.Core;
-using Windows.UI.Popups;
-using Windows.Foundation.Metadata;
-using Windows.Phone.UI.Input;
-using Windows.UI.ViewManagement;
-using Windows.Storage;
-using Microsoft.Services.Store.Engagement;
 
 namespace ChessEngineClient
 {
