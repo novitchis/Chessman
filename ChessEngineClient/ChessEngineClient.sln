@@ -11,7 +11,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChessEngine", "ChessEngine\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.MVVM", "Framework.MVVM\Framework.MVVM.csproj", "{81F093D5-38EB-4372-8A40-B202630D79AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessEngineClient.Code", "ChessEngineClient.Code\ChessEngineClient.Code.csproj", "{E32D3389-B3A8-4622-B706-262EA0E16D3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessEngineClient.Code", "ChessEngineClient.Code\ChessEngineClient.Code.csproj", "{E32D3389-B3A8-4622-B706-262EA0E16D3C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8E89CE83-308A-4569-B0F6-FB194946C147} = {8E89CE83-308A-4569-B0F6-FB194946C147}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

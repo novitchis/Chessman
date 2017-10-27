@@ -8,4 +8,8 @@
     <DefineConstants>TRACE;DEBUG;NETFX_CORE;CMNATTR;PORTABLE;NETSTANDARD1_4</DefineConstants>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

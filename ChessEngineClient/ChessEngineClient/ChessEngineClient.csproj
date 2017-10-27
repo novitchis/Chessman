@@ -12,7 +12,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.16299.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -159,9 +159,11 @@
       <DependentUpon>CompositionShadow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="IAppSettings.cs" />
     <Compile Include="LocalAppDataSettings.cs" />
     <Compile Include="NavigationService.cs" />
+    <Compile Include="NotificationMessages.cs" />
     <Compile Include="Pages\Analysis\Debounce.cs" />
     <Compile Include="Pages\Analysis\IAnalysisBoardService.cs" />
     <Compile Include="Pages\ComputerPractice\PracticeBoardViewModel.cs" />
@@ -181,7 +183,6 @@
     </Compile>
     <Compile Include="Pages\EditPosition\PiecesPaletteViewModel.cs" />
     <Compile Include="Pages\EditPosition\PositionLoadOptions.cs" />
-    <Compile Include="Enums.cs" />
     <Compile Include="Pages\Analysis\IEngineBoardService.cs" />
     <Compile Include="Pages\Analysis\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -193,7 +194,6 @@
       <DependentUpon>NotationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Notation\NotationViewModel.cs" />
-    <Compile Include="NotificationMessages.cs" />
     <Compile Include="Pages\Settings\AppPersistenceManager.cs" />
     <Compile Include="Pages\Settings\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -204,12 +204,12 @@
     <Compile Include="Pages\Analysis\AnalysisBoardService.cs" />
     <Compile Include="Pages\Analysis\AnalysisReceiver.cs" />
     <Compile Include="Pages\EditPosition\EditorService.cs" />
-    <Compile Include="Services\BoardService.cs" />
-    <Compile Include="Services\IBoardService.cs" />
     <Compile Include="Pages\ComputerPractice\IPracticeBoardService.cs" />
     <Compile Include="Pages\EditPosition\IBoardEditorService.cs" />
-    <Compile Include="Services\IBasicBoardService.cs" />
     <Compile Include="Pages\Analysis\IAnalysisReceiver.cs" />
+    <Compile Include="Services\BoardService.cs" />
+    <Compile Include="Services\IBasicBoardService.cs" />
+    <Compile Include="Services\IBoardService.cs" />
     <Compile Include="Services\IChessEngine.cs" />
     <Compile Include="Services\ITextReaderService.cs" />
     <Compile Include="Services\TextReaderService.cs" />
@@ -385,10 +385,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChessEngineClient.Code\ChessEngineClient.Code.csproj">
-      <Project>{e32d3389-b3a8-4622-b706-262ea0e16d3c}</Project>
-      <Name>ChessEngineClient.Code</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ChessEngine\ChessEngine.vcxproj">
       <Project>{e380a0a9-e02f-454d-8605-5fdd549df428}</Project>
       <Name>ChessEngine</Name>
