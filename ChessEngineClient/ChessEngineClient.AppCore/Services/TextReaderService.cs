@@ -8,7 +8,7 @@ using Windows.Storage.Streams;
 
 namespace ChessEngineClient.Services
 {
-    class TextReaderService : ITextReaderService
+    public class TextReaderService : ITextReaderService
     {
         public async Task<string> ReadText(IStorageFile file)
         {

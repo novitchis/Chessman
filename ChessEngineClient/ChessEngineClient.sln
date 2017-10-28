@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessEngineClient", "ChessEngineClient\ChessEngineClient.csproj", "{35832787-06EC-41CE-8E2C-3C273CF14DF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessEngineClient.AppView", "ChessEngineClient\ChessEngineClient.AppView.csproj", "{35832787-06EC-41CE-8E2C-3C273CF14DF8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Stockfish", "Stockfish\Stockfish.vcxproj", "{8E89CE83-308A-4569-B0F6-FB194946C147}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChessEngine", "ChessEngine\ChessEngine.vcxproj", "{E380A0A9-E02F-454D-8605-5FDD549DF428}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.MVVM", "Framework.MVVM\Framework.MVVM.csproj", "{81F093D5-38EB-4372-8A40-B202630D79AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessEngineClient.AppCore", "ChessEngineClient.AppCore\ChessEngineClient.AppCore.csproj", "{3BA505C5-413F-4491-9C38-98DE29F0C14E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +93,22 @@ Global
 		{81F093D5-38EB-4372-8A40-B202630D79AA}.Release|x64.Build.0 = Release|Any CPU
 		{81F093D5-38EB-4372-8A40-B202630D79AA}.Release|x86.ActiveCfg = Release|Any CPU
 		{81F093D5-38EB-4372-8A40-B202630D79AA}.Release|x86.Build.0 = Release|Any CPU
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Debug|ARM.ActiveCfg = Debug|ARM
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Debug|ARM.Build.0 = Debug|ARM
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Debug|x64.ActiveCfg = Debug|x64
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Debug|x64.Build.0 = Debug|x64
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Debug|x86.ActiveCfg = Debug|x86
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Debug|x86.Build.0 = Debug|x86
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Release|ARM.ActiveCfg = Release|ARM
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Release|ARM.Build.0 = Release|ARM
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Release|x64.ActiveCfg = Release|x64
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Release|x64.Build.0 = Release|x64
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Release|x86.ActiveCfg = Release|x86
+		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
