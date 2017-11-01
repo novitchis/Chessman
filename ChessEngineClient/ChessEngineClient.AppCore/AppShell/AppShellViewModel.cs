@@ -30,10 +30,7 @@ namespace ChessEngineClient
                     currentNavItem = value;
                     NotifyPropertyChanged();
                     if (value != null)
-                    {
-                        OnCurrentNavItemChanged(value);
-                        CurrentSecondaryNavItem = null;
-                    }
+                        OnCurrentNavItemChanged(currentNavItem.PageNavigationName);
                 }
             }
         }
@@ -48,10 +45,7 @@ namespace ChessEngineClient
                     currentSecondaryNavItem = value;
                     NotifyPropertyChanged();
                     if (value != null)
-                    {
-                        OnCurrentNavItemChanged(value);
-                        CurrentNavItem = null;
-                    }
+                        OnCurrentNavItemChanged(currentSecondaryNavItem.PageNavigationName);
                 }
             }
         }
@@ -74,19 +68,21 @@ namespace ChessEngineClient
 
             CurrentNavItem = NavigationItems[0];
 
-            navigationService.CurrentPageChanged += (o, e) =>
-            {
-                CurrentNavItem = NavigationItems.FirstOrDefault(i => i.PageNavigationName == navigationService.CurrentPageKey);
-                CurrentSecondaryNavItem = SecondaryNavigationItems.FirstOrDefault(i => i.PageNavigationName == navigationService.CurrentPageKey);
-            };
+            this.navigationService.CurrentPageChanged += (o, e) => OnCurrentPageChanged(navigationService.CurrentPageKey);
         }
 
-        private void OnCurrentNavItemChanged(NavMenuItem navItem)
+        private void OnCurrentPageChanged(string currentPageKey)
+        {
+            CurrentNavItem = NavigationItems.FirstOrDefault(i => i.PageNavigationName == currentPageKey);
+            CurrentSecondaryNavItem = SecondaryNavigationItems.FirstOrDefault(i => i.PageNavigationName == currentPageKey);
+        }
+
+        private void OnCurrentNavItemChanged(string pageKey)
         {
             // if the change occurs from navigation changed event 
             // don't need to do the actual navigation
-            if (navigationService.CurrentPageKey != navItem.PageNavigationName)
-                navigationService.NavigateTo(navItem.PageNavigationName);
+            if (navigationService.CurrentPageKey != pageKey)
+                navigationService.NavigateTo(pageKey);
         }
     }
 }
