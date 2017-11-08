@@ -3,4 +3,4 @@ Chessman is a chess analysis Universal Windows Application published to Windows 
 
 License
 -------
-Chessman is licensed under the General Public License 3.0. See COPYING for details.
+The code is licensed under the General Public License 3.0. See COPYING for details.
