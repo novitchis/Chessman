@@ -1,5 +1,6 @@
 # Chessman
-Chessman is a chess analysis Universal Windows Application published to Windows 10 Store.
+Chessman is a chess analysis Universal Windows Application published to Windows 10 Store since 2016.
+It is a free tool that helps chess players of any level to improve their game.
 
 License
 -------
