@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml.Controls;
 
-namespace ChessEngineClient.ViewModel
+namespace Chessman.ViewModel
 {
     public class EditPositionViewModel : ViewModelBase
     {

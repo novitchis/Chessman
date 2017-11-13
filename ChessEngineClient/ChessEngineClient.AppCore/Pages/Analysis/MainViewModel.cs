@@ -1,4 +1,4 @@
-﻿using ChessEngineClient.Services;
+﻿using Chessman.Services;
 using Framework.MVVM;
 using Unity;
 using System;
@@ -13,7 +13,7 @@ using Windows.Storage.Pickers;
 using Windows.UI.Popups;
 
 
-namespace ChessEngineClient.ViewModel
+namespace Chessman.ViewModel
 {
     public class MainViewModel : BoardPageViewModel, INavigationAware
     {

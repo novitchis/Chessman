@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
-namespace ChessEngineClient
+namespace Chessman
 {
     public class MoveAudioFeedbackService : IMoveAudioFeedbackService
     {

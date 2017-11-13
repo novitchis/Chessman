@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using ChessEngine;
 using System.Threading;
-using ChessEngineClient.Extensions;
+using Chessman.Extensions;
 
-namespace ChessEngineClient
+namespace Chessman
 {
     public class AnalysisBoardService : BoardService, IAnalysisBoardService
     {

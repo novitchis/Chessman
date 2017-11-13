@@ -1,4 +1,4 @@
-﻿using ChessEngineClient.View;
+﻿using Chessman.View;
 using Framework.MVVM;
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ using Windows.System.Profile;
 using Windows.Graphics.Display;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace ChessEngineClient
+namespace Chessman
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.

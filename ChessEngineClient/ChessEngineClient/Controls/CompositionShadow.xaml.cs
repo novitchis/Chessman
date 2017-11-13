@@ -22,7 +22,7 @@ using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Shapes;
 
-namespace ChessEngineClient.Controls
+namespace Chessman.Controls
 {
     /// <summary>
     /// The <see cref="CompositionShadow"/> control allows the creation of a DropShadow for any Xaml FrameworkElement in markup

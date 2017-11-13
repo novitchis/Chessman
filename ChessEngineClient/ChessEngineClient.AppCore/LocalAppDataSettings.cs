@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 
-namespace ChessEngineClient
+namespace Chessman
 {
     public class LocalAppDataSettings : IAppSettings
     {

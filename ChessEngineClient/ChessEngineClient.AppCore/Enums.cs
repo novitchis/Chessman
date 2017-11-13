@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChessEngineClient
+namespace Chessman
 {
     public enum SideColor
     {

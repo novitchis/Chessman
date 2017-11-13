@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:view="using:ChessEngineClient.View"
-    xmlns:controls="using:ChessEngineClient.Controls"
+    xmlns:view="using:Chessman.View"
+    xmlns:controls="using:Chessman.Controls"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core">
 

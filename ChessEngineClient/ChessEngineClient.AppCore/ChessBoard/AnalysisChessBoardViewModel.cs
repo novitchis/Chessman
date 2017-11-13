@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity;
 
-namespace ChessEngineClient.ViewModel
+namespace Chessman.ViewModel
 {
     public class AnalysisChessBoardViewModel : ChessBoardViewModel
     {

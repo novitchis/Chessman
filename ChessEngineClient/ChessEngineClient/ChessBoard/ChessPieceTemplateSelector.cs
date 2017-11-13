@@ -1,5 +1,5 @@
 ﻿using ChessEngine;
-using ChessEngineClient.ViewModel;
+using Chessman.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace ChessEngineClient.View
+namespace Chessman.View
 {
     public class ChessPieceTemplateSelector : DataTemplateSelector
     {

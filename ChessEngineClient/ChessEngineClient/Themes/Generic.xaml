@@ -1,7 +1,7 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:ChessEngineClient.Controls">
+    xmlns:controls="using:Chessman.Controls">
 
     <Style TargetType="Rectangle" x:Key="EvaluationPointMarkStyle">
         <Setter Property="Height" Value="1"/>

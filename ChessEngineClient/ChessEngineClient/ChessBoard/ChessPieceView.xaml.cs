@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace ChessEngineClient.View
+namespace Chessman.View
 {
     public sealed partial class ChessPieceView : UserControl
     {

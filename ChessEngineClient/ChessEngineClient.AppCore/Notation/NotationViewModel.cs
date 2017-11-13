@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml.Data;
 
-namespace ChessEngineClient.ViewModel
+namespace Chessman.ViewModel
 {
     public class NotationViewModel : ViewModelBase
     {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Foundation.Collections;
 
-namespace ChessEngineClient.ViewModel
+namespace Chessman.ViewModel
 {
     public class PracticeViewModel : BoardPageViewModel, INavigationAware
     {

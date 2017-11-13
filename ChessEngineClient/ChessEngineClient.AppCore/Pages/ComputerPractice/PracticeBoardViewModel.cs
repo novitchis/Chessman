@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChessEngineClient.ViewModel
+namespace Chessman.ViewModel
 {
     public class PracticeBoardViewModel : AnalysisChessBoardViewModel
     {

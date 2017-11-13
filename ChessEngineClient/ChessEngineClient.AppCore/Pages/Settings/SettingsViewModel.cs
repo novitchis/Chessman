@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Windows.Foundation.Collections;
 using Windows.System.Profile;
 
-namespace ChessEngineClient.ViewModel
+namespace Chessman.ViewModel
 {
     public class SettingsViewModel : ViewModelBase
     {

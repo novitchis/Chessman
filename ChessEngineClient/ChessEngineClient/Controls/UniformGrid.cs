@@ -7,7 +7,7 @@ using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace ChessEngineClient.Controls
+namespace Chessman.Controls
 {
     /// <summary>
     /// //TODO: transform this into a chess board panel

@@ -1,6 +1,6 @@
 ﻿using ChessEngine;
-using ChessEngineClient.Services;
-using ChessEngineClient.ViewModel;
+using Chessman.Services;
+using Chessman.ViewModel;
 using Framework.MVVM;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using Unity.Lifetime;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 
-namespace ChessEngineClient
+namespace Chessman
 {
     public class ViewModelLocator
     {

@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.System.Threading;
 
-namespace ChessEngineClient
+namespace Chessman
 {
     public class AnalysisReceiver : IAnalysisReceiver, IEngineNotification
     {

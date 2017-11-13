@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 
-namespace ChessEngineClient.Controls
+namespace Chessman.Controls
 {
     /// <summary>
     /// http://www.visuallylocated.com/post/2015/02/20/Creating-a-WrapPanel-for-your-Windows-Runtime-apps.aspx

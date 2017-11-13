@@ -1,4 +1,4 @@
-﻿using ChessEngineClient.ViewModel;
+﻿using Chessman.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using Windows.System.Profile;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace ChessEngineClient.Controls
+namespace Chessman.Controls
 {
     public class BoardPanel: Canvas
     {

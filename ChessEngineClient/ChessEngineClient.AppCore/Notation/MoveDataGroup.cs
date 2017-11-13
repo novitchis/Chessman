@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ChessEngineClient.ViewModel
+namespace Chessman.ViewModel
 {
     public class MoveDataGroup
     {

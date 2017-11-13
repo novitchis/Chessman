@@ -1,11 +1,11 @@
 ﻿<Page
-    x:Class="ChessEngineClient.View.PracticePage"
+    x:Class="Chessman.View.PracticePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ChessEngineClient"
+    xmlns:local="using:Chessman"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:view="using:ChessEngineClient.View"
+    xmlns:view="using:Chessman.View"
     DataContext="{Binding PracticeViewModel, Source={StaticResource ViewModelLocator}}"
     mc:Ignorable="d">
     <Grid Background="{StaticResource AccentBrush300}">

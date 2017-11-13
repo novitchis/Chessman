@@ -1,7 +1,7 @@
 ﻿using ChessEngine;
-using ChessEngineClient.Controls;
-using ChessEngineClient.Util;
-using ChessEngineClient.ViewModel;
+using Chessman.Controls;
+using Chessman.Util;
+using Chessman.ViewModel;
 using Framework.MVVM;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
-namespace ChessEngineClient.View
+namespace Chessman.View
 {
     public sealed partial class ChessBoardView : UserControl
     {

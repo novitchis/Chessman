@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ChessEngine;
 using System.Threading;
 
-namespace ChessEngineClient
+namespace Chessman
 {
     public class BoardService : IBoardService
     {

@@ -1,4 +1,4 @@
-﻿using ChessEngineClient;
+﻿using Chessman;
 using Framework.MVVM;
 using Moq;
 using System;

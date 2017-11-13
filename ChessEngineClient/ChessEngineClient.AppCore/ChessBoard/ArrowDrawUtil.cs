@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml.Shapes;
 
-namespace ChessEngineClient
+namespace Chessman
 {
     public static class ArrowDrawUtil
     {

@@ -1,4 +1,4 @@
-﻿using ChessEngineClient.View;
+﻿using Chessman.View;
 using Framework.MVVM;
 using Framework.Platform.UWP;
 using Microsoft.Services.Store.Engagement;
@@ -15,7 +15,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-namespace ChessEngineClient
+namespace Chessman
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.

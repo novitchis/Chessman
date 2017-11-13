@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ChessEngineClient.Extensions
+namespace Chessman.Extensions
 {
     public static class DebounceExtension
     {

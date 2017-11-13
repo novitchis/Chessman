@@ -1,4 +1,4 @@
-﻿using ChessEngineClient.ViewModel;
+﻿using Chessman.ViewModel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Xml;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 
-namespace ChessEngineClient
+namespace Chessman
 {
     public static class AppPersistenceManager
     {

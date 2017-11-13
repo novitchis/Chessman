@@ -1,4 +1,4 @@
-﻿namespace ChessEngineClient
+﻿namespace Chessman
 {
     public interface IEngineBoardService : IBoardService
     {

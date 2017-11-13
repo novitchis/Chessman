@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Shapes;
 
 // The Templated Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234235
 
-namespace ChessEngineClient.Controls
+namespace Chessman.Controls
 {
     public sealed class EvaluationBar : Control
     {

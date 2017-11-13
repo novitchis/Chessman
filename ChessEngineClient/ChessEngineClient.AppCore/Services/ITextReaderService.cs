@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace ChessEngineClient.Services
+namespace Chessman.Services
 {
     public interface ITextReaderService
     {

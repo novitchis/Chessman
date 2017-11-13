@@ -104,7 +104,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\SegoeUI_Merinda.ttf" />
-    <None Include="ChessEngineClient_StoreKey.pfx" />
+    <None Include="Chessman_StoreKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analysis\AnalysisView.xaml.cs">
@@ -171,7 +171,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="ChessEngineClient_TemporaryKey.pfx" />
+    <None Include="Chessman_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\capture.wav" />
@@ -336,9 +336,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChessEngineClient.AppCore\ChessEngineClient.AppCore.csproj">
+    <ProjectReference Include="..\ChessEngineClient.AppCore\Chessman.AppCore.csproj">
       <Project>{3ba505c5-413f-4491-9c38-98de29f0c14e}</Project>
-      <Name>ChessEngineClient.AppCore</Name>
+      <Name>Chessman.AppCore</Name>
     </ProjectReference>
     <ProjectReference Include="..\ChessEngine\ChessEngine.vcxproj">
       <Project>{e380a0a9-e02f-454d-8605-5fdd549df428}</Project>
