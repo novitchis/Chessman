@@ -7,8 +7,8 @@
     <ProjectGuid>{41272CB2-69E2-4800-BFAC-06AF07D2DF21}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChessEngineClient.UnitTestsApp</RootNamespace>
-    <AssemblyName>ChessEngineClient.UnitTestsApp</AssemblyName>
+    <RootNamespace>Chessman.UnitTestsApp</RootNamespace>
+    <AssemblyName>Chessman.UnitTestsApp</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.16299.0</TargetPlatformVersion>
@@ -16,7 +16,7 @@
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>ChessEngineClient.UnitTestsApp_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>Chessman.UnitTestsApp_TemporaryKey.pfx</PackageCertificateKeyFile>
     <UnitTestPlatformVersion Condition="'$(UnitTestPlatformVersion)' == ''">$(VisualStudioVersion)</UnitTestPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -141,7 +141,7 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChessEngineClient.AppCore\Chessman.AppCore.csproj">
+    <ProjectReference Include="..\Chessman.AppCore\Chessman.AppCore.csproj">
       <Project>{3ba505c5-413f-4491-9c38-98de29f0c14e}</Project>
       <Name>Chessman.AppCore</Name>
     </ProjectReference>

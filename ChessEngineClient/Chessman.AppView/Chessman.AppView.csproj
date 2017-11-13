@@ -7,8 +7,8 @@
     <ProjectGuid>{35832787-06EC-41CE-8E2C-3C273CF14DF8}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChessEngineClient</RootNamespace>
-    <AssemblyName>ChessEngineClient</AssemblyName>
+    <RootNamespace>Chessman</RootNamespace>
+    <AssemblyName>Chessman</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.16299.0</TargetPlatformVersion>
@@ -16,7 +16,7 @@
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>ChessEngineClient_StoreKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>Chessman_StoreKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
@@ -336,7 +336,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChessEngineClient.AppCore\Chessman.AppCore.csproj">
+    <ProjectReference Include="..\Chessman.AppCore\Chessman.AppCore.csproj">
       <Project>{3ba505c5-413f-4491-9c38-98de29f0c14e}</Project>
       <Name>Chessman.AppCore</Name>
     </ProjectReference>

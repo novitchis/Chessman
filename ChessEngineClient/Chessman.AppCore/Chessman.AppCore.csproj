@@ -7,8 +7,8 @@
     <ProjectGuid>{3BA505C5-413F-4491-9C38-98DE29F0C14E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChessEngineClient.AppCore</RootNamespace>
-    <AssemblyName>ChessEngineClient.AppCore</AssemblyName>
+    <RootNamespace>Chessman.AppCore</RootNamespace>
+    <AssemblyName>Chessman.AppCore</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.15063.0</TargetPlatformVersion>
@@ -157,7 +157,6 @@
     <Compile Include="Services\ITextReaderService.cs" />
     <Compile Include="Services\TextReaderService.cs" />
     <Compile Include="ViewModelLocator.cs" />
-    <EmbeddedResource Include="Properties\ChessEngineClient.AppCore.rd.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
@@ -179,6 +178,9 @@
       <Project>{81f093d5-38eb-4372-8a40-b202630d79aa}</Project>
       <Name>Framework.MVVM</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\Chessman.AppCore.rd.xml" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chessman.AppView", "ChessEngineClient\Chessman.AppView.csproj", "{35832787-06EC-41CE-8E2C-3C273CF14DF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chessman.AppView", "Chessman.AppView\Chessman.AppView.csproj", "{35832787-06EC-41CE-8E2C-3C273CF14DF8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Stockfish", "Stockfish\Stockfish.vcxproj", "{8E89CE83-308A-4569-B0F6-FB194946C147}"
 EndProject
@@ -11,9 +11,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChessEngine", "ChessEngine\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.MVVM", "Framework.MVVM\Framework.MVVM.csproj", "{81F093D5-38EB-4372-8A40-B202630D79AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chessman.AppCore", "ChessEngineClient.AppCore\Chessman.AppCore.csproj", "{3BA505C5-413F-4491-9C38-98DE29F0C14E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chessman.AppCore", "Chessman.AppCore\Chessman.AppCore.csproj", "{3BA505C5-413F-4491-9C38-98DE29F0C14E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chessman.UnitTestsApp", "ChessEngineClient.UnitTestsApp\Chessman.UnitTestsApp.csproj", "{41272CB2-69E2-4800-BFAC-06AF07D2DF21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chessman.UnitTestsApp", "Chessman.UnitTestsApp\Chessman.UnitTestsApp.csproj", "{41272CB2-69E2-4800-BFAC-06AF07D2DF21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
