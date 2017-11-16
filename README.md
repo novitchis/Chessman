@@ -1,6 +1,8 @@
 # Chessman
 A chess analysis Universal Windows Application published to Windows 10 Store since 2016.
 
+[![Join the chat at https://gitter.im/ChessmanDev/Lobby](https://badges.gitter.im/ChessmanDev/Lobby.svg)](https://gitter.im/ChessmanDev/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 <img src="https://raw.githubusercontent.com/novitchis/Chessman/master/public/Desktop_Analysis.PNG" alt="Chessman" />
 
 With the purpose of helping chess players of any level to improve their game, Chessman is a modern Windows 10 application hoping to evolve into a full featured chess training app.
