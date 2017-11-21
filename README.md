@@ -7,6 +7,8 @@ A chess analysis Universal Windows Application published to Windows 10 Store sin
 
 With the purpose of helping chess players of any level to improve their game, Chessman is a modern Windows 10 application hoping to evolve into a full featured chess training app.
 
+Please don't submit the exact copy of this app to Windows 10 Store, instead you can contibute to this application see CONTRIBUTING.md. 
+
 License
 -------
 Chessman is free, and distributed under the GNU General Public License (GPL) 3.0. Essentially, this means that you are free to do almost exactly what you want with the program, including distributing it among your friends, making it available for download from your web site, selling it (either by itself or as part of some bigger software package), or using it as the starting point for a software project of your own.
