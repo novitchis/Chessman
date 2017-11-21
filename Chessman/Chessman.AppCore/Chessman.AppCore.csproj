@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3BA505C5-413F-4491-9C38-98DE29F0C14E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Chessman.AppCore</RootNamespace>
+    <AssemblyName>Chessman.AppCore</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.15063.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Analysis\AnalysisLineViewModel.cs" />
+    <Compile Include="Analysis\AnalysisViewModel.cs" />
+    <Compile Include="AppShell\AppShellViewModel.cs" />
+    <Compile Include="AppShell\NavMenuItem.cs" />
+    <Compile Include="ChessBoard\AnalysisChessBoardViewModel.cs" />
+    <Compile Include="ChessBoard\ArrowDrawUtil.cs" />
+    <Compile Include="ChessBoard\ChessBoardViewModel.cs" />
+    <Compile Include="ChessBoard\ChessPieceViewModel.cs" />
+    <Compile Include="ChessBoard\EditChessBoardViewModel.cs" />
+    <Compile Include="ChessBoard\ICoordinatedItem.cs" />
+    <Compile Include="ChessBoard\IMoveAudioFeedbackService.cs" />
+    <Compile Include="ChessBoard\MoveAudioFeedbackService.cs" />
+    <Compile Include="ChessBoard\PromotionViewModel.cs" />
+    <Compile Include="ChessBoard\RankOrFieldViewModel.cs" />
+    <Compile Include="ChessBoard\SquareViewModel.cs" />
+    <Compile Include="ChessBoard\Tasks\MoveTask.cs" />
+    <Compile Include="ChessBoard\Tasks\PromotionMoveTask.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="IAppSettings.cs" />
+    <Compile Include="LocalAppDataSettings.cs" />
+    <Compile Include="Notation\MoveDataGroup.cs" />
+    <Compile Include="Notation\NotationViewModel.cs" />
+    <Compile Include="NotificationMessages.cs" />
+    <Compile Include="Pages\Analysis\AnalysisBoardService.cs" />
+    <Compile Include="Pages\Analysis\AnalysisEventArgs.cs" />
+    <Compile Include="Pages\Analysis\AnalysisReceiver.cs" />
+    <Compile Include="Pages\Analysis\BoardPageViewModel.cs" />
+    <Compile Include="Pages\Analysis\Debounce.cs" />
+    <Compile Include="Pages\Analysis\IAnalysisBoardService.cs" />
+    <Compile Include="Pages\Analysis\IAnalysisReceiver.cs" />
+    <Compile Include="Pages\Analysis\IEngineBoardService.cs" />
+    <Compile Include="Pages\Analysis\MainViewModel.cs" />
+    <Compile Include="Pages\ComputerPractice\IPracticeBoardService.cs" />
+    <Compile Include="Pages\ComputerPractice\PracticeBoardService.cs" />
+    <Compile Include="Pages\ComputerPractice\PracticeBoardViewModel.cs" />
+    <Compile Include="Pages\ComputerPractice\PracticeViewModel.cs" />
+    <Compile Include="Pages\EditPosition\EditorService.cs" />
+    <Compile Include="Pages\EditPosition\EditPositionViewModel.cs" />
+    <Compile Include="Pages\EditPosition\IBoardEditorService.cs" />
+    <Compile Include="Pages\EditPosition\PiecesPaletteViewModel.cs" />
+    <Compile Include="Pages\EditPosition\PositionLoadOptions.cs" />
+    <Compile Include="Pages\Settings\AppPersistenceManager.cs" />
+    <Compile Include="Pages\Settings\SettingsViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\BoardService.cs" />
+    <Compile Include="Services\IBasicBoardService.cs" />
+    <Compile Include="Services\IBoardService.cs" />
+    <Compile Include="Services\IChessEngine.cs" />
+    <Compile Include="Services\ITextReaderService.cs" />
+    <Compile Include="Services\TextReaderService.cs" />
+    <Compile Include="ViewModelLocator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>10.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Unity">
+      <Version>5.0.2</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChessEngine\ChessEngine.vcxproj">
+      <Project>{e380a0a9-e02f-454d-8605-5fdd549df428}</Project>
+      <Name>ChessEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Framework.MVVM\Framework.MVVM.csproj">
+      <Project>{81f093d5-38eb-4372-8a40-b202630d79aa}</Project>
+      <Name>Framework.MVVM</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\Chessman.AppCore.rd.xml" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

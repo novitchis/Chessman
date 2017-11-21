@@ -1,0 +1,108 @@
+﻿<Page
+    x:Class="Chessman.View.PracticePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Chessman"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="using:Chessman.View"
+    DataContext="{Binding PracticeViewModel, Source={StaticResource ViewModelLocator}}"
+    mc:Ignorable="d">
+    <Grid Background="{StaticResource AccentBrush300}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="titlePanel" Style="{StaticResource PageTitlePanelStyle}">
+            <TextBlock 
+                Text="Computer practice"
+                Style="{StaticResource HeaderTextStyle}" />
+        </Grid>
+        <Grid x:Name="contentGrid" Grid.Row="1">
+            <RelativePanel>
+                <view:NotationView x:Name="notationView"
+                                   DataContext="{Binding NotationViewModel}" />
+                <view:ChessBoardView x:Name="chessBoard"
+                                     HasDragAndDrop="True"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"
+                                     DataContext="{Binding BoardViewModel}" />
+            </RelativePanel>
+        </Grid>
+        <CommandBar x:Name="CommandBar" 
+                    Grid.Row="2" 
+                    Background="{StaticResource AccentBrush400}"
+                    Closed="OnCommandBarClosed">
+            <AppBarButton 
+                Label="Switch color" 
+                Command="{Binding SwitchColor}"
+                Visibility="{Binding UserColor, Mode=OneWay, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='White'}">
+                <AppBarButton.Icon>
+                    <PathIcon VerticalAlignment="Center" HorizontalAlignment="Center" Data="{StaticResource SwitchSideToBlackButtonData}"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton 
+                Label="Switch color" 
+                Command="{Binding SwitchColor}"
+                Visibility="{Binding UserColor, Mode=OneWay, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='Black'}">
+                <AppBarButton.Icon>
+                    <PathIcon VerticalAlignment="Center" HorizontalAlignment="Center" Data="{StaticResource SwitchSideToWhiteButtonData}"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}"/>
+            <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}"/>
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="New game" Command="{Binding NewGameCommand}" />
+                <AppBarButton Label="Edit position" Command="{Binding EditPositionCommand}" />
+                <AppBarButton Label="Analyze game" Command="{Binding AnalyseGameCommand}" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="contentGrid.Margin" Value="12 8 12 12"/>
+
+                        <Setter Target="chessBoard.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.Margin" Value="0 0 12 0"/>
+
+                        <Setter Target="notationView.(RelativePanel.RightOf)" Value="chessBoard"/>
+                        <Setter Target="notationView.(RelativePanel.AlignTopWithPanel)" Value="true"/>
+                        <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="notationView.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
+                        <Setter Target="notationView.MinWidth" Value="250"/>
+
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        
+                        <Setter Target="titlePanel.Margin" Value="48 0 0 0"/>
+
+                        <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+
+                        <Setter Target="notationView.(RelativePanel.Below)" Value="chessBoard"/>
+                        <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="notationView.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+                        <Setter Target="notationView.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
+                        <Setter Target="notationView.MinHeight" Value="100"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+    </Grid>
+</Page>
