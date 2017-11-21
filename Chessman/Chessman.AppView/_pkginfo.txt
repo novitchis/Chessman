@@ -1,0 +1,1 @@
+C:\Users\Silviu\Documents\Work\Repos\Chess\ChessEngineClient\ChessEngineClient\bin\ARM\Release\Upload\ChessEngineClient_1.2.31.0\ChessEngineClient_1.2.31.0_x86_x64_arm.appxbundle

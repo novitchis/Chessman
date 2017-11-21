@@ -1,0 +1,34 @@
+﻿<UserControl
+    x:Class="Chessman.View.SquareView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid x:Name="rootGrid" Background="Transparent">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="DefaultState"/>
+                <VisualState x:Name="Highlighted">
+                    <VisualState.Setters>
+                        <Setter Target="rootGrid.Background" Value="{StaticResource SelectedSquareLighterBrush}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Border x:Name="borderMark"
+            BorderBrush="Black" 
+            BorderThickness="2" 
+            Opacity="0.3" 
+            CornerRadius="20"
+            Visibility="{Binding PossibleMoveMark, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Piece}"/>
+        <Ellipse x:Name="ellipseMark" 
+                 Fill="Black"
+                 Opacity="0.3"
+                 Visibility="{Binding PossibleMoveMark, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=EmptySquare}"/>
+    </Grid>
+</UserControl>
