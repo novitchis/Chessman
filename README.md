@@ -5,9 +5,19 @@ A chess analysis Universal Windows Application published to Windows 10 Store sin
 
 <img src="https://raw.githubusercontent.com/novitchis/Chessman/master/public/Desktop_Analysis.PNG" alt="Chessman" />
 
-With the purpose of helping chess players of any level to improve their game, Chessman is a modern Windows 10 application hoping to evolve into a full featured chess training app.
+With the purpose of helping chess players of any level to improve their game, Chessman is a modern Windows 10 application hoping to evolve into a full featured __chess training app__.
 
-Please don't submit the exact copy of this app to Windows 10 Store, instead you can contibute to this application see CONTRIBUTING.md. 
+*Please don't submit the exact copy of this app to Windows 10 Store, instead you can contribute to this application see CONTRIBUTING.md.*
+
+Implementation
+--------------
+The application is a Universal Windows Platform that runs on any Windows 10 device. Is desktop first, but other screen sizes will be still supported. 
+
+__Stack:__
+- View: XAML and C# and follows (mostly :) ) MVVM.
+- C++/CX core chess board backend.
+- C++ [Stockfish 7](https://github.com/official-stockfish/Stockfish) chess engine.
+- Unit Tests: XUnit.
 
 License
 -------
