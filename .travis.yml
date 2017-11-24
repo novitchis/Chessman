@@ -1,2 +1,2 @@
 language: csharp
-solution: /Chessman/Chessman.sln
+solution: ./Chessman/Chessman.sln
