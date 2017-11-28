@@ -1,0 +1,77 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--Segoe UI Symbol pieces characters-->
+    <x:String x:Key="WhiteKing">&#x2654;</x:String>
+    <x:String x:Key="WhiteQueen">&#x2655;</x:String>
+    <x:String x:Key="WhiteRook">&#x2656;</x:String>
+    <x:String x:Key="WhiteBishop">&#x2657;</x:String>
+    <x:String x:Key="WhiteKnight">&#x2658;</x:String>
+    <x:String x:Key="WhitePawn">&#x2659;</x:String>
+
+    <x:String x:Key="BlackKing">&#x265A;</x:String>
+    <x:String x:Key="BlackQueen">&#x265B;</x:String>
+    <x:String x:Key="BlackRook">&#x265C;</x:String>
+    <x:String x:Key="BlackBishop">&#x265D;</x:String>
+    <x:String x:Key="BlackKnight">&#x265E;</x:String>
+    <x:String x:Key="BlackPawn">&#x265F;</x:String>
+
+    <!--The font icon properties should come from a style, but there are some 
+        properties that are not dependency properties so postpone it for now-->
+
+    <Style TargetType="TextBlock" x:Key="ChessPieceStyle">
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+    
+    <DataTemplate x:Key="WhiteKingTemplate">
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource WhiteKing}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="WhiteQueenTemplate">
+        <TextBlock Style="{StaticResource ChessPieceStyle}"  Text="{StaticResource WhiteQueen}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="WhiteRookTemplate">
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource WhiteRook}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="WhiteBishopTemplate">
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource WhiteBishop}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="WhiteKnightTemplate">
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource WhiteKnight}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="WhitePawnTemplate">
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource WhitePawn}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="BlackKingTemplate">
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource BlackKing}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="BlackQueenTemplate">
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource BlackQueen}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="BlackRookTemplate">
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource BlackRook}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="BlackBishopTemplate">
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource BlackBishop}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="BlackKnightTemplate">
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource BlackKnight}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="BlackPawnTemplate">
+        <TextBlock Style="{StaticResource ChessPieceStyle}" Text="{StaticResource BlackPawn}" />
+    </DataTemplate>
+</ResourceDictionary>
