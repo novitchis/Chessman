@@ -50,8 +50,8 @@ Task("Build")
 		.SetMSBuildPlatform(MSBuildPlatform.x86)
 		.SetPlatformTarget(platform)
 		.WithProperty("DefineConstants", "PORTABLE NETFX_CORE") // TODO: move to project
-		// .WithProperty("AppxBundle", "Always")
-        // .WithProperty("AppxBundlePlatforms","x86")
+		.WithProperty("AppxBundle", "Always")
+        .WithProperty("AppxBundlePlatforms","x86")
 		);
 });
 
