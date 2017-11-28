@@ -1,4 +1,3 @@
-#tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -40,9 +39,13 @@ Task("Build")
       // Use MSBuild
       MSBuild(solution, settings =>
         settings.SetConfiguration(configuration)
+		.WithTarget("Build")
 		.SetMSBuildPlatform(MSBuildPlatform.x86)
 		.SetPlatformTarget(PlatformTarget.x86)
 		.WithProperty("DefineConstants", "PORTABLE NETFX_CORE")
+		.WithProperty("AppxBundle", "Never")
+		.WithProperty("UapAppxPackageBuildMode", "CI")
+		.SetVerbosity(Verbosity.Quiet)
 		);
     }
     else
