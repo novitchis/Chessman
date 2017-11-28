@@ -26,4 +26,4 @@ Chessman is free, and distributed under the GNU General Public License (GPL) 3.0
 
 The only real limitation is that whenever you distribute Chessman in some way, you must always include the full source code, or a pointer to where the source code can be found. If you make any changes to the source code, these changes must also be made available under the GPL.
 
-For more details, read [COPYING.md](https://github.com/novitchis/Chessman/blob/master/COPYING.md").
+For more details, read [COPYING.md](COPYING.md").
