@@ -2,6 +2,7 @@
 A chess analysis Universal Windows Application published to Windows 10 Store since 2016.
 
 [![Join the chat at https://gitter.im/ChessmanDev/Lobby](https://badges.gitter.im/ChessmanDev/Lobby.svg)](https://gitter.im/ChessmanDev/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build status](https://ci.appveyor.com/api/projects/status/78agh8di6142pjs1?svg=true)](https://ci.appveyor.com/project/novitchis/chessman)
 
 <img src="https://raw.githubusercontent.com/novitchis/Chessman/master/public/Desktop_Analysis.PNG" alt="Chessman" />
 
