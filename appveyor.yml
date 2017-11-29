@@ -1,0 +1,10 @@
+version: 1.2.{build}
+image: Visual Studio 2017
+configuration: Release
+environment:
+  UseTemporarySignCert: true
+build_script:
+- ps: ./build/build.ps1
+skip_commits:
+  files:
+  - *.md
