@@ -103,6 +103,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\github-logo.png" />
     <Content Include="Assets\SegoeUI_Merinda.ttf" />
     <None Include="Chessman.AppView_TemporaryKey.pfx" />
     <None Include="Chessman_StoreKey.pfx" />
@@ -161,6 +162,9 @@
     </Compile>
     <Compile Include="Notation\NotationView.xaml.cs">
       <DependentUpon>NotationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Settings\AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Settings\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -308,6 +312,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Notation\NotationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Settings\AboutPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

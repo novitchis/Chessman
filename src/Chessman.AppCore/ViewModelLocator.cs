@@ -16,6 +16,7 @@ namespace Chessman
 {
     public class ViewModelLocator
     {
+        public const string AboutPageNavigationName = "AboutPage";
         public const string SettingsPageNavigationName = "SettingsPage";
 
         public const string MainPageNavigationName = "MainPage";
