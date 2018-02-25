@@ -25,6 +25,7 @@
         <Setter Property="Foreground" Value="{StaticResource AccentBrush900}" />
         <Setter Property="FontWeight" Value="Light" />
         <Setter Property="Margin" Value="0 0 8 0" />
+        <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
 
     <Style x:Key="HeaderLabelTextStyle" TargetType="TextBlock">
