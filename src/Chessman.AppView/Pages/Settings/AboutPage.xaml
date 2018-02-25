@@ -18,14 +18,12 @@
         </Grid>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="12 8 12 12">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock 
-                        Text="You can find us on GitHub:"
-                        Style="{StaticResource LabelTextStyle}" />
-                    <HyperlinkButton NavigateUri="https://github.com/novitchis/Chessman">
-                        <Image Source="/Assets/github-logo.png" Width="200" />
-                    </HyperlinkButton>
-                </StackPanel>
+                <TextBlock 
+                    Text="You can find us on GitHub:"
+                    Style="{StaticResource LabelTextStyle}" />
+                <HyperlinkButton NavigateUri="https://github.com/novitchis/Chessman">
+                    <Image Source="/Assets/github-logo.png" Width="200" />
+                </HyperlinkButton>
                 <TextBlock 
                     Text="Contributing"
                     Style="{StaticResource HeaderLabelTextStyle}" />
