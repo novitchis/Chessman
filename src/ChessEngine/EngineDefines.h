@@ -226,6 +226,14 @@ namespace ChessEngine
 
 		}
 
+		MoveImpl(const CoordinateImpl& _from, const CoordinateImpl& _to, char _promotionPieceType )
+			: from(_from)
+			, to(_to)
+			, promotionPieceType(_promotionPieceType)
+		{
+
+		}
+
 		operator bool () const
 		{
 			return from && to;
@@ -236,10 +244,12 @@ namespace ChessEngine
 			std::transform(strMove.begin(), strMove.end(), strMove.begin(), ::tolower);
 			if(strMove.size()<4)
 				return MoveImpl(CoordinateImpl(),CoordinateImpl());
+
 			CoordinateImpl from( strMove[1] - '1', strMove[0] - 'a' );
 			CoordinateImpl to ( strMove[3] - '1', strMove[2] - 'a' );
+			char promotionPieceType = strMove.size() == 5 ? strMove[4] : ChessPieceImpl::None;
 
-			return MoveImpl( from, to );
+			return MoveImpl(from, to, promotionPieceType);
 		}
 
 		std::string Serialize() const
@@ -249,7 +259,7 @@ namespace ChessEngine
 
 		CoordinateImpl from;
 		CoordinateImpl to;
-		ChessPieceImpl promotionPiece;
+		char promotionPieceType;
 	};
 
 

@@ -207,7 +207,7 @@ bool ChessBoardImpl::SubmitMove(const MoveImpl& move, AdditionalMoveInfo& additi
 	bool bPromotion = (m_lastPiece.cPiece == ChessPieceImpl::Pawn) && ((move.to.nRank == 0) || (move.to.nRank == 7));
 	if (bPromotion)
 	{
-		m_lastPiece.cPiece = move.promotionPiece.cPiece;
+		m_lastPiece.cPiece = move.promotionPieceType;
 		if (m_lastPiece.cPiece == ChessPieceImpl::None)
 			m_lastPiece.cPiece = ChessPieceImpl::Queen;
 
@@ -1053,7 +1053,7 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 			auto index = strToken.find('=');
 			char destPiece = strToken[index + 1];
 			destString = strToken.substr(index - 2, index);
-			move.promotionPiece = ChessPieceImpl(tolower(destPiece), IsWhiteTurn());
+			move.promotionPieceType = tolower(destPiece);
 		}
 		else if (strToken[strToken.length() - 1] == '+' || strToken[strToken.length() - 1] == '#')
 		{
@@ -1066,7 +1066,7 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 				}
 				char destPiece = strToken[strToken.length() - 2];
 				destString = strToken.substr(strToken.length() - 4, strToken.length() - 2);
-				move.promotionPiece = ChessPieceImpl(tolower(destPiece), IsWhiteTurn());
+				move.promotionPieceType = tolower(destPiece);
 			}
 			else
 			{
@@ -1084,7 +1084,7 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 				}
 				char destPiece = strToken[strToken.length() - 1];
 				destString = strToken.substr(strToken.length() - 3);
-				move.promotionPiece = ChessPieceImpl(tolower(destPiece), IsWhiteTurn());
+				move.promotionPieceType = tolower(destPiece);
 			}
 			else
 			{

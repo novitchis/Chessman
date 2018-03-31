@@ -54,9 +54,9 @@ namespace Chessman
             return result;
         }
 
-        public override bool SubmitPromotionMove(Coordinate from, Coordinate to, ChessPiece piece)
+        public override bool SubmitPromotionMove(Coordinate from, Coordinate to, PieceType promotionPieceType)
         {
-            bool result = base.SubmitPromotionMove(from, to, piece);
+            bool result = base.SubmitPromotionMove(from, to, promotionPieceType);
             if (result)
                 AnalyseCurrentPosition();
 

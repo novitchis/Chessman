@@ -38,18 +38,10 @@ MoveImpl ManagedConverter::ConvertManagedMove(Move^ move)
 	return MoveImpl(ConvertManagedCoord(move->GetFrom()), ConvertManagedCoord(move->GetTo()));
 }
 
-
-Move^ ManagedConverter::ConvertNativeMove(MoveImpl move)
-{
-	return ref new Move(ConvertNativeCoord(move.from), ConvertNativeCoord(move.to));
-}
-
-
 CoordinateImpl ManagedConverter::ConvertManagedCoord(Coordinate^ coord)
 {
 	return CoordinateImpl(coord->X, coord->Y);
 }
-
 
 Coordinate^ ManagedConverter::ConvertNativeCoord(CoordinateImpl coord)
 {

@@ -17,7 +17,7 @@ namespace Chessman
 
         bool SubmitMove(Coordinate from, Coordinate to);
 
-        bool SubmitPromotionMove(Coordinate from, Coordinate to, ChessPiece piece);
+        bool SubmitPromotionMove(Coordinate from, Coordinate to, PieceType promotionPieceType);
 
         IList<MoveData> GetMoves(bool stopOnCurrentMove = true);
 

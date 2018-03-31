@@ -18,7 +18,7 @@ namespace ChessEngine
 
 		Coordinate^					GetFrom();
 		Coordinate^					GetTo();
-		ChessPiece^					GetPromotionPiece();
+		PieceType					GetPromotionPieceType();
 
 		virtual Platform::String^	ToString() override;
 		void						FromString(Platform::String^ strMove);

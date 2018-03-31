@@ -19,7 +19,7 @@ namespace ChessEngine
 		static string				ManagedString2String( String^ strManaged );
 		static String^				String2ManagedString( string strNative );		
 		static MoveImpl				ConvertManagedMove(Move^ move);
-		static Move^				ConvertNativeMove(MoveImpl move);
+
 		static CoordinateImpl		ConvertManagedCoord(Coordinate^ coord);
 		static Coordinate^			ConvertNativeCoord(CoordinateImpl coord);
 		static EngineOptionsImpl	ConvertManagedOptions(EngineOptions^ options);

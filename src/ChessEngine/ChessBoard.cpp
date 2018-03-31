@@ -111,12 +111,12 @@ bool ChessBoard::SubmitMove(Coordinate^ from, Coordinate^ to)
 	}
 }
 
-bool ChessBoard::SubmitPromotionMove(Coordinate^ from, Coordinate^ to, ChessPiece^ piece)
+bool ChessBoard::SubmitPromotionMove(Coordinate^ from, Coordinate^ to, PieceType promotionPieceType)
 {
 	try
 	{
 		MoveImpl move(from->getCoordinateImpl(), to->getCoordinateImpl());
-		move.promotionPiece = piece->getPieceImpl();
+		move.promotionPieceType = (char)promotionPieceType;
 
 		return m_ChessBoardImpl.SubmitMove(move);
 	}

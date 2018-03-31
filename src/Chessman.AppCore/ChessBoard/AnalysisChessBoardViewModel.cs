@@ -154,8 +154,7 @@ namespace Chessman.ViewModel
                 if (pieceType == PieceType.None)
                     return;
 
-                ChessPiece piece = new ChessPiece(pieceType, analysisBoardService.IsWhiteTurn);
-                bool result = analysisBoardService.SubmitPromotionMove(move.GetFrom(), move.GetTo(), piece);
+                bool result = analysisBoardService.SubmitPromotionMove(move.GetFrom(), move.GetTo(), pieceType);
                 if (result)
                 {
                     ExecuteCurrentMoveOnBoard(true);
@@ -181,7 +180,7 @@ namespace Chessman.ViewModel
             RefreshPositionStateMarkers();
         }
 
-        private void ExecuteCurrentMoveOnBoard(bool instantMove)
+        protected void ExecuteCurrentMoveOnBoard(bool instantMove)
         {
             ClearCurrentMoveData();
 
@@ -221,7 +220,7 @@ namespace Chessman.ViewModel
 
                 if (moveTask.MoveData.PawnPromoted)
                 {
-                    mainPieceViewModel.Piece = moveTask.MoveData.Move.GetPromotionPiece();
+                    mainPieceViewModel.Piece = new ChessPiece(moveTask.MoveData.Move.GetPromotionPieceType(), mainPieceViewModel.Piece.Color == PieceColor.White);
                     //have to re-add the piece in order to update the view
                     ReplacePiece(mainPieceViewModel, mainPieceViewModel);
                 }

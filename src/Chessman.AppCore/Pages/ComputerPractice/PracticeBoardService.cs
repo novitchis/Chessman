@@ -83,7 +83,11 @@ namespace Chessman
         private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
         {
             if (e.AnalysisLines[0].IsBestMove)
+            {
+                var move = e.AnalysisLines[0].Analysis[0];
+                SubmitPromotionMove(move.GetFrom(), move.GetTo(), move.GetPromotionPieceType());
                 mainSynchronizationContext.Post(o => AnalysisReceived?.Invoke(this, e), null);
+            }
         }
 
         public void Stop()

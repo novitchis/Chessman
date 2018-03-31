@@ -48,9 +48,9 @@ namespace Chessman
             return chessBoard.SubmitMove(from, to);
         }
 
-        public virtual bool SubmitPromotionMove(Coordinate from, Coordinate to, ChessPiece piece)
+        public virtual bool SubmitPromotionMove(Coordinate from, Coordinate to, PieceType promotionPieceType)
         {
-            return chessBoard.SubmitPromotionMove(from, to, piece);
+            return chessBoard.SubmitPromotionMove(from, to, promotionPieceType);
         }
 
         public MoveData GetCurrentMove()

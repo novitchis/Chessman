@@ -21,7 +21,7 @@ void EngineNotificationAdaptor::OnEngineMoveFinished(const std::vector<AnalysisD
 
 		int iCrtIdx = -1;
 		for (auto it : line_it.listAnalysis) {
-			arrayAnalysis->set(++iCrtIdx, ManagedConverter::ConvertNativeMove(it));
+			arrayAnalysis->set(++iCrtIdx, ref new Move(it));
 		}
 		analysisData->Analysis = arrayAnalysis;
 		analysisData->Score = line_it.fScore;

@@ -30,9 +30,9 @@ Coordinate^	Move::GetTo()
 	return ref new Coordinate(m_Move.to.nColumn, m_Move.to.nRank);
 }
 
-ChessPiece^	Move::GetPromotionPiece()
+PieceType	Move::GetPromotionPieceType()
 {
-	return ref new ChessPiece(m_Move.promotionPiece);
+	return (PieceType)m_Move.promotionPieceType;
 }
 
 Platform::String^	Move::ToString()
