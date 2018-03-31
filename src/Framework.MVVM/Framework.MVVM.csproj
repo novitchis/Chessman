@@ -8,6 +8,10 @@
     <DefineConstants>TRACE;DEBUG;NETFX_CORE;CMNATTR;PORTABLE;NETSTANDARD1_4</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;NETFX_CORE;CMNATTR;PORTABLE;NETSTANDARD1_4</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Folder Include="Services\" />
   </ItemGroup>

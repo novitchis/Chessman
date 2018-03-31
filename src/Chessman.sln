@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chessman.AppView", "Chessman.AppView\Chessman.AppView.csproj", "{35832787-06EC-41CE-8E2C-3C273CF14DF8}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.MVVM", "Framework.MVVM\Framework.MVVM.csproj", "{81F093D5-38EB-4372-8A40-B202630D79AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chessman.AppCore", "Chessman.AppCore\Chessman.AppCore.csproj", "{3BA505C5-413F-4491-9C38-98DE29F0C14E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chessman.UnitTestsApp", "Chessman.UnitTestsApp\Chessman.UnitTestsApp.csproj", "{41272CB2-69E2-4800-BFAC-06AF07D2DF21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +111,26 @@ Global
 		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Release|x64.Build.0 = Release|x64
 		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Release|x86.ActiveCfg = Release|x86
 		{3BA505C5-413F-4491-9C38-98DE29F0C14E}.Release|x86.Build.0 = Release|x86
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Debug|ARM.ActiveCfg = Debug|ARM
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Debug|ARM.Build.0 = Debug|ARM
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Debug|ARM.Deploy.0 = Debug|ARM
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Debug|x64.ActiveCfg = Debug|x64
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Debug|x64.Build.0 = Debug|x64
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Debug|x64.Deploy.0 = Debug|x64
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Debug|x86.ActiveCfg = Debug|x86
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Debug|x86.Build.0 = Debug|x86
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Debug|x86.Deploy.0 = Debug|x86
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Release|Any CPU.ActiveCfg = Release|x86
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Release|ARM.ActiveCfg = Release|ARM
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Release|ARM.Build.0 = Release|ARM
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Release|ARM.Deploy.0 = Release|ARM
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Release|x64.ActiveCfg = Release|x64
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Release|x64.Build.0 = Release|x64
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Release|x64.Deploy.0 = Release|x64
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Release|x86.ActiveCfg = Release|x86
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Release|x86.Build.0 = Release|x86
+		{41272CB2-69E2-4800-BFAC-06AF07D2DF21}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

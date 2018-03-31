@@ -1,1 +1,1 @@
-C:\Users\silviun\Documents\GitHub\Chessman\src\Chessman.AppView\bin\x86\Release\Upload\Chessman.AppView_1.2.32.0\Chessman.AppView_1.2.32.0_x86.appxbundle
+C:\Users\Silviu\Documents\GitHub\Chessman\src\Chessman.AppView\bin\x86\Release\Upload\Chessman.AppView_1.2.34.0\Chessman.AppView_1.2.34.0_x86.appxbundle
