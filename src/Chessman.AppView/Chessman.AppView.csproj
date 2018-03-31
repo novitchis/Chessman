@@ -16,7 +16,7 @@
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>Chessman.AppView_StoreKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>Chessman.AppView_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
@@ -105,7 +105,6 @@
     </Content>
     <Content Include="Assets\github-logo.png" />
     <Content Include="Assets\SegoeUI_Merinda.ttf" />
-    <None Include="Chessman.AppView_StoreKey.pfx" />
     <None Include="Chessman.AppView_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

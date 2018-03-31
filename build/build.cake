@@ -51,6 +51,8 @@ Task("Build")
 		.SetPlatformTarget(platform)
 		.WithProperty("AppxBundle", "Always")
         .WithProperty("AppxBundlePlatforms","x86")
+        .WithProperty("UseDotNetNativeToolchain","false")
+        .WithProperty("BuildAppxUploadPackageForUap","true")
 		);
 });
 
