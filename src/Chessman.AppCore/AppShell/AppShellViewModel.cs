@@ -63,7 +63,7 @@ namespace Chessman
 
             SecondaryNavigationItems = new List<NavMenuItem>
             {
-                new NavMenuItem("About", "Emoji2", ViewModelLocator.AboutPageNavigationName),
+                new NavMenuItem("About", "ReportHacked", ViewModelLocator.AboutPageNavigationName),
                 new NavMenuItem("Settings", "Setting", ViewModelLocator.SettingsPageNavigationName),
             };
 

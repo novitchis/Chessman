@@ -15,6 +15,10 @@
         </PathIcon>
     </ControlTemplate>
 
+    <ControlTemplate x:Key="GitHubIconTemplate">
+        <Image Source="/Assets/GitHub-Mark.svg" />
+    </ControlTemplate>
+    
     <x:String x:Key="SwitchSideToWhiteButtonData">
         M8.6,0H25.8V10.8H15.5V9.5H24.5V1.3H9.9V1.7H8.6z
         M15.5,10.8H18.9V11.4H15.5z

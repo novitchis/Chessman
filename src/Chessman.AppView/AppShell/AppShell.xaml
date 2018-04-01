@@ -36,6 +36,11 @@
                         <ic:ChangePropertyAction TargetObject="{Binding ElementName=customIconControl}" PropertyName="Visibility" Value="Visible" />
                         <ic:ChangePropertyAction TargetObject="{Binding ElementName=customIconControl}" PropertyName="Template" Value="{StaticResource ComputerIconTemplate}" />
                     </ic:DataTriggerBehavior>
+                    <ic:DataTriggerBehavior Binding="{x:Bind Name}" Value="About">
+                        <ic:ChangePropertyAction TargetObject="{Binding ElementName=symbolIcon}" PropertyName="Visibility" Value="Collapsed" />
+                        <ic:ChangePropertyAction TargetObject="{Binding ElementName=customIconControl}" PropertyName="Visibility" Value="Visible" />
+                        <ic:ChangePropertyAction TargetObject="{Binding ElementName=customIconControl}" PropertyName="Template" Value="{StaticResource GitHubIconTemplate}" />
+                    </ic:DataTriggerBehavior>
                 </i:Interaction.Behaviors>
             </Grid>
         </DataTemplate>
