@@ -63,6 +63,11 @@ namespace Chessman
             return true;
         }
 
+        public bool CurrentIsLastMove()
+        {
+            return GetMoves(false).Count == GetCurrentMove().Index + 1;
+        }
+
         public void RequestComputerMove()
         {
             if (ChessBoard.IsStalemate() || ChessBoard.IsCheckmate())
@@ -76,7 +81,7 @@ namespace Chessman
             analysisReceiver.AnalysisReceived += OnAnalysisReceived;
             isStarted = true;
 
-            if (IsComputerTurn())
+            if (CurrentIsLastMove() && IsComputerTurn())
                 RequestComputerMove();
         }
 
