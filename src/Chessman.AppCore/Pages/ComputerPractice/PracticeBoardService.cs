@@ -65,7 +65,11 @@ namespace Chessman
 
         public bool CurrentIsLastMove()
         {
-            return GetMoves(false).Count == GetCurrentMove().Index + 1;
+            var allMoves = GetMoves(false);
+            if (allMoves.Count == 0)
+                return true;
+
+            return allMoves.Count == GetCurrentMove().Index + 1;
         }
 
         public void RequestComputerMove()
