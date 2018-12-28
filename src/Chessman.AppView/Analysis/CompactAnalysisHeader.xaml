@@ -29,7 +29,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="10 0" VerticalAlignment="Center">
-                    <TextBlock Text="Stockfish 7" />
+                    <TextBlock Text="Stockfish 8" />
                     <TextBlock x:Name="analysisDepth"
                                FontSize="11"
                                Visibility="{Binding IsActive, Converter={StaticResource BoolToVisibilityConverter}}"

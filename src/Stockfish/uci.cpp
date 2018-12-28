@@ -44,10 +44,10 @@ namespace {
   // FEN string of the initial position, normal chess
   const char* StartFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-  // Stack to keep track of the position states along the setup moves (from the
+  // A list to keep track of the position states along the setup moves (from the
   // start position to the position just before the search starts). Needed by
   // 'draw by repetition' detection.
-  Search::StateStackPtr SetupStates;
+  StateListPtr States(new std::deque<StateInfo>(1));
 
 
   // position() is called when engine receives the "position" UCI command.
@@ -73,14 +73,14 @@ namespace {
     else
         return;
 
-    pos.set(fen, Options["UCI_Chess960"], Threads.main());
-    SetupStates = Search::StateStackPtr(new std::stack<StateInfo>);
+    States = StateListPtr(new std::deque<StateInfo>(1));
+    pos.set(fen, Options["UCI_Chess960"], &States->back(), Threads.main());
 
     // Parse move list (if any)
     while (is >> token && (m = UCI::to_move(pos, token)) != MOVE_NONE)
     {
-        SetupStates->push(StateInfo());
-        pos.do_move(m, SetupStates->top(), pos.gives_check(m, CheckInfo(pos)));
+        States->push_back(StateInfo());
+        pos.do_move(m, States->back(), pos.gives_check(m));
     }
   }
 
@@ -107,10 +107,10 @@ namespace {
     else
 	{
 		std::stringstream stmToWrite;
-		//sync_cout << "No such option: " << name << sync_endl;
 		stmToWrite << "No such option: " << name << std::endl;
 		g_stmOutput->Write(stmToWrite.str());
 	}
+        //sync_cout << "No such option: " << name << sync_endl;
   }
 
 
@@ -118,7 +118,7 @@ namespace {
   // the thinking time and other parameters from the input string, then starts
   // the search.
 
-  void go(const Position& pos, istringstream& is) {
+  void go(Position& pos, istringstream& is) {
 
     Search::LimitsType limits;
     string token;
@@ -142,7 +142,7 @@ namespace {
         else if (token == "infinite")  limits.infinite = 1;
         else if (token == "ponder")    limits.ponder = 1;
 
-    Threads.start_thinking(pos, limits, SetupStates);
+    Threads.start_thinking(pos, States, limits);
   }
 
 } // namespace
@@ -163,19 +163,20 @@ void UCI::setOutputStream(std::shared_ptr<MemoryStream>	stmOutput)
 /// run 'bench', once the command is executed the function returns immediately.
 /// In addition to the UCI ones, also some additional debug commands are supported.
 
-
 void UCI::loop(int argc, char* argv[]) {
 
-  Position pos(StartFEN, false, Threads.main()); // The root position
+  Position pos;
   string token, cmd;
+
+  pos.set(StartFEN, false, &States->back(), Threads.main());
 
   for (int i = 1; i < argc; ++i)
       cmd += std::string(argv[i]) + " ";
 
   do {
-
-      if (argc == 1 && !g_stmInput->ReadLine(cmd)) // Block here waiting for input or EOF
-          cmd = "quit";
+	  if (argc == 1 && !g_stmInput->ReadLine(cmd)) // Block here waiting for input or EOF
+	  //if (argc == 1 && !getline(cin, cmd)) // Block here waiting for input or EOF
+		  cmd = "quit";
 
       istringstream is(cmd);
 
@@ -205,7 +206,9 @@ void UCI::loop(int argc, char* argv[]) {
 			  << "\nuciok";
 		  g_stmOutput->Write(stmToWrite.str());
 	  }
-
+        /*  sync_cout << "id name " << engine_info(true)
+                    << "\n"       << Options
+                    << "\nuciok"  << sync_endl;*/
       else if (token == "ucinewgame")
       {
           Search::clear();
@@ -222,14 +225,14 @@ void UCI::loop(int argc, char* argv[]) {
       // Additional custom non-UCI commands, useful for debugging
       else if (token == "flip")       pos.flip();
       else if (token == "bench")      benchmark(pos, is);
-      else if (token == "d")          
+	  else if (token == "d")
 	  {
 		  std::stringstream stmToWrite;
 		  //sync_cout << pos << sync_endl;
 		  stmToWrite << pos << std::endl;
 		  g_stmOutput->Write(stmToWrite.str());
 	  }
-      else if (token == "eval")       
+	  else if (token == "eval")
 	  {
 		  std::stringstream stmToWrite;
 		  // sync_cout << Eval::trace(pos) << sync_endl;
@@ -238,6 +241,8 @@ void UCI::loop(int argc, char* argv[]) {
 		  g_stmOutput->Write(stmToWrite.str());
 
 	  }
+      /*else if (token == "d")          sync_cout << pos << sync_endl;
+      else if (token == "eval")       sync_cout << Eval::trace(pos) << sync_endl;*/
       else if (token == "perft")
       {
           int depth;
@@ -252,10 +257,10 @@ void UCI::loop(int argc, char* argv[]) {
       else
 	  {
 		  std::stringstream stmToWrite;
-		  //sync_cout << "Unknown command: " << cmd << sync_endl;
 		  stmToWrite << "Unknown command: " << cmd << std::endl;
 		  g_stmOutput->Write(stmToWrite.str());
 	  }
+          //sync_cout << "Unknown command: " << cmd << sync_endl;
 
   } while (token != "quit" && argc == 1); // Passed args have one-shot behaviour
 

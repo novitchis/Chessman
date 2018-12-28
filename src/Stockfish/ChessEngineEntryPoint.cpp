@@ -3,13 +3,16 @@
 #include <iostream>
 
 #include "bitboard.h"
-#include "evaluate.h"
 #include "position.h"
 #include "search.h"
 #include "thread.h"
 #include "tt.h"
 #include "uci.h"
 #include "syzygy/tbprobe.h"
+
+namespace PSQT {
+	void init();
+}
 
 
 void StockfishThread::Run()
@@ -30,7 +33,6 @@ bool ChessEngineEntryPoint::Init(std::shared_ptr<MemoryStream> stmInput, std::sh
 	Position::init();
 	Bitbases::init();
 	Search::init();
-	Eval::init();
 	Pawns::init();
 	Threads.init();
 	Tablebases::init(Options["SyzygyPath"]);

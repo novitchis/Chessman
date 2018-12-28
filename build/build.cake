@@ -1,3 +1,5 @@
+#tool "nuget:?package=GitVersion.CommandLine"
+
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -5,7 +7,12 @@
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var solution = "../src/Chessman.sln";
-var platform = PlatformTarget.x86;
+var supportedPlatforms = new PlatformTarget[]
+    {
+        PlatformTarget.ARM,
+        PlatformTarget.x64,
+        PlatformTarget.x86,
+    };
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
@@ -24,16 +31,28 @@ Task("Clean")
     CleanDirectory(buildDir);
 
      // Clean the solution, uwp supports multiple platforms
-    MSBuild(solution, settings =>
-        settings.SetConfiguration(configuration)
-            .SetVerbosity(Verbosity.Quiet)
-            .SetMSBuildPlatform(MSBuildPlatform.x86)
-            .SetPlatformTarget(platform)
-            .WithTarget("Clean"));
+    foreach(var platform in supportedPlatforms)
+    {
+        MSBuild(solution, settings =>
+            settings.SetConfiguration(configuration)
+                .SetVerbosity(Verbosity.Quiet)
+                .SetMSBuildPlatform(MSBuildPlatform.x86)
+                .SetPlatformTarget(platform)
+                .WithTarget("Clean"));
+    }
+});
+
+Task("Versioning")
+    .IsDependentOn("Clean")
+    .Does(() =>
+{
+    GitVersion(new GitVersionSettings {
+        UpdateAssemblyInfo = true
+    });
 });
 
 Task("Restore-NuGet-Packages")
-    .IsDependentOn("Clean")
+    .IsDependentOn("Versioning")
     .Does(() =>
 {
     NuGetRestore(solution);
@@ -43,27 +62,16 @@ Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() =>
 {
-    // Use MSBuild
-    MSBuild(solution, settings =>
-        settings.SetConfiguration(configuration)
-		.WithTarget("Build")
-		.SetMSBuildPlatform(MSBuildPlatform.x86)
-		.SetPlatformTarget(platform)
-		.WithProperty("AppxBundle", "Always")
-        .WithProperty("AppxBundlePlatforms","x86")
-        .WithProperty("UseDotNetNativeToolchain","false")
-        .WithProperty("BuildAppxUploadPackageForUap","true")
-		);
+    foreach(var platform in supportedPlatforms)
+    {
+        MSBuild(solution, settings =>
+            settings.SetConfiguration(configuration)
+            .SetVerbosity(Verbosity.Quiet)
+            .SetMSBuildPlatform(MSBuildPlatform.x86)
+            .SetPlatformTarget(platform)
+            .WithTarget("Build"));
+    }
 });
-
-//Task("Run-Unit-Tests")
-//    .IsDependentOn("Build")
-//    .Does(() =>
-//{
-//    NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll", new NUnit3Settings {
-//        NoResults = true
-//        });
-//});
 
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS

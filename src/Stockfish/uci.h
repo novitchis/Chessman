@@ -68,7 +68,6 @@ private:
   OnChange on_change;
 };
 
-
 void init(OptionsMap&);
 void setInputStream(std::shared_ptr<MemoryStream>	stmInput);
 void setOutputStream(std::shared_ptr<MemoryStream>	stmOutput);

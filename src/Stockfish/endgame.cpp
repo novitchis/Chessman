@@ -24,7 +24,6 @@
 #include <cassert>
 
 #include "bitboard.h"
-#include "bitcount.h"
 #include "endgame.h"
 #include "movegen.h"
 
@@ -102,7 +101,8 @@ namespace {
     string fen =  sides[0] + char(8 - sides[0].length() + '0') + "/8/8/8/8/8/8/"
                 + sides[1] + char(8 - sides[1].length() + '0') + " w - - 0 10";
 
-    return Position(fen, false, nullptr).material_key();
+    StateInfo st;
+    return Position().set(fen, false, &st, nullptr).material_key();
   }
 
 } // namespace
@@ -261,8 +261,8 @@ Value Endgame<KRKP>::operator()(const Position& pos) const {
       result = Value(80) - 8 * distance(wksq, psq);
 
   else
-      result =  Value(200) - 8 * (  distance(wksq, psq + DELTA_S)
-                                  - distance(bksq, psq + DELTA_S)
+      result =  Value(200) - 8 * (  distance(wksq, psq + SOUTH)
+                                  - distance(bksq, psq + SOUTH)
                                   - distance(psq, queeningSq));
 
   return strongSide == pos.side_to_move() ? result : -result;
@@ -498,7 +498,7 @@ ScaleFactor Endgame<KRPKR>::operator()(const Position& pos) const {
   // If the defending king blocks the pawn and the attacking king is too far
   // away, it's a draw.
   if (   r <= RANK_5
-      && bksq == wpsq + DELTA_N
+      && bksq == wpsq + NORTH
       && distance(wksq, wpsq) - tempo >= 2
       && distance(wksq, brsq) - tempo >= 2)
       return SCALE_FACTOR_DRAW;
@@ -519,10 +519,10 @@ ScaleFactor Endgame<KRPKR>::operator()(const Position& pos) const {
       && file_of(wrsq) == f
       && wrsq < wpsq
       && (distance(wksq, queeningSq) < distance(bksq, queeningSq) - 2 + tempo)
-      && (distance(wksq, wpsq + DELTA_N) < distance(bksq, wpsq + DELTA_N) - 2 + tempo)
+      && (distance(wksq, wpsq + NORTH) < distance(bksq, wpsq + NORTH) - 2 + tempo)
       && (  distance(bksq, wrsq) + tempo >= 3
           || (    distance(wksq, queeningSq) < distance(bksq, wrsq) + tempo
-              && (distance(wksq, wpsq + DELTA_N) < distance(bksq, wrsq) + tempo))))
+              && (distance(wksq, wpsq + NORTH) < distance(bksq, wrsq) + tempo))))
       return ScaleFactor(  SCALE_FACTOR_MAX
                          - 8 * distance(wpsq, queeningSq)
                          - 2 * distance(wksq, queeningSq));

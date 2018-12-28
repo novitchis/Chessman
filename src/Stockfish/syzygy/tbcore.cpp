@@ -3,7 +3,7 @@
   This file may be redistributed and/or modified without restrictions.
 
   tbcore.c contains engine-independent routines of the tablebase probing code.
-  This file should not need to much adaptation to add tablebase probing to
+  This file should not need too much adaptation to add tablebase probing to
   a particular engine, provided the engine is written in C or C++.
 */
 
@@ -215,8 +215,8 @@ static void init_tb(char *str)
   for (i = 0; i < 8; i++)
     if (pcs[i] != pcs[i+8])
       break;
-  //key = calc_key_from_pcs(pcs, 0);
-  //key2 = calc_key_from_pcs(pcs, 1);
+  /*key = calc_key_from_pcs(pcs, 0);
+  key2 = calc_key_from_pcs(pcs, 1);*/
   if (pcs[TB_WPAWN] + pcs[TB_BPAWN] == 0) {
     if (TBnum_piece == TBMAX_PIECE) {
       printf("TBMAX_PIECE limit too low!\n");
