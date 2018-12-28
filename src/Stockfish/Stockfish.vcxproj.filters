@@ -27,7 +27,6 @@
     <ClCompile Include="tt.cpp" />
     <ClCompile Include="uci.cpp" />
     <ClCompile Include="ucioption.cpp" />
-    <ClCompile Include="syzygy\tbcore.cpp" />
     <ClCompile Include="syzygy\tbprobe.cpp" />
     <ClCompile Include="ChessEngineEntryPoint.cpp" />
     <ClCompile Include="..\Common\ThreadBase.cpp" />
@@ -52,7 +51,6 @@
     <ClInclude Include="tt.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="uci.h" />
-    <ClInclude Include="syzygy\tbcore.h" />
     <ClInclude Include="syzygy\tbprobe.h" />
     <ClInclude Include="ChessEngineEntryPoint.h" />
     <ClInclude Include="..\Common\ThreadBase.h" />

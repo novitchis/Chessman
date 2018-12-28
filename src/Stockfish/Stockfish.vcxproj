@@ -53,7 +53,6 @@
     <ClCompile Include="position.cpp" />
     <ClCompile Include="psqt.cpp" />
     <ClCompile Include="search.cpp" />
-    <ClCompile Include="syzygy\tbcore.cpp" />
     <ClCompile Include="syzygy\tbprobe.cpp" />
     <ClCompile Include="thread.cpp" />
     <ClCompile Include="timeman.cpp" />
@@ -77,7 +76,6 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="position.h" />
     <ClInclude Include="search.h" />
-    <ClInclude Include="syzygy\tbcore.h" />
     <ClInclude Include="syzygy\tbprobe.h" />
     <ClInclude Include="thread.h" />
     <ClInclude Include="thread_win32.h" />

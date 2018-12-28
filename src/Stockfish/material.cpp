@@ -2,7 +2,7 @@
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
   Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2016 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+  Copyright (C) 2015-2018 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 */
 
 #include "pch.h"
-
 #include <algorithm> // For std::min
 #include <cassert>
 #include <cstring>   // For std::memset
@@ -37,11 +36,11 @@ namespace {
     //            OUR PIECES
     // pair pawn knight bishop rook queen
     {1667                               }, // Bishop pair
-    {  40,    2                         }, // Pawn
+    {  40,    0                         }, // Pawn
     {  32,  255,  -3                    }, // Knight      OUR PIECES
     {   0,  104,   4,    0              }, // Bishop
     { -26,   -2,  47,   105,  -149      }, // Rook
-    {-185,   24, 122,   137,  -134,   0 }  // Queen
+    {-189,   24, 117,   133,  -134, -10 }  // Queen
   };
 
   const int QuadraticTheirs[][PIECE_TYPE_NB] = {
@@ -52,7 +51,7 @@ namespace {
     {   9,   63,   0                    }, // Knight      OUR PIECES
     {  59,   65,  42,     0             }, // Bishop
     {  46,   39,  24,   -24,    0       }, // Rook
-    { 101,  100, -37,   141,  268,    0 }  // Queen
+    {  97,  100, -42,   137,  268,    0 }  // Queen
   };
 
   // Endgame evaluation and scaling functions are accessed directly and not through
@@ -93,7 +92,7 @@ namespace {
 
     int bonus = 0;
 
-    // Second-degree polynomial material imbalance by Tord Romstad
+    // Second-degree polynomial material imbalance, by Tord Romstad
     for (int pt1 = NO_PIECE_TYPE; pt1 <= QUEEN; ++pt1)
     {
         if (!pieceCount[Us][pt1])
@@ -131,7 +130,13 @@ Entry* probe(const Position& pos) {
   std::memset(e, 0, sizeof(Entry));
   e->key = key;
   e->factor[WHITE] = e->factor[BLACK] = (uint8_t)SCALE_FACTOR_NORMAL;
-  e->gamePhase = pos.game_phase();
+
+  Value npm_w = pos.non_pawn_material(WHITE);
+  Value npm_b = pos.non_pawn_material(BLACK);
+  Value npm = std::max(EndgameLimit, std::min(npm_w + npm_b, MidgameLimit));
+
+  // Map total non-pawn material into [PHASE_ENDGAME, PHASE_MIDGAME]
+  e->gamePhase = Phase(((npm - EndgameLimit) * PHASE_MIDGAME) / (MidgameLimit - EndgameLimit));
 
   // Let's look if we have a specialized evaluation function for this particular
   // material configuration. Firstly we look for a fixed configuration one, then
@@ -152,7 +157,7 @@ Entry* probe(const Position& pos) {
 
   if ((sf = pos.this_thread()->endgames.probe<ScaleFactor>(key)) != nullptr)
   {
-      e->scalingFunction[sf->strong_side()] = sf; // Only strong color assigned
+      e->scalingFunction[sf->strongSide] = sf; // Only strong color assigned
       return e;
   }
 
@@ -167,9 +172,6 @@ Entry* probe(const Position& pos) {
     else if (is_KQKRPs(pos, c))
         e->scalingFunction[c] = &ScaleKQKRPs[c];
   }
-
-  Value npm_w = pos.non_pawn_material(WHITE);
-  Value npm_b = pos.non_pawn_material(BLACK);
 
   if (npm_w + npm_b == VALUE_ZERO && pos.pieces(PAWN)) // Only pawns on the board
   {

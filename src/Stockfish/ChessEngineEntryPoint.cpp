@@ -34,9 +34,10 @@ bool ChessEngineEntryPoint::Init(std::shared_ptr<MemoryStream> stmInput, std::sh
 	Bitbases::init();
 	Search::init();
 	Pawns::init();
-	Threads.init();
 	Tablebases::init(Options["SyzygyPath"]);
 	TT.resize(Options["Hash"]);
+	Threads.set(Options["Threads"]);
+	Search::clear(); // After threads are up
 	
 	UCI::setInputStream(stmInput);
 	UCI::setOutputStream(stmOutput);
@@ -54,7 +55,7 @@ bool ChessEngineEntryPoint::Start()
 bool ChessEngineEntryPoint::Stop()
 {
 	m_uciThread.Join();
-	Threads.exit();
+	Threads.set(0);
 	UCI::setInputStream(NULL);
 	UCI::setOutputStream(NULL);
 	return true;
