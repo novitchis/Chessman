@@ -158,7 +158,7 @@ namespace Chessman.ViewModel
                     return;
                 }
 
-                await FileIO.WriteTextAsync(file, boardService.Serialize(serializationType, true));
+                await FileIO.WriteTextAsync(file, boardService.Serialize(serializationType, false));
             }
         }
 
