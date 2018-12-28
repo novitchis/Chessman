@@ -9,8 +9,8 @@ var configuration = Argument("configuration", "Release");
 var solution = "../src/Chessman.sln";
 var supportedPlatforms = new PlatformTarget[]
     {
-        PlatformTarget.ARM,
-        PlatformTarget.x64,
+        //PlatformTarget.ARM,
+        //PlatformTarget.x64,
         PlatformTarget.x86,
     };
 
@@ -69,7 +69,10 @@ Task("Build")
             .SetVerbosity(Verbosity.Quiet)
             .SetMSBuildPlatform(MSBuildPlatform.x86)
             .SetPlatformTarget(platform)
-            .WithTarget("Build"));
+            .WithTarget("Build")
+			.WithProperty("AppxBundlePlatforms","x86")
+			.WithProperty("UseDotNetNativeToolchain","false")
+			.WithProperty("BuildAppxUploadPackageForUap","true"));
     }
 });
 
