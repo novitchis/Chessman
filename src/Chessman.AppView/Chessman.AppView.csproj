@@ -16,11 +16,11 @@
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-	<PackageCertificateKeyFile>Chessman.AppView_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>Chessman.AppView_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>33344BCA6BF01039246F36A37686B54CC7B8E823</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>9CBBACFA3795DDFB01813AE58329B278FA285E43</PackageCertificateThumbprint>
     <HockeyAppResourceId>2e8f161c8309408eae709369c7ef5d32</HockeyAppResourceId>
     <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
   </PropertyGroup>
