@@ -2,7 +2,7 @@
   Stockfish, a UCI chess playing engine derived from Glaurung 2.1
   Copyright (C) 2004-2008 Tord Romstad (Glaurung author)
   Copyright (C) 2008-2015 Marco Costalba, Joona Kiiski, Tord Romstad
-  Copyright (C) 2015-2018 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
+  Copyright (C) 2015-2019 Marco Costalba, Joona Kiiski, Gary Linscott, Tord Romstad
 
   Stockfish is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -29,8 +29,8 @@
 #include "position.h"
 #include "search.h"
 #include "thread.h"
-#include "tt.h"
 #include "timeman.h"
+#include "tt.h"
 #include "uci.h"
 #include "syzygy/tbprobe.h"
 
@@ -93,11 +93,11 @@ namespace {
 
     // Read option name (can contain spaces)
     while (is >> token && token != "value")
-        name += string(" ", name.empty() ? 0 : 1) + token;
+        name += (name.empty() ? "" : " ") + token;
 
     // Read option value (can contain spaces)
     while (is >> token)
-        value += string(" ", value.empty() ? 0 : 1) + token;
+        value += (value.empty() ? "" : " ") + token;
 
     if (Options.count(name))
         Options[name] = value;
@@ -217,7 +217,7 @@ void UCI::loop(int argc, char* argv[]) {
       cmd += std::string(argv[i]) + " ";
 
   do {
-		//if (argc == 1 && !getline(cin, cmd)) // Block here waiting for input or EOF
+      //if (argc == 1 && !getline(cin, cmd)) // Block here waiting for input or EOF
 		if (argc == 1 && !g_stmInput->ReadLine(cmd)) // Block here waiting for input or EOF
           cmd = "quit";
 
@@ -279,8 +279,8 @@ void UCI::loop(int argc, char* argv[]) {
 		  g_stmOutput->Write(stmToWrite.str());
 
 	  }
-      /*else if (token == "d")     sync_cout << pos << sync_endl;
-      else if (token == "eval")  sync_cout << Eval::trace(pos) << sync_endl;*/
+      //else if (token == "d")     sync_cout << pos << sync_endl;
+      //else if (token == "eval")  sync_cout << Eval::trace(pos) << sync_endl;
       else
 	  {
 		  std::stringstream stmToWrite;
