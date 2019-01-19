@@ -56,8 +56,6 @@
                 <AppBarButton Label="Save file" Icon="Save" ToolTipService.ToolTip="Save file" Command="{Binding SavePGNCommand}"/>
                 
                 <CommandBar.SecondaryCommands>
-                    
-
                 </CommandBar.SecondaryCommands>
             </CommandBar>
         </Grid>

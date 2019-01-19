@@ -15,9 +15,45 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid x:Name="titlePanel" Style="{StaticResource PageTitlePanelStyle}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
             <TextBlock 
                 Text="Computer practice"
                 Style="{StaticResource HeaderTextStyle}" />
+            <CommandBar x:Name="topCommandBar" 
+                    Grid.Column="2" 
+                    Background="Transparent"
+                    Closed="OnCommandBarClosed">
+                <AppBarButton 
+                Label="Switch color" 
+                Command="{Binding SwitchColor}"
+                Visibility="{Binding UserColor, Mode=OneWay, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='White'}">
+                    <AppBarButton.Icon>
+                        <PathIcon VerticalAlignment="Center" HorizontalAlignment="Center" Data="{StaticResource SwitchSideToBlackButtonData}"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton 
+                Label="Switch color" 
+                Command="{Binding SwitchColor}"
+                Visibility="{Binding UserColor, Mode=OneWay, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='Black'}">
+                    <AppBarButton.Icon>
+                        <PathIcon VerticalAlignment="Center" HorizontalAlignment="Center" Data="{StaticResource SwitchSideToWhiteButtonData}"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}"/>
+                <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}"/>
+
+                <AppBarButton Label="New game" Command="{Binding NewGameCommand}" >
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xECC9;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton Label="Edit position" Icon="Edit" Command="{Binding EditPositionCommand}" />
+                <AppBarButton Label="Analyze game" Icon="Find"  Command="{Binding AnalyseGameCommand}" />
+            </CommandBar>
         </Grid>
         <Grid x:Name="contentGrid" Grid.Row="1">
             <RelativePanel>
@@ -30,7 +66,7 @@
                                      DataContext="{Binding BoardViewModel}" />
             </RelativePanel>
         </Grid>
-        <CommandBar x:Name="CommandBar" 
+        <CommandBar x:Name="bottomCommandBar" 
                     Grid.Row="2" 
                     Background="{StaticResource AccentBrush400}"
                     Closed="OnCommandBarClosed">
@@ -67,6 +103,9 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter Target="bottomCommandBar.Visibility" Value="Collapsed"/>
+                        <Setter Target="topCommandBar.Visibility" Value="Visible"/>
+                        
                         <Setter Target="contentGrid.Margin" Value="12 8 12 12"/>
 
                         <Setter Target="chessBoard.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
@@ -87,6 +126,8 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter Target="bottomCommandBar.Visibility" Value="Visible"/>
+                        <Setter Target="topCommandBar.Visibility" Value="Collapsed"/>
                         
                         <Setter Target="titlePanel.Margin" Value="48 0 0 0"/>
 

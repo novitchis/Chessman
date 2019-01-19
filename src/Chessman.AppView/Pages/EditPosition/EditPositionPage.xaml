@@ -25,9 +25,50 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid x:Name="titlePanel" Style="{StaticResource PageTitlePanelStyle}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
             <TextBlock 
                 Text="Board editor"
                 Style="{StaticResource HeaderTextStyle}" />
+            <CommandBar x:Name="topCommandBar" Grid.Column="2" Background="Transparent">
+                <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
+                <AppBarButton Label="Clear" Icon="Delete" Command="{Binding ClearCommand}"/>
+                <AppBarButton Label="Done" Icon="Accept" Foreground="Green">
+                    <AppBarButton.Flyout>
+                        <Flyout Placement="Top">
+                            <Grid>
+                                <StackPanel 
+                                Orientation="Horizontal"
+                                Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <Button Style="{StaticResource SymbolIconButton}" Command="{Binding AnalyseCommand}">
+                                        <StackPanel>
+                                            <SymbolIcon Symbol="Find" />
+                                            <TextBlock Text="Analyze" Style="{StaticResource SymbolIconButtonLabel}"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Style="{StaticResource SymbolIconButton}" Command="{Binding PracticeCommand}">
+                                        <StackPanel>
+                                            <ContentControl Template="{StaticResource ComputerIconTemplate}" />
+                                            <TextBlock Text="Practice" Style="{StaticResource SymbolIconButtonLabel}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+
+                                <TextBlock 
+                                Foreground="Red"
+                                HorizontalAlignment="Center"
+                                Padding="10 8"
+                                Visibility="{Binding IsBoardValid, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource InvertedConversionType}}" >
+                                The position is invalid.
+                                </TextBlock>
+                            </Grid>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+            </CommandBar>
         </Grid>
         <Grid x:Name="contentGrid" Grid.Row="1">
             <RelativePanel>
@@ -60,7 +101,7 @@
             </RelativePanel>
         </Grid>
 
-        <CommandBar x:Name="CommandBar" Grid.Row="2" Background="{StaticResource AccentBrush400}">
+        <CommandBar x:Name="bottomCommandBar" Grid.Row="2" Background="{StaticResource AccentBrush400}">
             <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
             <AppBarButton Label="Clear" Icon="Delete" Command="{Binding ClearCommand}"/>
             <AppBarButton Label="Done" Icon="Accept" Foreground="Green">
@@ -105,6 +146,9 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter Target="bottomCommandBar.Visibility" Value="Collapsed"/>
+                        <Setter Target="topCommandBar.Visibility" Value="Visible"/>
+                        
                         <Setter Target="contentGrid.Margin" Value="12 8 12 12"/>
 
                         <Setter Target="chessBoard.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
@@ -127,6 +171,8 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter Target="bottomCommandBar.Visibility" Value="Visible"/>
+                        <Setter Target="topCommandBar.Visibility" Value="Collapsed"/>
                         <Setter Target="titlePanel.Margin" Value="48 0 0 0"/>
 
                         <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
