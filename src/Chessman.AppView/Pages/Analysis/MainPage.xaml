@@ -23,9 +23,43 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid x:Name="titlePanel" Style="{StaticResource PageTitlePanelStyle}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
             <TextBlock 
                 Text="Analysis"
                 Style="{StaticResource HeaderTextStyle}" />
+            <CommandBar x:Name="topCommandBar"
+                    Grid.Column="2" 
+                    Background="Transparent"
+                    Closed="OnCommandBarClosed">
+                <AppBarButton Label="Rotate" Icon="Rotate" ToolTipService.ToolTip="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
+                <AppBarButton Label="Back" Icon="Back" ToolTipService.ToolTip="Back" Command="{Binding GoBackCommand}"/>
+                <AppBarButton Label="Forward" Icon="Forward" ToolTipService.ToolTip="Forward" Command="{Binding GoForwardCommand}"/>
+                <AppBarSeparator />
+                <AppBarButton Label="New game" ToolTipService.ToolTip="New game" Command="{Binding NewGameCommand}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xECC9;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton Label="Edit position" Icon="Edit" ToolTipService.ToolTip="Edit position" Command="{Binding EditPositionCommand}" />
+                <AppBarButton Label="Continue vs computer" ToolTipService.ToolTip="Continue vs computer" Command="{Binding PracticePositionCommand}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7F4;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarSeparator />
+                <AppBarButton Label="Load file" Icon="OpenFile" ToolTipService.ToolTip="Load file" Command="{Binding LoadPGNCommand}"/>
+                <AppBarButton Label="Load from clipboard" Icon="Paste" ToolTipService.ToolTip="Load from clipboard" Command="{Binding LoadFromClipboardCommand}" />
+                <AppBarButton Label="Save file" Icon="Save" ToolTipService.ToolTip="Save file" Command="{Binding SavePGNCommand}"/>
+                
+                <CommandBar.SecondaryCommands>
+                    
+
+                </CommandBar.SecondaryCommands>
+            </CommandBar>
         </Grid>
         <Grid Margin="4" Grid.Row="1" x:Name="contentGrid">
             <RelativePanel>
@@ -56,7 +90,7 @@
 
             </RelativePanel>
         </Grid>
-        <CommandBar x:Name="CommandBar"
+        <CommandBar x:Name="bottomCommandBar"
                     Grid.Row="2" 
                     Background="{StaticResource AccentBrush400}"
                     Closed="OnCommandBarClosed">
@@ -83,6 +117,9 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter Target="bottomCommandBar.Visibility" Value="Collapsed"/>
+                        <Setter Target="topCommandBar.Visibility" Value="Visible"/>
+
                         <Setter Target="contentGrid.Margin" Value="12 8 12 12"/>
 
                         <Setter Target="chessBoardPanel.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
@@ -115,6 +152,8 @@
                     <VisualState.Setters>
                         <Setter Target="contentGrid.Margin" Value="0"/>
                         <Setter Target="titlePanel.Visibility" Value="Collapsed"/>
+                        <Setter Target="bottomCommandBar.Visibility" Value="Visible"/>
+                        <Setter Target="topCommandBar.Visibility" Value="Collapsed"/>
 
                         <Setter Target="compactAnalysisHeader.Margin" Value="48 0 0 0"/>
                         <Setter Target="compactAnalysisHeader.(RelativePanel.AlignRightWithPanel)" Value="true"/>
