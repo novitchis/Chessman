@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="using:Chessman.View"
     xmlns:controls="using:Chessman.Controls"
-    xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
+    xmlns:ads="using:Microsoft.Advertising.WinRT.UI"
     mc:Ignorable="d"
     DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}"
     d:DesignHeight="1080"
@@ -94,7 +94,7 @@
                 
             </RelativePanel>
 
-            <UI:AdControl x:Name="adBanner"
+            <ads:AdControl x:Name="adBanner"
                     ApplicationId="3f83fe91-d6be-434d-a0ae-7351c5a997f1"
                     RelativePanel.AlignRightWithPanel="True"
                     RelativePanel.AlignTopWithPanel="True"

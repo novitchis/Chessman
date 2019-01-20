@@ -9,6 +9,7 @@
     xmlns:my="using:Chessman"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:ads="using:Microsoft.Advertising.WinRT.UI"
     mc:Ignorable="d"
     SizeChanged="PageSizeChanged"
     RequestedTheme="Light">
@@ -71,6 +72,10 @@
             </CommandBar>
         </Grid>
         <Grid x:Name="contentGrid" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
             <RelativePanel>
                 <view:ChessBoardView x:Name="chessBoard"
                                      VerticalAlignment="Center"
@@ -99,6 +104,16 @@
                     </StackPanel>
                 </Grid>
             </RelativePanel>
+
+            <ads:AdControl x:Name="adBanner"
+                    ApplicationId="3f83fe91-d6be-434d-a0ae-7351c5a997f1"
+                    RelativePanel.AlignRightWithPanel="True"
+                    RelativePanel.AlignTopWithPanel="True"
+                    Grid.Column="1"
+                    VerticalAlignment="Top"
+                    AdUnitId="test"
+                    Height="600"
+                    Width="160"/>
         </Grid>
 
         <CommandBar x:Name="bottomCommandBar" Grid.Row="2" Background="{StaticResource AccentBrush400}">
@@ -107,7 +122,6 @@
             <AppBarButton Label="Done" Icon="Accept" Foreground="Green">
                 <AppBarButton.Flyout>
                     <Flyout Placement="Top">
-
                         <Grid>
                             <StackPanel 
                                 Orientation="Horizontal"
@@ -186,6 +200,9 @@
                         <Setter Target="piecesPalette.Orientation" Value="Horizontal"/>
                         <Setter Target="optionsPanel.MinHeight" Value="180"/>
 
+                        <Setter Target="adBanner.Visibility" Value="Collapsed"/>
+                        <Setter Target="adBanner.Width" Value="0"/>
+                        
                         <Setter Target="detailsPanel.Margin" Value="4"/>
                     </VisualState.Setters>
                 </VisualState>
