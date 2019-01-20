@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="using:Chessman.View"
     xmlns:controls="using:Chessman.Controls"
+    xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
     mc:Ignorable="d"
     DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}"
     d:DesignHeight="1080"
@@ -60,6 +61,10 @@
             </CommandBar>
         </Grid>
         <Grid Margin="4" Grid.Row="1" x:Name="contentGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
             <RelativePanel>
                 <view:CompactAnalysisHeader x:Name="compactAnalysisHeader" 
                                     DataContext="{Binding AnalysisViewModel}"/>
@@ -67,6 +72,7 @@
                                    DataContext="{Binding AnalysisViewModel}" />
                 <view:NotationView x:Name="notationView"
                                    DataContext="{Binding NotationViewModel}" />
+
                 <Grid x:Name="chessBoardPanel">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -85,8 +91,18 @@
                                                 Visibility="{Binding AnalysisViewModel.IsActive, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>
                     </Grid>
                 </Grid>
-
+                
             </RelativePanel>
+
+            <UI:AdControl x:Name="adBanner"
+                    ApplicationId="3f83fe91-d6be-434d-a0ae-7351c5a997f1"
+                    RelativePanel.AlignRightWithPanel="True"
+                    RelativePanel.AlignTopWithPanel="True"
+                    Grid.Column="1"
+                    VerticalAlignment="Top"
+                    AdUnitId="test"
+                    Height="600"
+                    Width="160"/>
         </Grid>
         <CommandBar x:Name="bottomCommandBar"
                     Grid.Row="2" 
@@ -132,11 +148,14 @@
 
                         <Setter Target="analysisView.(RelativePanel.RightOf)" Value="chessBoardPanel"/>
                         <Setter Target="analysisView.(RelativePanel.Below)" Value="compactAnalysisHeader"/>
+
                         <Setter Target="analysisView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="analysisView.MinWidth" Value="250"/>
 
+
                         <Setter Target="notationView.(RelativePanel.RightOf)" Value="chessBoardPanel"/>
                         <Setter Target="notationView.(RelativePanel.Below)" Value="analysisView"/>
+                        
                         <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="notationView.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
                         <Setter Target="notationView.Margin" Value="0 4 0 0"/>
@@ -167,6 +186,8 @@
                         <Setter Target="chessBoardPanel.(RelativePanel.Below)" Value="analysisView"/>
 
                         <Setter Target="evaluationBarPanel.Visibility" Value="Collapsed"/>
+                        <Setter Target="adBanner.Visibility" Value="Collapsed"/>
+                        <Setter Target="adBanner.Width" Value="0"/>
 
                         <Setter Target="notationView.(RelativePanel.Below)" Value="chessBoardPanel"/>
                         <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
