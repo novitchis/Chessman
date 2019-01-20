@@ -130,6 +130,24 @@
                 </Frame.ContentTransitions>
             </Frame>
         </SplitView>
-
+        <ContentDialog
+            x:Name="supportChessmanDialog"
+            Title="Support Us"
+            PrimaryButtonText="Close">
+            <StackPanel>
+                <TextBlock FontSize="16" TextWrapping="Wrap">
+                    <Run>Please support further development of&#160;</Run><Run FontWeight="Bold" Foreground="#424342">CHESS</Run><Run FontWeight="Bold" Foreground="#2480C3">MAN</Run><Run>&#160;by enjoying the app while it will show some non-intrusive Ads.</Run>
+                </TextBlock>
+                <TextBlock Foreground="#424342" FontSize="16" Margin="0 10 0 0" TextWrapping="Wrap">
+                    <Run FontWeight="Bold">Stockfish 10</Run>&#160;is here.
+                </TextBlock>
+                <TextBlock Foreground="#424342" FontSize="16" Margin="0 10 0 0" TextWrapping="Wrap">
+                    <Run FontWeight="Bold">Soon:</Run><LineBreak />
+                    <Run>Modern UI you will love</Run><LineBreak />
+                    <Run>Endgame Tablebase</Run><LineBreak />
+                    <Run>Add-on to remove ads</Run><LineBreak />
+                </TextBlock>
+            </StackPanel>
+        </ContentDialog>
     </Grid>
 </Page>

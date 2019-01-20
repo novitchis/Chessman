@@ -61,11 +61,22 @@ namespace Chessman
                     HardwareButtons.BackPressed += HardwareButtons_BackPressed;
 
                 SystemNavigationManager.GetForCurrentView().BackRequested += SystemNavigationManager_BackRequested;
+
+                ShowAdsMotivation();
             };
 
             // the name is not reliable
             if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
                 DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
+        }
+
+        private async void ShowAdsMotivation()
+        {
+            if (ApplicationData.Current.LocalSettings.Values[AppPersistenceManager.AdsIntroductionMessageDisplayedKey] == null)
+            {
+                await supportChessmanDialog.ShowAsync();
+                ApplicationData.Current.LocalSettings.Values[AppPersistenceManager.AdsIntroductionMessageDisplayedKey] = true;
+            }
         }
 
         private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
@@ -118,12 +129,6 @@ namespace Chessman
             {
                 rootSplitView.IsPaneOpen = false;                
             }
-        }
-
-        private async void OnFeedbackButtonClick(object sender, RoutedEventArgs e)
-        {
-            var launcher = Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.GetDefault();
-            await launcher.LaunchAsync();
         }
     }
 }

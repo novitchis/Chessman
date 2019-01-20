@@ -23,6 +23,7 @@ namespace Chessman
         public const string ShowBestMoveArrowKey = "ShowAnalysisArrow";
         public const string ComputerStrengthKey = "ComputerStrength";
         public const string SavePositionsBetweenSessionsKey = "SavePositionsBetweenSessions";
+        public const string AdsIntroductionMessageDisplayedKey = "AdsIntroductionMessageDisplayed";
 
         public const string SavedAnalysisPositionPgnKey = "SavedAnalysisPositionPgnKey";
         public const string SavedPracticePositionPgnKey = "SavedPracticePositionPgnKey";
