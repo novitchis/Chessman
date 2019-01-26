@@ -375,7 +375,7 @@ namespace Chessman.View
             {
                 SquareView dropSquare = (SquareView)sender;
                 dropSquare.IsDropTarget = false;
-                ViewModel.OnPieceDropped((SquareViewModel)dropSquare.DataContext);
+                ViewModel.OnPieceDropped((SquareViewModel)pointerPressSquare.DataContext, (SquareViewModel)dropSquare.DataContext);
 
                 // make sure to re-layout possible changed pieces
                 // when a piece changes its coordinate it does not change view arrange

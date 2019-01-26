@@ -17,7 +17,7 @@ The application is a Universal Windows Platform that runs on any Windows 10 devi
 __Stack:__
 - View: XAML and C# and follows (mostly :) ) MVVM.
 - C++/CX core chess board backend.
-- C++ [Stockfish 7](https://github.com/official-stockfish/Stockfish) chess engine.
+- C++ [Stockfish 10](https://github.com/official-stockfish/Stockfish) chess engine.
 - Unit Tests: XUnit.
 
 License

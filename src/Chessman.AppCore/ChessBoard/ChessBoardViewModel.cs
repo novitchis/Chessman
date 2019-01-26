@@ -217,7 +217,7 @@ namespace Chessman.ViewModel
             SuggestedMove = null;
         }
 
-        public virtual void OnPieceDropped(SquareViewModel targetSquare)
+        public virtual void OnPieceDropped(SquareViewModel sourceSquare, SquareViewModel targetSquare)
         {
             selectedSquare = targetSquare;
             NotifyPropertyChanged("SelectedSquare");
