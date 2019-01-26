@@ -7,7 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="using:Chessman.View"
     xmlns:controls="using:Chessman.Controls"
-    xmlns:ads="using:Microsoft.Advertising.WinRT.UI"
     mc:Ignorable="d"
     DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}"
     d:DesignHeight="1080"
@@ -93,17 +92,11 @@
                 </Grid>
                 
             </RelativePanel>
-            <StackPanel Grid.Column="1">
-                <ads:AdControl x:Name="adBanner"
-                        ApplicationId="9nblggh4s8dk"
-                        RelativePanel.AlignRightWithPanel="True"
-                        RelativePanel.AlignTopWithPanel="True"
-                        VerticalAlignment="Top"
-                        AdUnitId="1100038402"
-                        Height="600"
-                        Width="160"/>
-                <Button Click="Button_Click">Remove Ads</Button>
-            </StackPanel>
+            <view:BannerAd x:Name="adBanner"
+                    Grid.Column="1"
+                    VerticalAlignment="Top"
+                    AdUnitId="1100038402"
+                    />
         </Grid>
         <CommandBar x:Name="bottomCommandBar"
                     Grid.Row="2" 

@@ -9,7 +9,6 @@
     xmlns:my="using:Chessman"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:ads="using:Microsoft.Advertising.WinRT.UI"
     mc:Ignorable="d"
     SizeChanged="PageSizeChanged"
     RequestedTheme="Light">
@@ -104,16 +103,10 @@
                     </StackPanel>
                 </Grid>
             </RelativePanel>
-
-            <ads:AdControl x:Name="adBanner"
-                    ApplicationId="9nblggh4s8dk"
-                    RelativePanel.AlignRightWithPanel="True"
-                    RelativePanel.AlignTopWithPanel="True"
+            <view:BannerAd x:Name="adBanner"
                     Grid.Column="1"
                     VerticalAlignment="Top"
-                    AdUnitId="1100038404"
-                    Height="600"
-                    Width="160"/>
+                    AdUnitId="1100038404" />
         </Grid>
 
         <CommandBar x:Name="bottomCommandBar" Grid.Row="2" Background="{StaticResource AccentBrush400}">

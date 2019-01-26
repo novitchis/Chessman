@@ -7,7 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="using:Chessman.View"
     DataContext="{Binding PracticeViewModel, Source={StaticResource ViewModelLocator}}"
-    xmlns:ads="using:Microsoft.Advertising.WinRT.UI"
     mc:Ignorable="d">
     <Grid Background="{StaticResource AccentBrush300}">
         <Grid.RowDefinitions>
@@ -70,15 +69,10 @@
                                      HorizontalAlignment="Center"
                                      DataContext="{Binding BoardViewModel}" />
             </RelativePanel>
-            <ads:AdControl x:Name="adBanner"
-                    ApplicationId="9nblggh4s8dk"
-                    RelativePanel.AlignRightWithPanel="True"
-                    RelativePanel.AlignTopWithPanel="True"
+            <view:BannerAd x:Name="adBanner"
                     Grid.Column="1"
                     VerticalAlignment="Top"
-                    AdUnitId="1100038403"
-                    Height="600"
-                    Width="160"/>
+                    AdUnitId="1100038403"/>
         </Grid>
         <CommandBar x:Name="bottomCommandBar" 
                     Grid.Row="2" 

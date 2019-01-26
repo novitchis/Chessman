@@ -149,6 +149,9 @@
       <DependentUpon>CompositionShadow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters.cs" />
+    <Compile Include="Ads\BannerAd.xaml.cs">
+      <DependentUpon>BannerAd.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NavigationService.cs" />
     <Compile Include="Pages\ComputerPractice\PracticePage.xaml.cs">
       <DependentUpon>PracticePage.xaml</DependentUpon>
@@ -299,6 +302,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\CompositionShadow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Ads\BannerAd.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

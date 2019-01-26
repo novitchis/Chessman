@@ -64,6 +64,14 @@ namespace Chessman
             }
         }
 
+        public static BannerAdViewModel BannerAdViewModel
+        {
+            get
+            {
+                return IOCContainer.Resolve<BannerAdViewModel>();
+            }
+        }
+
         static ViewModelLocator()
         {
             IOCContainer.RegisterType<MainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
@@ -86,7 +94,8 @@ namespace Chessman
             IOCContainer.RegisterType<ITextReaderService, TextReaderService>(new ContainerControlledLifetimeManager());
 
             IOCContainer.RegisterType<IMoveAudioFeedbackService, MoveAudioFeedbackService>(new ContainerControlledLifetimeManager());
-            
+
+            IOCContainer.RegisterInstance<BannerAdViewModel>(new BannerAdViewModel());
         }
     }
 }

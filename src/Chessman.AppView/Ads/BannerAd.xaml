@@ -1,0 +1,34 @@
+﻿<UserControl
+    x:Class="Chessman.View.BannerAd"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Chessman"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ads="using:Microsoft.Advertising.WinRT.UI"
+    mc:Ignorable="d"
+    x:Name="bannerAd"
+    DataContext="{Binding BannerAdViewModel, Source={StaticResource ViewModelLocator}}"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <Grid>
+        <StackPanel
+            Visibility="{Binding RemoveAdsAddon, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource InvertedConversionType}}">
+            <ads:AdControl x:Name="adBanner"
+                           ApplicationId="9nblggh4s8dk"
+                           VerticalAlignment="Top"
+                           AdUnitId="{x:Bind AdUnitId}"
+                           Height="600"
+                           Width="160"/>
+            <Button
+                HorizontalAlignment="Stretch"
+                Background="{StaticResource SelectedSquareBrush}"
+                FontWeight="Bold"
+                Command="{Binding RemoveAdsCommand}">Remove Ads</Button>
+            <TextBlock HorizontalAlignment="Center"
+                       Foreground="{StaticResource BlackSquareBrush}"
+                       FontWeight="SemiBold"
+                       >Early 40% off</TextBlock>
+        </StackPanel>
+    </Grid>
+</UserControl>
