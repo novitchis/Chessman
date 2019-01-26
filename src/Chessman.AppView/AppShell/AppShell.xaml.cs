@@ -62,7 +62,8 @@ namespace Chessman
 
                 SystemNavigationManager.GetForCurrentView().BackRequested += SystemNavigationManager_BackRequested;
 
-                ShowAdsMotivation();
+                if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
+                    ShowAdsMotivation();
             };
 
             // the name is not reliable
