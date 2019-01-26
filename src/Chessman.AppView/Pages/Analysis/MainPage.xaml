@@ -93,16 +93,17 @@
                 </Grid>
                 
             </RelativePanel>
-
-            <ads:AdControl x:Name="adBanner"
-                    ApplicationId="3f83fe91-d6be-434d-a0ae-7351c5a997f1"
-                    RelativePanel.AlignRightWithPanel="True"
-                    RelativePanel.AlignTopWithPanel="True"
-                    Grid.Column="1"
-                    VerticalAlignment="Top"
-                    AdUnitId="test"
-                    Height="600"
-                    Width="160"/>
+            <StackPanel Grid.Column="1">
+                <ads:AdControl x:Name="adBanner"
+                        ApplicationId="9nblggh4s8dk"
+                        RelativePanel.AlignRightWithPanel="True"
+                        RelativePanel.AlignTopWithPanel="True"
+                        VerticalAlignment="Top"
+                        AdUnitId="1100038402"
+                        Height="600"
+                        Width="160"/>
+                <Button Click="Button_Click">Remove Ads</Button>
+            </StackPanel>
         </Grid>
         <CommandBar x:Name="bottomCommandBar"
                     Grid.Row="2" 

@@ -106,12 +106,12 @@
             </RelativePanel>
 
             <ads:AdControl x:Name="adBanner"
-                    ApplicationId="3f83fe91-d6be-434d-a0ae-7351c5a997f1"
+                    ApplicationId="9nblggh4s8dk"
                     RelativePanel.AlignRightWithPanel="True"
                     RelativePanel.AlignTopWithPanel="True"
                     Grid.Column="1"
                     VerticalAlignment="Top"
-                    AdUnitId="test"
+                    AdUnitId="1100038404"
                     Height="600"
                     Width="160"/>
         </Grid>

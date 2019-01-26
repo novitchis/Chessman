@@ -10,6 +10,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Services.Store;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Popups;
@@ -75,6 +76,8 @@ namespace Chessman.View
             // is raised before layout is performed
             // UpdateColumnsRestraints needs AdaptiveTrigger for windows size to be applied
             UpdateColumnsRestraints(RenderSize);
+
+            GetUserCollection();
         }
 
         private void PageSizeChanged(object sender, SizeChangedEventArgs e)
@@ -107,6 +110,60 @@ namespace Chessman.View
         {
             // needs manual update since ActualHeight doesn't notifie changes for bonding
             evaluationBar.Height = chessBoard.ActualHeight;
+        }
+
+        private StoreContext context = null;
+
+        public async void GetUserCollection()
+        {
+            if (context == null)
+            {
+                context = StoreContext.GetDefault();
+                // If your app is a desktop app that uses the Desktop Bridge, you
+                // may need additional code to configure the StoreContext object.
+                // For more info, see https://aka.ms/storecontext-for-desktop.
+            }
+
+            // Specify the kinds of add-ons to retrieve.
+            string[] productKinds = { "Durable" };
+            List<String> filterList = new List<string>(productKinds);
+
+            //workingProgressRing.IsActive = true;
+            StoreProductQueryResult queryResult = await context.GetUserCollectionAsync(filterList);
+            //workingProgressRing.IsActive = false;
+
+            if (queryResult.ExtendedError != null)
+            {
+
+                //foreach (var product in queryResult.Products)
+                //{
+                //    System.Diagnostics.Debug.WriteLine(product.Value);
+                //}
+
+
+                // The user may be offline or there might be some other server failure.
+                //textBlock.Text = $"ExtendedError: {queryResult.ExtendedError.Message}";
+                return;
+            }
+
+            System.Diagnostics.Debug.WriteLine("product.Value");
+
+            foreach (KeyValuePair<string, StoreProduct> item in queryResult.Products)
+            {
+                StoreProduct product = item.Value;
+                System.Diagnostics.Debug.WriteLine(product);
+
+                // Use members of the product object to access info for the product...
+            }
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string addOnStoreId = "9N8DMLL70VKF";
+
+            var context2 = StoreContext.GetDefault();
+
+            await context2.RequestPurchaseAsync(addOnStoreId);
         }
     }
 }
