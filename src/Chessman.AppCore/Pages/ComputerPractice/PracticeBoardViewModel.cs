@@ -34,20 +34,17 @@ namespace Chessman.ViewModel
             base.OnSelectionChanged(oldSquare, newSquare);
         }
 
-        public override void OnPieceDropped(SquareViewModel targetSquare)
+        public override void OnPieceDropped(SquareViewModel sourceSquare, SquareViewModel targetSquare)
         {
             if (practiceBoardService.IsComputerTurn())
                 return;
 
-            base.OnPieceDropped(targetSquare);
+            base.OnPieceDropped(sourceSquare, targetSquare);
         }
 
-        private async void OnAnalysisReceived(object sender, AnalysisEventArgs e)
+        private void OnAnalysisReceived(object sender, AnalysisEventArgs e)
         {
-            // just delay for one second the move, to not be so fast
-            await Task.Delay(1000);
             ExecuteCurrentMoveOnBoard(false);
-            //TODO: select a square?
         }
     }
 }

@@ -107,12 +107,12 @@ namespace Chessman.ViewModel
                 GetSquare(coordinate).PossibleMoveMark = GetPiece(coordinate) != null ? PossibleMoveMark.Piece : PossibleMoveMark.EmptySquare;
         }
 
-        public override void OnPieceDropped(SquareViewModel targetSquare)
+        public override void OnPieceDropped(SquareViewModel sourceSquare, SquareViewModel targetSquare)
         {
             MarkLegalMovesSquares(targetSquare);
 
-            TryExecuteMove(SelectedSquare.Coordinate, targetSquare.Coordinate, true);
-            base.OnPieceDropped(targetSquare);
+            TryExecuteMove(sourceSquare.Coordinate, targetSquare.Coordinate, true);
+            base.OnPieceDropped(sourceSquare, targetSquare);
         }
 
         protected bool TryExecuteMove(Coordinate fromCoordinate, Coordinate toCoordinate, bool instantMove)
