@@ -50,7 +50,7 @@ namespace Chessman.View
             // for now there is no other way to enforce a min width on the right column
             // for pc layout that can be honored by the parent pannel
             if (notationView.MinWidth > 0)
-                chessBoard.MaxWidth = newSize.Width - notationView.MinWidth - 50 - adBanner.Width;
+                chessBoard.MaxWidth = newSize.Width - notationView.MinWidth - 50 - adBanner.ActualWidth;
             else
                 chessBoard.MaxWidth = Double.PositiveInfinity;
 

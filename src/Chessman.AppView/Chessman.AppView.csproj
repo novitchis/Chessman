@@ -109,6 +109,9 @@
     <None Include="Chessman.AppView_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ads\BannerAd.xaml.cs">
+      <DependentUpon>BannerAd.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Analysis\AnalysisView.xaml.cs">
       <DependentUpon>AnalysisView.xaml</DependentUpon>
     </Compile>
@@ -232,6 +235,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Ads\BannerAd.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Analysis\AnalysisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
