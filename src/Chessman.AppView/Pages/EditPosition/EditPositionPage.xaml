@@ -34,9 +34,9 @@
                 Text="Board editor"
                 Style="{StaticResource HeaderTextStyle}" />
             <CommandBar x:Name="topCommandBar" Grid.Column="2" Background="Transparent">
-                <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}"/>
-                <AppBarButton Label="Clear" Icon="Delete" Command="{Binding ClearCommand}"/>
-                <AppBarButton Label="Done" Icon="Accept" Foreground="Green">
+                <AppBarButton Label="Rotate" Icon="Rotate" Command="{Binding BoardViewModel.TogglePerspectiveCommand}" ToolTipService.ToolTip="Rotate" />
+                <AppBarButton Label="Clear" Icon="Delete" Command="{Binding ClearCommand}" ToolTipService.ToolTip="Clear Board" />
+                <AppBarButton Label="Done" Icon="Accept" Foreground="Green" ToolTipService.ToolTip="Done">
                     <AppBarButton.Flyout>
                         <Flyout Placement="Top">
                             <Grid>

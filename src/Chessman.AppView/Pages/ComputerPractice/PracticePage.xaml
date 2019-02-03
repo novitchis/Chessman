@@ -28,9 +28,10 @@
                     Background="Transparent"
                     Closed="OnCommandBarClosed">
                 <AppBarButton 
-                Label="Switch color" 
-                Command="{Binding SwitchColor}"
-                Visibility="{Binding UserColor, Mode=OneWay, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='White'}">
+                    Label="Switch color" 
+                    Command="{Binding SwitchColor}"
+                    ToolTipService.ToolTip="Exchange Colors" 
+                    Visibility="{Binding UserColor, Mode=OneWay, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='White'}">
                     <AppBarButton.Icon>
                         <PathIcon VerticalAlignment="Center" HorizontalAlignment="Center" Data="{StaticResource SwitchSideToBlackButtonData}"/>
                     </AppBarButton.Icon>
@@ -38,21 +39,21 @@
                 <AppBarButton 
                 Label="Switch color" 
                 Command="{Binding SwitchColor}"
+                ToolTipService.ToolTip="Exchange Colors" 
                 Visibility="{Binding UserColor, Mode=OneWay, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='Black'}">
                     <AppBarButton.Icon>
                         <PathIcon VerticalAlignment="Center" HorizontalAlignment="Center" Data="{StaticResource SwitchSideToWhiteButtonData}"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}"/>
-                <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}"/>
-
-                <AppBarButton Label="New game" Command="{Binding NewGameCommand}" >
+                <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}" ToolTipService.ToolTip="Back" />
+                <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}" ToolTipService.ToolTip="Forward" />
+                <AppBarButton Label="New game" Command="{Binding NewGameCommand}" ToolTipService.ToolTip="New Game"  >
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xECC9;"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton Label="Edit position" Icon="Edit" Command="{Binding EditPositionCommand}" />
-                <AppBarButton Label="Analyze game" Icon="Find"  Command="{Binding AnalyseGameCommand}" />
+                <AppBarButton Label="Edit position" Icon="Edit" Command="{Binding EditPositionCommand}" ToolTipService.ToolTip="Edit Position"/>
+                <AppBarButton Label="Analyze game" Icon="Find"  Command="{Binding AnalyseGameCommand}" ToolTipService.ToolTip="Analyze"/>
             </CommandBar>
         </Grid>
         <Grid x:Name="contentGrid" Grid.Row="1">
