@@ -56,15 +56,16 @@ namespace Chessman
 
             NavigationItems = new List<NavMenuItem>
             {
-                new NavMenuItem("Analysis", "Find",ViewModelLocator.MainPageNavigationName),
-                new NavMenuItem("Board editor", "Edit", ViewModelLocator.EditPositionPageNavigationName),
-                new NavMenuItem("Computer practice", "ReportHacked", ViewModelLocator.PracticePageNavigationName),
+                new NavMenuItem("Analysis", "\uE721",ViewModelLocator.MainPageNavigationName),
+                new NavMenuItem("Tactics", "\uE7BE", ViewModelLocator.TacticsPageNavigationName),
+                new NavMenuItem("Board editor", "\uE70F", ViewModelLocator.EditPositionPageNavigationName),
+                new NavMenuItem("Computer practice", "", ViewModelLocator.PracticePageNavigationName),
             };
 
             SecondaryNavigationItems = new List<NavMenuItem>
             {
-                new NavMenuItem("About", "ReportHacked", ViewModelLocator.AboutPageNavigationName),
-                new NavMenuItem("Settings", "Setting", ViewModelLocator.SettingsPageNavigationName),
+                new NavMenuItem("About", "", ViewModelLocator.AboutPageNavigationName),
+                new NavMenuItem("Settings", "\uE713", ViewModelLocator.SettingsPageNavigationName),
             };
 
             CurrentNavItem = NavigationItems[0];

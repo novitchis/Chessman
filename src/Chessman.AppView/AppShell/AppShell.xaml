@@ -17,10 +17,22 @@
                     <ColumnDefinition Width="48" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <SymbolIcon x:Name="symbolIcon"
+                <Grid x:Name="newIndicator" 
+                      Background="Yellow" 
+                      CornerRadius="10" 
+                      VerticalAlignment="Top" 
+                      HorizontalAlignment="Right"
+                      Visibility="Collapsed"
+                      Margin="0 4 0 0">
+                    <TextBlock FontSize="10" Margin="4 0">new</TextBlock>
+                </Grid>
+                <FontIcon 
+                    x:Name="symbolIcon"
                     Foreground="White"
                     Margin="12"
-                    Symbol="{x:Bind SymbolIconName}"/>
+                    FontFamily="Segoe MDL2 Assets" 
+                    Glyph="{x:Bind SymbolIconName}"/>
+
                 <ContentControl x:Name="customIconControl" 
                           Visibility="Collapsed"
                           Margin="12"
@@ -40,6 +52,11 @@
                         <ic:ChangePropertyAction TargetObject="{Binding ElementName=symbolIcon}" PropertyName="Visibility" Value="Collapsed" />
                         <ic:ChangePropertyAction TargetObject="{Binding ElementName=customIconControl}" PropertyName="Visibility" Value="Visible" />
                         <ic:ChangePropertyAction TargetObject="{Binding ElementName=customIconControl}" PropertyName="Template" Value="{StaticResource GitHubIconTemplate}" />
+                    </ic:DataTriggerBehavior>
+                    <ic:DataTriggerBehavior Binding="{x:Bind Name}" Value="Tactics">
+                        <!--<ic:ChangePropertyAction TargetObject="{Binding ElementName=symbolIcon}" PropertyName="Foreground" Value="Yellow" />-->
+                        <ic:ChangePropertyAction TargetObject="{Binding ElementName=newIndicator}" PropertyName="Visibility" Value="Visible" />
+
                     </ic:DataTriggerBehavior>
                 </i:Interaction.Behaviors>
             </Grid>
