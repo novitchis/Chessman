@@ -85,6 +85,7 @@ namespace Chessman
 
             IOCContainer.RegisterType<IAnalysisReceiver, AnalysisReceiver>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IEngineNotification, AnalysisReceiver>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<ITacticsService, TacticsService>(new ContainerControlledLifetimeManager());
 
             Engine engine = IOCContainer.Resolve<Engine>();
             engine.Start();
@@ -93,8 +94,9 @@ namespace Chessman
             IOCContainer.RegisterType<IAnalysisBoardService, AnalysisBoardService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IBoardEditorService, EditorService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IPracticeBoardService, PracticeBoardService>(new ContainerControlledLifetimeManager());
-            IOCContainer.RegisterType<ITextReaderService, TextReaderService>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<ITacticsBoardService, TacticsBoardService>(new ContainerControlledLifetimeManager());
 
+            IOCContainer.RegisterType<ITextReaderService, TextReaderService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IMoveAudioFeedbackService, MoveAudioFeedbackService>(new ContainerControlledLifetimeManager());
             
         }

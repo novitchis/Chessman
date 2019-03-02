@@ -18,13 +18,14 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid x:Name="newIndicator" 
-                      Background="Yellow" 
-                      CornerRadius="10" 
                       VerticalAlignment="Top" 
                       HorizontalAlignment="Right"
                       Visibility="Collapsed"
-                      Margin="0 4 0 0">
-                    <TextBlock FontSize="10" Margin="4 0">new</TextBlock>
+                      Margin="0 4 4 0">
+                    <Ellipse
+                         Fill="Yellow"
+                         Width="12"
+                         Height="12"/>
                 </Grid>
                 <FontIcon 
                     x:Name="symbolIcon"

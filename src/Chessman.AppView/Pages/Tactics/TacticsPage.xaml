@@ -5,6 +5,7 @@
     xmlns:local="using:Chessman"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="using:Chessman.View"
     mc:Ignorable="d"
     DataContext="{Binding TacticsViewModel, Source={StaticResource ViewModelLocator}}">
     <Grid x:Name="mainGrid"
@@ -22,14 +23,76 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <TextBlock 
-                Text="Tactics"
+                Text="Tactics (Beta)"
                 Style="{StaticResource HeaderTextStyle}" />
             <CommandBar x:Name="topCommandBar"
                     Grid.Column="2" 
                     Background="Transparent">
             </CommandBar>
         </Grid>
-        <Grid Margin="4" Grid.Row="1" x:Name="contentGrid">
+        <Grid x:Name="contentGrid" Grid.Row="1">
+            <RelativePanel>
+                <StackPanel x:Name="notationView" Background="White">
+                    <view:NotationView x:Name="notationView2"
+                                   DataContext="{Binding NotationViewModel}" />
+                    <TextBlock Text="{Binding CurrentTactic}"/>
+                    <Button Command="{Binding SkipCommand}">Skip</Button>
+                </StackPanel>
+                <view:ChessBoardView x:Name="chessBoard"
+                                    HasDragAndDrop="True"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                     DataContext="{Binding BoardViewModel}"
+                                     />
+            </RelativePanel>
         </Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--<Setter Target="bottomCommandBar.Visibility" Value="Collapsed"/>-->
+                        <!--<Setter Target="topCommandBar.Visibility" Value="Visible"/>-->
+
+                        <Setter Target="contentGrid.Margin" Value="12 8 12 12"/>
+
+                        <Setter Target="chessBoard.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.Margin" Value="0 0 12 0"/>
+
+                        <Setter Target="notationView.(RelativePanel.RightOf)" Value="chessBoard"/>
+                        <Setter Target="notationView.(RelativePanel.AlignTopWithPanel)" Value="true"/>
+                        <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="notationView.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
+                        <Setter Target="notationView.MinWidth" Value="250"/>
+
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--<Setter Target="bottomCommandBar.Visibility" Value="Visible"/>-->
+                        <Setter Target="topCommandBar.Visibility" Value="Collapsed"/>
+
+                        <Setter Target="titlePanel.Margin" Value="48 0 0 0"/>
+
+                        <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+
+                        <Setter Target="notationView.(RelativePanel.Below)" Value="chessBoard"/>
+                        <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="notationView.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+                        <Setter Target="notationView.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
+                        <Setter Target="notationView.MinHeight" Value="100"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

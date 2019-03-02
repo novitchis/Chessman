@@ -13,6 +13,7 @@ namespace Chessman.ViewModel
     {
         private IPracticeBoardService practiceBoardService = null;
         private IAppSettings appSettings = null;
+        private IPracticeBoardService boardService = null;
 
         public ICommand SwitchColor
         {
@@ -56,6 +57,11 @@ namespace Chessman.ViewModel
 
             base.OnNavigatedTo(parameter);
             boardService.Start();
+        }
+
+        public void OnNavigatingFrom()
+        {
+            boardService.Stop();
         }
 
         private void InitiSettings()
