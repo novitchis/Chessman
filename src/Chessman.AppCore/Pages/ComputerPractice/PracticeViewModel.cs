@@ -13,7 +13,6 @@ namespace Chessman.ViewModel
     {
         private IPracticeBoardService practiceBoardService = null;
         private IAppSettings appSettings = null;
-        private IPracticeBoardService boardService = null;
 
         public ICommand SwitchColor
         {
@@ -56,12 +55,12 @@ namespace Chessman.ViewModel
                 parameter = AppPersistenceManager.GetSavedPosition(appSettings, AppPersistenceManager.SavedPracticePositionPgnKey);
 
             base.OnNavigatedTo(parameter);
-            boardService.Start();
+            practiceBoardService.Start();
         }
 
         public void OnNavigatingFrom()
         {
-            boardService.Stop();
+            practiceBoardService.Stop();
         }
 
         private void InitiSettings()
