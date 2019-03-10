@@ -111,6 +111,19 @@ bool ChessBoard::SubmitMove(Coordinate^ from, Coordinate^ to)
 	}
 }
 
+bool ChessBoard::SubmitMove(Platform::String^ pgnMove)
+{
+	try
+	{
+		auto pgnMoveNativeData = ManagedConverter::ManagedString2String(pgnMove);
+		return m_ChessBoardImpl.SubmitMove(m_ChessBoardImpl.GetMoveFromPGN(pgnMoveNativeData));
+	}
+	catch (...)
+	{
+		throw ref new Exception(3, ref new String(L"Failed to submit move."));
+	}
+}
+
 bool ChessBoard::SubmitPromotionMove(Coordinate^ from, Coordinate^ to, PieceType promotionPieceType)
 {
 	try

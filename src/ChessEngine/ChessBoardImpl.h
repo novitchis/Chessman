@@ -112,11 +112,14 @@ namespace ChessEngine
 		void							UpdateState(StatePreserveType type, const Core::Variant& vtState);
 		void							ClearPreservedStates();
 
+		MoveImpl					GetMoveFromPGN(const std::string& pgnMove);
+
 	private:
 		std::string					Serialize2FEN() const;
 		std::string					Serialize2PGN(bool stopOnCurrent = true);
 		bool						LoadFromFEN(const std::string& strData);
 		bool						LoadFromPGN(const std::string& strData);
+
 		SerializationType			DetectFormat(const std::string& strData);
 		bool						IsEnPassantMove(AdditionalMoveInfo& coordEnPassant) const;
 		void						RemoveMovesAfterCurrent();

@@ -13,6 +13,7 @@ namespace Chessman.ViewModel
     {
         private ITacticsService tacticsService = null;
         private string currentTactic = "";
+        private ITacticsBoardService boardService = null;
 
         public string CurrentTactic
         {
@@ -39,6 +40,7 @@ namespace Chessman.ViewModel
             :base(navigationService, boardService)
         {
             this.tacticsService = tacticsService;
+            this.boardService = boardService;
             BoardViewModel = new AnalysisChessBoardViewModel(boardService);
         }
 
@@ -54,6 +56,14 @@ namespace Chessman.ViewModel
             };
 
             LoadPosition(positionOptions);
+
+            await Task.Delay(1000);
+
+            if (boardService.SubmitMove(tactic.blunderMove))
+            {
+                BoardViewModel.ExecuteCurrentMoveOnBoard(false);
+            }
+            // TODO: execute blunder move
          }
 
         public override void OnNavigatedTo(object parameter)

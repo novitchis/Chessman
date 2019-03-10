@@ -48,6 +48,11 @@ namespace Chessman
             return chessBoard.SubmitMove(from, to);
         }
 
+        public virtual bool SubmitMove(string pgnMove)
+        {
+            return chessBoard.SubmitMove(pgnMove);
+        }
+
         public virtual bool SubmitPromotionMove(Coordinate from, Coordinate to, PieceType promotionPieceType)
         {
             return chessBoard.SubmitPromotionMove(from, to, promotionPieceType);
