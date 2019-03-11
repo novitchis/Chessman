@@ -36,7 +36,11 @@
                     <view:NotationView x:Name="notationView2"
                                    DataContext="{Binding NotationViewModel}" />
                     <TextBlock Text="{Binding CurrentTactic}"/>
-                    <Button Command="{Binding SkipCommand}">Skip</Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Command="{Binding SkipCommand}">Skip</Button>
+                        <Button Command="{Binding ExecuteNextMoveCommand}">Hint</Button>
+                        <Button Command="{Binding RestartCommand}">Restart</Button>
+                    </StackPanel>
                 </StackPanel>
                 <view:ChessBoardView x:Name="chessBoard"
                                     HasDragAndDrop="True"

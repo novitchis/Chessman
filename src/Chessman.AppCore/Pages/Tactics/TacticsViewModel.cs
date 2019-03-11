@@ -1,4 +1,5 @@
-﻿using Framework.MVVM;
+﻿using ChessEngine;
+using Framework.MVVM;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Chessman.ViewModel
 {
     public class TacticsViewModel : BoardPageViewModel, INavigationAware
     {
-        private ITacticsService tacticsService = null;
+        private Tactic tactic = null;
         private string currentTactic = "";
         private ITacticsBoardService boardService = null;
 
@@ -36,40 +37,49 @@ namespace Chessman.ViewModel
             }
         }
 
-        public TacticsViewModel(INavigationService navigationService, ITacticsBoardService boardService, ITacticsService tacticsService)
-            :base(navigationService, boardService)
+        public ICommand ExecuteNextMoveCommand
         {
-            this.tacticsService = tacticsService;
-            this.boardService = boardService;
-            BoardViewModel = new AnalysisChessBoardViewModel(boardService);
+            get
+            {
+                return new RelayCommand(OnExecuteNextMoveAsync);
+            }
         }
 
-        private async void UpdateCurrentTactic()
+        public ICommand RestartCommand
         {
-            Tactic tactic = await tacticsService.GetAsync();
-            CurrentTactic = JsonConvert.SerializeObject(tactic, Formatting.Indented);
-
-            PositionLoadOptions positionOptions = new PositionLoadOptions()
+            get
             {
-                SerializationType = BoardSerializationType.FEN,
-                SerializedBoard = tactic.fenBefore,
-            };
-
-            LoadPosition(positionOptions);
-
-            await Task.Delay(1000);
-
-            if (boardService.SubmitMove(tactic.blunderMove))
-            {
-                BoardViewModel.ExecuteCurrentMoveOnBoard(false);
+                return new RelayCommand(OnRestart);
             }
-            // TODO: execute blunder move
-         }
+        }
 
-        public override void OnNavigatedTo(object parameter)
+        public TacticsViewModel(INavigationService navigationService, ITacticsBoardService boardService)
+            :base(navigationService, boardService)
+        {
+            this.boardService = boardService;
+            BoardViewModel = new TacticsChessBoardViewModel(boardService);
+            Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.MoveExecuted, OnMoveExecuted);
+        }
+
+        private void OnMoveExecuted(GenericMessage<MoveData> obj)
+        {
+            CurrentTactic = boardService.GetState().ToString();
+            if (boardService.IsComputerTurn() && boardService.GetState() == TacticState.InProgress)
+                OnExecuteNextMoveAsync(null);
+        }
+
+        public override async void OnNavigatedTo(object parameter)
         {
             base.OnNavigatedTo(parameter);
-            UpdateCurrentTactic();
+            if (boardService.GetState() == TacticState.NotStarted)
+                await StartTacticAsync();
+        }
+
+        private async Task StartTacticAsync()
+        {
+            await boardService.LoadTacticAsync();
+            ReloadBoard(boardService.WasBlackFirstToMove() ? SideColor.White : SideColor.Black);
+            OnExecuteNextMoveAsync(null);
         }
 
         public void OnNavigatingFrom()
@@ -79,8 +89,21 @@ namespace Chessman.ViewModel
 
         private async void OnSkip(object obj)
         {
-            await tacticsService.Skip();
-            UpdateCurrentTactic();
+            await boardService.SkipAsync();
+            await StartTacticAsync();
+        }
+
+        private async void OnExecuteNextMoveAsync(object obj)
+        {
+            await boardService.ExecuteNextMoveAsync();
+            BoardViewModel.ExecuteCurrentMoveOnBoard(false);
+        }
+
+        private void OnRestart(object obj)
+        {
+            boardService.Restart();
+            ReloadBoard(boardService.WasBlackFirstToMove() ? SideColor.White : SideColor.Black);
+            OnExecuteNextMoveAsync(null);
         }
     }
 }

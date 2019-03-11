@@ -8,6 +8,24 @@ namespace Chessman
 {
     public interface ITacticsBoardService: IBoardService
     {
+        Task LoadTacticAsync();
 
+        Task ExecuteNextMoveAsync();
+
+        void Restart();
+
+        Task SkipAsync();
+
+        bool IsComputerTurn();
+
+        TacticState GetState();
+    }
+
+    public enum TacticState
+    {
+        NotStarted,
+        InProgress,
+        Resolved,
+        Failed
     }
 }

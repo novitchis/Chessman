@@ -152,6 +152,7 @@
     <Compile Include="Pages\Tactics\ITacticsBoardService.cs" />
     <Compile Include="Pages\Tactics\Tactic.cs" />
     <Compile Include="Pages\Tactics\TacticsBoardService.cs" />
+    <Compile Include="Pages\Tactics\TacticsBoardViewModel.cs" />
     <Compile Include="Services\ITacticsService.cs" />
     <Compile Include="Pages\Tactics\TacticsService.cs" />
     <Compile Include="Pages\Tactics\TacticsViewModel.cs" />
