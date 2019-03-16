@@ -8,6 +8,8 @@ namespace Chessman
 {
     public interface ITacticsBoardService: IBoardService
     {
+        event EventHandler StateChanged;
+
         Task LoadTacticAsync();
 
         Task ExecuteNextMoveAsync();

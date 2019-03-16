@@ -63,15 +63,6 @@ namespace Chessman
             return true;
         }
 
-        public bool CurrentIsLastMove()
-        {
-            var allMoves = GetMoves(false);
-            if (allMoves.Count == 0)
-                return true;
-
-            return allMoves.Count == GetCurrentMove().Index + 1;
-        }
-
         public void RequestComputerMove()
         {
             if (ChessBoard.IsStalemate() || ChessBoard.IsCheckmate())

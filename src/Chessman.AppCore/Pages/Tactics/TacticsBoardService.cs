@@ -12,7 +12,7 @@ namespace Chessman
         private ITacticsService tacticsService = null;
         private Tactic currentTactic = null;
         private TacticState state = TacticState.NotStarted;
-        private event EventHandler stateChanged;
+        public event EventHandler StateChanged;
 
         public TacticsBoardService(ITacticsService tacticsService)
         {
@@ -31,7 +31,7 @@ namespace Chessman
             if (state != TacticState.InProgress)
                 throw new Exception("Can't execute a move. Tactic is finished.");
 
-            await Task.Delay(1000);
+            await Task.Delay(200);
             MoveData currentMove = GetCurrentMove();
             if (currentMove == null)
                 SubmitMove(currentTactic.blunderMove);
@@ -73,7 +73,7 @@ namespace Chessman
 
         protected virtual void NotifyStateChanged()
         {
-            stateChanged?.Invoke(this, EventArgs.Empty);
+            StateChanged?.Invoke(this, EventArgs.Empty);
         }
 
         //TODO: do we even need the ones from board vm?

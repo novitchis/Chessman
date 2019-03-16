@@ -12,9 +12,9 @@ namespace Chessman.ViewModel
 {
     public class TacticsViewModel : BoardPageViewModel, INavigationAware
     {
-        private Tactic tactic = null;
         private string currentTactic = "";
         private ITacticsBoardService boardService = null;
+        private TacticState tacticState = TacticState.NotStarted;
 
         public string CurrentTactic
         {
@@ -26,6 +26,19 @@ namespace Chessman.ViewModel
                     currentTactic = value;
                     NotifyPropertyChanged();
                 } 
+            }
+        }
+
+        public TacticState TacticState
+        {
+            get { return tacticState; }
+            set
+            {
+                if (tacticState != value)
+                {
+                    tacticState = value;
+                    NotifyPropertyChanged();
+                }
             }
         }
 
@@ -57,6 +70,8 @@ namespace Chessman.ViewModel
             :base(navigationService, boardService)
         {
             this.boardService = boardService;
+            boardService.StateChanged += (e, o) => TacticState = this.boardService.GetState();
+
             BoardViewModel = new TacticsChessBoardViewModel(boardService);
             Messenger.Default.Register<GenericMessage<MoveData>>(this, NotificationMessages.MoveExecuted, OnMoveExecuted);
         }
@@ -64,7 +79,7 @@ namespace Chessman.ViewModel
         private void OnMoveExecuted(GenericMessage<MoveData> obj)
         {
             CurrentTactic = boardService.GetState().ToString();
-            if (boardService.IsComputerTurn() && boardService.GetState() == TacticState.InProgress)
+            if (boardService.CurrentIsLastMove() && boardService.IsComputerTurn() && boardService.GetState() == TacticState.InProgress)
                 OnExecuteNextMoveAsync(null);
         }
 

@@ -125,5 +125,18 @@ namespace Chessman
 
             return result;
         }
+
+        public bool CurrentIsLastMove()
+        {
+            var allMoves = GetMoves(false);
+            if (allMoves.Count == 0)
+                return true;
+            MoveData currentMove = GetCurrentMove();
+
+            if (currentMove == null)
+                return false;
+
+            return allMoves.Count == currentMove.Index + 1;
+        }
     }
 }

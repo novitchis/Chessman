@@ -54,7 +54,7 @@
                 <AppBarButton Label="Load file" Icon="OpenFile" ToolTipService.ToolTip="Load file" Command="{Binding LoadPGNCommand}"/>
                 <AppBarButton Label="Load from clipboard" Icon="Paste" ToolTipService.ToolTip="Load from clipboard" Command="{Binding LoadFromClipboardCommand}" />
                 <AppBarButton Label="Save file" Icon="Save" ToolTipService.ToolTip="Save file" Command="{Binding SavePGNCommand}"/>
-                
+
                 <CommandBar.SecondaryCommands>
                 </CommandBar.SecondaryCommands>
             </CommandBar>

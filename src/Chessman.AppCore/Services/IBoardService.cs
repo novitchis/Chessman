@@ -36,5 +36,7 @@ namespace Chessman
         bool GetIsStalemate();
 
         bool GetIsMate();
+
+        bool CurrentIsLastMove();
     }
 }

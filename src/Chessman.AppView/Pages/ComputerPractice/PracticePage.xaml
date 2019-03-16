@@ -45,6 +45,7 @@
                         <PathIcon VerticalAlignment="Center" HorizontalAlignment="Center" Data="{StaticResource SwitchSideToWhiteButtonData}"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
+                <AppBarSeparator />
                 <AppBarButton Label="Back" Icon="Back" Command="{Binding GoBackCommand}" ToolTipService.ToolTip="Back" />
                 <AppBarButton Label="Forward" Icon="Forward" Command="{Binding GoForwardCommand}" ToolTipService.ToolTip="Forward" />
                 <AppBarButton Label="New game" Command="{Binding NewGameCommand}" ToolTipService.ToolTip="New Game"  >
@@ -52,6 +53,7 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xECC9;"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
+                <AppBarSeparator />
                 <AppBarButton Label="Edit position" Icon="Edit" Command="{Binding EditPositionCommand}" ToolTipService.ToolTip="Edit Position"/>
                 <AppBarButton Label="Analyze game" Icon="Find"  Command="{Binding AnalyseGameCommand}" ToolTipService.ToolTip="Analyze"/>
             </CommandBar>
