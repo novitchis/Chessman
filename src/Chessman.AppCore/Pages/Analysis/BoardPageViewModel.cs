@@ -10,10 +10,10 @@ using System.Windows.Input;
 
 namespace Chessman.ViewModel
 {
-    public class BoardPageViewModel : ViewModelBase, INavigationAware
+    public class BoardPageViewModel : ViewModelBase
     {
         private INavigationService navigationService = null;
-        protected IEngineBoardService boardService = null;
+        private IBoardService boardService = null;
         protected bool firstNavigatedToOcurred = false;
 
         #region "Properties"
@@ -58,7 +58,7 @@ namespace Chessman.ViewModel
 
         #endregion
 
-        public BoardPageViewModel(INavigationService navigationService, IEngineBoardService boardService)
+        public BoardPageViewModel(INavigationService navigationService, IBoardService boardService)
         {
             this.navigationService = navigationService;
             this.boardService = boardService;
@@ -83,11 +83,6 @@ namespace Chessman.ViewModel
                 boardService.LoadFrom(positionLoadOptions.SerializedBoard, positionLoadOptions.CurrentMoveIndex);
 
             ReloadBoard(positionLoadOptions.Perspective);
-        }
-
-        public virtual void OnNavigatingFrom()
-        {
-            boardService.Stop();
         }
 
         public void ReloadBoard(SideColor changedPerspectiveColor)

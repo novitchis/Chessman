@@ -66,6 +66,24 @@ namespace Framework.Platform.UWP.Converters
         }
     }
 
+    public class EnumToBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            object enumParameter = Enum.Parse(value.GetType(), (string)parameter);
+
+            if (value.Equals(enumParameter))
+                return true;
+
+            return false;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotSupportedException();
+        }
+    }
+
     public class ToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)

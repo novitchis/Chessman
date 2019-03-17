@@ -1017,157 +1017,166 @@ bool ChessBoardImpl::LoadFromPGN(const std::string& strData)
 	if (!firstGame.GetTags()["FEN"].empty())
 		LoadFromFEN(firstGame.GetTags()["FEN"]);
 
-	int nMoveCount = 0;
+	//int nMoveCount = 0;
 	std::list<std::string> moves = firstGame.GetMoves();
 	for (auto it = moves.begin(); it != moves.end(); ++it)
 	{
 		std::string strToken = *it;
-		if (strToken.size() < 2) {
-			std::cout << "token too short: " << strToken << "To Play " << (nMoveCount % 2 ? "white" : "black") << "Move:" << nMoveCount / 2 + 1 << std::endl;
-			return false;
-		}
-
-		MoveImpl move;
-		if (strToken.find("O-O-O") != std::string::npos)
-		{
-			// queen-side castling
-			if (IsWhiteTurn())
-				SubmitMove(MoveImpl(CoordinateImpl(0, 4), CoordinateImpl(0, 2)));
-			else
-				SubmitMove(MoveImpl(CoordinateImpl(7, 4), CoordinateImpl(7, 2)));
-			continue;
-		}
-		else if (strToken.find("O-O") != std::string::npos)
-		{
-			// king-side castling
-			if (IsWhiteTurn())
-				SubmitMove(MoveImpl(CoordinateImpl(0, 4), CoordinateImpl(0, 6)));
-			else
-				SubmitMove(MoveImpl(CoordinateImpl(7, 4), CoordinateImpl(7, 6)));
-			continue;
-		}
-
-		std::string destString;
-		if (strToken.find('=') != std::string::npos)
-		{
-			auto index = strToken.find('=');
-			char destPiece = strToken[index + 1];
-			destString = strToken.substr(index - 2, index);
-			move.promotionPieceType = tolower(destPiece);
-		}
-		else if (strToken[strToken.length() - 1] == '+' || strToken[strToken.length() - 1] == '#')
-		{
-			// check for promotion without '='
-			if (std::string("QRBN").find(strToken[strToken.length() - 2]) != std::string::npos)
-			{
-				if (strToken.size() < 4) {
-					// too short
-					return false;
-				}
-				char destPiece = strToken[strToken.length() - 2];
-				destString = strToken.substr(strToken.length() - 4, strToken.length() - 2);
-				move.promotionPieceType = tolower(destPiece);
-			}
-			else
-			{
-				destString = strToken.substr(strToken.length() - 3, strToken.length() - 1);
-			}
-		}
-		else
-		{
-			// check for promotion without '='
-			if (std::string("QRBN").find(strToken[strToken.length() - 1]) != std::string::npos)
-			{
-				if (strToken.size() < 3) {
-					// too short
-					return false;
-				}
-				char destPiece = strToken[strToken.length() - 1];
-				destString = strToken.substr(strToken.length() - 3);
-				move.promotionPieceType = tolower(destPiece);
-			}
-			else
-			{
-				destString = strToken.substr(strToken.length() - 2);
-			}
-		}
-
-		CoordinateImpl destination = CoordinateImpl::FromString(destString);
-		char pieceType = ChessPieceImpl::None;
-		int moveIndex = 0;
-
-		if (std::string("KQRBNP").find(strToken[0]) == std::string::npos)
-		{
-			// pawn move
-			pieceType = ChessPieceImpl::Pawn;
-		}
-		else
-		{
-			pieceType = tolower(strToken[0]);
-			moveIndex = 1;
-		}
-
-		move.to = destination;
-		std::list<CoordinateImpl> possibleMoves = getPiecesMovableAs(move, pieceType, IsWhiteTurn());
-
-		if (possibleMoves.empty())
-		{
-			std::cout << "error:no possible moves to " <<
-				destination.ToString() << " as " << pieceType << "To Play " << (nMoveCount % 2 ? "white" : "black") << "Move:" << nMoveCount / 2 + 1 << std::endl;
-			DisplayBoard(*this, false);
-			return false;
-		}
-
-		if (possibleMoves.size() > 1)
-		{
-			//disambiguation
-			if (strToken.length() < 3)
-			{
-				std::cout << "disambiguation error, move string too short" << "To Play " << (nMoveCount % 2 ? "white" : "black") << "Move:" << nMoveCount / 2 + 1 << std::endl;
-				return false;
-			}
-
-			if (IN_RANGE(strToken[moveIndex], 'a', 'h'))
-			{
-				// disambiguation by file/column
-				auto itNewEnd = std::remove_if(possibleMoves.begin(), possibleMoves.end(),
-					[=](const CoordinateImpl& coord) {
-					return coord.nColumn != strToken[moveIndex] - 'a';
-				});
-				possibleMoves.erase(itNewEnd, possibleMoves.end());
-				moveIndex++;
-			}
-
-			if (possibleMoves.size() > 1 || (IN_RANGE(strToken[moveIndex], '1', '8')))
-			{
-				// disambiguation by rank
-				// if column disambiguation was needed and failed => complete source tile needed
-				auto itNewEnd = std::remove_if(possibleMoves.begin(), possibleMoves.end(),
-					[=](const CoordinateImpl& coord) {
-					return coord.nRank != strToken[moveIndex] - '1';
-				});
-				possibleMoves.erase(itNewEnd, possibleMoves.end());
-			}
-		}
-
-		if (possibleMoves.size() != 1)
-		{
-			// goto hell, bug!
-			std::cout << "something buggy at disambiguation, please check." << "To Play " << (nMoveCount % 2 ? "white" : "black") << "Move:" << nMoveCount / 2 + 1 << std::endl;
-			return false;
-		}
-
-		move.from = possibleMoves.front();
+		MoveImpl move = GetMoveFromPGN(strToken);
 
 		// don't really care what the move does, just do it
 		if (!SubmitMove(move))
 			return false;
 		//DisplayBoard(*this, false);
-		++nMoveCount;
+		//++nMoveCount;
 	}
 
 	return true;
 }
+
+MoveImpl ChessBoardImpl::GetMoveFromPGN(const std::string& strToken)
+{
+	MoveImpl move;
+	if (strToken.size() < 2) {
+		//std::cout << "token too short: " << strToken << "To Play " << (nMoveCount % 2 ? "white" : "black") << "Move:" << nMoveCount / 2 + 1 << std::endl;
+		return move;
+	}
+
+	if (strToken.find("O-O-O") != std::string::npos)
+	{
+		// queen-side castling
+		if (IsWhiteTurn())
+			move = MoveImpl(CoordinateImpl(0, 4), CoordinateImpl(0, 2));
+		else
+			move = MoveImpl(CoordinateImpl(7, 4), CoordinateImpl(7, 2));
+
+		return move;
+	}
+	else if (strToken.find("O-O") != std::string::npos)
+	{
+		// king-side castling
+		if (IsWhiteTurn())
+			move = MoveImpl(CoordinateImpl(0, 4), CoordinateImpl(0, 6));
+		else
+			move = MoveImpl(CoordinateImpl(7, 4), CoordinateImpl(7, 6));
+		return move;
+	}
+
+	std::string destString;
+	if (strToken.find('=') != std::string::npos)
+	{
+		auto index = strToken.find('=');
+		char destPiece = strToken[index + 1];
+		destString = strToken.substr(index - 2, index);
+		move.promotionPieceType = tolower(destPiece);
+	}
+	else if (strToken[strToken.length() - 1] == '+' || strToken[strToken.length() - 1] == '#')
+	{
+		// check for promotion without '='
+		if (std::string("QRBN").find(strToken[strToken.length() - 2]) != std::string::npos)
+		{
+			if (strToken.size() < 4) {
+				// too short
+				return move;
+			}
+			char destPiece = strToken[strToken.length() - 2];
+			destString = strToken.substr(strToken.length() - 4, strToken.length() - 2);
+			move.promotionPieceType = tolower(destPiece);
+		}
+		else
+		{
+			destString = strToken.substr(strToken.length() - 3, strToken.length() - 1);
+		}
+	}
+	else
+	{
+		// check for promotion without '='
+		if (std::string("QRBN").find(strToken[strToken.length() - 1]) != std::string::npos)
+		{
+			if (strToken.size() < 3) {
+				// too short
+				return move;
+			}
+			char destPiece = strToken[strToken.length() - 1];
+			destString = strToken.substr(strToken.length() - 3);
+			move.promotionPieceType = tolower(destPiece);
+		}
+		else
+		{
+			destString = strToken.substr(strToken.length() - 2);
+		}
+	}
+
+	CoordinateImpl destination = CoordinateImpl::FromString(destString);
+	char pieceType = ChessPieceImpl::None;
+	int moveIndex = 0;
+
+	if (std::string("KQRBNP").find(strToken[0]) == std::string::npos)
+	{
+		// pawn move
+		pieceType = ChessPieceImpl::Pawn;
+	}
+	else
+	{
+		pieceType = tolower(strToken[0]);
+		moveIndex = 1;
+	}
+
+	move.to = destination;
+	std::list<CoordinateImpl> possibleMoves = getPiecesMovableAs(move, pieceType, IsWhiteTurn());
+
+	if (possibleMoves.empty())
+	{
+		//std::cout << "error:no possible moves to " <<
+		//	destination.ToString() << " as " << pieceType << "To Play " << (nMoveCount % 2 ? "white" : "black") << "Move:" << nMoveCount / 2 + 1 << std::endl;
+		//DisplayBoard(*this, false);
+		return move;
+	}
+
+	if (possibleMoves.size() > 1)
+	{
+		//disambiguation
+		if (strToken.length() < 3)
+		{
+			//std::cout << "disambiguation error, move string too short" << "To Play " << (nMoveCount % 2 ? "white" : "black") << "Move:" << nMoveCount / 2 + 1 << std::endl;
+			return move;
+		}
+
+		if (IN_RANGE(strToken[moveIndex], 'a', 'h'))
+		{
+			// disambiguation by file/column
+			auto itNewEnd = std::remove_if(possibleMoves.begin(), possibleMoves.end(),
+				[=](const CoordinateImpl& coord) {
+				return coord.nColumn != strToken[moveIndex] - 'a';
+			});
+			possibleMoves.erase(itNewEnd, possibleMoves.end());
+			moveIndex++;
+		}
+
+		if (possibleMoves.size() > 1 || (IN_RANGE(strToken[moveIndex], '1', '8')))
+		{
+			// disambiguation by rank
+			// if column disambiguation was needed and failed => complete source tile needed
+			auto itNewEnd = std::remove_if(possibleMoves.begin(), possibleMoves.end(),
+				[=](const CoordinateImpl& coord) {
+				return coord.nRank != strToken[moveIndex] - '1';
+			});
+			possibleMoves.erase(itNewEnd, possibleMoves.end());
+		}
+	}
+
+	if (possibleMoves.size() != 1)
+	{
+		// goto hell, bug!
+		//std::cout << "something buggy at disambiguation, please check." << "To Play " << (nMoveCount % 2 ? "white" : "black") << "Move:" << nMoveCount / 2 + 1 << std::endl;
+		return move;
+	}
+
+	move.from = possibleMoves.front();
+
+	return move;
+}
+
 
 
 SerializationType ChessBoardImpl::DetectFormat(const std::string& strData)

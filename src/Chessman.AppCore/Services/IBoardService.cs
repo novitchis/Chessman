@@ -17,6 +17,8 @@ namespace Chessman
 
         bool SubmitMove(Coordinate from, Coordinate to);
 
+        bool SubmitMove(string pgnMove);
+
         bool SubmitPromotionMove(Coordinate from, Coordinate to, PieceType promotionPieceType);
 
         IList<MoveData> GetMoves(bool stopOnCurrentMove = true);
@@ -34,5 +36,7 @@ namespace Chessman
         bool GetIsStalemate();
 
         bool GetIsMate();
+
+        bool CurrentIsLastMove();
     }
 }

@@ -1,0 +1,60 @@
+﻿<UserControl
+    x:Class="Chessman.View.TacticDetailsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <Grid Height="48" Background="{StaticResource AccentBrush100}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition />
+        <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <Border Background="{StaticResource AccentBrush400}" MinWidth="70">
+            <TextBlock 
+                FontSize="18"
+                Text="{Binding Tactic.elo}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                ToolTipService.ToolTip="ELO rating"
+                />
+        </Border>
+        <Grid Grid.Column="1" HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock 
+                Margin="8" 
+                Grid.Column="0"
+                Text="{Binding WhitePlayer}" 
+                VerticalAlignment="Center" 
+                TextTrimming="CharacterEllipsis" 
+                ToolTipService.ToolTip="{Binding WhitePlayer}"
+                />
+            <FontIcon Grid.Column="1" FontFamily="Segoe MDL2 Assets" Glyph="&#xE9AE;" />
+            <TextBlock 
+                Margin="8" 
+                Grid.Column="2" 
+                Text="{Binding BlackPlayer}" 
+                VerticalAlignment="Center" 
+                TextTrimming="CharacterEllipsis"
+                ToolTipService.ToolTip="{Binding BlackPlayer}"
+                />
+        </Grid>
+        <Grid Grid.Column="2">
+            <StackPanel Orientation="Horizontal" Visibility="{Binding State, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Resolved}">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC61;" Foreground="Green"/>
+                <TextBlock Margin="8" Grid.Column="2" Text="Solved" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Visibility="{Binding State, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Failed}">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB90;" Foreground="Red"/>
+                <TextBlock Margin="8"  Grid.Column="2" Text="Failed" VerticalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -111,6 +111,7 @@ namespace Chessman
             NavigationService navigationService = new NavigationService(frame);
 
             navigationService.Configure(ViewModelLocator.MainPageNavigationName, typeof(MainPage));
+            navigationService.Configure(ViewModelLocator.TacticsPageNavigationName, typeof(TacticsPage));
             navigationService.Configure(ViewModelLocator.EditPositionPageNavigationName, typeof(EditPositionPage));
             navigationService.Configure(ViewModelLocator.PracticePageNavigationName, typeof(PracticePage));
             navigationService.Configure(ViewModelLocator.AboutPageNavigationName, typeof(AboutPage));

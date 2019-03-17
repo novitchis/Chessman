@@ -20,8 +20,9 @@ namespace Chessman
         public const string SettingsPageNavigationName = "SettingsPage";
 
         public const string MainPageNavigationName = "MainPage";
-        public const string EditPositionPageNavigationName = "EditPositionPage";
+        public const string TacticsPageNavigationName = "TacticsPage";
         public const string PracticePageNavigationName = "PracticePage";
+        public const string EditPositionPageNavigationName = "EditPositionPage";
 
         public static UnityContainer IOCContainer = new UnityContainer();
 
@@ -35,6 +36,14 @@ namespace Chessman
         }
 
         public static bool MainViewModelCreated { get; private set; }
+
+        public static TacticsViewModel TacticsViewModel
+        {
+            get
+            {
+                return IOCContainer.Resolve<TacticsViewModel>();
+            }
+        }
 
         public static EditPositionViewModel EditPositionViewModel
         {
@@ -67,6 +76,7 @@ namespace Chessman
         static ViewModelLocator()
         {
             IOCContainer.RegisterType<MainViewModel, MainViewModel>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<TacticsViewModel, TacticsViewModel>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<EditPositionViewModel, EditPositionViewModel>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<PracticeViewModel, PracticeViewModel>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<SettingsViewModel, SettingsViewModel>(new ContainerControlledLifetimeManager());
@@ -75,6 +85,7 @@ namespace Chessman
 
             IOCContainer.RegisterType<IAnalysisReceiver, AnalysisReceiver>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IEngineNotification, AnalysisReceiver>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<ITacticsService, TacticsService>(new ContainerControlledLifetimeManager());
 
             Engine engine = IOCContainer.Resolve<Engine>();
             engine.Start();
@@ -83,8 +94,9 @@ namespace Chessman
             IOCContainer.RegisterType<IAnalysisBoardService, AnalysisBoardService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IBoardEditorService, EditorService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IPracticeBoardService, PracticeBoardService>(new ContainerControlledLifetimeManager());
-            IOCContainer.RegisterType<ITextReaderService, TextReaderService>(new ContainerControlledLifetimeManager());
+            IOCContainer.RegisterType<ITacticsBoardService, TacticsBoardService>(new ContainerControlledLifetimeManager());
 
+            IOCContainer.RegisterType<ITextReaderService, TextReaderService>(new ContainerControlledLifetimeManager());
             IOCContainer.RegisterType<IMoveAudioFeedbackService, MoveAudioFeedbackService>(new ContainerControlledLifetimeManager());
             
         }

@@ -149,6 +149,14 @@
     <Compile Include="Pages\EditPosition\PositionLoadOptions.cs" />
     <Compile Include="Pages\Settings\AppPersistenceManager.cs" />
     <Compile Include="Pages\Settings\SettingsViewModel.cs" />
+    <Compile Include="Pages\Tactics\ITacticsBoardService.cs" />
+    <Compile Include="Pages\Tactics\Tactic.cs" />
+    <Compile Include="Pages\Tactics\TacticDetailsViewModel.cs" />
+    <Compile Include="Pages\Tactics\TacticsBoardService.cs" />
+    <Compile Include="Pages\Tactics\TacticsBoardViewModel.cs" />
+    <Compile Include="Services\ITacticsService.cs" />
+    <Compile Include="Pages\Tactics\TacticsService.cs" />
+    <Compile Include="Pages\Tactics\TacticsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BoardService.cs" />
     <Compile Include="Services\IBasicBoardService.cs" />
