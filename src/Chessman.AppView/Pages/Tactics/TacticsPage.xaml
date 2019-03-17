@@ -31,7 +31,7 @@
                 <AppBarButton Label="Back" Icon="Back" ToolTipService.ToolTip="Back" Command="{Binding GoBackCommand}"/>
                 <AppBarButton Label="Forward" Icon="Forward" ToolTipService.ToolTip="Forward" Command="{Binding GoForwardCommand}"/>
                 <AppBarSeparator />
-                <AppBarButton 
+                <AppBarButton
                     IsEnabled="{Binding TacticState, Converter={StaticResource EnumToBoolConverter}, ConverterParameter=InProgress}"
                     Label="Show Move" 
                     ToolTipService.ToolTip="Show Move" 
@@ -61,11 +61,11 @@
         </Grid>
         <Grid x:Name="contentGrid" Grid.Row="1">
             <RelativePanel>
-                <StackPanel x:Name="notationView" Background="White">
-                    <view:NotationView x:Name="notationView2"
-                                   DataContext="{Binding NotationViewModel}" />
-                    <TextBlock Text="{Binding CurrentTactic}"/>
-                </StackPanel>
+                <view:TacticDetailsView x:Name="tacticDetailsView"
+                                        DataContext="{Binding TacticDetailsViewModel}"/>
+                <view:NotationView x:Name="notationView" 
+                    Grid.Row="1"
+                    DataContext="{Binding NotationViewModel}" />
                 <view:ChessBoardView x:Name="chessBoard"
                                     HasDragAndDrop="True"
                                     VerticalAlignment="Center"
@@ -91,11 +91,16 @@
                         <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.Margin" Value="0 0 12 0"/>
 
+                        <Setter Target="tacticDetailsView.(RelativePanel.RightOf)" Value="chessBoard"/>
+                        <Setter Target="tacticDetailsView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="tacticDetailsView.MinWidth" Value="250"/>
+
+                        <Setter Target="notationView.(RelativePanel.Below)" Value="tacticDetailsView"/>
                         <Setter Target="notationView.(RelativePanel.RightOf)" Value="chessBoard"/>
-                        <Setter Target="notationView.(RelativePanel.AlignTopWithPanel)" Value="true"/>
                         <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="notationView.(RelativePanel.AlignBottomWithPanel)" Value="true"/>
                         <Setter Target="notationView.MinWidth" Value="250"/>
+                        <Setter Target="notationView.Margin" Value="0 4 0 0"/>
 
                     </VisualState.Setters>
                 </VisualState>

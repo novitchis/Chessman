@@ -19,11 +19,13 @@ namespace Chessman
             this.tacticsService = tacticsService;
         }
 
-        public async Task LoadTacticAsync()
+        public async Task<Tactic> LoadTacticAsync()
         {
             currentTactic = await tacticsService.GetAsync();
             SetState(TacticState.InProgress);
             LoadFrom(currentTactic.fenBefore);
+
+            return currentTactic;
         }
 
         public async Task ExecuteNextMoveAsync()

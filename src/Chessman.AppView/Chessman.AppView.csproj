@@ -169,6 +169,9 @@
     <Compile Include="Pages\Settings\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Tactics\TacticDetailsView.xaml.cs">
+      <DependentUpon>TacticDetailsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Tactics\TacticsPage.xaml.cs">
       <DependentUpon>TacticsPage.xaml</DependentUpon>
     </Compile>
@@ -326,6 +329,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Settings\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Tactics\TacticDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

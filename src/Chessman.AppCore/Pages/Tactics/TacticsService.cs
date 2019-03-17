@@ -42,10 +42,24 @@ namespace Chessman
             var response = await client.PostAsync("blunder/get", GetPayloadContent(payload));
             var responseString = await response.Content.ReadAsStringAsync();
 
-            TacticResponse tacticsResponse = JsonConvert.DeserializeObject<TacticResponse>(responseString);
+            TacticResponse<Tactic> tacticsResponse = JsonConvert.DeserializeObject<TacticResponse<Tactic>>(responseString);
             currentTactic = tacticsResponse.data;
 
+            currentTactic.Info = await GetInfoAsync(currentTactic.id);
+
             return currentTactic;
+        }
+
+        private async Task<TacticInfo> GetInfoAsync(string id)
+        {
+            string token = await getToken;
+
+            var payload = new { token, blunder_id = id };
+            var response = await client.PostAsync("blunder/info", GetPayloadContent(payload));
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            TacticResponse<TacticInfo> tacticsResponse = JsonConvert.DeserializeObject<TacticResponse<TacticInfo>>(responseString);
+            return tacticsResponse.data;
         }
 
         public async Task Skip()

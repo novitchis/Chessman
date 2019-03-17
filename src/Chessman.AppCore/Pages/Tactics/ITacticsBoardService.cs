@@ -10,7 +10,7 @@ namespace Chessman
     {
         event EventHandler StateChanged;
 
-        Task LoadTacticAsync();
+        Task<Tactic> LoadTacticAsync();
 
         Task ExecuteNextMoveAsync();
 

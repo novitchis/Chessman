@@ -151,6 +151,7 @@
     <Compile Include="Pages\Settings\SettingsViewModel.cs" />
     <Compile Include="Pages\Tactics\ITacticsBoardService.cs" />
     <Compile Include="Pages\Tactics\Tactic.cs" />
+    <Compile Include="Pages\Tactics\TacticDetailsViewModel.cs" />
     <Compile Include="Pages\Tactics\TacticsBoardService.cs" />
     <Compile Include="Pages\Tactics\TacticsBoardViewModel.cs" />
     <Compile Include="Services\ITacticsService.cs" />
