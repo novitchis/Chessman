@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chessman.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -45,19 +46,16 @@ namespace Chessman.View
             if (e.Handled)
                 return;
 
-            //var ctrl = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control);
-            //if (ctrl.HasFlag(CoreVirtualKeyStates.Down) && e.VirtualKey == VirtualKey.V)
-            //{
-            //    (this.DataContext as TacticsPage).LoadFromClipboardCommand.Execute(null);
-            //}
-            //else if (e.VirtualKey == VirtualKey.Left)
-            //{
-            //    (this.DataContext as TacticsPage).GoBackCommand.Execute(null);
-            //}
-            //else if (e.VirtualKey == VirtualKey.Right)
-            //{
-            //    (this.DataContext as TacticsPage).GoForwardCommand.Execute(null);
-            //}
+            var ctrl = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control);
+
+            if (e.VirtualKey == VirtualKey.Left)
+            {
+                (this.DataContext as TacticsViewModel).GoBackCommand.Execute(null);
+            }
+            else if (e.VirtualKey == VirtualKey.Right)
+            {
+                (this.DataContext as TacticsViewModel).GoForwardCommand.Execute(null);
+            }
         }
     }
 }

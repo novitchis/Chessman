@@ -65,6 +65,15 @@ namespace Chessman.ViewModel
                 return new RelayCommand(OnRestart);
             }
         }
+        public ICommand AnalyseGameCommand
+        {
+            get { return new RelayCommand(AnalyseGameExecuted); }
+        }
+
+        public ICommand PracticePositionCommand
+        {
+            get { return new RelayCommand(PracticePositionExecuted); }
+        }
 
         public TacticsViewModel(INavigationService navigationService, ITacticsBoardService boardService)
             :base(navigationService, boardService)
@@ -119,6 +128,16 @@ namespace Chessman.ViewModel
             boardService.Restart();
             ReloadBoard(boardService.WasBlackFirstToMove() ? SideColor.White : SideColor.Black);
             OnExecuteNextMoveAsync(null);
+        }
+
+        private void AnalyseGameExecuted(object obj)
+        {
+            NavigationService.NavigateTo(ViewModelLocator.MainPageNavigationName, GetPositionLoadOptions(BoardSerializationType.PGN, false));
+        }
+
+        private void PracticePositionExecuted(object obj)
+        {
+            NavigationService.NavigateTo(ViewModelLocator.PracticePageNavigationName, GetPositionLoadOptions(BoardSerializationType.PGN));
         }
     }
 }
