@@ -49,7 +49,7 @@
         <Grid Grid.Column="2">
             <StackPanel Orientation="Horizontal" Visibility="{Binding State, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Resolved}">
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC61;" Foreground="Green"/>
-                <TextBlock Margin="8" Grid.Column="2" Text="Resolved" VerticalAlignment="Center"/>
+                <TextBlock Margin="8" Grid.Column="2" Text="Solved" VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Visibility="{Binding State, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Failed}">
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB90;" Foreground="Red"/>

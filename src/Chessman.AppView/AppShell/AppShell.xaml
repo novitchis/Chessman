@@ -23,7 +23,7 @@
                       Visibility="Collapsed"
                       Margin="0 4 4 0">
                     <Ellipse
-                         Fill="Yellow"
+                         Fill="Lime"
                          Width="12"
                          Height="12"/>
                 </Grid>
