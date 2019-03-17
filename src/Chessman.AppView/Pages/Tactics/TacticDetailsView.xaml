@@ -18,7 +18,9 @@
                 FontSize="18"
                 Text="{Binding Tactic.elo}"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                ToolTipService.ToolTip="ELO rating"
+                />
         </Border>
         <Grid Grid.Column="1" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
@@ -26,9 +28,23 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Margin="8" Grid.Column="0" Text="{Binding WhitePlayer}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+            <TextBlock 
+                Margin="8" 
+                Grid.Column="0"
+                Text="{Binding WhitePlayer}" 
+                VerticalAlignment="Center" 
+                TextTrimming="CharacterEllipsis" 
+                ToolTipService.ToolTip="{Binding WhitePlayer}"
+                />
             <FontIcon Grid.Column="1" FontFamily="Segoe MDL2 Assets" Glyph="&#xE9AE;" />
-            <TextBlock Margin="8" Grid.Column="2" Text="{Binding BlackPlayer}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+            <TextBlock 
+                Margin="8" 
+                Grid.Column="2" 
+                Text="{Binding BlackPlayer}" 
+                VerticalAlignment="Center" 
+                TextTrimming="CharacterEllipsis"
+                ToolTipService.ToolTip="{Binding BlackPlayer}"
+                />
         </Grid>
         <Grid Grid.Column="2">
             <StackPanel Orientation="Horizontal" Visibility="{Binding State, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Resolved}">

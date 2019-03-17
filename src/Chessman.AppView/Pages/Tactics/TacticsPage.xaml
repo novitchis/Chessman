@@ -74,6 +74,41 @@
                                      />
             </RelativePanel>
         </Grid>
+        <CommandBar x:Name="bottomCommandBar"
+                    Grid.Row="2" 
+                    Background="{StaticResource AccentBrush400}"
+                    Closed="OnCommandBarClosed">
+            <AppBarButton Label="Back" Icon="Back" ToolTipService.ToolTip="Back" Command="{Binding GoBackCommand}"/>
+            <AppBarButton Label="Forward" Icon="Forward" ToolTipService.ToolTip="Forward" Command="{Binding GoForwardCommand}"/>
+            <AppBarButton
+                    IsEnabled="{Binding TacticState, Converter={StaticResource EnumToBoolConverter}, ConverterParameter=InProgress}"
+                    Label="Show Move" 
+                    ToolTipService.ToolTip="Show Move" 
+                    Command="{Binding ExecuteNextMoveCommand}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE82F;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton Label="Restart" ToolTipService.ToolTip="Restart" Command="{Binding RestartCommand}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEDAB;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton Label="Next Tactic" ToolTipService.ToolTip="Next Tactic" Command="{Binding SkipCommand}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE974;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="Analyze game" Icon="Find"  Command="{Binding AnalyseGameCommand}" ToolTipService.ToolTip="Analyze"/>
+                <AppBarButton Label="Continue vs computer" ToolTipService.ToolTip="Continue vs computer" Command="{Binding PracticePositionCommand}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7F4;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
@@ -81,8 +116,8 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <!--<Setter Target="bottomCommandBar.Visibility" Value="Collapsed"/>-->
-                        <!--<Setter Target="topCommandBar.Visibility" Value="Visible"/>-->
+                        <Setter Target="bottomCommandBar.Visibility" Value="Collapsed"/>
+                        <Setter Target="topCommandBar.Visibility" Value="Visible"/>
 
                         <Setter Target="contentGrid.Margin" Value="12 8 12 12"/>
 
@@ -109,14 +144,18 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <!--<Setter Target="bottomCommandBar.Visibility" Value="Visible"/>-->
+                        <Setter Target="bottomCommandBar.Visibility" Value="Visible"/>
                         <Setter Target="topCommandBar.Visibility" Value="Collapsed"/>
+                        <Setter Target="titlePanel.Visibility" Value="Collapsed"/>
 
-                        <Setter Target="titlePanel.Margin" Value="48 0 0 0"/>
+                        <Setter Target="tacticDetailsView.Margin" Value="48 0 0 0"/>
+                        <Setter Target="tacticDetailsView.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="tacticDetailsView.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+                        <Setter Target="tacticDetailsView.(RelativePanel.AlignTopWithPanel)" Value="true"/>
 
-                        <Setter Target="chessBoard.(RelativePanel.AlignTopWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignRightWithPanel)" Value="true"/>
                         <Setter Target="chessBoard.(RelativePanel.AlignLeftWithPanel)" Value="true"/>
+                        <Setter Target="chessBoard.(RelativePanel.Below)" Value="tacticDetailsView"/>
 
                         <Setter Target="notationView.(RelativePanel.Below)" Value="chessBoard"/>
                         <Setter Target="notationView.(RelativePanel.AlignRightWithPanel)" Value="true"/>

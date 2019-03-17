@@ -25,6 +25,8 @@ namespace Chessman.View
         public TacticsPage()
         {
             this.InitializeComponent();
+            this.Loaded += OnPageLoaded;
+            this.SizeChanged += PageSizeChanged;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -39,6 +41,34 @@ namespace Chessman.View
             base.OnNavigatedFrom(e);
             Window.Current.CoreWindow.KeyDown -= OnCoreWindowKeyDown;
             chessBoard.UnRegisterAnimationHandlers();
+        }
+
+        private void OnPageLoaded(object sender, RoutedEventArgs e)
+        {
+            // When changing the current page the PageSizeChanged event
+            // is raised before layout is performed
+            // UpdateColumnsRestraints needs AdaptiveTrigger for windows size to be applied
+            UpdateColumnsRestraints(RenderSize);
+        }
+
+        private void PageSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UpdateColumnsRestraints(e.NewSize);
+        }
+
+        private void UpdateColumnsRestraints(Size newSize)
+        {
+            // for now there is no other way to enforce a min width on the right column
+            // for pc layout that can be honored by the parent pannel
+            if (tacticDetailsView.MinWidth > 0)
+                chessBoard.MaxWidth = newSize.Width - tacticDetailsView.MinWidth - 50;
+            else
+                chessBoard.MaxWidth = Double.PositiveInfinity;
+
+            if (notationView.MinHeight > 0)
+                chessBoard.MaxHeight = newSize.Height - notationView.MinHeight - 130;
+            else
+                chessBoard.MaxHeight = Double.PositiveInfinity;
         }
 
         private void OnCoreWindowKeyDown(CoreWindow sender, KeyEventArgs e)
@@ -56,6 +86,12 @@ namespace Chessman.View
             {
                 (this.DataContext as TacticsViewModel).GoForwardCommand.Execute(null);
             }
+        }
+
+        private void OnCommandBarClosed(object sender, object e)
+        {
+            // get rid of the command bar being keyboard focused
+            this.Focus(FocusState.Programmatic);
         }
     }
 }
