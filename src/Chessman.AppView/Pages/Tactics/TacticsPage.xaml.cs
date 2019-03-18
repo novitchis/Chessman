@@ -61,7 +61,7 @@ namespace Chessman.View
             // for now there is no other way to enforce a min width on the right column
             // for pc layout that can be honored by the parent pannel
             if (tacticDetailsView.MinWidth > 0)
-                chessBoard.MaxWidth = newSize.Width - tacticDetailsView.MinWidth - 50;
+                chessBoard.MaxWidth = newSize.Width - tacticDetailsView.MinWidth - 50 - adBanner.ActualWidth;
             else
                 chessBoard.MaxWidth = Double.PositiveInfinity;
 

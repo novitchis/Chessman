@@ -25,10 +25,6 @@
                 Background="{StaticResource SelectedSquareBrush}"
                 FontWeight="Bold"
                 Command="{Binding RemoveAdsCommand}">Remove Ads</Button>
-            <TextBlock HorizontalAlignment="Center"
-                       Foreground="{StaticResource BlackSquareBrush}"
-                       FontWeight="SemiBold"
-                       >Early 40% off</TextBlock>
         </StackPanel>
     </Grid>
 </UserControl>
