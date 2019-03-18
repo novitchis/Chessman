@@ -26,6 +26,7 @@ namespace ChessEngine
 
 		bool				ValidateMove(Coordinate^ from, Coordinate^ to);
 		bool				SubmitMove(Coordinate^ from, Coordinate^ to);
+		bool				SubmitMove(Platform::String^ pgnMove);
 		bool				SubmitPromotionMove(Coordinate^ from, Coordinate^ to, PieceType promotionPieceType);
 
 		bool				UndoMove(bool bWhiteMove);

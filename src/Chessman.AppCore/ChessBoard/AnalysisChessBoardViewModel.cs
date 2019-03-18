@@ -180,7 +180,7 @@ namespace Chessman.ViewModel
             RefreshPositionStateMarkers();
         }
 
-        protected void ExecuteCurrentMoveOnBoard(bool instantMove)
+        public void ExecuteCurrentMoveOnBoard(bool instantMove)
         {
             ClearCurrentMoveData();
 

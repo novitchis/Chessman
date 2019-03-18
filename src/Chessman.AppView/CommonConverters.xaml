@@ -10,6 +10,7 @@
     <co:StringFormatter x:Key="StringFormatter" />
     <co:BoolInverterConverter x:Key="BoolInverterConverter" />
     <co:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
+    <co:EnumToBoolConverter x:Key="EnumToBoolConverter" />
     <co:ValueToRadioButtonConverter x:Key="ValueToRadioButtonConverter" />
     
 </ResourceDictionary>

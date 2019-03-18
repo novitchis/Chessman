@@ -19,6 +19,7 @@ namespace Chessman.ViewModel
     {
         private IAppSettings appSettings = null;
         private ITextReaderService textService = null;
+        private IAnalysisBoardService boardService = null;
 
         public AnalysisViewModel AnalysisViewModel { get; set; }
 
@@ -36,6 +37,8 @@ namespace Chessman.ViewModel
         {
             this.appSettings = appSettings;
             this.textService = textService;
+            this.boardService = analysisBoardService;
+
             AnalysisViewModel = ViewModelLocator.IOCContainer.Resolve<AnalysisViewModel>();
             BoardViewModel = new AnalysisChessBoardViewModel(analysisBoardService);
 
@@ -74,7 +77,7 @@ namespace Chessman.ViewModel
             NotationViewModel.UseFigurineNotation = useFigurineNotation;
         }
 
-        public override void OnNavigatingFrom()
+        public void OnNavigatingFrom()
         {
             if (AnalysisViewModel.IsEngineOn)
                 boardService.Stop();
